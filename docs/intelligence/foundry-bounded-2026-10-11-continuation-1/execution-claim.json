@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-11T17:24:11.043Z",
+  "config": {
+    "appendfsync": "always",
+    "maxmemory-policy": "noeviction",
+    "no-appendfsync-on-rewrite": "no",
+    "appendonly": "yes"
+  },
+  "budget": {
+    "used1": "0",
+    "start1": "1791739305",
+    "used2": "0",
+    "start2": "1791739305",
+    "used3": "0",
+    "start3": "1791739305",
+    "used4": "0",
+    "start4": "1791739305",
+    "attemptUsed1": "0",
+    "attemptStart1": "1791739305956",
+    "attemptUsed2": "0",
+    "attemptStart2": "1791739305956",
+    "attemptUsed3": "0",
+    "attemptStart3": "1791739305956"
+  },
+  "owner": {
+    "execution": "c720ea8f4e0239aeb23192090b6ba1c1411ed4eb215bc19722649af8c75ae240",
+    "identity": "{\"study\":\"foundry-bounded-2026-10-11-continuation-1\",\"parent\":\"ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244\",\"caps\":{\"workflows\":6,\"attempts\":12,\"perWorkflow\":3,\"nanoUsd\":500000000,\"spacingMs\":65000}}",
+    "initializedAt": "1791739305"
+  },
+  "aofLastWriteStatus": "ok"
+}

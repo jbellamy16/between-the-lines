@@ -1,0 +1,89 @@
+{
+  "kind": "Assistant analysis, not human preference evidence",
+  "evaluatedCommit": "461a27d95fb6afebade70a524f8de85d1334f388",
+  "technicalAcceptancePassed": false,
+  "usefulAIContributionDemonstrated": false,
+  "providerPublications": 0,
+  "baselineStoryAndNarrativeExactMatch": true,
+  "safeFallbackVerification": [
+    "fresh prefix-only query replay",
+    "selected IDs and complete hypothesis equality",
+    "source precision and event identity",
+    "full story repackaging equality",
+    "locally rendered both styles and recap lengths"
+  ],
+  "actualSelectedModelClaims": [],
+  "actualToolChoices": [
+    {
+      "tool": "inspect_counter_evidence",
+      "matchId": "live-challenge-misleading-quality",
+      "start": 0,
+      "end": 1800,
+      "team": "harbor",
+      "playerId": null,
+      "eventId": "live-challenge-misleading-quality:4"
+    }
+  ],
+  "caseAssessments": [
+    {
+      "caseId": "misleading-quality",
+      "outcome": "failed",
+      "baselineClaims": [
+        "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1"
+      ],
+      "baselineHeadline": "Harbor: more shots",
+      "analysis": "The requested counter-evidence check addressed a meaningful uncertainty: more shots did not mean higher aggregate chance quality (4 versus 1 shots; synthetic source xG 0.2 versus 0.8). Its requested scope and anchor were valid. The local tool ran, but the model never received its result in a second request, never submitted a final editorial plan, and never chose a story. No improved story selection or conclusion can be credited to Foundry. The deterministic fallback exactly retained the same-state baseline narrative and story, including the contrary xG qualification and the separately weakening five-minute storyline. Retaining that baseline was sensible. This demonstrates a relevant investigation choice, not completed useful AI contribution.",
+      "humanReview": null
+    },
+    {
+      "caseId": "pressure-fan",
+      "outcome": "not_attempted",
+      "baselineClaims": [
+        "pressure:activity-change:harbor:shots:pressure-202632-410"
+      ],
+      "baselineHeadline": "Harbor: more shots",
+      "analysis": "Not attempted after the stop. Current analyst baseline records four shots versus zero in equal 9m12s windows and qualifies unmeasured chance quality. No actual model selection, optional investigation, or benefit can be assessed.",
+      "humanReview": null
+    },
+    {
+      "caseId": "temporal-weakening",
+      "outcome": "not_attempted",
+      "baselineClaims": [
+        "pressure:activity-change:harbor:shots:pressure-202632-435"
+      ],
+      "baselineHeadline": "Harbor: more shots",
+      "analysis": "Not attempted after the stop. Current baseline records four versus one shots across 12m30s windows, while shorter windows show weakening activity. No model result exists to compare; offline temporal checks are not live success.",
+      "humanReview": null
+    },
+    {
+      "caseId": "temporal-resolved",
+      "outcome": "not_attempted",
+      "baselineClaims": [
+        "pressure:score-change:pressure-202632-552"
+      ],
+      "baselineHeadline": "Goal: Harbor 1\u20131 Riverside",
+      "analysis": "Not attempted after the stop. Offline preflight selects the recorded 74:35 equalizer and would bypass inference. That makes no-call behavior sensible, but this case never entered the live loop and is not counted as a live abstention.",
+      "humanReview": null
+    },
+    {
+      "caseId": "unfamiliar-8911",
+      "outcome": "not_attempted",
+      "baselineClaims": [
+        "synthetic-pressure-8911-balanced:activity-change:harbor:shots:synthetic-pressure-8911-balanced:pressure-8911-960"
+      ],
+      "baselineHeadline": "Harbor: more shots",
+      "analysis": "Not attempted after the stop. Same-state baseline records four versus two shots in equal 12m30s windows. No model choice, new evidence or useful contribution was demonstrated.",
+      "humanReview": null
+    },
+    {
+      "caseId": "unfamiliar-73129",
+      "outcome": "not_attempted",
+      "baselineClaims": [
+        "synthetic-pressure-73129-balanced:recovery-shot:harbor:synthetic-pressure-73129-balanced:pressure-73129-983"
+      ],
+      "baselineHeadline": "Harbor: recovery to shot",
+      "analysis": "Not attempted after the stop. Baseline retains the recorded 62:41 recovery followed by the 63:05 shot, with a 24-second interval and explicit non-causal qualification. No actual model result exists; there is no evidence that replacing the baseline would help.",
+      "humanReview": null
+    }
+  ]
+}

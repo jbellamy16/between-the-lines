@@ -1,0 +1,19 @@
+{
+  "views": 4,
+  "styles": [
+    "plain",
+    "analysis"
+  ],
+  "lengths": [
+    "Quick",
+    "Full"
+  ],
+  "viewports": [
+    1100,
+    390
+  ],
+  "overflow": false,
+  "externalRequests": 0,
+  "source": "Frozen deterministic fallback; exact equality to the independently verified same-state baseline",
+  "acceptedAIResults": 0
+}

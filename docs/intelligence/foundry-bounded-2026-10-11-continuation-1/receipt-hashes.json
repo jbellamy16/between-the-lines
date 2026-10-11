@@ -1,0 +1,19 @@
+{
+  "REPORT.md": "afe3281ec4a8c8de8fdb760632a933227c0e5f3f5537d4465aa42ca8ef0ebf3e",
+  "assistant-assessment.json": "74b390a19547982ec0a82c71f668282c1db262e1bdc699f8cefcd334191c02bd",
+  "case-misleading-quality.json": "79ed8b89ece7b159d512f6caad19739042a680ec86d9c3a876e40df478d8a9eb",
+  "execution-claim.json": "d3d59f2d6a9b2e2300f3ac333c1fff529572bbd4881365d431b966eaae4b1c86",
+  "execution-receipt-hashes.json": "b85d99368ebd652ede8b28a35092442c7e4a7d27488080195a67cc4e192aab61",
+  "fallback-preview.html": "8b5100d4aa2786e8bafc23a7d4e44aaaf125a75a7ef17a7edda1b2fbdb228035",
+  "fixtures.json": "9b57b67736c33b493b78f6aed644cd4525f7bf7184606759766e80a9662d8628",
+  "ledger.jsonl": "3b0967c4c2f6d2e03bc4c35c1a77eef51a49a60da053d2127e489a134ecec974",
+  "local-render-check.json": "a44d571b272152a89e0622b6819c3ba47d6acd5e55a083c26061d2ec0d0afd06",
+  "manifest.json": "72fab7086b9fc6d0c81d8141845572f59d0266056f8a6027e384aac28087434b",
+  "offline-diagnosis-before-fix.json": "b8d9517e925fdbc5ddb4ddb78988730b1964d133d94f29ed98e362c477208143",
+  "offline-preparation.json": "f8a5abb83a81c389f67d61e208c649772ae59c8ad4104c20b7fe1055c4592d37",
+  "offline-regression-after-fix.json": "1e5cdacec6f3a78e412099681c599c336af99d3e8d6bf0918c56723f2a6ae369",
+  "preflight.json": "e19986280bacd33ce63defffbe8e64e5054c46ab90fbffee8944f85037e1f27c",
+  "results.json": "009e699c4194e8c6da87eb74abe8c79042f3e23110aa776867607c6877ff710f",
+  "service-shutdown.json": "2dbffe5e1819ec03fdebd1d352222b27c4610be27bc8a09e8eb3b01f15aecbef",
+  "validation.json": "69c0e0b360a90b97986405788a22ff470d8be4b27d344c0531f4d7bf92957279"
+}
