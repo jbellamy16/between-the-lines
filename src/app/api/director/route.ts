@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { json, readInput } from "@/lib/ai/service";
 import { preferencesSchema } from "@/lib/ai/evidence";
+import { questionSchema } from "@/lib/ai/director/questions";
+import {
+  answerQuestion,
+  QuestionUnavailable,
+} from "@/lib/ai/director/question-runner";
 import { directMatch } from "@/lib/ai/director/runner";
 import { directorConfiguration } from "@/lib/ai/director/configuration";
 import { SyntheticMatchSource } from "@/lib/sources/synthetic";
@@ -17,6 +22,7 @@ const schema = z
     time: z.number().finite().min(0).max(7200),
     mode: z.enum(["fan", "analyst"]),
     preferences: preferencesSchema.optional(),
+    question: questionSchema.optional(),
   })
   .strict()
   .refine((v) => !!v.scenario !== !!v.matchId, "One source required");
@@ -43,16 +49,20 @@ export async function POST(req: Request) {
     return json({ error: "Invalid cutoff" }, 400);
   try {
     return json({
-      ...(await directMatch(
-        match,
-        input.time,
-        input.mode,
-        input.preferences,
-        req.signal,
-      )),
+      ...(input.question
+        ? await answerQuestion(match, input.time, input.question, req.signal)
+        : await directMatch(
+            match,
+            input.time,
+            input.mode,
+            input.preferences,
+            req.signal,
+          )),
       cacheContext: directorConfiguration(),
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof QuestionUnavailable)
+      return json({ error: error.message }, 422);
     return json({ error: "Investigation cancelled" }, 499);
   }
 }

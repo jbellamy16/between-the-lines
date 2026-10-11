@@ -1,0 +1,208 @@
+{
+  "caseId": "misleading-quality",
+  "kind": "Original result before acceptance; never overwritten",
+  "result": {
+    "evidence": {
+      "version": "guided-1.0.0",
+      "question": {
+        "intent": "chance-quality",
+        "storyId": "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1"
+      },
+      "matchId": "live-challenge-misleading-quality",
+      "cutoff": 1800,
+      "storyHeadline": "Harbor: more shots",
+      "team": "harbor",
+      "metric": "shots",
+      "availability": "available",
+      "reason": null,
+      "verdict": "lower",
+      "windows": [
+        {
+          "id": "previous",
+          "start": 0,
+          "end": 900,
+          "period": "1H",
+          "boundary": "(start,end]"
+        },
+        {
+          "id": "current",
+          "start": 900,
+          "end": 1800,
+          "period": "1H",
+          "boundary": "(start,end]"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "own-previous",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-misleading-quality:0"
+          ],
+          "value": 1
+        },
+        {
+          "id": "own-current",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "value": 4
+        },
+        {
+          "id": "previous-shots",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-misleading-quality:0"
+          ],
+          "value": 1
+        },
+        {
+          "id": "previous-xg",
+          "team": "harbor",
+          "metric": "source xG total",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-misleading-quality:0"
+          ],
+          "value": 0.8
+        },
+        {
+          "id": "previous-mean-xg",
+          "team": "harbor",
+          "metric": "source xG per shot",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-misleading-quality:0"
+          ],
+          "value": 0.8
+        },
+        {
+          "id": "previous-rated-shots",
+          "team": "harbor",
+          "metric": "shots with source xG",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-misleading-quality:0"
+          ],
+          "value": 1
+        },
+        {
+          "id": "current-shots",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "value": 4
+        },
+        {
+          "id": "current-xg",
+          "team": "harbor",
+          "metric": "source xG total",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "value": 0.2
+        },
+        {
+          "id": "current-mean-xg",
+          "team": "harbor",
+          "metric": "source xG per shot",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "value": 0.05
+        },
+        {
+          "id": "current-rated-shots",
+          "team": "harbor",
+          "metric": "shots with source xG",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "value": 4
+        }
+      ],
+      "qualifications": [
+        "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+        "Shot volume rose but the source-supplied xG total did not. The larger shot count does not support an increase in aggregate chance quality.",
+        "Synthetic match, players and event-model xG. No continuous tracking."
+      ],
+      "eventIds": [
+        "live-challenge-misleading-quality:0",
+        "live-challenge-misleading-quality:1",
+        "live-challenge-misleading-quality:2",
+        "live-challenge-misleading-quality:3",
+        "live-challenge-misleading-quality:4"
+      ]
+    },
+    "source": "foundry",
+    "supplements": [],
+    "trace": [
+      {
+        "tool": "get_team_statistics",
+        "query": {
+          "matchId": "live-challenge-misleading-quality",
+          "start": 0,
+          "end": 1800,
+          "team": null,
+          "playerId": null,
+          "eventId": null
+        },
+        "eventIds": [
+          "live-challenge-misleading-quality:0",
+          "live-challenge-misleading-quality:1",
+          "live-challenge-misleading-quality:2",
+          "live-challenge-misleading-quality:3",
+          "live-challenge-misleading-quality:4"
+        ],
+        "claimIds": [
+          "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1"
+        ],
+        "truncated": false
+      }
+    ],
+    "notice": "Investigation complete. The answer and its evidence passed independent checks.",
+    "metrics": {
+      "requests": 1,
+      "toolInvocations": 1,
+      "cached": false,
+      "latencyMs": 1766,
+      "estimatedCostUsd": null
+    },
+    "usage": {
+      "inputTokens": 2146,
+      "outputTokens": 25,
+      "cachedInputTokens": 0,
+      "complete": true,
+      "requests": 1,
+      "latencyMs": 1736
+    }
+  }
+}

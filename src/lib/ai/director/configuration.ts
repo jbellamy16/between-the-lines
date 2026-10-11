@@ -2,6 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { configuredProvider, modelFor } from "../providers";
 import { usageStoreReady } from "../controls";
+import { QUESTION_VERSION } from "./questions";
 import { DIRECTOR_VERSION } from "./observer";
 
 /** Opaque, non-secret cache identity; never exposes an endpoint or credentials. */
@@ -16,6 +17,7 @@ export function directorConfiguration() {
           provider === "foundry" ? process.env.FOUNDRY_ENDPOINT : provider,
         ready: usageStoreReady(),
         version: DIRECTOR_VERSION,
+        questionVersion: QUESTION_VERSION,
       }),
     )
     .digest("hex");

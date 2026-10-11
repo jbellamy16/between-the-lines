@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-11",
+  "kind": "Offline validation with mocked provider transport; no paid execution",
+  "typecheck": "passed",
+  "unitTests": { "passed": 529, "skipped": 1, "filesPassed": 37, "realDisposableRedis": true, "durableStoreRestartTests": true },
+  "productionBuild": "passed",
+  "browserTests": { "passed": 231, "desktop": "1440x1100", "tabletInspected": "820x1180", "android": "360x800", "mobile": "390x844" },
+  "targetedBrowserRerunAfterSourceIdentityGuard": { "passed": 15 },
+  "screenshots": "Deterministic offline product, not live model output",
+  "inferenceAttempts": 0
+}

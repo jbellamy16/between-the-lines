@@ -1,0 +1,13 @@
+{
+  "kind": "Offline browser regression discovered after the paid campaign; no additional inference",
+  "evaluatedCommit": "b56090090cf85c43a28ca07755764082d7bcaec3",
+  "test": "choosing a question cancels an older generic investigation before it can replace the source story",
+  "beforeFix": {
+    "outcome": "failed",
+    "expectedStory": "Harbor are getting more shots away.",
+    "actualStory": "Harbor are winning the ball near the opponent’s goal more often.",
+    "cause": "A pending generic Director request remained active when a guided question was selected. Its late completion replaced the question's source story."
+  },
+  "fix": "Selecting a guided question cancels the generic subscriber, clears its active controller and loading state, and retains the selected story and replay context.",
+  "paidCampaignRerun": false
+}
