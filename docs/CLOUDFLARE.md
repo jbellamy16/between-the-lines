@@ -2,6 +2,10 @@
 
 Between the Lines runs on Cloudflare Workers through OpenNext, retaining the existing Next.js application and Azure standalone deployment. OpenAI is the selected provider. Paid inference is disabled, all narration quotas are zero, and no provider key or Redis secret is uploaded with the application.
 
+## Submission read-only check — October 11, 2026
+
+No deployment was performed. A public status GET with curl reported offline; a later Python HTTP client received 403 from both homepage and status. Access is client-dependent and current commit parity is unknown. [Saved observations](submission-preparation/public-status.json) retain both outcomes. Do not advertise this as a verified current judge build until a signed-out browser and exact release check pass.
+
 ## Build and verify
 
 ```sh
@@ -40,7 +44,7 @@ Before public inference, configure an existing persistent TLS Redis store with n
 
 The current global Redis client was tested in Node; its Cloudflare TCP/TLS behavior still needs verification with an approved store before enabling inference. If a Workers-native store is chosen later, it must preserve atomic reservations, deduplication, the persistent total allowance and fail-closed behavior. In-memory limits are prohibited in production.
 
-Cloudflare deployment does not authorize OpenAI API calls. The previous eight-request live test allowance is exhausted. Foundry remains available when Azure access returns.
+Cloudflare deployment does not authorize OpenAI API calls. The previous eight-request live test allowance is exhausted. Foundry remains an optional adapter; historical Azure access/results do not authorize a new call.
 
 ## References
 

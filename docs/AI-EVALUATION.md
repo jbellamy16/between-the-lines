@@ -1,6 +1,13 @@
 # AI evaluation and release gate
 
-## Latest editorial and model comparison
+## Current submission status — October 11, 2026
+
+PR #23 merged as `fb108863dae6a69a7af0df0101ca1fbc66ab4be1`. Current Director `1.4.0` includes PR #22's compact application-first retrieval and shared request accounting; PR #23 adds local Plain English / Football Analysis. These changes have automated offline and scripted-provider validation, **not a new live evaluation**. Earlier successful calls below do not validate this release. The latest historical live study is [Director 1.2.0 at 22fb005](intelligence/pr18-intelligence-2026-10-10/REPORT.md), evaluated October 10 America/Chicago: 14 publications, four provider failures and one no-call abstention. Human review is pending.
+
+Use the [six-case current evaluation proposal](intelligence/foundry-efficiency-2026-10-11/REPORT.md#current-submission-evaluation-addendum), not an old runner or unused historical allowance. It is not authorized or executed. [Submission validation](submission-preparation/VALIDATION.md) records current local evidence and deployment limits. The following reports remain historical receipts, with their original dates, metrics and limitations.
+
+
+## Historical editorial and model comparison
 
 The owner-authorized [three-arm editorial/model comparison](EDITORIAL-MODEL-COMPARISON.md) completed 36 workflow attempts for an estimated $0.95456210. It retains four rejected plans and the subsequent fixes. Final paired difficult-case checks passed on both Mini and GPT-5.4; keep Mini configured based on the observed usefulness/cost tradeoff. The complete final live matrix and human semantic sign-off remain pending. Public inference stays disabled.
 

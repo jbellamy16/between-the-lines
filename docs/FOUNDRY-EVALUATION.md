@@ -1,5 +1,12 @@
 # Foundry live evaluation — October 10, 2026
 
+## Current submission status — October 11, 2026
+
+PR #23 merged as `fb108863dae6a69a7af0df0101ca1fbc66ab4be1`. Current Director `1.4.0` includes PR #22's compact application-first retrieval and shared request accounting; PR #23 adds local Plain English / Football Analysis. These changes have automated offline and scripted-provider validation, **not a new live evaluation**. Earlier successful calls below do not validate this release. The latest historical live study is [Director 1.2.0 at 22fb005](intelligence/pr18-intelligence-2026-10-10/REPORT.md), evaluated October 10 America/Chicago: 14 publications, four provider failures and one no-call abstention. Human review is pending.
+
+Use the [six-case current evaluation proposal](intelligence/foundry-efficiency-2026-10-11/REPORT.md#current-submission-evaluation-addendum), not an old runner or unused historical allowance. It is not authorized or executed. [Submission validation](submission-preparation/VALIDATION.md) records current local evidence and deployment limits. The following reports remain historical receipts, with their original dates, metrics and limitations.
+
+
 ## Director 1.2 measured follow-up
 
 The [PR #18 live intelligence review](intelligence/pr18-intelligence-2026-10-10/REPORT.md) evaluates committed head `22fb00517a38a8abadf00ae19d299a74f01d1fa0` without product-code changes. Eighteen primary states and one active-player diagnostic produced 14 verified publications, four provider quota failures and one deterministic no-call abstention. There were 37 new HTTP attempts. Known token estimates total $0.13567425; retaining unknown-usage reservations brings conservative accounting to $0.37987425 under the separate $2/60-request authorization. Prior ledgers and results are preserved.

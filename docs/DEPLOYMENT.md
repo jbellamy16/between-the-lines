@@ -1,10 +1,14 @@
 # Deploy Between the Lines to Azure
 
-The Azure deployment is live. For the alternative Cloudflare route, see [Cloudflare deployment](CLOUDFLARE.md).
+An earlier Azure release is hosted. For the alternative Cloudflare route, see [Cloudflare deployment](CLOUDFLARE.md).
 
-## Current status
+## Submission read-only check — October 11, 2026
 
-Azure hosting resources were provisioned and the current application deployed on October 10, 2026, under the owner's free-only authorization. Public verification completed at 11:32 a.m. America/Chicago. Normal inference stays disabled. Nothing in this repository provisions resources automatically.
+PR #23 merged as `fb108863dae6a69a7af0df0101ca1fbc66ab4be1`; no deployment followed. Public homepage and status GETs returned 200 from Azure, with `mode: offline` and `proactive: false`. They expose no deployed commit; returned HTML lacks the new style labels. Current-release parity is unverified. See [saved observations](submission-preparation/public-status.json). These checks made no model requests and changed no Azure settings. Recheck the exact deployed version after a separately authorized release.
+
+## Historical provisioning status — October 10, 2026
+
+Azure hosting resources were provisioned and an earlier application version deployed on October 10, 2026, under the owner's free-only authorization. Public verification completed at 11:32 a.m. America/Chicago. Normal inference stays disabled. Nothing in this repository provisions resources automatically.
 
 | Resource         | Configuration                                                                                |
 | ---------------- | -------------------------------------------------------------------------------------------- |
@@ -33,7 +37,7 @@ OpenAI Fan narration previously passed a local authorized live check. The revise
 
 A later [editorial/model comparison](EDITORIAL-MODEL-COMPARISON.md) temporarily deployed GPT-5.4, completed 88 model requests for an estimated $0.95456210, then deleted that comparison deployment and restored Mini capacity to 10. Mini remains the selected deployment. The final editorial fixes are included in the current release candidate; public AI flags and quotas remain disabled/zero.
 
-### Current release candidate
+### Historical Director 1.1.2 release candidate
 
 The current release brings the centered scoreboard, favorite stars, Carries metric, improved evidence presentation, and one consistent analyst-detail experience. Mode choices and the duplicate league/date pill have been removed. Saved team/player preferences are preserved. Director 1.1.2 includes bounded query recovery, complete comparison-window retrieval, stricter claim selection and duplicate-story filtering. Public paid inference remains disabled.
 
@@ -101,9 +105,9 @@ Keep all secrets server-side; never put keys in repository variables, browser co
 1. Load the public URL in a signed-out/private browser. Confirm score 1–0 at 63:24 in the pressure fixture.
 2. Play, pause, seek back to kickoff: score must be 0–0; early recaps must exclude later events.
 3. Select pressure evidence and replay; inspect the detailed window comparisons supplied by default.
-4. Select **Explain with Microsoft Foundry**. Confirm the **MICROSOFT FOUNDRY · VERIFIED STORY** label appears and a natural-language explanation is returned. A “configured” header alone is insufficient.
+4. **Only with separately authorized paid inference:** select **Explain with Microsoft Foundry**. Confirm the **MICROSOFT FOUNDRY · VERIFIED STORY** label appears and a natural-language explanation is returned. A “configured” header alone is insufficient.
 5. Review prose for unsupported claims. Check that evidence IDs match the displayed pattern and that event-derived figures remain unchanged.
-6. Confirm offline fallback by temporarily setting `AI_ENABLED=false` and restarting; restore only if the configured integration works.
+6. **Only during an authorized configuration change:** confirm offline fallback by temporarily setting `AI_ENABLED=false` and restarting; restore only if the configured integration works.
 7. Check browser console and server logs without logging keys or request authentication headers.
 8. Confirm desktop and physical mobile behavior, HTTPS, and uninterrupted judge access through November 10, 2026, at 11:59 p.m. Pacific.
 
