@@ -4,8 +4,7 @@
 
 PR #23 merged as `fb108863dae6a69a7af0df0101ca1fbc66ab4be1`. Current Director `1.4.0` includes PR #22's compact application-first retrieval and shared request accounting; PR #23 adds local Plain English / Football Analysis. These changes have automated offline and scripted-provider validation, **not a new live evaluation**. Earlier successful calls below do not validate this release. The latest historical live study is [Director 1.2.0 at 22fb005](intelligence/pr18-intelligence-2026-10-10/REPORT.md), evaluated October 10 America/Chicago: 14 publications, four provider failures and one no-call abstention. Human review is pending.
 
-Use the [six-case current evaluation proposal](intelligence/foundry-efficiency-2026-10-11/REPORT.md#current-submission-evaluation-addendum), not an old runner or unused historical allowance. It is not authorized or executed. [Submission validation](submission-preparation/VALIDATION.md) records current local evidence and deployment limits. The following reports remain historical receipts, with their original dates, metrics and limitations.
-
+PR #24 merged as `9b2cd5015391817d0eb0641637cc77c9e897fb7e`. The owner subsequently authorized the six-case study, but [current preflight](intelligence/foundry-bounded-2026-10-11/REPORT.md) blocked paid execution: local limits are two with no durable shared allowance, and hosted quotas are zero. Candidate `b4443e9eb809ab466b788b83221291f633834a66` has a tested durable harness and offline evidence; **zero provider attempts and US$0 spending**. Live acceptance criteria remain unmet. The original [proposal](intelligence/foundry-efficiency-2026-10-11/REPORT.md#current-submission-evaluation-addendum), [submission validation](submission-preparation/VALIDATION.md), and historical receipts retain their original scope and dates.
 
 ## Director 1.2 measured follow-up
 

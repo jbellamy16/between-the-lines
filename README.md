@@ -153,7 +153,7 @@ Included:
 
 Primary target: overall prize. Secondary target: Best Use of Microsoft Foundry. The [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) were checked October 11, 2026. Their five equally weighted judging criteria map to the synthetic feed and tests, evidence-first tool workflow, second-screen utility, responsive experience, and Microsoft integration. Registration ends October 20 at noon Pacific; submission ends October 27 at 11:59 p.m. Pacific. Video must be less than two minutes; repository must be public; judges need free access through the judging period.
 
-Read [submission preparation](docs/SUBMISSION.md) for the pitch, demo flow, 90-second script, and remaining steps. The offline application is deployed and cloud-verified; this is **not a claim of a submitted entry or public AI enablement**.
+Read [submission preparation](docs/SUBMISSION.md) for the pitch, 114-second demo script and remaining steps. Preparation PR #24 is merged. The subsequently authorized [bounded Foundry study](docs/intelligence/foundry-bounded-2026-10-11/REPORT.md) stopped before inference because existing application allowance is insufficient: zero provider attempts and US$0 spend. An earlier offline version is hosted; current deployment parity remains unverified. No entry or public AI enablement is claimed.
 
 ## Known limits and next work
 
