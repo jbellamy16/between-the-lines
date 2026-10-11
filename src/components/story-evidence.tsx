@@ -113,9 +113,9 @@ export function StoryEvidence({
           </dl>
         )}
 
-        <section className="story-support" aria-label="Supporting actions">
+        <section className="story-support" aria-label="Recorded evidence">
           <div className="story-section-heading">
-            <h3>Supporting actions</h3>
+            <h3>Recorded evidence</h3>
             <span>{events.length} recorded</span>
           </div>
           {eventRows(events.slice(0, 6))}
@@ -131,6 +131,35 @@ export function StoryEvidence({
           Based on recorded actions. This shows what happened, without
           establishing why.
         </p>
+        <section
+          className="story-assessment"
+          aria-label="Interpretation and counter-evidence"
+        >
+          <div className="story-section-heading">
+            <h3>What the evidence supports</h3>
+          </div>
+          <p>{story.hypothesis.hypothesis.description}</p>
+          {story.hypothesis.contradictoryEvidence.length > 0 && (
+            <>
+              <h4>What challenges the interpretation</h4>
+              <ul>
+                {story.hypothesis.contradictoryEvidence.map((evidence) => (
+                  <li key={evidence.code}>{evidence.description}</li>
+                ))}
+              </ul>
+            </>
+          )}
+          {story.hypothesis.missingInformation.length > 0 && (
+            <>
+              <h4>What this feed cannot establish</h4>
+              <ul>
+                {story.hypothesis.missingInformation.map((limitation) => (
+                  <li key={limitation}>{limitation}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
         {answer?.notice && (
           <p className="story-evidence-note">{answer.notice}</p>
         )}
@@ -139,6 +168,33 @@ export function StoryEvidence({
           <summary>Source & technical details</summary>
           <div className="story-technical-body">
             <p>{story.source.attribution}</p>
+            <h4>Independent hypothesis checks</h4>
+            <p>
+              {story.hypothesis.verificationStatus.replaceAll("-", " ")}. These
+              labels describe evidence, not a confidence percentage.
+            </p>
+            <ul>
+              {story.hypothesis.verificationChecks.map((check) => (
+                <li key={check.code}>
+                  {check.passed ? "Passed" : "Failed"}: {check.detail}
+                </li>
+              ))}
+            </ul>
+            <h4>Measurements</h4>
+            <ul>
+              {story.hypothesis.measurements.map((measurement) => (
+                <li key={measurement.key}>
+                  {measurement.label}: {measurement.value} {measurement.unit}
+                </li>
+              ))}
+            </ul>
+            <h4>Evidence relationships</h4>
+            <p>
+              {story.intelligenceGraph.nodes.length} entities and{" "}
+              {story.intelligenceGraph.edges.length} traceable relationships.
+              The broadcast download includes the hypothesis, windows, events,
+              players and team references.
+            </p>
             <h4>Data limitations</h4>
             <ul>
               {story.limitations.map((limitation, index) => (

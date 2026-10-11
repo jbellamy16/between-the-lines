@@ -16,6 +16,7 @@ import {
 } from "./observer";
 import type { Mode, StoryPreferences } from "../../intelligence";
 import { editorialGroup, evidenceOverlaps } from "./editorial";
+import { evaluateHypothesis } from "./hypothesis";
 
 export const toolNames = [
   "get_match_events",
@@ -25,6 +26,7 @@ export const toolNames = [
   "get_recorded_sequence",
   "get_shot_locations",
   "get_match_context",
+  "inspect_counter_evidence",
 ] as const;
 export type ToolName = (typeof toolNames)[number];
 export class EvidenceQueryError extends Error {}
@@ -44,7 +46,7 @@ export function toolDefinitions(matchId: string, cutoff: number) {
     type: "function",
     name,
     strict: true,
-    description: `${name.replaceAll("_", " ")}. Read-only, at or before ${cutoff}. Choose a window of at most 1800 seconds. Windows are (start,end]. compare_time_windows compares this interval with the immediately preceding equal interval in one period. get_recorded_sequence requires eventId; get_player_involvement requires playerId. Null means no filter. Results capped at 40 events, with full aggregate counts and explicit truncation.`,
+    description: `${name.replaceAll("_", " ")}. Read-only, at or before ${cutoff}. Choose a window of at most 1800 seconds. Windows are (start,end]. compare_time_windows compares this interval with the immediately preceding equal interval in one period. get_recorded_sequence requires eventId; get_player_involvement requires playerId. inspect_counter_evidence independently evaluates hypotheses and counter-evidence only when the complete assessment evidence falls in the query; optional eventId selects claims containing that event. Null means no filter. Results capped at 40 events, with full aggregate counts and explicit truncation.`,
     parameters: {
       type: "object",
       additionalProperties: false,
@@ -310,9 +312,49 @@ export function createInvestigation(
     const returned = events.slice(-40),
       retrieved = new Set(events.map((e) => e.id));
     // Claim registry only admits computations whose entire evidence was examined by this query.
-    const supported = candidates.filter((c) =>
-      c.evidenceIds.every((id) => retrieved.has(id)),
+    let supported = candidates.filter(
+      (c) =>
+        c.evidenceIds.every((id) => retrieved.has(id)) &&
+        (name !== "inspect_counter_evidence" ||
+          !query.eventId ||
+          c.evidenceIds.includes(query.eventId)),
     );
+    if (name === "inspect_counter_evidence") {
+      const eligibleAssessments = supported
+        .map((candidate) => ({
+          claimId: candidate.id,
+          assessment: evaluateHypothesis(match, cutoff, candidate),
+        }))
+        .filter(({ assessment }) =>
+          [
+            ...assessment.supportingEvidence,
+            ...assessment.limitingEvidence,
+            ...assessment.contradictoryEvidence,
+            ...assessment.measurements,
+            ...assessment.verificationChecks,
+          ].every((item) => item.eventIds.every((id) => retrieved.has(id))),
+        );
+      // Whole assessments are kept intact; select an anchor to inspect an omitted one.
+      // The event list and claims still share the same bounded response budget.
+      const assessments: typeof eligibleAssessments = [];
+      let assessmentBytes = 0;
+      for (const item of eligibleAssessments) {
+        const bytes = JSON.stringify(item).length;
+        if (assessments.length >= 2 || assessmentBytes + bytes > 20000)
+          continue;
+        assessments.push(item);
+        assessmentBytes += bytes;
+      }
+      const assessed = new Set(assessments.map((item) => item.claimId));
+      supported = supported.filter((candidate) => assessed.has(candidate.id));
+      extra = {
+        assessments,
+        totalAssessments: eligibleAssessments.length,
+        assessmentsTruncated: assessments.length < eligibleAssessments.length,
+        assessmentSelection:
+          "At most two complete assessments within 20000 characters. Use eventId to select an omitted claim's evidence anchor.",
+      };
+    }
     supported.forEach((c) => claims.set(c.id, c));
     const entry = {
       tool: name as ToolName,

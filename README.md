@@ -25,6 +25,8 @@ Watching football and understanding how a match is changing are different things
 - Shared Redis quotas, cache, and deduplication; inference remains off by default.
 - Explicit offline demonstration mode; request failures or invalid model output fall back to computed explanations without claiming AI generation.
 
+The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [100-second synthetic demo](docs/intelligence/DEMO.md) shows a development emerging, weakening and resolving without future-event leakage. New model-quality gains are not claimed without a separately authorized live comparison.
+
 ## Run locally
 
 Use Node.js **24 LTS** (CI and container target). Next.js 16.4 requires at least Node 20.9; this project supports Node 22–26. Development was also checked on Node 26.

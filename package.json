@@ -25,7 +25,7 @@
     "brand:review": "node scripts/review-brand.mjs",
     "data:statsbomb": "tsx scripts/import-statsbomb.ts",
     "data:benchmark": "tsx scripts/benchmark-football.ts",
-    "eval:director": "vitest run tests/director.test.ts tests/director-evaluation.test.ts",
+    "eval:director": "vitest run tests/director.test.ts tests/director-evaluation.test.ts tests/hypothesis.test.ts tests/storylines.test.ts tests/intelligence-evaluation.test.ts tests/intelligence-graph.test.ts",
     "eval:director:live": "vitest run --config vitest.director-live.config.ts"
   },
   "dependencies": {

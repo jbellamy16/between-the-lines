@@ -6,7 +6,7 @@ import {
   type NormalizedEvent,
 } from "../../sources/model";
 
-export const DIRECTOR_VERSION = "director-1.1.2";
+export const DIRECTOR_VERSION = "director-1.2.0";
 export type Claim = {
   id: string;
   headline: string;
@@ -78,6 +78,7 @@ export function observe(
   cutoff: number,
   mode: Mode = "fan",
   preferences: StoryPreferences = {},
+  options: { unranked?: boolean } = {},
 ): Candidate[] {
   const visible = visibleEvents(match, cutoff);
   const period = periodAt(match, cutoff);
@@ -343,7 +344,7 @@ export function observe(
             [...b, ...a],
             `${name}: more ${metric.label}`,
             `${name} recorded ${a.length} ${metric.label} from ${matchClock(match, cutoff - width)} to ${matchClock(match, cutoff)}, compared with ${b.length} in the preceding equal window.`,
-            `${name}: ${a.length} ${metric.label} (${matchClock(match, cutoff - width)}–${matchClock(match, cutoff)}) versus ${b.length} (${matchClock(match, cutoff - 2 * width)}–${matchClock(match, cutoff - width)}). Each window is ${width} seconds in ${period.id}; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.`,
+            `${name}: ${a.length} ${metric.label} (${matchClock(match, cutoff - width)}–${matchClock(match, cutoff)}) versus ${b.length} (${matchClock(match, cutoff - 2 * width)}–${matchClock(match, cutoff - width)}). Each window is ${width} seconds in ${period.id}; this is descriptive, not evidence of cause.${metric.label === "forward passes" ? " Forward is measured in normalized action coordinates, not physical stadium direction." : ""}`,
             [
               {
                 label: metric.label,
@@ -394,6 +395,9 @@ export function observe(
       }
     }
   }
+  // Independent publication verification needs the complete computation set,
+  // including candidates outside a viewer's personalized editorial shortlist.
+  if (options.unranked) return candidates;
   return candidates
     .filter((c) => c.rank >= 4)
     .sort(

@@ -202,7 +202,17 @@ describe("Match Director evidence boundaries", () => {
       analyst = packageStory(c, match, cutoff, "analyst", "offline");
     expect(fan.explanation).not.toBe(analyst.explanation);
     expect(
-      fan.coordinates.every((p) => c.evidenceIds.includes(p.eventId)),
+      fan.coordinates.every(
+        (p) =>
+          fan.evidenceEventIds.includes(p.eventId) &&
+          match.events.some(
+            (event) =>
+              event.id === p.eventId &&
+              event.time <= cutoff &&
+              event.position?.x === p.x &&
+              event.position?.y === p.y,
+          ),
+      ),
     ).toBe(true);
     expect(() =>
       packageStory(c, match, c.timestamp - 1, "fan", "offline"),
@@ -472,7 +482,7 @@ describe("bounded provider integration (scripted transport, not quality evidence
     });
     expect(response.status).toBe(200);
     const result = await response.json();
-    expect(result.stories[0].schemaVersion).toBe("1.0.0");
+    expect(result.stories[0].schemaVersion).toBe("1.1.0");
     expect(result.metrics.requests).toBe(0);
   });
 });

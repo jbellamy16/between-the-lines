@@ -10,6 +10,8 @@ import { AnimatedDetails, Reveal } from "./motion";
 import { EvidenceReplay } from "./evidence-replay";
 import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
+import { reconstructStorylines } from "@/lib/ai/director/storylines";
+import { StorylineHistory } from "./storyline-history";
 
 export function BroadcastPreview({ story }: { story: BroadcastStory }) {
   return (
@@ -21,10 +23,11 @@ export function BroadcastPreview({ story }: { story: BroadcastStory }) {
         </span>
         <h3>{story.headline}</h3>
         <p>{story.explanation}</p>
+        <p>{story.whyItMatters}</p>
         <svg
           viewBox="0 0 100 64"
           role="img"
-          aria-label="Recorded supporting action locations on a normalized pitch"
+          aria-label="Recorded evidence locations on a normalized pitch"
         >
           <rect
             x="1"
@@ -112,28 +115,50 @@ export function DirectorStory({
     [match, time, mode, preferenceKey],
   );
   const candidate = candidates[0];
-  const fallback = candidate
-    ? packageStory(
-        candidate,
-        match,
-        time,
-        mode,
-        "offline",
-        mode === "fan" ? "brief" : "detail",
-        ["activity-change", "shot-location"].includes(candidate.category)
-          ? "comparison"
-          : ["passing-pair", "substitute-involvement"].includes(
-                candidate.category,
-              )
-            ? "contribution"
-            : "sequence",
-      )
-    : null;
+  const storylines = useMemo(
+    () => reconstructStorylines(match, time),
+    [match, time],
+  );
+  const fallback = useMemo(
+    () =>
+      candidate
+        ? packageStory(
+            candidate,
+            match,
+            time,
+            mode,
+            "offline",
+            mode === "fan" ? "brief" : "detail",
+            ["activity-change", "shot-location"].includes(candidate.category)
+              ? "comparison"
+              : ["passing-pair", "substitute-involvement"].includes(
+                    candidate.category,
+                  )
+                ? "contribution"
+                : "sequence",
+          )
+        : null,
+    [candidate, match, time, mode],
+  );
+  const answerContext = useRef<{
+    match: MatchData;
+    preferenceKey: string;
+    mode: Mode;
+  } | null>(null);
   const validAnswer =
     answer &&
+    answerContext.current?.match === match &&
+    answerContext.current?.preferenceKey === preferenceKey &&
+    answerContext.current?.mode === mode &&
     answer.provenance.cutoff <= time &&
     time - answer.provenance.cutoff <= 180 &&
-    answer.stories.every((s) => s.audience === mode && s.matchId === match.id)
+    answer.stories.every(
+      (s) =>
+        s.audience === mode &&
+        s.matchId === match.id &&
+        (time < s.presentation.expires ||
+          (time === match.duration && s.cutoff === match.duration)),
+    )
       ? answer
       : null;
   const story = validAnswer ? validAnswer.stories[0] : fallback;
@@ -153,7 +178,16 @@ export function DirectorStory({
     setAnswer(null);
     setBusy(false);
     setReplay(false);
-  }, [match.id, mode, preferenceKey, active]);
+    seen.current.clear();
+    presentedEvidence.current.clear();
+  }, [match, mode, preferenceKey]);
+  useEffect(() => {
+    if (!active) {
+      request.current?.abort();
+      setBusy(false);
+      setReplay(false);
+    }
+  }, [active]);
   const previousTime = useRef(time);
   useEffect(() => {
     if (
@@ -166,6 +200,8 @@ export function DirectorStory({
       setAnswer(null);
       setBusy(false);
       setReplay(false);
+      seen.current.clear();
+      presentedEvidence.current.clear();
     }
     previousTime.current = time;
   }, [time]);
@@ -176,7 +212,7 @@ export function DirectorStory({
     request.current = controller;
     setBusy(true);
     lastAttempt.current = Date.now();
-    seen.current.add(candidate.id);
+    seen.current.add(candidateEpisode!);
     const cutoff = Math.floor(time);
     requestCutoff.current = cutoff;
     const source =
@@ -208,6 +244,7 @@ export function DirectorStory({
         latestTime.current >= cutoff &&
         latestTime.current - cutoff <= 180
       ) {
+        answerContext.current = { match, preferenceKey, mode };
         setAnswer(result);
         for (const story of result.stories)
           for (const id of story.evidenceEventIds)
@@ -222,6 +259,9 @@ export function DirectorStory({
       }
     }
   }
+  const candidateEpisode = fallback?.storyline
+    ? `${fallback.storyline.id}:${fallback.storyline.episode}:${fallback.storyline.state}`
+    : candidate?.id;
   useEffect(() => {
     if (
       active &&
@@ -229,73 +269,86 @@ export function DirectorStory({
       proactive &&
       candidate &&
       candidate.rank >= 7 &&
-      !seen.current.has(candidate.id) &&
+      !seen.current.has(candidateEpisode!) &&
       Date.now() - lastAttempt.current >= 60000
     )
       void investigate();
     // Only candidate episodes trigger work. Timestamp ticks must never start a request loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidate?.id, active, playing, proactive]);
-  if (!story || !active) return null;
+  }, [candidateEpisode, active, playing, proactive]);
+  if (!active) return null;
+  if (!story)
+    return (
+      <StorylineHistory match={match} time={time} storylines={storylines} />
+    );
   const events = match.events.filter(
     (e) => e.time <= time && story.evidenceEventIds.includes(e.id),
   );
   return (
-    <Reveal change={story.storyId} className="director-story">
-      <span className="eyebrow">
-        {providerLabel(story.provider)} · recorded relationship
-      </span>
-      <h2>{story.headline}</h2>
-      <p>{story.explanation}</p>
-      <small>
-        Through {matchClock(match, story.cutoff)} ·{" "}
-        {story.evidenceEventIds.length} supporting actions
-      </small>
-      <div className="director-actions">
-        <button
-          className="text-button"
-          onClick={() => {
-            if (!replay) onExplore();
-            setReplay((v) => !v);
-          }}
-        >
-          {replay ? "Close story replay" : "Replay story evidence"}
-        </button>
-        <button
-          className="text-button"
-          disabled={busy}
-          onClick={() => {
-            onExplore();
-            void investigate();
-          }}
-        >
-          {busy ? "Checking evidence…" : "Investigate this passage"}
-        </button>
-      </div>
-      {replay && (
-        <EvidenceReplay
-          key={story.storyId}
+    <>
+      <Reveal change={story.storyId} className="director-story">
+        <span className="eyebrow">
+          {providerLabel(story.provider)} · recorded relationship
+        </span>
+        <h2>{story.headline}</h2>
+        <p>{story.explanation}</p>
+        <div className="story-significance">
+          <h3>Why it matters</h3>
+          <p>{story.whyItMatters}</p>
+          <h3>Watch next</h3>
+          <p>{story.watchNext}</p>
+        </div>
+        <small>
+          Through {matchClock(match, story.cutoff)} ·{" "}
+          {story.evidenceEventIds.length} evidence actions
+        </small>
+        <div className="director-actions">
+          <button
+            className="text-button"
+            onClick={() => {
+              if (!replay) onExplore();
+              setReplay((v) => !v);
+            }}
+          >
+            {replay ? "Close story replay" : "Replay story evidence"}
+          </button>
+          <button
+            className="text-button"
+            disabled={busy}
+            onClick={() => {
+              onExplore();
+              void investigate();
+            }}
+          >
+            {busy ? "Checking evidence…" : "Investigate this passage"}
+          </button>
+        </div>
+        {replay && (
+          <EvidenceReplay
+            key={story.storyId}
+            events={events}
+            suspended={playing || !active}
+            generated={match.kind === "synthetic"}
+            identities={{
+              teams: match.teams,
+              player: (id) =>
+                match.players.find((p) => p.id === id) ?? {
+                  name: "Unidentified player",
+                  number: null,
+                },
+            }}
+            formatTime={(t) => matchClock(match, t)}
+          />
+        )}
+        <StoryEvidence
+          story={story}
+          match={match}
           events={events}
-          suspended={playing || !active}
-          generated={match.kind === "synthetic"}
-          identities={{
-            teams: match.teams,
-            player: (id) =>
-              match.players.find((p) => p.id === id) ?? {
-                name: "Unidentified player",
-                number: null,
-              },
-          }}
-          formatTime={(t) => matchClock(match, t)}
+          answer={validAnswer}
         />
-      )}
-      <StoryEvidence
-        story={story}
-        match={match}
-        events={events}
-        answer={validAnswer}
-      />
-      <BroadcastPreview story={story} />
-    </Reveal>
+        <BroadcastPreview story={story} />
+      </Reveal>
+      <StorylineHistory match={match} time={time} storylines={storylines} />
+    </>
   );
 }

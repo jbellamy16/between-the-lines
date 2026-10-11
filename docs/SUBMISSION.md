@@ -2,101 +2,56 @@
 
 ## Project pitch
 
-More than the score. Between the Lines is an AI-assisted second-screen football experience that turns a synthetic live match into clear, evidence-linked stories. Discover what is changing, replay the events behind it, and switch between a fan’s explanation and an analyst’s view—all without losing your place in the match.
+**More than the score.** Between the Lines turns a synthetic football match into evidence-linked explanations of what is changing, why it matters and what to watch next. A viewer can inspect the underlying events, replay a passage and follow a storyline as it emerges, weakens or resolves.
 
-## Technical description
+The application is an individual entry for Microsoft’s Inside the Game Hackathon. Its official demonstration uses fictional Harbor Athletic and Riverside FC, original branding and project-owned synthetic events. Historical data adapters remain separate and subject to [source rights](DATA-RIGHTS.md).
 
-A seeded event generator drives fictional football fixtures. A single timestamp gates every calculation, visualization, and recap. Statistical rules identify meaningful changes in high ball wins, shot frequency, and passing activity. Each observation carries exact evidence IDs and comparable time windows. An optional Microsoft Foundry workflow requires the model to retrieve verified evidence through a function tool before producing structured, audience-specific narrative. Both Foundry and the OpenAI alternative use verified statement selection; schema, exact fact IDs, required context and server-rendered wording validate the result; failures retain a clearly labeled deterministic explanation.
+## What the current release candidate demonstrates
 
-The frontend is Next.js, React, TypeScript, Tailwind/CSS, and an interactive SVG pitch. Deployment preparation targets an existing Azure App Service using GitHub Actions and Next.js standalone output. The offline demo needs no database; public AI requires shared Redis usage controls.
+- Canonical events and one playback cutoff gate every observation and comparison.
+- Microsoft Foundry’s Responses adapter supports model-selected follow-up questions through eight bounded evidence tools, including selective counter-evidence inspection.
+- Deterministic verification reproduces claims, identities, windows and measurements before publishing a story. The model cannot approve its own claims or write arbitrary factual prose.
+- Structured hypotheses distinguish recorded observations, cautious interpretations, contradictory evidence and missing information.
+- Stable storylines reconstruct from completed five-minute windows; rewinding removes later developments.
+- A versioned broadcast story carries the explanation, measurable next check, evidence graph, source provenance, visualization and presentation timing.
+- The existing detailed match interface presents the essential explanation and progressively discloses measurements, counter-evidence, replay and export.
 
-## Microsoft technology summary
+See the [architecture, audit and evaluation](intelligence/EVOLUTION.md), [frozen original comparison](intelligence/original-baseline.json) and [100-second demonstration script](intelligence/DEMO.md).
 
-- **Microsoft Foundry:** implemented server-side Azure OpenAI Responses API adapter, tool retrieval, structured output, and validation. Real deployment credentials and a successful live call remain required.
-- **Azure App Service:** prepared manual deployment workflow; not deployed yet.
-- **GitHub:** source repository, pull request workflow, CI, tests, and deployment automation.
-- Do not claim Azure hosting, managed identity, Foundry Agent Service, autonomous multi-agent collaboration, Fabric, or Copilot usage unless separately implemented and verified.
+## Microsoft technology and verification status
 
-## Category and judging fit
+**Microsoft Foundry:** the existing Azure OpenAI Responses adapter uses server-side resource-key authentication and the configured GPT-5.4 Mini deployment. The model chooses bounded investigations and an editorial plan. Event calculations, factual language, temporal reconstruction and verification run in application code. Earlier versions completed authorized live tests; the new Director 1.2 extension has offline and scripted-provider validation only. See [actual Foundry results and the integration update](FOUNDRY-EVALUATION.md) and the [earlier model comparison](EDITORIAL-MODEL-COMPARISON.md).
 
-Primary: overall prize. Secondary: Best Use of Microsoft Foundry.
+**Azure App Service:** an earlier application version was deployed and independently checked as recorded in [deployment history](DEPLOYMENT.md). This pull request has not been deployed. A public site’s existence does not establish that it contains these changes or runs live AI.
 
-| Criterion                     | Demonstrable evidence                                                                                       |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Technological implementation  | Reproducible feed, one playback clock, prefix-invariance tests, server validation                           |
-| Agentic design and innovation | Required model evidence retrieval followed by structured explanation; deterministic verification boundaries |
-| Real-world impact             | A second-screen explanation that can be traced back to the match; future licensed-feed adapter boundary     |
-| UX and presentation           | Responsive pitch-first design, sequence replay, fan/analyst switch, concise recap                           |
-| Category alignment            | Synthetic football data transformed into evidence-linked narratives through Microsoft AI                    |
+**GitHub:** source, pull requests, unit/evaluation/browser checks and manual deployment workflows. No managed identity, Foundry Agent Service, Agent Framework migration, Fabric, Copilot integration or autonomous multi-agent runtime is claimed.
 
-Foundry can select and order verified context for an insight or recap. OpenAI supports the same workflow while Foundry access is unavailable; always identify the actual provider. To strengthen the Foundry category entry, validate real narration quality and demonstrate the tool handoff visibly. Do not describe offline rules as model reasoning.
+Inference remains disabled by default. Existing fail-closed Redis controls, quotas and source restrictions are preserved. A new live evaluation requires a specific owner-authorized request/spending allowance; no new paid resource or public inference enablement is part of this work.
 
-## Repeatable demo setup
+## Reproducible recording
 
-1. Use a production build at a 1440×1000 or larger desktop viewport. Test mobile separately.
-2. Select **Reset demo**. This restores the pressure fixture, Fan mode, neutral preferences, all categories, and the default playback speed.
-3. At 63:24 Harbor leads 1–0. The generator seed is 202632. High ball wins and shots are detected from the event prefix.
-4. Select **Watch the build-up** to start at 60:00 at 16×. The pressure observation appears at about 60:40, followed by the shots observation around 61:20. Both are calculated from events, not scripted insight text.
-5. Select the high-ball-win insight. Compare current and previous windows. Inspect Evidence, select a recovery, then **Show me the sequence**. The replay follows that possession at 8× recorded timing and holds the final frame.
-6. Switch to Analyst mode for event IDs, measurement notes, and equal-duration comparisons.
-7. With real Foundry configured, select **Explain with Microsoft Foundry** and wait for the explicitly labeled response. Rehearse request latency; successful exact-input requests are cached.
-8. Open **Catch me up**. The recap includes score, significant observed events, the leading current pattern, and what to watch. It opens instantly with a deterministic recap; optional on-demand AI selects verified statements. Expand **How Between the Lines knows** to inspect evidence and actual tool activity.
-9. Optional: rewind to kickoff to show future evidence disappears, or choose the quiet scenario to show that the system does not invent a story.
+Use the unchanged pressure fixture, demo profile, seed 202632. Start paused at 63:24. At 65:00 the Harbor advanced-recovery storyline emerges with three recoveries against one in the preceding five minutes. At 70:00 it weakens with one; at 75:00 it resolves with zero. Rewind to 65:00 to show that the later resolution disappears. These are recorded-event thresholds, not proof of pressing intensity.
 
-## Suggested 90-second video
+Follow the [complete 100-second screen flow and narration](intelligence/DEMO.md). Keep **Deterministic offline** visible in an offline recording. Only show real Foundry investigation activity after an authorized request succeeds. A replay of a saved result must say “Recorded verified Foundry investigation” and identify its version/cutoff. Do not use an older evaluation receipt to validate this version.
 
-**0–12 seconds — the value**
+## Submission checklist
 
-“More than the score. Between the Lines turns football events into stories you can understand—and verify.” Show the match centre and an emerging pattern.
+- Verify eligibility, registration, current deadlines and deliverable requirements against the [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) and submission portal before entering. This implementation did not revalidate competition dates or submit an entry.
+- Complete blinded football relevance and broadcast usefulness review; automated factual checks are not proof of editorial superiority.
+- With a separately authorized bounded allowance, evaluate the revised Foundry workflow and record actual costs, failures, latency and reviewer preference.
+- Obtain approval to merge and deploy; independently verify the intended version on the public URL afterward.
+- Review the final recording on desktop and mobile. Browser tests use Chromium touch/viewport emulation, not certification on physical iPhones or Safari.
+- Produce the video, public repository link, application URL, project pitch and accurate Microsoft technology statement. Obtain approval before publishing or submitting.
+- Retain original brand/data attribution, dependency licenses and source restrictions. Include no unlicensed league marks, club crests, footage, photographs or music.
 
-**12–30 seconds — the observation**
-
-“Harbor are winning the ball higher up the pitch. Every number comes from the synthetic event stream, with a comparable earlier window.” Open the insight and show the two pitch maps.
-
-**30–45 seconds — evidence in motion**
-
-“Follow the observation back to its evidence. These are recorded actions, not invented player tracking.” Replay the sequence; select a supporting event.
-
-**45–62 seconds — AI with a purpose**
-
-“Microsoft Foundry retrieves verified match evidence through a tool before explaining the pattern. The server checks the response, while calculations stay deterministic.” Show a successfully returned and labeled real Foundry narrative. If credentials are absent or the request fails, do not record this claim as a working demonstration.
-
-**62–76 seconds — two audiences**
-
-“Fans get the story. Analysts get comparison windows, event-level evidence, and the limits of the data.” Switch modes, then show the timestamp-safe recap.
-
-**76–90 seconds — close**
-
-“Join late. Rewind. Follow your player. Between the Lines stays with your moment in the match. Football insights that go deeper. More than the score.” End on the pitch and tagline.
-
-## Remaining submission steps
-
-- [ ] Register as an individual by **October 20, 2026, noon Pacific (2 p.m. Central)**.
-- [ ] Configure and verify real Foundry calls; review output quality and capture the actual tool workflow.
-- [ ] Deploy to Azure and verify a publicly accessible, login-free URL. Keep judging access available through **November 10, 2026, 11:59 p.m. Pacific**.
-- [ ] Review synthetic football realism, mobile Safari, and accessibility before final recording.
-- [ ] Record a video **strictly under two minutes**, showing the application working. Avoid unlicensed trademarks, footage, music, and photos.
-- [ ] Review dependency license obligations and ownership/eligibility requirements in the official rules.
-- [ ] Supply public GitHub repository, working application URL, project pitch, Microsoft technology description, and public video URL.
-- [ ] Obtain the owner’s approval before publishing the video or submitting the project.
-- [ ] Submit by **October 27, 2026, 11:59 p.m. Pacific (October 28, 1:59 a.m. Central)**.
-
-Source: [official Microsoft hackathon rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md), reviewed October 9, 2026. Recheck the official submission portal before entry.
-
-## Copy for the project profile (manual update)
+## Suggested profile copy
 
 **Project name:** Between the Lines
 
 **Tagline:** More than the score.
 
-**Short description:** Football insights that go deeper. Between the Lines turns a synthetic match into clear, evidence-backed stories. Explore what is changing, replay the actions behind an observation, and switch between Fan and Analyst views without losing your place.
+**Short description:** Football insights viewers can understand, question and replay. Between the Lines connects recorded actions to meaningful changes, explains the limits of the evidence and follows match stories over time.
 
-**Project description:** The score tells you what happened. Between the Lines helps you understand how the match is changing. It connects event-based observations to comparable time windows, pitch maps, individual actions, and sequence replays. Catch Me Up brings late arrivals back into the story; player preferences help surface relevant evidence. The demo uses fictional clubs and seeded synthetic data, with every view tied to the same match clock. Optional Microsoft Foundry and OpenAI adapters can retrieve verified evidence and select supporting statements; the server validates the response and retains deterministic explanations when AI is unavailable. No live professional feed or continuous tracking is claimed.
+**Technology statement:** Next.js, React, TypeScript and an interactive SVG pitch, with deterministic event analysis, independently verified hypotheses, temporal storylines, a typed evidence graph and an optional Microsoft Foundry Responses investigation workflow. The synthetic demo works offline. Live provider quality and production readiness are reported separately from automated verification.
 
-**Technology statement:** Next.js, React, TypeScript, interactive SVG, deterministic event analysis, optional server-side Microsoft Foundry / OpenAI Responses adapters, and shared Redis controls for public AI usage. Live Foundry validation and Azure deployment are separate readiness steps; this rebrand does not verify or claim them.
-
-Use [the video title graphic](../public/brand/video-title.png), [current application screenshots](brand/REVIEW.md), and [brand guidelines](brand/README.md) for the recording and profile. The repository remains `jbellamy16/second-look`. Update Innovation Studio manually; no account changes or submission were made.
-
-## AI Intelligence 2.0 update
-
-The Match Director adds bounded investigation over canonical events, model-directed player/window queries, verified editorial plans, audience-specific Catch Me Up, connected pitch evidence and a versioned broadcast story. See the [architecture and reproducible synthetic demonstration](intelligence/README.md). Screenshots and the example package are explicitly offline computation. New OpenAI/Foundry live inference and quality improvements are not claimed; the authorized evaluation gate remains pending. No deployment or paid inference was activated.
+Use the [video title graphic](../public/brand/video-title.png) and [brand guidelines](brand/README.md). The GitHub repository remains `jbellamy16/second-look`. No submission, account change or video publication was performed.

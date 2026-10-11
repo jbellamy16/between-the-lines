@@ -1,5 +1,23 @@
 # Foundry live evaluation — October 10, 2026
 
+## Director 1.2 integration update — October 10, 2026
+
+This implementation retains the existing Microsoft Foundry Azure OpenAI resource endpoint, `api-key` server authentication, deployment-name model routing, Responses function calls and strict structured editorial output. It adds a selectable `inspect_counter_evidence` tool and supplies compact measured storyline context to the investigator. A fresh deterministic assessment verifies every published hypothesis, including the offline fallback. Tool and request ceilings remain four and three; no paid retries, quotas, Redis controls or provider enablement settings changed.
+
+The model decides which unresolved question deserves the remaining tool turn and which retrieved observations deserve publication. Deterministic code computes counts, assesses counter-evidence, reconstructs temporal states and renders factual language. The bounded loop is agentic investigation; six logical responsibilities do not imply six model agents. No live evaluation of version 1.2 occurred during this implementation. Prior live results below apply to earlier versions only. The new scripted transport tests prove wiring and rejection behavior, not model preference or latency.
+
+### Framework decision
+
+Microsoft's [Responses reference](https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/responses) documents function tools and JSON-schema response formatting, which match this application's existing boundary. Microsoft's [agent quickstart](https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/responses-api) distinguishes the Azure OpenAI endpoint from the project endpoint and describes Agent Framework's tool wiring and orchestration. [Sequential workflow orchestration](https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/sequential) is useful for composing separate agents. These sources were checked October 10, 2026.
+
+Engineering decision: retain the three-request local orchestrator. This small TypeScript workflow already owns cutoff safety, replayable queries, cancellation, quotas and verification. A framework migration has no demonstrated quality or cost advantage here. Project-level managed tracing, identity and hosted orchestration are future commercial options requiring an explicit infrastructure review; they are not implemented or claimed. This is a scope assessment, not a benchmark against Agent Framework.
+
+Mini remains selected based on the earlier [paired model evaluation](EDITORIAL-MODEL-COMPARISON.md). More fluent free-form prose is deferred: claim references cannot prove that an arbitrary generated sentence is true. The new constrained significance/watch-next renderer can be evaluated offline without weakening that boundary. A new paired live study requires a separately authorized, bounded allowance and a human football relevance review.
+
+See [implementation and quality targets](intelligence/EVOLUTION.md) and the [reproducible synthetic demonstration](intelligence/DEMO.md). This change does not deploy the application or enable public inference.
+
+---
+
 Owner request: measure actual costs and put the analysis through its paces. This was an isolated, bounded evaluation against the existing Azure model deployment. Public AI stayed disabled, with zero application quotas. These local fixes have not been redeployed to Azure.
 
 Follow-up: the [editorial rules and model comparison](EDITORIAL-MODEL-COMPARISON.md) documents later fixes, real GPT-5.4 versus Mini results, and the decision to keep Mini configured. The results below describe the earlier diagnostic session.

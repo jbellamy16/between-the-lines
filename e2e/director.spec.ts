@@ -172,3 +172,52 @@ test("an investigation response cannot survive a rewind", async ({ page }) => {
   await expect(page.locator(".director-story")).not.toBeVisible();
   await expect(page.getByText("LATE INVESTIGATION RESULT")).toHaveCount(0);
 });
+
+test("measured storylines emerge, weaken, resolve, and reconstruct after seeking", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const story = page.locator(".director-story");
+  await expect(
+    story.getByRole("heading", { name: "Why it matters", exact: true }),
+  ).toBeVisible();
+  await expect(
+    story.getByRole("heading", { name: "Watch next", exact: true }),
+  ).toBeVisible();
+  const slider = page.getByRole("slider", { name: "Match timeline" });
+  await slider.fill("3900");
+  const history = page.locator(".storyline-history");
+  await history
+    .getByText("How the match story is changing", { exact: true })
+    .click();
+  const harbor = history.getByRole("region", {
+    name: "Harbor recoveries in the attacking third storyline",
+  });
+  await expect(harbor.locator(".storyline-state")).toHaveText("emerging");
+  await expect(harbor.locator(".storyline-timeline li")).toHaveCount(1);
+  await slider.fill("4200");
+  await expect(harbor.locator(".storyline-state")).toHaveText("weakening");
+  await slider.fill("4500");
+  await expect(harbor.locator(".storyline-state")).toHaveText("resolved");
+  await expect(harbor.locator(".storyline-timeline li")).toHaveCount(3);
+  await slider.fill("3900");
+  await expect(harbor.locator(".storyline-state")).toHaveText("emerging");
+  await expect(harbor.locator(".storyline-timeline li")).toHaveCount(1);
+  await expect(harbor.getByText("70:00", { exact: true })).toHaveCount(0);
+  const audit = await new AxeBuilder({ page })
+    .include(".storyline-history")
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(audit.violations).toEqual([]);
+  await slider.fill("0");
+  await expect(history).toHaveCount(0);
+  await slider.fill("4500");
+  await history
+    .getByText("How the match story is changing", { exact: true })
+    .click();
+  await expect(harbor.locator(".storyline-state")).toHaveText("resolved");
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.getByLabel("Fixture").selectOption("quiet");
+  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
+  await expect(harbor).toHaveCount(0);
+});

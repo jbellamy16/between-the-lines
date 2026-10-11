@@ -1,0 +1,1576 @@
+{
+  "kind": "Frozen offline candidate comparison; no provider or human editorial preference evaluation",
+  "originalRef": "f7b0b87986efba09ca95bdf8750a39df31f1258f",
+  "directorVersion": "director-1.1.2",
+  "sourceHashes": {
+    "src/lib/ai/director/observer.ts": "c8b22872e269eb80e0aa79ba89ec66f16d4ce9342e8524ce1cbbdee82981f319",
+    "src/lib/intelligence.ts": "14dae64bcbc41e5c7b9110bad08f826aa4cc9d14e59104c752a4e44c8bf87914",
+    "src/lib/sources/intelligence.ts": "e52e8be19a7bab2c5f8200afd951270b3c6e928522c1b02b08ad3d4569471103",
+    "src/lib/sources/synthetic.ts": "007bd173139d517784120dc62293bb74b2099dff7016911abd170b57eb49c91a",
+    "src/lib/sources/model.ts": "f847f7daf6629d11a117429213bb42d71c691a4faf9834678e636abe333c0ba2",
+    "src/lib/match.ts": "0cbde4354bfa30429f2cc3eb1c3e62b1a54cb1f023c6c6439de3655481986aa2"
+  },
+  "caseCount": 18,
+  "modelRequests": 0,
+  "costUsd": 0,
+  "liveModelQualityEvaluated": false,
+  "humanReview": null,
+  "rows": [
+    {
+      "id": "pressure-600-fan",
+      "inputDigest": "3b16c8817916782f1b1a70faee7cf08f2a0f3957b5e1a458f39bdb32e997843f",
+      "match": "pressure",
+      "cutoff": 600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-6",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 passes in the possession before Arlo Hayes's shot at 01:00.",
+          "evidenceIds": [
+            "pressure-202632-0",
+            "pressure-202632-1",
+            "pressure-202632-2",
+            "pressure-202632-3",
+            "pressure-202632-4",
+            "pressure-202632-5",
+            "pressure-202632-6"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:riverside:pressure-202632-59",
+          "category": "passing-pair",
+          "text": "Ivo Cruz found Oscar Voss with 3 completed passes from 00:00 to 10:00.",
+          "evidenceIds": [
+            "pressure-202632-59",
+            "pressure-202632-62",
+            "pressure-202632-74"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-3",
+          "category": "passing-pair",
+          "text": "Jude Moreno found Milo Serrano with 3 completed passes from 00:00 to 10:00.",
+          "evidenceIds": [
+            "pressure-202632-3",
+            "pressure-202632-39",
+            "pressure-202632-67"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pressure-600-analyst",
+      "inputDigest": "b5aee7ff99b10fd7e7cc868b797d5e78920a1e48246af91619a795aa6180e0bb",
+      "match": "pressure",
+      "cutoff": 600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-6",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 recorded passes before Arlo Hayes's shot at 01:00, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "pressure-202632-0",
+            "pressure-202632-1",
+            "pressure-202632-2",
+            "pressure-202632-3",
+            "pressure-202632-4",
+            "pressure-202632-5",
+            "pressure-202632-6"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:riverside:pressure-202632-59",
+          "category": "passing-pair",
+          "text": "3 recorded successful passes from Ivo Cruz to Oscar Voss between 00:00 and 10:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "pressure-202632-59",
+            "pressure-202632-62",
+            "pressure-202632-74"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-3",
+          "category": "passing-pair",
+          "text": "3 recorded successful passes from Jude Moreno to Milo Serrano between 00:00 and 10:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "pressure-202632-3",
+            "pressure-202632-39",
+            "pressure-202632-67"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pressure-3600-fan",
+      "inputDigest": "499f622f27cca8ad37bc45a568255e91b69437796981e003af126a1dd7423fa1",
+      "match": "pressure",
+      "cutoff": 3600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "text": "Harbor won the ball at 58:39 before Milo Serrano's shot at 59:09 in the same possession.",
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-387",
+          "category": "activity-change",
+          "text": "Harbor recorded 9 attacking-third actions from 52:30 to 60:00, compared with 1 in the preceding equal window.",
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 passes in the possession before Arlo Hayes's shot at 55:42.",
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pressure-3600-analyst",
+      "inputDigest": "42d5e0f8b2d898d05948331da5c6aa94c04a9f76a81d093c0bcb36fcc1a4cd06",
+      "match": "pressure",
+      "cutoff": 3600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-387",
+          "category": "activity-change",
+          "text": "Harbor: 9 attacking-third actions (52:30–60:00) versus 1 (45:00–52:30). Each window is 450 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "text": "Harbor's recorded recovery at 58:39 was followed by Milo Serrano's shot at 59:09 in the same possession. The recorded interval was 30 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 recorded passes before Arlo Hayes's shot at 55:42, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pressure-4200-fan",
+      "inputDigest": "3e539e8cabe9455b6801885347ce9097505f6b542e361552bcd8c7bd60e4e45a",
+      "match": "pressure",
+      "cutoff": 4200,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 7 times in the attacking third in the last 15 minutes, up from 0 in the previous 15."
+        },
+        {
+          "id": "harbor-chances-70",
+          "category": "chances",
+          "text": "Harbor have taken 5 shots in the last 15 minutes, compared with 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "pressure:activity-change:harbor:shots:pressure-202632-435",
+          "category": "activity-change",
+          "text": "Harbor recorded 4 shots from 57:30 to 70:00, compared with 1 in the preceding equal window.",
+          "evidenceIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:recoveries in the attacking third:pressure-202632-456",
+          "category": "activity-change",
+          "text": "Harbor recorded 4 recoveries in the attacking third from 57:30 to 70:00, compared with 1 in the preceding equal window.",
+          "evidenceIds": [
+            "pressure-202632-422",
+            "pressure-202632-456",
+            "pressure-202632-469",
+            "pressure-202632-475",
+            "pressure-202632-501"
+          ]
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-506",
+          "category": "recovery-shot",
+          "text": "Harbor won the ball at 68:09 before Nico Wells's shot at 68:36 in the same possession.",
+          "evidenceIds": [
+            "pressure-202632-501",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:substitute-involvement:harbor:pressure-202632-411",
+          "category": "substitute-involvement",
+          "text": "Nico Wells has 4 recorded on-ball actions since coming on at 56:01, including 1 shot.",
+          "evidenceIds": [
+            "pressure-202632-411",
+            "pressure-202632-458",
+            "pressure-202632-461",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "text": "Harbor won the ball at 58:39 before Milo Serrano's shot at 59:09 in the same possession.",
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-433",
+          "category": "activity-change",
+          "text": "Harbor recorded 30 attacking-third actions from 57:30 to 70:00, compared with 8 in the preceding equal window.",
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463",
+            "pressure-202632-470",
+            "pressure-202632-476",
+            "pressure-202632-477",
+            "pressure-202632-478",
+            "pressure-202632-479",
+            "pressure-202632-480",
+            "pressure-202632-489",
+            "pressure-202632-490",
+            "pressure-202632-491",
+            "pressure-202632-492",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-463",
+          "category": "shot-sequence",
+          "text": "Harbor completed 5 passes in the possession before Theo March's shot at 62:50.",
+          "evidenceIds": [
+            "pressure-202632-455",
+            "pressure-202632-456",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-451",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 passes in the possession before Theo March's shot at 61:19.",
+          "evidenceIds": [
+            "pressure-202632-444",
+            "pressure-202632-445",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 passes in the possession before Arlo Hayes's shot at 55:42.",
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-407",
+          "category": "passing-pair",
+          "text": "Jude Moreno found Theo March with 4 completed passes from 55:00 to 70:00.",
+          "evidenceIds": [
+            "pressure-202632-407",
+            "pressure-202632-449",
+            "pressure-202632-491",
+            "pressure-202632-503"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pressure-4200-analyst",
+      "inputDigest": "17c5f2f8e22d36a758bf16d7bfad2c08ac80c397c128503a1830c0432c98ea31",
+      "match": "pressure",
+      "cutoff": 4200,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 7 times in the attacking third in the last 15 minutes, up from 0 in the previous 15."
+        },
+        {
+          "id": "harbor-chances-70",
+          "category": "chances",
+          "text": "Harbor have taken 5 shots in the last 15 minutes, compared with 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "pressure:activity-change:harbor:shots:pressure-202632-435",
+          "category": "activity-change",
+          "text": "Harbor: 4 shots (57:30–70:00) versus 1 (45:00–57:30). Each window is 750 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:recoveries in the attacking third:pressure-202632-456",
+          "category": "activity-change",
+          "text": "Harbor: 4 recoveries in the attacking third (57:30–70:00) versus 1 (45:00–57:30). Each window is 750 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "pressure-202632-422",
+            "pressure-202632-456",
+            "pressure-202632-469",
+            "pressure-202632-475",
+            "pressure-202632-501"
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-433",
+          "category": "activity-change",
+          "text": "Harbor: 30 attacking-third actions (57:30–70:00) versus 8 (45:00–57:30). Each window is 750 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463",
+            "pressure-202632-470",
+            "pressure-202632-476",
+            "pressure-202632-477",
+            "pressure-202632-478",
+            "pressure-202632-479",
+            "pressure-202632-480",
+            "pressure-202632-489",
+            "pressure-202632-490",
+            "pressure-202632-491",
+            "pressure-202632-492",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-506",
+          "category": "recovery-shot",
+          "text": "Harbor's recorded recovery at 68:09 was followed by Nico Wells's shot at 68:36 in the same possession. The recorded interval was 27 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "evidenceIds": [
+            "pressure-202632-501",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:substitute-involvement:harbor:pressure-202632-411",
+          "category": "substitute-involvement",
+          "text": "Nico Wells came on at 56:01 and has 4 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "evidenceIds": [
+            "pressure-202632-411",
+            "pressure-202632-458",
+            "pressure-202632-461",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "text": "Harbor's recorded recovery at 58:39 was followed by Milo Serrano's shot at 59:09 in the same possession. The recorded interval was 30 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-463",
+          "category": "shot-sequence",
+          "text": "Harbor completed 5 recorded passes before Theo March's shot at 62:50, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "pressure-202632-455",
+            "pressure-202632-456",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-451",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 recorded passes before Theo March's shot at 61:19, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "pressure-202632-444",
+            "pressure-202632-445",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451"
+          ]
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 recorded passes before Arlo Hayes's shot at 55:42, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ]
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-407",
+          "category": "passing-pair",
+          "text": "4 recorded successful passes from Jude Moreno to Theo March between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "pressure-202632-407",
+            "pressure-202632-449",
+            "pressure-202632-491",
+            "pressure-202632-503"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-600-fan",
+      "inputDigest": "cf6701213602eed719715643395ab76b4ba1152ed4ee8d67716180ed7fefa038",
+      "match": "substitution",
+      "cutoff": 600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "substitution:activity-change:harbor:forward passes:substitution-202611-42",
+          "category": "activity-change",
+          "text": "Harbor recorded 9 forward passes from 05:00 to 10:00, compared with 4 in the preceding equal window.",
+          "evidenceIds": [
+            "substitution-202611-1",
+            "substitution-202611-18",
+            "substitution-202611-20",
+            "substitution-202611-30",
+            "substitution-202611-42",
+            "substitution-202611-43",
+            "substitution-202611-44",
+            "substitution-202611-46",
+            "substitution-202611-56",
+            "substitution-202611-59",
+            "substitution-202611-60",
+            "substitution-202611-61",
+            "substitution-202611-62"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-600-analyst",
+      "inputDigest": "d018d9ecf173b14094cabdabadf5d121fc8136c50537decb302eb47559336e43",
+      "match": "substitution",
+      "cutoff": 600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "substitution:activity-change:harbor:forward passes:substitution-202611-42",
+          "category": "activity-change",
+          "text": "Harbor: 9 forward passes (05:00–10:00) versus 4 (00:00–05:00). Each window is 300 seconds in 1H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "substitution-202611-1",
+            "substitution-202611-18",
+            "substitution-202611-20",
+            "substitution-202611-30",
+            "substitution-202611-42",
+            "substitution-202611-43",
+            "substitution-202611-44",
+            "substitution-202611-46",
+            "substitution-202611-56",
+            "substitution-202611-59",
+            "substitution-202611-60",
+            "substitution-202611-61",
+            "substitution-202611-62"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-3600-fan",
+      "inputDigest": "c7d4d07c330b981bf7f3089c2bf966f483a40d92e8d6d40db69106dc98f11822",
+      "match": "substitution",
+      "cutoff": 3600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-chances-60",
+          "category": "chances",
+          "text": "Harbor have taken 3 shots in the last 15 minutes, compared with 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "substitution:activity-change:harbor:attacking-third actions:substitution-202611-388",
+          "category": "activity-change",
+          "text": "Harbor recorded 21 attacking-third actions from 52:30 to 60:00, compared with 12 in the preceding equal window.",
+          "evidenceIds": [
+            "substitution-202611-359",
+            "substitution-202611-360",
+            "substitution-202611-361",
+            "substitution-202611-362",
+            "substitution-202611-363",
+            "substitution-202611-370",
+            "substitution-202611-371",
+            "substitution-202611-372",
+            "substitution-202611-373",
+            "substitution-202611-374",
+            "substitution-202611-375",
+            "substitution-202611-376",
+            "substitution-202611-388",
+            "substitution-202611-389",
+            "substitution-202611-390",
+            "substitution-202611-391",
+            "substitution-202611-392",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418",
+            "substitution-202611-443"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-437",
+          "category": "shot-sequence",
+          "text": "Riverside completed 5 passes in the possession before Ben Rivers's shot at 59:09.",
+          "evidenceIds": [
+            "substitution-202611-429",
+            "substitution-202611-430",
+            "substitution-202611-431",
+            "substitution-202611-432",
+            "substitution-202611-433",
+            "substitution-202611-434",
+            "substitution-202611-435",
+            "substitution-202611-436",
+            "substitution-202611-437"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-418",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 passes in the possession before Theo March's shot at 56:45.",
+          "evidenceIds": [
+            "substitution-202611-411",
+            "substitution-202611-412",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-406",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 passes in the possession before Theo March's shot at 55:07.",
+          "evidenceIds": [
+            "substitution-202611-396",
+            "substitution-202611-397",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-376",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 passes in the possession before Jude Moreno's shot at 51:00.",
+          "evidenceIds": [
+            "substitution-202611-367",
+            "substitution-202611-368",
+            "substitution-202611-369",
+            "substitution-202611-370",
+            "substitution-202611-371",
+            "substitution-202611-372",
+            "substitution-202611-373",
+            "substitution-202611-374",
+            "substitution-202611-375",
+            "substitution-202611-376"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-341",
+          "category": "shot-sequence",
+          "text": "Riverside completed 7 passes in the possession before Felix Lake's shot at 46:11.",
+          "evidenceIds": [
+            "substitution-202611-331",
+            "substitution-202611-332",
+            "substitution-202611-333",
+            "substitution-202611-334",
+            "substitution-202611-335",
+            "substitution-202611-336",
+            "substitution-202611-337",
+            "substitution-202611-338",
+            "substitution-202611-339",
+            "substitution-202611-340",
+            "substitution-202611-341"
+          ]
+        },
+        {
+          "id": "substitution:passing-pair:riverside:substitution-202611-338",
+          "category": "passing-pair",
+          "text": "Max Rowan found Oscar Voss with 3 completed passes from 45:00 to 60:00.",
+          "evidenceIds": [
+            "substitution-202611-338",
+            "substitution-202611-380",
+            "substitution-202611-433"
+          ]
+        },
+        {
+          "id": "substitution:substitute-involvement:harbor:substitution-202611-407",
+          "category": "substitute-involvement",
+          "text": "Nico Wells has 3 recorded on-ball actions since coming on at 55:30.",
+          "evidenceIds": [
+            "substitution-202611-407",
+            "substitution-202611-416",
+            "substitution-202611-440",
+            "substitution-202611-442"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-3600-analyst",
+      "inputDigest": "33af106872f1134d91d9b7f315a5c0a85d53b62f0d28bd4c88fae212d1b75b7a",
+      "match": "substitution",
+      "cutoff": 3600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-chances-60",
+          "category": "chances",
+          "text": "Harbor have taken 3 shots in the last 15 minutes, compared with 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "substitution:activity-change:harbor:attacking-third actions:substitution-202611-388",
+          "category": "activity-change",
+          "text": "Harbor: 21 attacking-third actions (52:30–60:00) versus 12 (45:00–52:30). Each window is 450 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "substitution-202611-359",
+            "substitution-202611-360",
+            "substitution-202611-361",
+            "substitution-202611-362",
+            "substitution-202611-363",
+            "substitution-202611-370",
+            "substitution-202611-371",
+            "substitution-202611-372",
+            "substitution-202611-373",
+            "substitution-202611-374",
+            "substitution-202611-375",
+            "substitution-202611-376",
+            "substitution-202611-388",
+            "substitution-202611-389",
+            "substitution-202611-390",
+            "substitution-202611-391",
+            "substitution-202611-392",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418",
+            "substitution-202611-443"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-437",
+          "category": "shot-sequence",
+          "text": "Riverside completed 5 recorded passes before Ben Rivers's shot at 59:09, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-429",
+            "substitution-202611-430",
+            "substitution-202611-431",
+            "substitution-202611-432",
+            "substitution-202611-433",
+            "substitution-202611-434",
+            "substitution-202611-435",
+            "substitution-202611-436",
+            "substitution-202611-437"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-418",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 recorded passes before Theo March's shot at 56:45, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-411",
+            "substitution-202611-412",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-406",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 recorded passes before Theo March's shot at 55:07, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-396",
+            "substitution-202611-397",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-376",
+          "category": "shot-sequence",
+          "text": "Harbor completed 6 recorded passes before Jude Moreno's shot at 51:00, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-367",
+            "substitution-202611-368",
+            "substitution-202611-369",
+            "substitution-202611-370",
+            "substitution-202611-371",
+            "substitution-202611-372",
+            "substitution-202611-373",
+            "substitution-202611-374",
+            "substitution-202611-375",
+            "substitution-202611-376"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-341",
+          "category": "shot-sequence",
+          "text": "Riverside completed 7 recorded passes before Felix Lake's shot at 46:11, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-331",
+            "substitution-202611-332",
+            "substitution-202611-333",
+            "substitution-202611-334",
+            "substitution-202611-335",
+            "substitution-202611-336",
+            "substitution-202611-337",
+            "substitution-202611-338",
+            "substitution-202611-339",
+            "substitution-202611-340",
+            "substitution-202611-341"
+          ]
+        },
+        {
+          "id": "substitution:passing-pair:riverside:substitution-202611-338",
+          "category": "passing-pair",
+          "text": "3 recorded successful passes from Max Rowan to Oscar Voss between 45:00 and 60:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "substitution-202611-338",
+            "substitution-202611-380",
+            "substitution-202611-433"
+          ]
+        },
+        {
+          "id": "substitution:substitute-involvement:harbor:substitution-202611-407",
+          "category": "substitute-involvement",
+          "text": "Nico Wells came on at 55:30 and has 3 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "evidenceIds": [
+            "substitution-202611-407",
+            "substitution-202611-416",
+            "substitution-202611-440",
+            "substitution-202611-442"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-4200-fan",
+      "inputDigest": "0d336b90f2093cd3e0bacfc1da261988e245aa39f810eb6458a19eea771b54eb",
+      "match": "substitution",
+      "cutoff": 4200,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 5 times in the attacking third in the last 15 minutes, up from 2 in the previous 15."
+        },
+        {
+          "id": "harbor-chances-70",
+          "category": "chances",
+          "text": "Harbor have taken 5 shots in the last 15 minutes, compared with 1 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-482",
+          "category": "shot-sequence",
+          "text": "Harbor completed 5 passes in the possession before Milo Serrano's shot at 64:23.",
+          "evidenceIds": [
+            "substitution-202611-474",
+            "substitution-202611-475",
+            "substitution-202611-476",
+            "substitution-202611-477",
+            "substitution-202611-478",
+            "substitution-202611-479",
+            "substitution-202611-480",
+            "substitution-202611-481",
+            "substitution-202611-482"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-473",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 passes in the possession before Jude Moreno's shot at 63:36.",
+          "evidenceIds": [
+            "substitution-202611-466",
+            "substitution-202611-467",
+            "substitution-202611-468",
+            "substitution-202611-469",
+            "substitution-202611-470",
+            "substitution-202611-471",
+            "substitution-202611-472",
+            "substitution-202611-473"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-437",
+          "category": "shot-sequence",
+          "text": "Riverside completed 5 passes in the possession before Ben Rivers's shot at 59:09.",
+          "evidenceIds": [
+            "substitution-202611-429",
+            "substitution-202611-430",
+            "substitution-202611-431",
+            "substitution-202611-432",
+            "substitution-202611-433",
+            "substitution-202611-434",
+            "substitution-202611-435",
+            "substitution-202611-436",
+            "substitution-202611-437"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-418",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 passes in the possession before Theo March's shot at 56:45.",
+          "evidenceIds": [
+            "substitution-202611-411",
+            "substitution-202611-412",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-406",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 passes in the possession before Theo March's shot at 55:07.",
+          "evidenceIds": [
+            "substitution-202611-396",
+            "substitution-202611-397",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406"
+          ]
+        },
+        {
+          "id": "substitution:passing-pair:harbor:substitution-202611-446",
+          "category": "passing-pair",
+          "text": "Milo Serrano found Jude Moreno with 3 completed passes from 55:00 to 70:00.",
+          "evidenceIds": [
+            "substitution-202611-446",
+            "substitution-202611-469",
+            "substitution-202611-471"
+          ]
+        },
+        {
+          "id": "substitution:substitute-involvement:harbor:substitution-202611-407",
+          "category": "substitute-involvement",
+          "text": "Nico Wells has 7 recorded on-ball actions since coming on at 55:30.",
+          "evidenceIds": [
+            "substitution-202611-407",
+            "substitution-202611-416",
+            "substitution-202611-440",
+            "substitution-202611-442",
+            "substitution-202611-456",
+            "substitution-202611-480",
+            "substitution-202611-492",
+            "substitution-202611-503"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "substitution-4200-analyst",
+      "inputDigest": "58f0890385124f2fbeb21f366207ed2fc9c1dd909b51bbfc3b6cabbd6f5aba41",
+      "match": "substitution",
+      "cutoff": 4200,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 5 times in the attacking third in the last 15 minutes, up from 2 in the previous 15."
+        },
+        {
+          "id": "harbor-chances-70",
+          "category": "chances",
+          "text": "Harbor have taken 5 shots in the last 15 minutes, compared with 1 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-482",
+          "category": "shot-sequence",
+          "text": "Harbor completed 5 recorded passes before Milo Serrano's shot at 64:23, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-474",
+            "substitution-202611-475",
+            "substitution-202611-476",
+            "substitution-202611-477",
+            "substitution-202611-478",
+            "substitution-202611-479",
+            "substitution-202611-480",
+            "substitution-202611-481",
+            "substitution-202611-482"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-473",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 recorded passes before Jude Moreno's shot at 63:36, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-466",
+            "substitution-202611-467",
+            "substitution-202611-468",
+            "substitution-202611-469",
+            "substitution-202611-470",
+            "substitution-202611-471",
+            "substitution-202611-472",
+            "substitution-202611-473"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:riverside:substitution-202611-437",
+          "category": "shot-sequence",
+          "text": "Riverside completed 5 recorded passes before Ben Rivers's shot at 59:09, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-429",
+            "substitution-202611-430",
+            "substitution-202611-431",
+            "substitution-202611-432",
+            "substitution-202611-433",
+            "substitution-202611-434",
+            "substitution-202611-435",
+            "substitution-202611-436",
+            "substitution-202611-437"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-418",
+          "category": "shot-sequence",
+          "text": "Harbor completed 4 recorded passes before Theo March's shot at 56:45, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-411",
+            "substitution-202611-412",
+            "substitution-202611-413",
+            "substitution-202611-414",
+            "substitution-202611-415",
+            "substitution-202611-416",
+            "substitution-202611-417",
+            "substitution-202611-418"
+          ]
+        },
+        {
+          "id": "substitution:shot-sequence:harbor:substitution-202611-406",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 recorded passes before Theo March's shot at 55:07, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "substitution-202611-396",
+            "substitution-202611-397",
+            "substitution-202611-398",
+            "substitution-202611-399",
+            "substitution-202611-400",
+            "substitution-202611-401",
+            "substitution-202611-402",
+            "substitution-202611-403",
+            "substitution-202611-404",
+            "substitution-202611-405",
+            "substitution-202611-406"
+          ]
+        },
+        {
+          "id": "substitution:passing-pair:harbor:substitution-202611-446",
+          "category": "passing-pair",
+          "text": "3 recorded successful passes from Milo Serrano to Jude Moreno between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "substitution-202611-446",
+            "substitution-202611-469",
+            "substitution-202611-471"
+          ]
+        },
+        {
+          "id": "substitution:substitute-involvement:harbor:substitution-202611-407",
+          "category": "substitute-involvement",
+          "text": "Nico Wells came on at 55:30 and has 7 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "evidenceIds": [
+            "substitution-202611-407",
+            "substitution-202611-416",
+            "substitution-202611-440",
+            "substitution-202611-442",
+            "substitution-202611-456",
+            "substitution-202611-480",
+            "substitution-202611-492",
+            "substitution-202611-503"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quiet-600-fan",
+      "inputDigest": "5984f5327f5f95233a64d2002266914643842d7e5b15b2957934dd61d7b59e70",
+      "match": "quiet",
+      "cutoff": 600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "quiet:passing-pair:riverside:quiet-202612-6",
+          "category": "passing-pair",
+          "text": "Max Rowan found Oscar Voss with 3 completed passes from 00:00 to 10:00.",
+          "evidenceIds": ["quiet-202612-6", "quiet-202612-9", "quiet-202612-45"]
+        }
+      ]
+    },
+    {
+      "id": "quiet-600-analyst",
+      "inputDigest": "27c7c5fc4bc6329162bf1fc22adc1a7629671f949119db969b2001e2547c4698",
+      "match": "quiet",
+      "cutoff": 600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "quiet:passing-pair:riverside:quiet-202612-6",
+          "category": "passing-pair",
+          "text": "3 recorded successful passes from Max Rowan to Oscar Voss between 00:00 and 10:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": ["quiet-202612-6", "quiet-202612-9", "quiet-202612-45"]
+        }
+      ]
+    },
+    {
+      "id": "quiet-3600-fan",
+      "inputDigest": "e0fb4ebdc5f1271af3407f820acf620df0752c66b43cf63ea16ece24ab0efaee",
+      "match": "quiet",
+      "cutoff": 3600,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "quiet:activity-change:harbor:attacking-third actions:quiet-202612-319",
+          "category": "activity-change",
+          "text": "Harbor recorded 12 attacking-third actions from 52:30 to 60:00, compared with 1 in the preceding equal window.",
+          "evidenceIds": [
+            "quiet-202612-259",
+            "quiet-202612-319",
+            "quiet-202612-320",
+            "quiet-202612-321",
+            "quiet-202612-322",
+            "quiet-202612-323",
+            "quiet-202612-324",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-334",
+            "quiet-202612-335",
+            "quiet-202612-336",
+            "quiet-202612-337"
+          ]
+        },
+        {
+          "id": "quiet:passing-pair:harbor:quiet-202612-258",
+          "category": "passing-pair",
+          "text": "Kai Solberg found Milo Serrano with 4 completed passes from 45:00 to 60:00.",
+          "evidenceIds": [
+            "quiet-202612-258",
+            "quiet-202612-308",
+            "quiet-202612-319",
+            "quiet-202612-334"
+          ]
+        },
+        {
+          "id": "quiet:substitute-involvement:harbor:quiet-202612-310",
+          "category": "substitute-involvement",
+          "text": "Nico Wells has 3 recorded on-ball actions since coming on at 55:17.",
+          "evidenceIds": [
+            "quiet-202612-310",
+            "quiet-202612-321",
+            "quiet-202612-325",
+            "quiet-202612-333"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quiet-3600-analyst",
+      "inputDigest": "52c2eea1df1a4865ec1df39894a02727034e7d880da674313067605798a429fe",
+      "match": "quiet",
+      "cutoff": 3600,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [],
+      "originalDirector": [
+        {
+          "id": "quiet:activity-change:harbor:attacking-third actions:quiet-202612-319",
+          "category": "activity-change",
+          "text": "Harbor: 12 attacking-third actions (52:30–60:00) versus 1 (45:00–52:30). Each window is 450 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "quiet-202612-259",
+            "quiet-202612-319",
+            "quiet-202612-320",
+            "quiet-202612-321",
+            "quiet-202612-322",
+            "quiet-202612-323",
+            "quiet-202612-324",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-334",
+            "quiet-202612-335",
+            "quiet-202612-336",
+            "quiet-202612-337"
+          ]
+        },
+        {
+          "id": "quiet:passing-pair:harbor:quiet-202612-258",
+          "category": "passing-pair",
+          "text": "4 recorded successful passes from Kai Solberg to Milo Serrano between 45:00 and 60:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "quiet-202612-258",
+            "quiet-202612-308",
+            "quiet-202612-319",
+            "quiet-202612-334"
+          ]
+        },
+        {
+          "id": "quiet:substitute-involvement:harbor:quiet-202612-310",
+          "category": "substitute-involvement",
+          "text": "Nico Wells came on at 55:17 and has 3 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "evidenceIds": [
+            "quiet-202612-310",
+            "quiet-202612-321",
+            "quiet-202612-325",
+            "quiet-202612-333"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quiet-4200-fan",
+      "inputDigest": "379f583123feb4b82e1067a1b213076ed4b24a9dd38336b4cd4915d62415abad",
+      "match": "quiet",
+      "cutoff": 4200,
+      "mode": "fan",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 3 times in the attacking third in the last 15 minutes, up from 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "quiet:activity-change:harbor:recoveries in the attacking third:quiet-202612-358",
+          "category": "activity-change",
+          "text": "Harbor recorded 2 recoveries in the attacking third from 57:30 to 70:00, compared with 0 in the preceding equal window.",
+          "evidenceIds": ["quiet-202612-358", "quiet-202612-369"]
+        },
+        {
+          "id": "quiet:activity-change:harbor:attacking-third actions:quiet-202612-325",
+          "category": "activity-change",
+          "text": "Harbor recorded 18 attacking-third actions from 57:30 to 70:00, compared with 7 in the preceding equal window.",
+          "evidenceIds": [
+            "quiet-202612-259",
+            "quiet-202612-319",
+            "quiet-202612-320",
+            "quiet-202612-321",
+            "quiet-202612-322",
+            "quiet-202612-323",
+            "quiet-202612-324",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-334",
+            "quiet-202612-335",
+            "quiet-202612-336",
+            "quiet-202612-337",
+            "quiet-202612-353",
+            "quiet-202612-359",
+            "quiet-202612-360",
+            "quiet-202612-361",
+            "quiet-202612-362",
+            "quiet-202612-363",
+            "quiet-202612-370",
+            "quiet-202612-371",
+            "quiet-202612-372",
+            "quiet-202612-373",
+            "quiet-202612-374",
+            "quiet-202612-375"
+          ]
+        },
+        {
+          "id": "quiet:shot-sequence:harbor:quiet-202612-353",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 passes in the possession before Milo Serrano's shot at 62:29.",
+          "evidenceIds": [
+            "quiet-202612-343",
+            "quiet-202612-344",
+            "quiet-202612-345",
+            "quiet-202612-346",
+            "quiet-202612-347",
+            "quiet-202612-348",
+            "quiet-202612-349",
+            "quiet-202612-350",
+            "quiet-202612-351",
+            "quiet-202612-352",
+            "quiet-202612-353"
+          ]
+        },
+        {
+          "id": "quiet:passing-pair:harbor:quiet-202612-336",
+          "category": "passing-pair",
+          "text": "Leon Costa found Milo Serrano with 5 completed passes from 55:00 to 70:00.",
+          "evidenceIds": [
+            "quiet-202612-336",
+            "quiet-202612-351",
+            "quiet-202612-359",
+            "quiet-202612-361",
+            "quiet-202612-373"
+          ]
+        },
+        {
+          "id": "quiet:substitute-involvement:harbor:quiet-202612-310",
+          "category": "substitute-involvement",
+          "text": "Nico Wells has 4 recorded on-ball actions since coming on at 55:17.",
+          "evidenceIds": [
+            "quiet-202612-310",
+            "quiet-202612-321",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-350"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quiet-4200-analyst",
+      "inputDigest": "284793081ca60dbbdb4df36bc52b33a2f210318f2d3662c7d935dd5acd40d932",
+      "match": "quiet",
+      "cutoff": 4200,
+      "mode": "analyst",
+      "preferences": {},
+      "deterministic": [
+        {
+          "id": "harbor-pressure-70",
+          "category": "pressure",
+          "text": "Harbor have won the ball 3 times in the attacking third in the last 15 minutes, up from 0 in the previous 15."
+        }
+      ],
+      "originalDirector": [
+        {
+          "id": "quiet:activity-change:harbor:recoveries in the attacking third:quiet-202612-358",
+          "category": "activity-change",
+          "text": "Harbor: 2 recoveries in the attacking third (57:30–70:00) versus 0 (45:00–57:30). Each window is 750 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": ["quiet-202612-358", "quiet-202612-369"]
+        },
+        {
+          "id": "quiet:activity-change:harbor:attacking-third actions:quiet-202612-325",
+          "category": "activity-change",
+          "text": "Harbor: 18 attacking-third actions (57:30–70:00) versus 7 (45:00–57:30). Each window is 750 seconds in 2H; this is descriptive, not evidence of cause. Forward is measured in normalized action coordinates, not physical stadium direction.",
+          "evidenceIds": [
+            "quiet-202612-259",
+            "quiet-202612-319",
+            "quiet-202612-320",
+            "quiet-202612-321",
+            "quiet-202612-322",
+            "quiet-202612-323",
+            "quiet-202612-324",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-334",
+            "quiet-202612-335",
+            "quiet-202612-336",
+            "quiet-202612-337",
+            "quiet-202612-353",
+            "quiet-202612-359",
+            "quiet-202612-360",
+            "quiet-202612-361",
+            "quiet-202612-362",
+            "quiet-202612-363",
+            "quiet-202612-370",
+            "quiet-202612-371",
+            "quiet-202612-372",
+            "quiet-202612-373",
+            "quiet-202612-374",
+            "quiet-202612-375"
+          ]
+        },
+        {
+          "id": "quiet:shot-sequence:harbor:quiet-202612-353",
+          "category": "shot-sequence",
+          "text": "Harbor completed 7 recorded passes before Milo Serrano's shot at 62:29, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "evidenceIds": [
+            "quiet-202612-343",
+            "quiet-202612-344",
+            "quiet-202612-345",
+            "quiet-202612-346",
+            "quiet-202612-347",
+            "quiet-202612-348",
+            "quiet-202612-349",
+            "quiet-202612-350",
+            "quiet-202612-351",
+            "quiet-202612-352",
+            "quiet-202612-353"
+          ]
+        },
+        {
+          "id": "quiet:passing-pair:harbor:quiet-202612-336",
+          "category": "passing-pair",
+          "text": "5 recorded successful passes from Leon Costa to Milo Serrano between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "evidenceIds": [
+            "quiet-202612-336",
+            "quiet-202612-351",
+            "quiet-202612-359",
+            "quiet-202612-361",
+            "quiet-202612-373"
+          ]
+        },
+        {
+          "id": "quiet:substitute-involvement:harbor:quiet-202612-310",
+          "category": "substitute-involvement",
+          "text": "Nico Wells came on at 55:17 and has 4 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "evidenceIds": [
+            "quiet-202612-310",
+            "quiet-202612-321",
+            "quiet-202612-325",
+            "quiet-202612-333",
+            "quiet-202612-350"
+          ]
+        }
+      ]
+    }
+  ]
+}

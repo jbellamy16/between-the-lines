@@ -1,4 +1,6 @@
-# AI Match Director 1.0
+# AI Match Director 1.2
+
+Version 1.2 adds independently verified hypotheses, selective counter-evidence, measured temporal storylines, specific significance/watch-next text and a typed evidence graph. See [the audit, implementation and evaluation](EVOLUTION.md) and [reproducible 100-second demonstration](DEMO.md). No new live model evaluation or deployment was performed for this version.
 
 The director adds event relationships, bounded investigation, editorial selection and reusable verified stories to the existing match experience. It preserves canonical sources, the earlier detectors and explanation endpoints, provider adapters, Redis quotas, deterministic fallbacks and the visual/motion system. The original implementation sprint made no paid calls. The October 10 [Foundry evaluation](../FOUNDRY-EVALUATION.md) subsequently exercised real investigations; public inference remains disabled.
 
@@ -43,17 +45,18 @@ Source possession capabilities, actor identity and time precision gate observati
 
 ## Evidence tools
 
-All seven tools enforce server-selected match identity, strict input validation, an immutable cutoff, bounded windows, read-only operation and provenance:
+All eight tools enforce server-selected match identity, strict input validation, an immutable cutoff, bounded windows, read-only operation and provenance:
 
-| Tool                     | Output / restriction                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------ |
-| `get_match_events`       | At most 40 event summaries; total count and truncation explicit                                  |
-| `get_team_statistics`    | Aggregate counts and known pass-outcome denominator                                              |
-| `get_player_involvement` | Known player's actions; can compute a new contribution claim                                     |
-| `compare_time_windows`   | Immediately preceding equal window; both wholly in one period; can compute new comparison claims |
-| `get_recorded_sequence`  | Known, visible anchor; same team/period/possession; unsupported possession rejected              |
-| `get_shot_locations`     | Recorded shots and nullable locations                                                            |
-| `get_match_context`      | Score computed from visible scoring events, capabilities, limitations                            |
+| Tool                       | Output / restriction                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `get_match_events`         | At most 40 event summaries; total count and truncation explicit                                               |
+| `get_team_statistics`      | Aggregate counts and known pass-outcome denominator                                                           |
+| `get_player_involvement`   | Known player's actions; can compute a new contribution claim                                                  |
+| `compare_time_windows`     | Immediately preceding equal window; both wholly in one period; can compute new comparison claims              |
+| `get_recorded_sequence`    | Known, visible anchor; same team/period/possession; unsupported possession rejected                           |
+| `get_shot_locations`       | Recorded shots and nullable locations                                                                         |
+| `inspect_counter_evidence` | Verified supporting, contradictory and limiting evidence for covered hypotheses; same cutoff and query budget |
+| `get_match_context`        | Score computed from visible scoring events, capabilities, limitations                                         |
 
 A sequence query returns the complete bounded possession context up to its anchor, potentially starting before the requested interval; it is never truncated into an invented possession. Returned event lists cap at 40, claim evidence at 120 IDs and each serialized tool response at 48,000 characters. Aggregates cover all matching events even when displayed lists truncate. Related-event IDs are cutoff-filtered. No raw provider payload, final score, future events, infrastructure access or private model reasoning is exposed. Statistics are not accepted from the model.
 
@@ -83,17 +86,13 @@ Official contracts checked October 9, 2026: [OpenAI function calling](https://de
 
 ## Broadcast contract
 
-`BroadcastStory` in `src/lib/ai/director/story.ts` is versioned `1.0.0`; [broadcast-story.json](broadcast-story.json) is an independently consumable computed example. It contains story/match identity, source timestamp and viewer cutoff, headline, explanation, category, claim IDs, statistics, evidence IDs and coordinates, audience, suggested visualization and timing, source provenance, limitations, actual provider and verification status. Consumers must honor `presentation.earliest` and `expires` against their playback clock and must not relabel an offline package as live AI output. Coordinates use the canonical action-team orientation.
+`BroadcastStory` in `src/lib/ai/director/story.ts` is versioned `1.1.0`; [broadcast-story.json](broadcast-story.json) is an independently consumable computed example. It contains story/match identity, source timestamp and viewer cutoff, headline, explanation, category, claim IDs, statistics, evidence IDs and coordinates, audience, suggested visualization and timing, source provenance, limitations, actual provider and verification status. Consumers must honor `presentation.earliest` and `expires` against their playback clock and must not relabel an offline package as live AI output. Coordinates use the canonical action-team orientation.
 
 ## Reproducible demonstration
 
-1. Keep inference disabled. Open the synthetic pressure fixture at the default 63:24, or start earlier and play into a qualifying passage. Observer cards originate from generated events, not a scripted outcome list.
-2. Read the recovery-to-shot story, open its evidence and replay the connected actions. Change Fan/Analyst mode to see the distinct language/detail. Seek backward before the events to verify visibility.
-3. Open Broadcast story and download the exact verified package. The screenshots in this directory show **offline computation**, never a simulated live call.
-4. After separate paid authorization, enable the chosen provider in an isolated process and use Investigate this passage or Catch Me Up. Tool traces in How we know show actual completed query names, time windows, returned counts and verified claim counts. A rejected response falls back visibly. Do not narrate tool activity that has not actually occurred.
-5. Only after explicit authorization for autonomous inference, enable the separate proactive flag. The same computed candidates trigger bounded investigation during playback.
+Follow the [current 100-second synthetic walkthrough](DEMO.md). It uses the unchanged pressure fixture at 63:24, then follows the advanced-recovery storyline at 65:00, 70:00 and 75:00 and rewinds to the earlier state. The existing detailed interface provides concise main explanations with deeper evidence disclosure; Fan/Analyst remain API audiences, not a current UI switch.
 
-A complete public live demonstration and an editorial improvement claim remain pending production usage controls and human review. No fabricated animation or mock output is presented as live inference.
+The offline demonstration shows genuine computed evidence and temporal reconstruction. It does not simulate a Foundry request. After separate paid authorization, an isolated real investigation can show the actual successful tool trace and returned story. Label a recorded verified result accurately. Public inference enablement and deployment remain separate approval steps.
 
 ## Evaluation and review
 
