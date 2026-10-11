@@ -19,7 +19,7 @@ Built and started from updated main using [submission setup](../SUBMISSION.md#ju
 
 Verified in the actual local browser: synthetic source and 1–0 score at 63:24; Catch Me Up's full-match scope; Quick/Full; both explanation styles; exact comparison windows and four shot references; six-action 58:39→59:09 possession replay; unchanged main cutoff during replay; and the 70:00 primary weakening qualification. The separate five-minute recovery disclosure was also inspected, and exact keyboard staging to 4200 seconds was exercised. No mock provider response was injected into the demo.
 
-[Machine-readable checkpoints](checkpoints.json) were regenerated with the current source's observer, story packaging, style renderer, briefing score and storyline reconstruction. They include canonical replay events and their source IDs. [Six screenshots](../intelligence/DEMO.md#current-screenshots-and-rehearsal) were captured and visually inspected; final dimensions are 1920×1080. These are local Chromium captures, not deployed-version, physical-device or human usability evidence.
+[Machine-readable checkpoints](checkpoints.json) were regenerated with the current source's observer, story packaging, style renderer, briefing score and storyline reconstruction. They include canonical replay events and their source IDs. [Six screenshots](../intelligence/DEMO.md#current-screenshots-and-rehearsal) were captured and visually inspected; the viewport was 1920×1080. The browser capture tool saved the recap at 1920×1080 and the other five JPEGs at 1905×1072; images were not resized or edited afterward. These are local Chromium captures, not deployed-version, physical-device or human usability evidence.
 
 ## Timing rehearsal
 
