@@ -2,6 +2,7 @@ import { z } from "zod";
 import { json, readInput } from "@/lib/ai/service";
 import { preferencesSchema } from "@/lib/ai/evidence";
 import { directMatch } from "@/lib/ai/director/runner";
+import { directorConfiguration } from "@/lib/ai/director/configuration";
 import { SyntheticMatchSource } from "@/lib/sources/synthetic";
 import { historicalEnabled, loadHistorical } from "@/lib/sources/repository";
 export const runtime = "nodejs";
@@ -41,15 +42,16 @@ export async function POST(req: Request) {
   if (input.time > match.duration)
     return json({ error: "Invalid cutoff" }, 400);
   try {
-    return json(
-      await directMatch(
+    return json({
+      ...(await directMatch(
         match,
         input.time,
         input.mode,
         input.preferences,
         req.signal,
-      ),
-    );
+      )),
+      cacheContext: directorConfiguration(),
+    });
   } catch {
     return json({ error: "Investigation cancelled" }, 499);
   }

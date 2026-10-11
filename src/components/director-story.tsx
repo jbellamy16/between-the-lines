@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { rememberDirectorResult } from "@/lib/ai/director/client-cache";
+import { requestDirector } from "@/lib/ai/director/client-cache";
 import type { MatchData } from "@/lib/sources/model";
 import {
   matchClock,
@@ -249,52 +249,20 @@ export function useDirectorStory({
     seen.current.add(candidateEpisode!);
     const cutoff = Math.floor(time);
     requestCutoff.current = cutoff;
-    const source =
-      match.kind === "synthetic"
-        ? {
-            scenario: match.provenance.raw.scenario,
-            profile: match.provenance.raw.profile,
-          }
-        : { matchId: match.id };
+    const requestPreferences = {
+      ...preferences,
+      seenEvidenceIds: [...presentedEvidence.current].slice(-200),
+    };
     try {
-      const response = await fetch("/api/director", {
-        method: "POST",
-        signal: controller.signal,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...source,
-          time: cutoff,
-          mode,
-          preferences: {
-            ...preferences,
-            seenEvidenceIds: [...presentedEvidence.current].slice(-200),
-          },
-        }),
-      });
-      if (!response.ok) throw new Error("Unavailable");
-      const result: DirectorResult = await response.json();
-      if (
-        !Array.isArray(result.stories) ||
-        result.provenance?.cutoff !== cutoff ||
-        result.stories.some(
-          (story) =>
-            story.matchId !== match.id ||
-            !Array.isArray(story.highlightedEventIds),
-        )
-      ) {
-        throw new Error("Invalid investigation response");
-      }
-      if (!controller.signal.aborted)
-        rememberDirectorResult(
-          match,
-          cutoff,
-          mode,
-          {
-            ...preferences,
-            seenEvidenceIds: [...presentedEvidence.current].slice(-200),
-          },
-          result,
-        );
+      const result = await requestDirector(
+        match,
+        cutoff,
+        mode,
+        requestPreferences,
+        controller.signal,
+      );
+      if (result.failure && request.current === controller)
+        seen.current.delete(candidateEpisode!);
       if (
         !controller.signal.aborted &&
         latestTime.current >= cutoff &&
@@ -311,17 +279,21 @@ export function useDirectorStory({
               ? "AI is unavailable. Showing the explanation checked from recorded events."
               : "Investigation complete. The story and pitch now show the checked evidence."),
         );
-        for (const story of result.stories)
-          for (const id of story.evidenceEventIds)
-            presentedEvidence.current.add(id);
+        if (result.source !== "offline")
+          for (const story of result.stories)
+            for (const id of story.evidenceEventIds)
+              presentedEvidence.current.add(id);
       }
     } catch {
+      if (request.current === controller)
+        seen.current.delete(candidateEpisode!);
       if (!controller.signal.aborted)
         setNotice(
           "The investigation could not finish. Your recorded explanation is still available. Try again when the service is available.",
         );
     } finally {
-      if (!controller.signal.aborted) {
+      if (request.current === controller) {
+        request.current = null;
         setBusy(false);
         requestCutoff.current = null;
       }

@@ -47,7 +47,23 @@ export function toolDefinitions(matchId: string, cutoff: number) {
     type: "function",
     name,
     strict: true,
-    description: `${name.replaceAll("_", " ")}. Read-only, at or before ${cutoff}. Choose a window of at most 1800 seconds. Windows are (start,end]. compare_time_windows compares this interval with the immediately preceding equal interval in one period. get_recorded_sequence requires eventId; get_player_involvement requires playerId. inspect_counter_evidence independently evaluates hypotheses and counter-evidence only when the complete assessment evidence falls in the query; optional eventId selects claims containing that event. Null means no filter. Results capped at 40 events, with full aggregate counts and explicit truncation.`,
+    description: {
+      get_match_events:
+        "Retrieve recorded events and fully supported claims in a window.",
+      get_team_statistics:
+        "Count recorded actions, shots and passes; unknown pass outcomes are excluded from completion rates.",
+      get_player_involvement:
+        "Investigate a named player's contributions; playerId is required.",
+      compare_time_windows:
+        "Compare this window with the immediately preceding equal window. Both must be complete and in one period.",
+      get_recorded_sequence:
+        "Retrieve the possession leading to eventId (required), when the source supports possession sequences.",
+      get_shot_locations:
+        "Retrieve recorded shot origins; coordinates are not shot quality.",
+      get_match_context: "Retrieve the visible score and source capabilities.",
+      inspect_counter_evidence:
+        "Independently assess hypotheses, challenges and limitations. Include complete assessment evidence in the window; optional eventId selects claims containing that anchor. At most two whole assessments returned.",
+    }[name],
     parameters: {
       type: "object",
       additionalProperties: false,
@@ -63,6 +79,27 @@ export function toolDefinitions(matchId: string, cutoff: number) {
     },
   }));
 }
+/** One shared argument schema avoids repeating identical schemas eight times. */
+export function followupTool(matchId: string, cutoff: number) {
+  const definitions = toolDefinitions(matchId, cutoff);
+  return {
+    type: "function",
+    name: "inspect_match_evidence",
+    strict: true,
+    description: definitions
+      .map((d) => `${d.name}: ${d.description}`)
+      .join("\n"),
+    parameters: {
+      ...definitions[0].parameters,
+      properties: {
+        ...definitions[0].parameters.properties,
+        tool: { type: "string", enum: toolNames },
+      },
+      required: [...definitions[0].parameters.required, "tool"],
+    },
+  };
+}
+
 /** Never serialize source.raw, finalScore, future-related IDs, or full-match metadata. */
 export function publicEvent(
   e: NormalizedEvent,

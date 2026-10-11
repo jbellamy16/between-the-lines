@@ -672,7 +672,7 @@ describe("adversarial football evidence", () => {
 describe("Foundry scripted transport: orchestration only", () => {
   challenge(
     "scripted Foundry selectively investigates counter-evidence",
-    "Three bounded transport turns preserve the actual tool trace and freshly verify publication",
+    "Two bounded transport turns preserve the actual tool trace and freshly verify publication",
     async () => {
       configure("foundry");
       const match = source.read("pressure");
@@ -680,16 +680,8 @@ describe("Foundry scripted transport: orchestration only", () => {
       const transport = vi.fn(async (_url: string, init: RequestInit) => {
         turn++;
         const request = JSON.parse(String(init.body));
-        if (turn <= 2) {
-          const retrieved =
-            turn === 2
-              ? JSON.parse(
-                  request.input.findLast(
-                    (item: { type: string }) =>
-                      item.type === "function_call_output",
-                  ).output,
-                )
-              : null;
+        if (turn === 1) {
+          const retrieved = JSON.parse(request.input[0].content).evidence;
           const selected = retrieved?.claims.find(
             (claim: { category: string }) => claim.category === "recovery-shot",
           );
@@ -698,16 +690,16 @@ describe("Foundry scripted transport: orchestration only", () => {
             output: [
               {
                 type: "function_call",
-                name:
-                  turn === 1 ? "get_match_events" : "inspect_counter_evidence",
+                name: "inspect_match_evidence",
                 call_id: `read-${turn}`,
                 arguments: JSON.stringify({
+                  tool: "inspect_counter_evidence",
                   matchId: match.id,
                   start: 2700,
                   end: 4200,
                   team: null,
                   playerId: null,
-                  eventId: selected?.evidenceIds.at(-1) ?? null,
+                  eventId: selected?.anchorEventId ?? null,
                 }),
               },
             ],
@@ -719,15 +711,16 @@ describe("Foundry scripted transport: orchestration only", () => {
           ).output,
         );
         expect(response.assessments.length).toBeGreaterThan(0);
-        const claim = response.claims.find((item: { id: string }) =>
-          response.assessments.some(
-            (assessment: {
-              claimId: string;
-              assessment: { verificationStatus: string };
-            }) =>
-              assessment.claimId === item.id &&
-              assessment.assessment.verificationStatus !== "unsupported",
-          ),
+        const claim = JSON.parse(request.input[0].content).evidence.claims.find(
+          (item: { id: string }) =>
+            response.assessments.some(
+              (assessment: {
+                claimId: string;
+                assessment: { verificationStatus: string };
+              }) =>
+                assessment.claimId === item.id &&
+                assessment.assessment.verificationStatus !== "unsupported",
+            ),
         );
         return Response.json({
           status: "completed",
@@ -755,8 +748,8 @@ describe("Foundry scripted transport: orchestration only", () => {
       });
       vi.stubGlobal("fetch", transport);
       const result = await investigate(match, 4200, "fan", {}, "foundry");
-      expect(transport).toHaveBeenCalledTimes(3);
-      expect(result.metrics.requests).toBe(3);
+      expect(transport).toHaveBeenCalledTimes(2);
+      expect(result.metrics.requests).toBe(2);
       expect(result.metrics.toolInvocations).toBe(2);
       expect(result.trace.map((entry) => entry.tool)).toEqual([
         "get_match_events",

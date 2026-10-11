@@ -93,8 +93,13 @@ export class NarrationFailure extends Error {
 export async function composeNarration(
   packet: EvidencePacket,
   provider: Provider,
+  signal?: AbortSignal,
 ): Promise<NarrationResult> {
   const start = Date.now();
+  signal = AbortSignal.any([
+    ...(signal ? [signal] : []),
+    AbortSignal.timeout(55000),
+  ]);
   let stage = "provider_response";
   const activity: string[] = [];
   try {
@@ -105,27 +110,32 @@ export async function composeNarration(
         content: `Select the most useful verified story for ${packet.id} at the viewer timestamp. Retrieve its evidence.`,
       },
     ];
-    const first = await providerResponse(provider, {
-      instructions,
-      input,
-      parallel_tool_calls: false,
-      tools: [
-        {
-          type: "function",
-          name: "get_verified_evidence",
-          description:
-            "Retrieve verified match facts, event evidence, computed comparisons and editorial ranking at the viewer timestamp.",
-          strict: true,
-          parameters: {
-            type: "object",
-            properties: { insightId: { type: "string", enum: [packet.id] } },
-            required: ["insightId"],
-            additionalProperties: false,
+    const first = await providerResponse(
+      provider,
+      {
+        instructions,
+        input,
+        parallel_tool_calls: false,
+        tools: [
+          {
+            type: "function",
+            name: "get_verified_evidence",
+            description:
+              "Retrieve verified match facts, event evidence, computed comparisons and editorial ranking at the viewer timestamp.",
+            strict: true,
+            parameters: {
+              type: "object",
+              properties: { insightId: { type: "string", enum: [packet.id] } },
+              required: ["insightId"],
+              additionalProperties: false,
+            },
           },
-        },
-      ],
-      tool_choice: { type: "function", name: "get_verified_evidence" },
-    });
+        ],
+        tool_choice: { type: "function", name: "get_verified_evidence" },
+      },
+      signal,
+      { deadline: start + 55000 },
+    );
     stage = "evidence_retrieval";
     const calls = first.output.filter((o) => o.type === "function_call");
     if (
@@ -144,30 +154,38 @@ export async function composeNarration(
     });
     activity.push("get_verified_evidence completed");
     stage = "provider_response";
-    const second = await providerResponse(provider, {
-      instructions,
-      input,
-      text: {
-        format: {
-          type: "json_schema",
-          name: "verified_story_selection",
-          strict: true,
-          schema: {
-            type: "object",
-            properties: {
-              factIds: {
-                type: "array",
-                items: { type: "string", enum: packet.facts.map((f) => f.id) },
-                minItems: 0,
-                maxItems: 4,
+    const second = await providerResponse(
+      provider,
+      {
+        instructions,
+        input,
+        text: {
+          format: {
+            type: "json_schema",
+            name: "verified_story_selection",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                factIds: {
+                  type: "array",
+                  items: {
+                    type: "string",
+                    enum: packet.facts.map((f) => f.id),
+                  },
+                  minItems: 0,
+                  maxItems: 4,
+                },
               },
+              required: ["factIds"],
+              additionalProperties: false,
             },
-            required: ["factIds"],
-            additionalProperties: false,
           },
         },
       },
-    });
+      signal,
+      { deadline: start + 55000 },
+    );
     activity.push("Structured story selection received");
     stage = "story_validation";
     const text = second.output

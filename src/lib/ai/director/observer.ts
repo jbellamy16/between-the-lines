@@ -15,7 +15,7 @@ import {
   type NormalizedEvent,
 } from "../../sources/model";
 
-export const DIRECTOR_VERSION = "director-1.3.0";
+export const DIRECTOR_VERSION = "director-1.4.0";
 export type Claim = {
   id: string;
   headline: string;

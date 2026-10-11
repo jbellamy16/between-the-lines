@@ -2,6 +2,10 @@ import { afterAll, expect, it, vi } from "vitest";
 import { createClient } from "@redis/client";
 import { randomUUID } from "node:crypto";
 import { CLAIM_SCRIPT, FINISH_SCRIPT } from "../src/lib/ai/controls";
+import {
+  ATTEMPT_SCRIPT,
+  COOLDOWN_SCRIPT,
+} from "../src/lib/ai/request-controls";
 const url = process.env.REDIS_TEST_URL;
 it.skipIf(!url)(
   "real Redis atomically enforces shared quotas, locks, cache and cooldown across clients",
@@ -71,3 +75,81 @@ it.skipIf(!url)(
   },
 );
 afterAll(() => vi.unstubAllEnvs());
+
+it.skipIf(!url)(
+  "real Redis coordinates per-attempt pacing, rolling tokens, cooldowns and durable budgets across instances",
+  async () => {
+    const a = await createClient({ url }).connect(),
+      b = await createClient({ url }).connect();
+    const prefix = `{second-look-attempt-test-${randomUUID()}}`;
+    const keys = ["times", "tokens", "pacing", "budget"].map(
+      (key) => `${prefix}:${key}`,
+    );
+    const args = (id: string, tokens = 6000) => [
+      "10",
+      "10000",
+      String(tokens),
+      "30",
+      "60",
+      "100",
+      id,
+    ];
+    try {
+      await a.hSet(keys[3], "used4", "7"); // Existing workflow accounting survives.
+      const results = await Promise.all(
+        Array.from({ length: 10 }, (_, i) =>
+          (i % 2 ? a : b).eval(ATTEMPT_SCRIPT, {
+            keys,
+            arguments: args(String(i)),
+          }),
+        ),
+      );
+      expect(
+        results.filter((r) => (r as string[])[0] === "acquired"),
+      ).toHaveLength(1);
+      expect(results.filter((r) => (r as string[])[0] === "wait")).toHaveLength(
+        9,
+      );
+      expect(await b.hGet(keys[3], "attemptUsed3")).toBe("1");
+      expect(await b.hGet(keys[3], "used4")).toBe("7");
+      await a.hSet(keys[2], "nextAt", "0");
+      const waitForTokens = (await b.eval(ATTEMPT_SCRIPT, {
+        keys,
+        arguments: args("next", 5000),
+      })) as string[];
+      expect(waitForTokens[0]).toBe("wait");
+      expect(Number(waitForTokens[1])).toBeGreaterThan(59000);
+      // Age only the rolling reservation. Durable charged attempts must survive.
+      const id = String(
+        results.findIndex((r) => (r as string[])[0] === "acquired"),
+      );
+      await a.zAdd(keys[0], { score: 0, value: id });
+      expect(
+        await b.eval(ATTEMPT_SCRIPT, { keys, arguments: args("next", 5000) }),
+      ).toEqual(["acquired"]);
+      expect(await b.hGet(keys[3], "attemptUsed3")).toBe("2");
+      await a.eval(COOLDOWN_SCRIPT, { keys: [keys[2]], arguments: ["25000"] });
+      await b.eval(COOLDOWN_SCRIPT, { keys: [keys[2]], arguments: ["1000"] });
+      const cooldown = (await a.eval(ATTEMPT_SCRIPT, {
+        keys,
+        arguments: args("cooldown", 2000),
+      })) as string[];
+      expect(cooldown[0]).toBe("wait");
+      expect(Number(cooldown[1])).toBeGreaterThan(24000);
+      await a.hSet(keys[3], "attemptUsed3", "100");
+      expect(
+        await b.eval(ATTEMPT_SCRIPT, { keys, arguments: args("limited") }),
+      ).toEqual(["budget"]);
+      await a.hSet(keys[3], "attemptUsed3", "2");
+      await a.hDel(keys[1], "next");
+      expect(
+        await b.eval(ATTEMPT_SCRIPT, { keys, arguments: args("corrupt") }),
+      ).toEqual(["controls"]);
+      expect(await a.hGet(keys[3], "attemptUsed3")).toBe("2");
+    } finally {
+      await a.del(keys);
+      a.destroy();
+      b.destroy();
+    }
+  },
+);

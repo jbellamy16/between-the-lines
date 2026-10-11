@@ -9,10 +9,7 @@ import {
 import { eventClock, type MatchData } from "@/lib/sources/model";
 import type { StoryPreferences } from "@/lib/intelligence";
 import type { DirectorResult } from "@/lib/ai/director/runner";
-import {
-  requestDirector,
-  cachedDirectorResult,
-} from "@/lib/ai/director/client-cache";
+import { requestDirector } from "@/lib/ai/director/client-cache";
 import { ArrowRight, EventIcon } from "./icons";
 import { Crest } from "./team-identity";
 import { StorylineHistory } from "./storyline-history";
@@ -41,9 +38,8 @@ export function RecapBriefing({
   const [mode, setMode] = useState<"quick" | "full">("quick");
   const [wholeMatch, setWholeMatch] = useState(false);
   const [entrySince] = useState(since);
-  const [answer, setAnswer] = useState<DirectorResult | null>(() =>
-    cachedDirectorResult(match, time, "analyst", preferences),
-  );
+  const [answer, setAnswer] = useState<DirectorResult | null>(null);
+  const request = useRef<AbortController | null>(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState("");
   const [timeline, setTimeline] = useState(false);
@@ -53,6 +49,7 @@ export function RecapBriefing({
     mounted.current = true;
     return () => {
       mounted.current = false;
+      request.current?.abort();
     };
   }, []);
   const id = useId();
@@ -76,7 +73,9 @@ export function RecapBriefing({
   const evidence = new Set(briefing.evidenceIds);
   const clock = matchClock(match, time);
   async function investigate() {
-    if (loading || answer) return;
+    if (loading || (answer && !answer.failure)) return;
+    const controller = new AbortController();
+    request.current = controller;
     setLoading(true);
     setNotice("");
     try {
@@ -86,13 +85,17 @@ export function RecapBriefing({
         time,
         "analyst",
         JSON.parse(preferenceKey),
+        controller.signal,
       );
-      if (!mounted.current) return;
+      if (!mounted.current || controller.signal.aborted) return;
       setAnswer(result);
       setNotice(
-        result.source === "offline"
-          ? "Verified from recorded events. AI investigation is unavailable or disabled."
-          : "Editorial selection checked against the match evidence.",
+        result.failure
+          ? (result.notice ?? "AI review could not finish. You can try again.")
+          : result.source === "offline"
+            ? "Verified from recorded events. AI investigation is unavailable or disabled."
+            : (result.notice ??
+              "Editorial selection checked against the match evidence."),
       );
     } catch {
       if (mounted.current)
@@ -415,12 +418,12 @@ export function RecapBriefing({
           <span className={styles.verified}>Evidence-backed briefing</span>
           <button
             className={styles.textButton}
-            disabled={loading || !!answer}
+            disabled={loading || (!!answer && !answer.failure)}
             onClick={investigate}
           >
             {loading
               ? "Checking evidence…"
-              : answer
+              : answer && !answer.failure
                 ? "Evidence reviewed"
                 : provider === "offline"
                   ? "Review verified recap"
