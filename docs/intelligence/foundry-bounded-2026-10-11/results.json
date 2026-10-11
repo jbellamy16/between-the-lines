@@ -1,0 +1,71 @@
+{
+  "study": "foundry-bounded-2026-10-11",
+  "evaluatedCommit": "b4443e9eb809ab466b788b83221291f633834a66",
+  "mode": "prepare",
+  "stop": "blocked_preflight",
+  "acceptanceCriteriaPassed": false,
+  "workflows": 0,
+  "actualHttpAttempts": 0,
+  "rows": [
+    {
+      "caseId": "misleading-quality",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    },
+    {
+      "caseId": "pressure-fan",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    },
+    {
+      "caseId": "temporal-weakening",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    },
+    {
+      "caseId": "temporal-resolved",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    },
+    {
+      "caseId": "unfamiliar-8911",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    },
+    {
+      "caseId": "unfamiliar-73129",
+      "outcome": "not_attempted",
+      "reason": "blocked_preflight",
+      "requests": 0,
+      "reportedUsage": null,
+      "reservedUsd": 0,
+      "humanReview": null
+    }
+  ],
+  "reportedUsage": [],
+  "reportedRateEstimateUsd": 0,
+  "grossReservationsUsd": 0,
+  "accountedUsd": 0,
+  "maximumStudyUsd": 0.5,
+  "billingUncertainty": "Token-rate estimates, not an invoice. All input priced uncached for accounting. Missing usage retains a full-context reservation. Reservation/dispatch crash boundaries are potentially sent, not proven HTTP completions."
+}

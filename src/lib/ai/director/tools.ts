@@ -86,9 +86,8 @@ export function followupTool(matchId: string, cutoff: number) {
     type: "function",
     name: "inspect_match_evidence",
     strict: true,
-    description: definitions
-      .map((d) => `${d.name}: ${d.description}`)
-      .join("\n"),
+    description:
+      "Read-only evidence via tool enum. Player queries require playerId; sequences require eventId/possession support. Comparisons need equal complete same-period windows. Counter-evidence returns <=2 assessments; optional eventId anchors a claim. Shot origins are not quality.",
     parameters: {
       ...definitions[0].parameters,
       properties: {

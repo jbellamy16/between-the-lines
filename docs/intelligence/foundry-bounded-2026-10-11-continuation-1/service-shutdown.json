@@ -1,0 +1,73 @@
+{
+  "before": {
+    "checkedAt": "2026-10-11T17:25:11.983Z",
+    "config": {
+      "appendfsync": "always",
+      "maxmemory-policy": "noeviction",
+      "no-appendfsync-on-rewrite": "no",
+      "appendonly": "yes"
+    },
+    "budget": {
+      "used1": "1",
+      "start1": "1791739451",
+      "used2": "1",
+      "start2": "1791739305",
+      "used3": "1",
+      "start3": "1791739305",
+      "used4": "1",
+      "start4": "1791739305",
+      "attemptUsed1": "1",
+      "attemptStart1": "1791739305956",
+      "attemptUsed2": "1",
+      "attemptStart2": "1791739305956",
+      "attemptUsed3": "1",
+      "attemptStart3": "1791739305956"
+    },
+    "owner": {
+      "execution": "c720ea8f4e0239aeb23192090b6ba1c1411ed4eb215bc19722649af8c75ae240",
+      "identity": "{\"study\":\"foundry-bounded-2026-10-11-continuation-1\",\"parent\":\"ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244\",\"caps\":{\"workflows\":6,\"attempts\":12,\"perWorkflow\":3,\"nanoUsd\":500000000,\"spacingMs\":65000}}",
+      "initializedAt": "1791739305"
+    },
+    "aofLastWriteStatus": "ok"
+  },
+  "after": {
+    "checkedAt": "2026-10-11T17:25:12.566Z",
+    "config": {
+      "maxmemory-policy": "noeviction",
+      "appendfsync": "always",
+      "appendonly": "yes",
+      "no-appendfsync-on-rewrite": "no"
+    },
+    "budget": {
+      "used1": "1",
+      "start1": "1791739451",
+      "used2": "1",
+      "start2": "1791739305",
+      "used3": "1",
+      "start3": "1791739305",
+      "used4": "1",
+      "start4": "1791739305",
+      "attemptUsed1": "1",
+      "attemptStart1": "1791739305956",
+      "attemptUsed2": "1",
+      "attemptStart2": "1791739305956",
+      "attemptUsed3": "1",
+      "attemptStart3": "1791739305956"
+    },
+    "owner": {
+      "initializedAt": "1791739305",
+      "identity": "{\"study\":\"foundry-bounded-2026-10-11-continuation-1\",\"parent\":\"ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244\",\"caps\":{\"workflows\":6,\"attempts\":12,\"perWorkflow\":3,\"nanoUsd\":500000000,\"spacingMs\":65000}}",
+      "execution": "c720ea8f4e0239aeb23192090b6ba1c1411ed4eb215bc19722649af8c75ae240"
+    },
+    "aofLastWriteStatus": "ok"
+  },
+  "persistenceRestartVerified": true,
+  "state": {
+    "status": "exited",
+    "running": false,
+    "exitCode": 0,
+    "finishedAt": "2026-10-11T17:25:12.637464246Z"
+  },
+  "durableVolume": "second-look-foundry-continuation-1",
+  "countersReset": false
+}

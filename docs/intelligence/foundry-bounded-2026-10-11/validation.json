@@ -1,0 +1,40 @@
+{
+  "kind": "Offline validation; no provider calls",
+  "candidateCommit": "b4443e9eb809ab466b788b83221291f633834a66",
+  "checkedAt": "2026-10-11T16:46:06.094152+00:00",
+  "typecheck": "passed",
+  "unit": {
+    "passed": 487,
+    "skipped": 3,
+    "testFilesPassed": 31,
+    "testFilesSkipped": 1
+  },
+  "targetedHarness": {
+    "passed": 24,
+    "network": "scripted only; real runtime accounting in isolated test memory"
+  },
+  "productionBuild": "passed",
+  "focusedProductionBrowser": {
+    "passed": 12,
+    "skipped": 2,
+    "projects": [
+      "desktop Chromium"
+    ],
+    "suites": [
+      "explanation.spec.ts",
+      "recap-briefing.spec.ts"
+    ]
+  },
+  "historicalPreservation": {
+    "originalFilesVerified": 472,
+    "allSha256Unchanged": true,
+    "testGeneratedFilesRestored": [
+      "artifacts/ai-evaluation.json",
+      "artifacts/director-evaluation.json",
+      "artifacts/intelligence-evaluation.json"
+    ]
+  },
+  "sourceChangesSincePr24": [],
+  "providerRequests": 0,
+  "humanReview": null
+}

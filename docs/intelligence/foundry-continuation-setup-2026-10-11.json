@@ -1,0 +1,101 @@
+{
+  "parent": {
+    "study": "foundry-bounded-2026-10-11",
+    "receiptIndexSha256": "ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244",
+    "hashes": {
+      "REPORT.md": "3dac68664d1a5f455e7736cc670011b7df00c05184a2bc4cc46e00727b570d0e",
+      "fixtures.json": "9b57b67736c33b493b78f6aed644cd4525f7bf7184606759766e80a9662d8628",
+      "ledger.jsonl": "0bf847731f3631bd6e9baeeaa97692e0b7ad9009f717cb411163434b120a256b",
+      "manifest.json": "81b996f6640e90b1904d12e2f6bd7eb349d3561291d149505fd1155fa06dc387",
+      "offline-preparation.json": "3da6cc97781c398c215f605fff0cda3f7cf107a55af32cba2139c19699dee67c",
+      "preflight.json": "4eaf353c1ea4bba4c2590ed0e5b9377a7429d068ad52d9464cbe997a5ed0408a",
+      "results.json": "53d123a7c72ac85a25545e9612ba533e214e4756645457d63bcd12ba359eae11",
+      "validation.json": "491e5b9b4d0f63a20532358ad4fab9f33e4df3aa7c527c608cf82f406e5c966d"
+    },
+    "priorWorkflows": 0,
+    "priorAttempts": 0,
+    "priorAccountedUsd": 0
+  },
+  "container": "/second-look-foundry-continuation-1",
+  "image": "redis@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85",
+  "created": "2026-10-11T17:21:24.218450851Z",
+  "ports": {
+    "6379/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "16379"
+      }
+    ]
+  },
+  "restartPolicy": {
+    "Name": "no",
+    "MaximumRetryCount": 0
+  },
+  "volume": {
+    "name": "second-look-foundry-continuation-1",
+    "created": "2026-10-11T12:21:24-05:00"
+  },
+  "before": {
+    "checkedAt": "2026-10-11T17:22:04.892Z",
+    "config": {
+      "appendfsync": "always",
+      "maxmemory-policy": "noeviction",
+      "no-appendfsync-on-rewrite": "no",
+      "appendonly": "yes"
+    },
+    "budget": {
+      "used1": "0",
+      "start1": "1791739305",
+      "used2": "0",
+      "start2": "1791739305",
+      "used3": "0",
+      "start3": "1791739305",
+      "used4": "0",
+      "start4": "1791739305",
+      "attemptUsed1": "0",
+      "attemptStart1": "1791739305956",
+      "attemptUsed2": "0",
+      "attemptStart2": "1791739305956",
+      "attemptUsed3": "0",
+      "attemptStart3": "1791739305956"
+    },
+    "owner": {
+      "identity": "{\"study\":\"foundry-bounded-2026-10-11-continuation-1\",\"parent\":\"ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244\",\"caps\":{\"workflows\":6,\"attempts\":12,\"perWorkflow\":3,\"nanoUsd\":500000000,\"spacingMs\":65000}}",
+      "initializedAt": "1791739305"
+    },
+    "aofLastWriteStatus": "ok"
+  },
+  "after": {
+    "checkedAt": "2026-10-11T17:22:05.124Z",
+    "config": {
+      "appendfsync": "always",
+      "maxmemory-policy": "noeviction",
+      "no-appendfsync-on-rewrite": "no",
+      "appendonly": "yes"
+    },
+    "budget": {
+      "used1": "0",
+      "start1": "1791739305",
+      "used2": "0",
+      "start2": "1791739305",
+      "used3": "0",
+      "start3": "1791739305",
+      "used4": "0",
+      "start4": "1791739305",
+      "attemptUsed1": "0",
+      "attemptStart1": "1791739305956",
+      "attemptUsed2": "0",
+      "attemptStart2": "1791739305956",
+      "attemptUsed3": "0",
+      "attemptStart3": "1791739305956"
+    },
+    "owner": {
+      "identity": "{\"study\":\"foundry-bounded-2026-10-11-continuation-1\",\"parent\":\"ff322dcc9fe7e9a4ecaa4afbdad98d948c8d2cb2f479d02943f4d5da06d97244\",\"caps\":{\"workflows\":6,\"attempts\":12,\"perWorkflow\":3,\"nanoUsd\":500000000,\"spacingMs\":65000}}",
+      "initializedAt": "1791739305"
+    },
+    "aofLastWriteStatus": "ok"
+  },
+  "persistenceRestartVerified": true,
+  "hostedChanges": 0,
+  "azureChanges": 0
+}

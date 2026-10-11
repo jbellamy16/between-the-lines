@@ -47,6 +47,59 @@ const options = () => ({ deadline: Date.now() + 55000, maxAttempts: 2 });
 const tick = () => vi.advanceTimersByTimeAsync(0);
 
 describe("per-attempt controls with mocked transport and real local accounting", () => {
+  it("uses the increased allocation by default, clamps overrides and preserves lower limits", async () => {
+    const api = await setup();
+    vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", undefined);
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", undefined);
+    expect(api.requestLimits()).toEqual({ rpm: 30, tpm: 30000 });
+    vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", "100");
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "1000000");
+    expect(api.requestLimits()).toEqual({ rpm: 30, tpm: 30000 });
+    vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", "10");
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
+    expect(api.requestLimits()).toEqual({ rpm: 10, tpm: 10000 });
+  });
+  it("fits three substantial requests at the new capacity while retaining token and durable budget limits", async () => {
+    const api = await setup();
+    vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", undefined);
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", undefined);
+    vi.stubEnv("AI_TOTAL_LIMIT", "3");
+    const times: number[] = [];
+    const transport = vi.fn(async () => {
+      times.push(Date.now());
+      return completed();
+    });
+    vi.stubGlobal("fetch", transport);
+    const body = { input: "a".repeat(20000) };
+    const estimated = api.estimateRequestTokens(
+      api.providerPayload("foundry", body),
+    );
+    expect(estimated * 3).toBeGreaterThan(10000);
+    expect(estimated * 3).toBeLessThanOrEqual(30000);
+    expect(estimated * 4).toBeGreaterThan(30000);
+    for (let i = 0; i < 3; i++) {
+      const pending = api.providerResponse("foundry", body);
+      await vi.advanceTimersByTimeAsync(2000);
+      await pending;
+    }
+    expect(times).toHaveLength(3);
+    for (let i = 1; i < times.length; i++)
+      expect(times[i] - times[i - 1]).toBeGreaterThanOrEqual(2000);
+    await expect(api.providerResponse("foundry", body)).rejects.toMatchObject({
+      category: "budget",
+    });
+    vi.stubEnv("AI_TOTAL_LIMIT", "4"); // Test-only allowance to isolate the rolling ceiling.
+    await expect(api.providerResponse("foundry", body)).rejects.toMatchObject({
+      category: "capacity",
+    });
+    expect(transport).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(60000);
+    vi.stubEnv("AI_TOTAL_LIMIT", "3");
+    await expect(api.providerResponse("foundry", body)).rejects.toMatchObject({
+      category: "budget",
+    });
+    expect(transport).toHaveBeenCalledTimes(3);
+  });
   it("honors the longest Retry-After guidance and charges both attempts", async () => {
     const api = await setup();
     vi.stubEnv("AI_TOTAL_LIMIT", "2");

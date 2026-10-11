@@ -314,6 +314,7 @@ describe("bounded provider integration (scripted transport, not quality evidence
   });
   it("recovers from a cross-half comparison without admitting rejected evidence or adding a model turn", async () => {
     configure();
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
     const successful = scriptedProvider();
     const transport = vi
       .fn()
@@ -356,7 +357,9 @@ describe("bounded provider integration (scripted transport, not quality evidence
       expect(previous[1] - previous[0]).toBe(current[1] - current[0]);
       expect(current[1] - current[0]).toBeLessThanOrEqual(900);
     }
-    expect(lastRequest.tool_choice).toBe("auto");
+    // Another investigation would exceed this workflow's minute capacity;
+    // the model can use existing verified claims or abstain in the final plan.
+    expect(lastRequest.tool_choice).toBeUndefined();
   });
   it("rejects unsupported generated claims without another paid retry", async () => {
     configure();
@@ -528,9 +531,10 @@ it("compares shot origins only with enough located shots in equal windows", () =
   expect(location!.statistics[0].value).toBe(95);
   expect(location!.statistics[1].value).toBe(55);
 });
-it("stops a provider that keeps requesting tools at the third response", async () => {
+it("stops a provider that requests more tools after capacity requires a final plan", async () => {
   configure();
-  const transport = vi.fn(async () =>
+  vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
+  const transport = vi.fn(async (_url: unknown, _init: RequestInit) =>
     Response.json({
       status: "completed",
       output: [
@@ -547,5 +551,8 @@ it("stops a provider that keeps requesting tools at the third response", async (
   await expect(investigate(match, cutoff, "fan", {}, "openai")).rejects.toThrow(
     "budget",
   );
-  expect(transport).toHaveBeenCalledTimes(3);
+  expect(transport).toHaveBeenCalledTimes(2);
+  expect(
+    JSON.parse(String(transport.mock.calls[1][1].body)).tools,
+  ).toBeUndefined();
 });

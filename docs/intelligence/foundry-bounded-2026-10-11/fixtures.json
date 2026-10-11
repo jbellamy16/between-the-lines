@@ -1,0 +1,2051 @@
+[
+  {
+    "id": "misleading-quality",
+    "digest": "3f4987cf7a7a6c5220051d01ca81ed234472ac571e6be502133377c5dd0f6ffe",
+    "cutoff": 1800,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "saved diagnostic; source wrappers restored in memory",
+    "preflightEligibility": "eligible",
+    "evidence": {
+      "previousWindow": [
+        0,
+        900
+      ],
+      "currentWindow": [
+        900,
+        1800
+      ],
+      "shots": {
+        "previous": 1,
+        "current": 4,
+        "early": 2,
+        "late": 2
+      },
+      "xg": {
+        "previous": 0.8,
+        "current": 0.2
+      },
+      "highWins": {
+        "previous": 0,
+        "current": 0
+      },
+      "recoveryFiveMinutes": {
+        "previous": 0,
+        "current": 0
+      },
+      "selectedShotIds": [
+        "live-challenge-misleading-quality:0",
+        "live-challenge-misleading-quality:1",
+        "live-challenge-misleading-quality:2",
+        "live-challenge-misleading-quality:3",
+        "live-challenge-misleading-quality:4"
+      ],
+      "observations": [
+        {
+          "id": "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 1500,
+          "importance": "major",
+          "headline": "Harbor: more shots",
+          "brief": "Harbor took 4 shots in the last 15 min, up from 1 in the previous 15 min.",
+          "detail": "Harbor: 4 shots (15:00–30:00) versus 1 (00:00–15:00). Each window covers 15 min in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 900 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 1,
+              "unit": "events / 900 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "live-challenge-misleading-quality:0",
+            "live-challenge-misleading-quality:1",
+            "live-challenge-misleading-quality:2",
+            "live-challenge-misleading-quality:3",
+            "live-challenge-misleading-quality:4"
+          ],
+          "rank": 10
+        }
+      ]
+    }
+  },
+  {
+    "id": "pressure-fan",
+    "digest": "11aaef26fa1146107cc125f7a9a3201fd4bec3e02533a16fd79030ecb444bc5e",
+    "cutoff": 3804,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "current seeded generator; every historical event field compared",
+    "preflightEligibility": "eligible",
+    "evidence": {
+      "previousWindow": [
+        2700,
+        3252
+      ],
+      "currentWindow": [
+        3252,
+        3804
+      ],
+      "shots": {
+        "previous": 0,
+        "current": 4,
+        "early": 1,
+        "late": 3
+      },
+      "xg": {
+        "previous": 0,
+        "current": 0.5800000000000001
+      },
+      "highWins": {
+        "previous": 0,
+        "current": 4
+      },
+      "recoveryFiveMinutes": {
+        "previous": 1,
+        "current": 1
+      },
+      "selectedShotIds": [
+        "pressure-202632-410",
+        "pressure-202632-435",
+        "pressure-202632-451",
+        "pressure-202632-463"
+      ],
+      "observations": [
+        {
+          "id": "pressure:activity-change:harbor:shots:pressure-202632-410",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 3770,
+          "importance": "major",
+          "headline": "Harbor: more shots",
+          "brief": "Harbor took 4 shots in the last 9 min 12 sec, up from 0 in the previous 9 min 12 sec.",
+          "detail": "Harbor: 4 shots (54:12–63:24) versus 0 (45:00–54:12). Each window covers 9 min 12 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 552 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 0,
+              "unit": "events / 552 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:ball wins in the attacking third:pressure-202632-415",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 3727,
+          "importance": "major",
+          "headline": "Harbor: more ball wins in the attacking third",
+          "brief": "Harbor recorded 4 ball wins in the attacking third in the last 9 min 12 sec, up from 0 in the previous 9 min 12 sec.",
+          "detail": "Harbor: 4 ball wins in the attacking third (54:12–63:24) versus 0 (45:00–54:12). Each window covers 9 min 12 sec in the same half. Ball wins in the attacking third count successful recoveries, interceptions and tackles starting in the final third of the pitch. Recoveries with no failure recorded also count. In the synthetic feed, interceptions and tackles start a new possession and represent successful wins. Restarts do not count. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "ball wins in the attacking third",
+              "value": 4,
+              "unit": "events / 552 seconds"
+            },
+            {
+              "label": "Previous ball wins in the attacking third",
+              "value": 0,
+              "unit": "events / 552 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-415",
+            "pressure-202632-422",
+            "pressure-202632-445",
+            "pressure-202632-456"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-408",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 3770,
+          "importance": "pattern",
+          "headline": "Harbor: more attacking-third actions",
+          "brief": "Harbor recorded 21 attacking-third actions in the last 9 min 12 sec, up from 2 in the previous 9 min 12 sec.",
+          "detail": "Harbor: 21 attacking-third actions (54:12–63:24) versus 2 (45:00–54:12). Each window covers 9 min 12 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "attacking-third actions",
+              "value": 21,
+              "unit": "events / 552 seconds"
+            },
+            {
+              "label": "Previous attacking-third actions",
+              "value": 2,
+              "unit": "events / 552 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3549,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 58:39 before Milo Serrano's shot at 59:09 in the same possession.",
+          "detail": "Harbor's recorded recovery at 58:39 was followed by Milo Serrano's shot at 59:09 in the same possession. The recorded interval was 30 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 30,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-463",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3770,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 5 passes in the possession before Theo March's shot at 62:50.",
+          "detail": "Harbor completed 5 recorded passes before Theo March's shot at 62:50, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-455",
+            "pressure-202632-456",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-451",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3679,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 4 passes in the possession before Theo March's shot at 61:19.",
+          "detail": "Harbor completed 4 recorded passes before Theo March's shot at 61:19, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-444",
+            "pressure-202632-445",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3342,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 6 passes in the possession before Arlo Hayes's shot at 55:42.",
+          "detail": "Harbor completed 6 recorded passes before Arlo Hayes's shot at 55:42, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 6,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-384",
+          "category": "passing-pair",
+          "team": "harbor",
+          "timestamp": 3674,
+          "importance": "pattern",
+          "headline": "Harbor: a repeated passing connection",
+          "brief": "Jude Moreno found Theo March with 3 completed passes from 48:24 to 63:24.",
+          "detail": "3 recorded successful passes from Jude Moreno to Theo March between 48:24 and 63:24. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 3,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-384",
+            "pressure-202632-407",
+            "pressure-202632-449"
+          ],
+          "rank": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "temporal-weakening",
+    "digest": "11aaef26fa1146107cc125f7a9a3201fd4bec3e02533a16fd79030ecb444bc5e",
+    "cutoff": 4200,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "current seeded generator; every historical event field compared",
+    "preflightEligibility": "eligible",
+    "evidence": {
+      "previousWindow": [
+        2700,
+        3450
+      ],
+      "currentWindow": [
+        3450,
+        4200
+      ],
+      "shots": {
+        "previous": 1,
+        "current": 4,
+        "early": 3,
+        "late": 1
+      },
+      "xg": {
+        "previous": 0.12,
+        "current": 0.54
+      },
+      "highWins": {
+        "previous": 2,
+        "current": 5
+      },
+      "recoveryFiveMinutes": {
+        "previous": 3,
+        "current": 1
+      },
+      "selectedShotIds": [
+        "pressure-202632-410",
+        "pressure-202632-435",
+        "pressure-202632-451",
+        "pressure-202632-463",
+        "pressure-202632-506"
+      ],
+      "observations": [
+        {
+          "id": "pressure:activity-change:harbor:shots:pressure-202632-435",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4116,
+          "importance": "major",
+          "headline": "Harbor: more shots",
+          "brief": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+          "detail": "Harbor: 4 shots (57:30–70:00) versus 1 (45:00–57:30). Each window covers 12 min 30 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 1,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:ball wins in the attacking third:pressure-202632-445",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4089,
+          "importance": "major",
+          "headline": "Harbor: more ball wins in the attacking third",
+          "brief": "Harbor recorded 5 ball wins in the attacking third in the last 12 min 30 sec, up from 2 in the previous 12 min 30 sec.",
+          "detail": "Harbor: 5 ball wins in the attacking third (57:30–70:00) versus 2 (45:00–57:30). Each window covers 12 min 30 sec in the same half. Ball wins in the attacking third count successful recoveries, interceptions and tackles starting in the final third of the pitch. Recoveries with no failure recorded also count. In the synthetic feed, interceptions and tackles start a new possession and represent successful wins. Restarts do not count. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "ball wins in the attacking third",
+              "value": 5,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous ball wins in the attacking third",
+              "value": 2,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-415",
+            "pressure-202632-422",
+            "pressure-202632-445",
+            "pressure-202632-456",
+            "pressure-202632-469",
+            "pressure-202632-475",
+            "pressure-202632-501"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-433",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4116,
+          "importance": "pattern",
+          "headline": "Harbor: more attacking-third actions",
+          "brief": "Harbor recorded 30 attacking-third actions in the last 12 min 30 sec, up from 8 in the previous 12 min 30 sec.",
+          "detail": "Harbor: 30 attacking-third actions (57:30–70:00) versus 8 (45:00–57:30). Each window covers 12 min 30 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "attacking-third actions",
+              "value": 30,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous attacking-third actions",
+              "value": 8,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463",
+            "pressure-202632-470",
+            "pressure-202632-476",
+            "pressure-202632-477",
+            "pressure-202632-478",
+            "pressure-202632-479",
+            "pressure-202632-480",
+            "pressure-202632-489",
+            "pressure-202632-490",
+            "pressure-202632-491",
+            "pressure-202632-492",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-506",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 4116,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 68:09 before Nico Wells's shot at 68:36 in the same possession.",
+          "detail": "Harbor's recorded recovery at 68:09 was followed by Nico Wells's shot at 68:36 in the same possession. The recorded interval was 27 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 27,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-501",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:substitute-involvement:harbor:pressure-202632-411",
+          "category": "substitute-involvement",
+          "team": "harbor",
+          "timestamp": 4116,
+          "importance": "pattern",
+          "headline": "Nico Wells: involvement after coming on",
+          "brief": "Nico Wells has 4 recorded on-ball actions since coming on at 56:01, including 1 shot.",
+          "detail": "Nico Wells came on at 56:01 and has 4 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "statistics": [
+            {
+              "label": "Recorded involvements",
+              "value": 4,
+              "unit": "events"
+            },
+            {
+              "label": "Shots",
+              "value": 1,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-411",
+            "pressure-202632-458",
+            "pressure-202632-461",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-435",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3549,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 58:39 before Milo Serrano's shot at 59:09 in the same possession.",
+          "detail": "Harbor's recorded recovery at 58:39 was followed by Milo Serrano's shot at 59:09 in the same possession. The recorded interval was 30 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 30,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-430",
+            "pressure-202632-431",
+            "pressure-202632-432",
+            "pressure-202632-433",
+            "pressure-202632-434",
+            "pressure-202632-435"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-463",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3770,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 5 passes in the possession before Theo March's shot at 62:50.",
+          "detail": "Harbor completed 5 recorded passes before Theo March's shot at 62:50, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-455",
+            "pressure-202632-456",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-451",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3679,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 4 passes in the possession before Theo March's shot at 61:19.",
+          "detail": "Harbor completed 4 recorded passes before Theo March's shot at 61:19, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-444",
+            "pressure-202632-445",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-410",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3342,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 6 passes in the possession before Arlo Hayes's shot at 55:42.",
+          "detail": "Harbor completed 6 recorded passes before Arlo Hayes's shot at 55:42, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 6,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-401",
+            "pressure-202632-402",
+            "pressure-202632-403",
+            "pressure-202632-404",
+            "pressure-202632-405",
+            "pressure-202632-406",
+            "pressure-202632-407",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-407",
+          "category": "passing-pair",
+          "team": "harbor",
+          "timestamp": 4106,
+          "importance": "pattern",
+          "headline": "Harbor: a repeated passing connection",
+          "brief": "Jude Moreno found Theo March with 4 completed passes from 55:00 to 70:00.",
+          "detail": "4 recorded successful passes from Jude Moreno to Theo March between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-407",
+            "pressure-202632-449",
+            "pressure-202632-491",
+            "pressure-202632-503"
+          ],
+          "rank": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "temporal-resolved",
+    "digest": "11aaef26fa1146107cc125f7a9a3201fd4bec3e02533a16fd79030ecb444bc5e",
+    "cutoff": 4500,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "current seeded generator; every historical event field compared",
+    "preflightEligibility": "no-call",
+    "evidence": {
+      "previousWindow": [
+        2700,
+        3600
+      ],
+      "currentWindow": [
+        3600,
+        4500
+      ],
+      "shots": {
+        "previous": 2,
+        "current": 4,
+        "early": 2,
+        "late": 2
+      },
+      "xg": {
+        "previous": 0.16,
+        "current": 0.59
+      },
+      "highWins": {
+        "previous": 2,
+        "current": 5
+      },
+      "recoveryFiveMinutes": {
+        "previous": 1,
+        "current": 0
+      },
+      "selectedShotIds": [
+        "pressure-202632-410",
+        "pressure-202632-435",
+        "pressure-202632-451",
+        "pressure-202632-463",
+        "pressure-202632-506",
+        "pressure-202632-527"
+      ],
+      "observations": [
+        {
+          "id": "pressure:score-change:pressure-202632-552",
+          "category": "score-change",
+          "team": "riverside",
+          "timestamp": 4475,
+          "importance": "major",
+          "rank": 100,
+          "headline": "Goal: Harbor 1–1 Riverside",
+          "brief": "Hugo Silva scored at 74:35. Harbor 1–1 Riverside.",
+          "detail": "Harbor 1–1 Riverside. Hugo Silva scored at 74:35. The score is counted from the recorded goals available at this point.",
+          "evidenceIds": [
+            "pressure-202632-7",
+            "pressure-202632-552"
+          ],
+          "statistics": [
+            {
+              "label": "Harbor goals",
+              "value": 1,
+              "unit": "goals"
+            },
+            {
+              "label": "Riverside goals",
+              "value": 1,
+              "unit": "goals"
+            }
+          ],
+          "limitations": [
+            "The score is based on recorded scoring events, excluding penalty shootouts. No explanation of the result's cause is claimed."
+          ]
+        },
+        {
+          "id": "pressure:activity-change:harbor:shots:pressure-202632-451",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4285,
+          "importance": "major",
+          "headline": "Harbor: more shots",
+          "brief": "Harbor took 4 shots in the last 15 min, up from 2 in the previous 15 min.",
+          "detail": "Harbor: 4 shots (60:00–75:00) versus 2 (45:00–60:00). Each window covers 15 min in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 900 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 2,
+              "unit": "events / 900 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506",
+            "pressure-202632-527"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:ball wins in the attacking third:pressure-202632-445",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4089,
+          "importance": "major",
+          "headline": "Harbor: more ball wins in the attacking third",
+          "brief": "Harbor recorded 5 ball wins in the attacking third in the last 15 min, up from 2 in the previous 15 min.",
+          "detail": "Harbor: 5 ball wins in the attacking third (60:00–75:00) versus 2 (45:00–60:00). Each window covers 15 min in the same half. Ball wins in the attacking third count successful recoveries, interceptions and tackles starting in the final third of the pitch. Recoveries with no failure recorded also count. In the synthetic feed, interceptions and tackles start a new possession and represent successful wins. Restarts do not count. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "ball wins in the attacking third",
+              "value": 5,
+              "unit": "events / 900 seconds"
+            },
+            {
+              "label": "Previous ball wins in the attacking third",
+              "value": 2,
+              "unit": "events / 900 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-415",
+            "pressure-202632-422",
+            "pressure-202632-445",
+            "pressure-202632-456",
+            "pressure-202632-469",
+            "pressure-202632-475",
+            "pressure-202632-501"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "pressure:activity-change:harbor:attacking-third actions:pressure-202632-446",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4327,
+          "importance": "pattern",
+          "headline": "Harbor: more attacking-third actions",
+          "brief": "Harbor recorded 34 attacking-third actions in the last 15 min, up from 10 in the previous 15 min.",
+          "detail": "Harbor: 34 attacking-third actions (60:00–75:00) versus 10 (45:00–60:00). Each window covers 15 min in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "attacking-third actions",
+              "value": 34,
+              "unit": "events / 900 seconds"
+            },
+            {
+              "label": "Previous attacking-third actions",
+              "value": 10,
+              "unit": "events / 900 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-340",
+            "pressure-202632-387",
+            "pressure-202632-408",
+            "pressure-202632-409",
+            "pressure-202632-410",
+            "pressure-202632-416",
+            "pressure-202632-417",
+            "pressure-202632-423",
+            "pressure-202632-433",
+            "pressure-202632-435",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463",
+            "pressure-202632-470",
+            "pressure-202632-476",
+            "pressure-202632-477",
+            "pressure-202632-478",
+            "pressure-202632-479",
+            "pressure-202632-480",
+            "pressure-202632-489",
+            "pressure-202632-490",
+            "pressure-202632-491",
+            "pressure-202632-492",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506",
+            "pressure-202632-526",
+            "pressure-202632-527",
+            "pressure-202632-530",
+            "pressure-202632-531",
+            "pressure-202632-532",
+            "pressure-202632-533"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:recovery-shot:harbor:pressure-202632-506",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 4116,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 68:09 before Nico Wells's shot at 68:36 in the same possession.",
+          "detail": "Harbor's recorded recovery at 68:09 was followed by Nico Wells's shot at 68:36 in the same possession. The recorded interval was 27 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 27,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-501",
+            "pressure-202632-502",
+            "pressure-202632-503",
+            "pressure-202632-504",
+            "pressure-202632-505",
+            "pressure-202632-506"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "pressure:shot-sequence:riverside:pressure-202632-551",
+          "category": "shot-sequence",
+          "team": "riverside",
+          "timestamp": 4475,
+          "importance": "pattern",
+          "headline": "Riverside: passing passage ends in a shot",
+          "brief": "Riverside completed 7 passes in the possession before Hugo Silva's shot at 74:35.",
+          "detail": "Riverside completed 7 recorded passes before Hugo Silva's shot at 74:35, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 7,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-541",
+            "pressure-202632-542",
+            "pressure-202632-543",
+            "pressure-202632-544",
+            "pressure-202632-545",
+            "pressure-202632-546",
+            "pressure-202632-547",
+            "pressure-202632-548",
+            "pressure-202632-549",
+            "pressure-202632-550",
+            "pressure-202632-551"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-527",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 4285,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 4 passes in the possession before Theo March's shot at 71:25.",
+          "detail": "Harbor completed 4 recorded passes before Theo March's shot at 71:25, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-520",
+            "pressure-202632-521",
+            "pressure-202632-522",
+            "pressure-202632-523",
+            "pressure-202632-524",
+            "pressure-202632-525",
+            "pressure-202632-526",
+            "pressure-202632-527"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-463",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3770,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 5 passes in the possession before Theo March's shot at 62:50.",
+          "detail": "Harbor completed 5 recorded passes before Theo March's shot at 62:50, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-455",
+            "pressure-202632-456",
+            "pressure-202632-457",
+            "pressure-202632-458",
+            "pressure-202632-459",
+            "pressure-202632-460",
+            "pressure-202632-461",
+            "pressure-202632-462",
+            "pressure-202632-463"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:shot-sequence:harbor:pressure-202632-451",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3679,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 4 passes in the possession before Theo March's shot at 61:19.",
+          "detail": "Harbor completed 4 recorded passes before Theo March's shot at 61:19, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-444",
+            "pressure-202632-445",
+            "pressure-202632-446",
+            "pressure-202632-447",
+            "pressure-202632-448",
+            "pressure-202632-449",
+            "pressure-202632-450",
+            "pressure-202632-451"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "pressure:passing-pair:harbor:pressure-202632-449",
+          "category": "passing-pair",
+          "team": "harbor",
+          "timestamp": 4499,
+          "importance": "pattern",
+          "headline": "Harbor: a repeated passing connection",
+          "brief": "Jude Moreno found Theo March with 4 completed passes from 60:00 to 75:00.",
+          "detail": "4 recorded successful passes from Jude Moreno to Theo March between 60:00 and 75:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-449",
+            "pressure-202632-491",
+            "pressure-202632-503",
+            "pressure-202632-555"
+          ],
+          "rank": 6
+        },
+        {
+          "id": "pressure:passing-pair:riverside:pressure-202632-497",
+          "category": "passing-pair",
+          "team": "riverside",
+          "timestamp": 4447,
+          "importance": "pattern",
+          "headline": "Riverside: a repeated passing connection",
+          "brief": "Oscar Voss found Max Rowan with 3 completed passes from 60:00 to 75:00.",
+          "detail": "3 recorded successful passes from Oscar Voss to Max Rowan between 60:00 and 75:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 3,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "pressure-202632-497",
+            "pressure-202632-544",
+            "pressure-202632-546"
+          ],
+          "rank": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "unfamiliar-8911",
+    "digest": "356de98100125b11ded64825d447a74983269f153079ad0c8ca28f354d64e56f",
+    "cutoff": 4200,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "current seeded generator; every historical event field compared",
+    "preflightEligibility": "eligible",
+    "evidence": {
+      "previousWindow": [
+        2700,
+        3450
+      ],
+      "currentWindow": [
+        3450,
+        4200
+      ],
+      "shots": {
+        "previous": 2,
+        "current": 4,
+        "early": 2,
+        "late": 2
+      },
+      "xg": {
+        "previous": 0.22999999999999998,
+        "current": 0.66
+      },
+      "highWins": {
+        "previous": 5,
+        "current": 7
+      },
+      "recoveryFiveMinutes": {
+        "previous": 2,
+        "current": 2
+      },
+      "selectedShotIds": [
+        "synthetic-pressure-8911-balanced:pressure-8911-716",
+        "synthetic-pressure-8911-balanced:pressure-8911-863",
+        "synthetic-pressure-8911-balanced:pressure-8911-960",
+        "synthetic-pressure-8911-balanced:pressure-8911-1002",
+        "synthetic-pressure-8911-balanced:pressure-8911-1045",
+        "synthetic-pressure-8911-balanced:pressure-8911-1063"
+      ],
+      "observations": [
+        {
+          "id": "synthetic-pressure-8911-balanced:activity-change:harbor:shots:synthetic-pressure-8911-balanced:pressure-8911-960",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4002,
+          "importance": "major",
+          "headline": "Harbor: more shots",
+          "brief": "Harbor took 4 shots in the last 12 min 30 sec, up from 2 in the previous 12 min 30 sec.",
+          "detail": "Harbor: 4 shots (57:30–70:00) versus 2 (45:00–57:30). Each window covers 12 min 30 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 2,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-716",
+            "synthetic-pressure-8911-balanced:pressure-8911-863",
+            "synthetic-pressure-8911-balanced:pressure-8911-960",
+            "synthetic-pressure-8911-balanced:pressure-8911-1002",
+            "synthetic-pressure-8911-balanced:pressure-8911-1045",
+            "synthetic-pressure-8911-balanced:pressure-8911-1063"
+          ],
+          "rank": 10
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:activity-change:harbor:attacking-third actions:synthetic-pressure-8911-balanced:pressure-8911-933",
+          "category": "activity-change",
+          "team": "harbor",
+          "timestamp": 4149,
+          "importance": "pattern",
+          "headline": "Harbor: more attacking-third actions",
+          "brief": "Harbor recorded 48 attacking-third actions in the last 12 min 30 sec, up from 28 in the previous 12 min 30 sec.",
+          "detail": "Harbor: 48 attacking-third actions (57:30–70:00) versus 28 (45:00–57:30). Each window covers 12 min 30 sec in the same half. This counts actions; it does not explain why they happened.",
+          "statistics": [
+            {
+              "label": "attacking-third actions",
+              "value": 48,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous attacking-third actions",
+              "value": 28,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-715",
+            "synthetic-pressure-8911-balanced:pressure-8911-716",
+            "synthetic-pressure-8911-balanced:pressure-8911-727",
+            "synthetic-pressure-8911-balanced:pressure-8911-733",
+            "synthetic-pressure-8911-balanced:pressure-8911-734",
+            "synthetic-pressure-8911-balanced:pressure-8911-735",
+            "synthetic-pressure-8911-balanced:pressure-8911-736",
+            "synthetic-pressure-8911-balanced:pressure-8911-737",
+            "synthetic-pressure-8911-balanced:pressure-8911-738",
+            "synthetic-pressure-8911-balanced:pressure-8911-781",
+            "synthetic-pressure-8911-balanced:pressure-8911-782",
+            "synthetic-pressure-8911-balanced:pressure-8911-783",
+            "synthetic-pressure-8911-balanced:pressure-8911-824",
+            "synthetic-pressure-8911-balanced:pressure-8911-826",
+            "synthetic-pressure-8911-balanced:pressure-8911-838",
+            "synthetic-pressure-8911-balanced:pressure-8911-839",
+            "synthetic-pressure-8911-balanced:pressure-8911-859",
+            "synthetic-pressure-8911-balanced:pressure-8911-860",
+            "synthetic-pressure-8911-balanced:pressure-8911-861",
+            "synthetic-pressure-8911-balanced:pressure-8911-862",
+            "synthetic-pressure-8911-balanced:pressure-8911-863",
+            "synthetic-pressure-8911-balanced:pressure-8911-876",
+            "synthetic-pressure-8911-balanced:pressure-8911-892",
+            "synthetic-pressure-8911-balanced:pressure-8911-898",
+            "synthetic-pressure-8911-balanced:pressure-8911-899",
+            "synthetic-pressure-8911-balanced:pressure-8911-900",
+            "synthetic-pressure-8911-balanced:pressure-8911-901",
+            "synthetic-pressure-8911-balanced:pressure-8911-902",
+            "synthetic-pressure-8911-balanced:pressure-8911-933",
+            "synthetic-pressure-8911-balanced:pressure-8911-934",
+            "synthetic-pressure-8911-balanced:pressure-8911-935",
+            "synthetic-pressure-8911-balanced:pressure-8911-953",
+            "synthetic-pressure-8911-balanced:pressure-8911-954",
+            "synthetic-pressure-8911-balanced:pressure-8911-957",
+            "synthetic-pressure-8911-balanced:pressure-8911-958",
+            "synthetic-pressure-8911-balanced:pressure-8911-959",
+            "synthetic-pressure-8911-balanced:pressure-8911-960",
+            "synthetic-pressure-8911-balanced:pressure-8911-970",
+            "synthetic-pressure-8911-balanced:pressure-8911-979",
+            "synthetic-pressure-8911-balanced:pressure-8911-980",
+            "synthetic-pressure-8911-balanced:pressure-8911-981",
+            "synthetic-pressure-8911-balanced:pressure-8911-982",
+            "synthetic-pressure-8911-balanced:pressure-8911-998",
+            "synthetic-pressure-8911-balanced:pressure-8911-999",
+            "synthetic-pressure-8911-balanced:pressure-8911-1000",
+            "synthetic-pressure-8911-balanced:pressure-8911-1001",
+            "synthetic-pressure-8911-balanced:pressure-8911-1002",
+            "synthetic-pressure-8911-balanced:pressure-8911-1039",
+            "synthetic-pressure-8911-balanced:pressure-8911-1040",
+            "synthetic-pressure-8911-balanced:pressure-8911-1041",
+            "synthetic-pressure-8911-balanced:pressure-8911-1042",
+            "synthetic-pressure-8911-balanced:pressure-8911-1043",
+            "synthetic-pressure-8911-balanced:pressure-8911-1044",
+            "synthetic-pressure-8911-balanced:pressure-8911-1045",
+            "synthetic-pressure-8911-balanced:pressure-8911-1059",
+            "synthetic-pressure-8911-balanced:pressure-8911-1060",
+            "synthetic-pressure-8911-balanced:pressure-8911-1061",
+            "synthetic-pressure-8911-balanced:pressure-8911-1062",
+            "synthetic-pressure-8911-balanced:pressure-8911-1063",
+            "synthetic-pressure-8911-balanced:pressure-8911-1066",
+            "synthetic-pressure-8911-balanced:pressure-8911-1067",
+            "synthetic-pressure-8911-balanced:pressure-8911-1073",
+            "synthetic-pressure-8911-balanced:pressure-8911-1074",
+            "synthetic-pressure-8911-balanced:pressure-8911-1075",
+            "synthetic-pressure-8911-balanced:pressure-8911-1076",
+            "synthetic-pressure-8911-balanced:pressure-8911-1083",
+            "synthetic-pressure-8911-balanced:pressure-8911-1084",
+            "synthetic-pressure-8911-balanced:pressure-8911-1085",
+            "synthetic-pressure-8911-balanced:pressure-8911-1086",
+            "synthetic-pressure-8911-balanced:pressure-8911-1087",
+            "synthetic-pressure-8911-balanced:pressure-8911-1098",
+            "synthetic-pressure-8911-balanced:pressure-8911-1099",
+            "synthetic-pressure-8911-balanced:pressure-8911-1100",
+            "synthetic-pressure-8911-balanced:pressure-8911-1101",
+            "synthetic-pressure-8911-balanced:pressure-8911-1102",
+            "synthetic-pressure-8911-balanced:pressure-8911-1103"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:recovery-shot:harbor:synthetic-pressure-8911-balanced:pressure-8911-1063",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 4002,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 66:27 before Leon Costa's shot at 66:42 in the same possession.",
+          "detail": "Harbor's recorded recovery at 66:27 was followed by Leon Costa's shot at 66:42 in the same possession. The recorded interval was 15 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 15,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-1058",
+            "synthetic-pressure-8911-balanced:pressure-8911-1059",
+            "synthetic-pressure-8911-balanced:pressure-8911-1060",
+            "synthetic-pressure-8911-balanced:pressure-8911-1061",
+            "synthetic-pressure-8911-balanced:pressure-8911-1062",
+            "synthetic-pressure-8911-balanced:pressure-8911-1063"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:recovery-shot:harbor:synthetic-pressure-8911-balanced:pressure-8911-1045",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3938,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 65:11 before Milo Serrano's shot at 65:38 in the same possession.",
+          "detail": "Harbor's recorded recovery at 65:11 was followed by Milo Serrano's shot at 65:38 in the same possession. The recorded interval was 27 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 27,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-1038",
+            "synthetic-pressure-8911-balanced:pressure-8911-1039",
+            "synthetic-pressure-8911-balanced:pressure-8911-1040",
+            "synthetic-pressure-8911-balanced:pressure-8911-1041",
+            "synthetic-pressure-8911-balanced:pressure-8911-1042",
+            "synthetic-pressure-8911-balanced:pressure-8911-1043",
+            "synthetic-pressure-8911-balanced:pressure-8911-1044",
+            "synthetic-pressure-8911-balanced:pressure-8911-1045"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:recovery-shot:harbor:synthetic-pressure-8911-balanced:pressure-8911-1002",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3764,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 62:27 before Theo March's shot at 62:44 in the same possession.",
+          "detail": "Harbor's recorded recovery at 62:27 was followed by Theo March's shot at 62:44 in the same possession. The recorded interval was 17 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 17,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-997",
+            "synthetic-pressure-8911-balanced:pressure-8911-998",
+            "synthetic-pressure-8911-balanced:pressure-8911-999",
+            "synthetic-pressure-8911-balanced:pressure-8911-1000",
+            "synthetic-pressure-8911-balanced:pressure-8911-1001",
+            "synthetic-pressure-8911-balanced:pressure-8911-1002"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:recovery-shot:harbor:synthetic-pressure-8911-balanced:pressure-8911-960",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3616,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 59:50 before Jude Moreno's shot at 60:16 in the same possession.",
+          "detail": "Harbor's recorded interception at 59:50 was followed by Jude Moreno's shot at 60:16 in the same possession. The recorded interval was 26 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 26,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-952",
+            "synthetic-pressure-8911-balanced:pressure-8911-953",
+            "synthetic-pressure-8911-balanced:pressure-8911-954",
+            "synthetic-pressure-8911-balanced:pressure-8911-955",
+            "synthetic-pressure-8911-balanced:pressure-8911-956",
+            "synthetic-pressure-8911-balanced:pressure-8911-957",
+            "synthetic-pressure-8911-balanced:pressure-8911-958",
+            "synthetic-pressure-8911-balanced:pressure-8911-959",
+            "synthetic-pressure-8911-balanced:pressure-8911-960"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:shot-sequence:harbor:synthetic-pressure-8911-balanced:pressure-8911-1045",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3938,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 5 passes in the possession before Milo Serrano's shot at 65:38.",
+          "detail": "Harbor completed 5 recorded passes before Milo Serrano's shot at 65:38, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-1037",
+            "synthetic-pressure-8911-balanced:pressure-8911-1038",
+            "synthetic-pressure-8911-balanced:pressure-8911-1039",
+            "synthetic-pressure-8911-balanced:pressure-8911-1040",
+            "synthetic-pressure-8911-balanced:pressure-8911-1041",
+            "synthetic-pressure-8911-balanced:pressure-8911-1042",
+            "synthetic-pressure-8911-balanced:pressure-8911-1043",
+            "synthetic-pressure-8911-balanced:pressure-8911-1044",
+            "synthetic-pressure-8911-balanced:pressure-8911-1045"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:shot-sequence:riverside:synthetic-pressure-8911-balanced:pressure-8911-1009",
+          "category": "shot-sequence",
+          "team": "riverside",
+          "timestamp": 3796,
+          "importance": "pattern",
+          "headline": "Riverside: passing passage ends in a shot",
+          "brief": "Riverside completed 4 passes in the possession before Ivo Cruz's shot at 63:16.",
+          "detail": "Riverside completed 4 recorded passes before Ivo Cruz's shot at 63:16, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-1003",
+            "synthetic-pressure-8911-balanced:pressure-8911-1004",
+            "synthetic-pressure-8911-balanced:pressure-8911-1005",
+            "synthetic-pressure-8911-balanced:pressure-8911-1006",
+            "synthetic-pressure-8911-balanced:pressure-8911-1007",
+            "synthetic-pressure-8911-balanced:pressure-8911-1008",
+            "synthetic-pressure-8911-balanced:pressure-8911-1009"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:shot-sequence:harbor:synthetic-pressure-8911-balanced:pressure-8911-960",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3616,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 6 passes in the possession before Jude Moreno's shot at 60:16.",
+          "detail": "Harbor completed 6 recorded passes before Jude Moreno's shot at 60:16, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 6,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-951",
+            "synthetic-pressure-8911-balanced:pressure-8911-952",
+            "synthetic-pressure-8911-balanced:pressure-8911-953",
+            "synthetic-pressure-8911-balanced:pressure-8911-954",
+            "synthetic-pressure-8911-balanced:pressure-8911-955",
+            "synthetic-pressure-8911-balanced:pressure-8911-956",
+            "synthetic-pressure-8911-balanced:pressure-8911-957",
+            "synthetic-pressure-8911-balanced:pressure-8911-958",
+            "synthetic-pressure-8911-balanced:pressure-8911-959",
+            "synthetic-pressure-8911-balanced:pressure-8911-960"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:passing-pair:riverside:synthetic-pressure-8911-balanced:pressure-8911-906",
+          "category": "passing-pair",
+          "team": "riverside",
+          "timestamp": 4156,
+          "importance": "pattern",
+          "headline": "Riverside: a repeated passing connection",
+          "brief": "Max Rowan found Felix Lake with 3 completed passes from 55:00 to 70:00.",
+          "detail": "3 recorded successful passes from Max Rowan to Felix Lake between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 3,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-906",
+            "synthetic-pressure-8911-balanced:pressure-8911-1017",
+            "synthetic-pressure-8911-balanced:pressure-8911-1106"
+          ],
+          "rank": 6
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:passing-pair:harbor:synthetic-pressure-8911-balanced:pressure-8911-921",
+          "category": "passing-pair",
+          "team": "harbor",
+          "timestamp": 4090,
+          "importance": "pattern",
+          "headline": "Harbor: a repeated passing connection",
+          "brief": "Milo Serrano found Jude Moreno with 4 completed passes from 55:00 to 70:00.",
+          "detail": "4 recorded successful passes from Milo Serrano to Jude Moreno between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 4,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-921",
+            "synthetic-pressure-8911-balanced:pressure-8911-979",
+            "synthetic-pressure-8911-balanced:pressure-8911-1074",
+            "synthetic-pressure-8911-balanced:pressure-8911-1085"
+          ],
+          "rank": 6
+        },
+        {
+          "id": "synthetic-pressure-8911-balanced:substitute-involvement:harbor:synthetic-pressure-8911-balanced:pressure-8911-873",
+          "category": "substitute-involvement",
+          "team": "harbor",
+          "timestamp": 4131,
+          "importance": "moment",
+          "headline": "Nico Wells: involvement after coming on",
+          "brief": "Nico Wells has 12 recorded on-ball actions since coming on at 55:02.",
+          "detail": "Nico Wells came on at 55:02 and has 12 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "statistics": [
+            {
+              "label": "Recorded involvements",
+              "value": 12,
+              "unit": "events"
+            },
+            {
+              "label": "Shots",
+              "value": 0,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-8911-balanced:pressure-8911-873",
+            "synthetic-pressure-8911-balanced:pressure-8911-875",
+            "synthetic-pressure-8911-balanced:pressure-8911-876",
+            "synthetic-pressure-8911-balanced:pressure-8911-884",
+            "synthetic-pressure-8911-balanced:pressure-8911-891",
+            "synthetic-pressure-8911-balanced:pressure-8911-892",
+            "synthetic-pressure-8911-balanced:pressure-8911-934",
+            "synthetic-pressure-8911-balanced:pressure-8911-981",
+            "synthetic-pressure-8911-balanced:pressure-8911-1038",
+            "synthetic-pressure-8911-balanced:pressure-8911-1039",
+            "synthetic-pressure-8911-balanced:pressure-8911-1060",
+            "synthetic-pressure-8911-balanced:pressure-8911-1097",
+            "synthetic-pressure-8911-balanced:pressure-8911-1098"
+          ],
+          "rank": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "unfamiliar-73129",
+    "digest": "cb2dc28b9b0b801b54a06ac249d6aa35bfb9eb1d9d42731d52eb1ba2b5f75b3f",
+    "cutoff": 4200,
+    "mode": "analyst",
+    "preferences": {},
+    "regeneration": "current seeded generator; every historical event field compared",
+    "preflightEligibility": "eligible",
+    "evidence": {
+      "previousWindow": [
+        2700,
+        3450
+      ],
+      "currentWindow": [
+        3450,
+        4200
+      ],
+      "shots": {
+        "previous": 2,
+        "current": 2,
+        "early": 2,
+        "late": 0
+      },
+      "xg": {
+        "previous": 0.28,
+        "current": 0.28
+      },
+      "highWins": {
+        "previous": 6,
+        "current": 7
+      },
+      "recoveryFiveMinutes": {
+        "previous": 2,
+        "current": 1
+      },
+      "selectedShotIds": [
+        "synthetic-pressure-73129-balanced:pressure-73129-800",
+        "synthetic-pressure-73129-balanced:pressure-73129-810",
+        "synthetic-pressure-73129-balanced:pressure-73129-965",
+        "synthetic-pressure-73129-balanced:pressure-73129-983"
+      ],
+      "observations": [
+        {
+          "id": "synthetic-pressure-73129-balanced:recovery-shot:harbor:synthetic-pressure-73129-balanced:pressure-73129-983",
+          "category": "recovery-shot",
+          "team": "harbor",
+          "timestamp": 3785,
+          "importance": "pattern",
+          "headline": "Harbor: recovery to shot",
+          "brief": "Harbor won the ball at 62:41 before Jude Moreno's shot at 63:05 in the same possession.",
+          "detail": "Harbor's recorded recovery at 62:41 was followed by Jude Moreno's shot at 63:05 in the same possession. The recorded interval was 24 seconds. This is sequence evidence, not proof that the recovery caused the chance.",
+          "statistics": [
+            {
+              "label": "Recovery to shot",
+              "value": 24,
+              "unit": "recorded seconds"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-73129-balanced:pressure-73129-975",
+            "synthetic-pressure-73129-balanced:pressure-73129-976",
+            "synthetic-pressure-73129-balanced:pressure-73129-977",
+            "synthetic-pressure-73129-balanced:pressure-73129-978",
+            "synthetic-pressure-73129-balanced:pressure-73129-979",
+            "synthetic-pressure-73129-balanced:pressure-73129-980",
+            "synthetic-pressure-73129-balanced:pressure-73129-981",
+            "synthetic-pressure-73129-balanced:pressure-73129-982",
+            "synthetic-pressure-73129-balanced:pressure-73129-983"
+          ],
+          "rank": 8
+        },
+        {
+          "id": "synthetic-pressure-73129-balanced:shot-sequence:harbor:synthetic-pressure-73129-balanced:pressure-73129-983",
+          "category": "shot-sequence",
+          "team": "harbor",
+          "timestamp": 3785,
+          "importance": "pattern",
+          "headline": "Harbor: passing passage ends in a shot",
+          "brief": "Harbor completed 6 passes in the possession before Jude Moreno's shot at 63:05.",
+          "detail": "Harbor completed 6 recorded passes before Jude Moreno's shot at 63:05, within the same period and possession. Missing events or off-ball movements cannot be reconstructed.",
+          "statistics": [
+            {
+              "label": "Completed passes before shot",
+              "value": 6,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-73129-balanced:pressure-73129-974",
+            "synthetic-pressure-73129-balanced:pressure-73129-975",
+            "synthetic-pressure-73129-balanced:pressure-73129-976",
+            "synthetic-pressure-73129-balanced:pressure-73129-977",
+            "synthetic-pressure-73129-balanced:pressure-73129-978",
+            "synthetic-pressure-73129-balanced:pressure-73129-979",
+            "synthetic-pressure-73129-balanced:pressure-73129-980",
+            "synthetic-pressure-73129-balanced:pressure-73129-981",
+            "synthetic-pressure-73129-balanced:pressure-73129-982",
+            "synthetic-pressure-73129-balanced:pressure-73129-983"
+          ],
+          "rank": 7
+        },
+        {
+          "id": "synthetic-pressure-73129-balanced:passing-pair:riverside:synthetic-pressure-73129-balanced:pressure-73129-901",
+          "category": "passing-pair",
+          "team": "riverside",
+          "timestamp": 3918,
+          "importance": "pattern",
+          "headline": "Riverside: a repeated passing connection",
+          "brief": "Max Rowan found Oscar Voss with 5 completed passes from 55:00 to 70:00.",
+          "detail": "5 recorded successful passes from Max Rowan to Oscar Voss between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-73129-balanced:pressure-73129-901",
+            "synthetic-pressure-73129-balanced:pressure-73129-929",
+            "synthetic-pressure-73129-balanced:pressure-73129-971",
+            "synthetic-pressure-73129-balanced:pressure-73129-973",
+            "synthetic-pressure-73129-balanced:pressure-73129-1017"
+          ],
+          "rank": 6
+        },
+        {
+          "id": "synthetic-pressure-73129-balanced:passing-pair:harbor:synthetic-pressure-73129-balanced:pressure-73129-897",
+          "category": "passing-pair",
+          "team": "harbor",
+          "timestamp": 3780,
+          "importance": "pattern",
+          "headline": "Harbor: a repeated passing connection",
+          "brief": "Kai Solberg found Jude Moreno with 5 completed passes from 55:00 to 70:00.",
+          "detail": "5 recorded successful passes from Kai Solberg to Jude Moreno between 55:00 and 70:00. This is a directional pairing, not a measure of movement or chemistry.",
+          "statistics": [
+            {
+              "label": "Completed passes in pair",
+              "value": 5,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-73129-balanced:pressure-73129-897",
+            "synthetic-pressure-73129-balanced:pressure-73129-921",
+            "synthetic-pressure-73129-balanced:pressure-73129-963",
+            "synthetic-pressure-73129-balanced:pressure-73129-977",
+            "synthetic-pressure-73129-balanced:pressure-73129-981"
+          ],
+          "rank": 6
+        },
+        {
+          "id": "synthetic-pressure-73129-balanced:substitute-involvement:harbor:synthetic-pressure-73129-balanced:pressure-73129-851",
+          "category": "substitute-involvement",
+          "team": "harbor",
+          "timestamp": 4021,
+          "importance": "moment",
+          "headline": "Nico Wells: involvement after coming on",
+          "brief": "Nico Wells has 9 recorded on-ball actions since coming on at 55:02.",
+          "detail": "Nico Wells came on at 55:02 and has 9 recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.",
+          "statistics": [
+            {
+              "label": "Recorded involvements",
+              "value": 9,
+              "unit": "events"
+            },
+            {
+              "label": "Shots",
+              "value": 0,
+              "unit": "events"
+            }
+          ],
+          "limitations": [
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking."
+          ],
+          "evidenceIds": [
+            "synthetic-pressure-73129-balanced:pressure-73129-851",
+            "synthetic-pressure-73129-balanced:pressure-73129-896",
+            "synthetic-pressure-73129-balanced:pressure-73129-920",
+            "synthetic-pressure-73129-balanced:pressure-73129-948",
+            "synthetic-pressure-73129-balanced:pressure-73129-956",
+            "synthetic-pressure-73129-balanced:pressure-73129-980",
+            "synthetic-pressure-73129-balanced:pressure-73129-1001",
+            "synthetic-pressure-73129-balanced:pressure-73129-1011",
+            "synthetic-pressure-73129-balanced:pressure-73129-1045",
+            "synthetic-pressure-73129-balanced:pressure-73129-1047"
+          ],
+          "rank": 5
+        }
+      ]
+    }
+  }
+]

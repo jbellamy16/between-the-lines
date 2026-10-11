@@ -1,4 +1,5 @@
 import type { createInvestigation } from "./tools";
+import type { HypothesisAssessment } from "./hypothesis";
 type Evidence = ReturnType<ReturnType<typeof createInvestigation>["execute"]>;
 
 /** A conversation-local projection. Canonical evidence stays in the registry;
@@ -44,13 +45,54 @@ export function evidenceWire() {
       eventIds: ids.map((id) => id.slice(prefix.length)),
     };
   }
-  // Assessments retain every measurement, challenge and verification check;
-  // only repeated canonical identifiers become the same dictionary references.
+  // Selection receives every measurement/challenge and every check's verdict.
+  // Duplicate display prose, check explanations, capabilities and watch-next
+  // presentation stay in the canonical assessment and independent verifier.
+  const assessmentColumns = {
+    evidence: ["code", "description", "eventRefs"],
+    measurements: ["key", "label", "value", "unit", "eventRefs", "window"],
+    windows: ["id", "start", "end", "period", "boundary"],
+    verificationChecks: ["code", "passed", "eventRefs"],
+  };
+  function selectionAssessment(value: HypothesisAssessment) {
+    const refs = (ids: string[]) => ids.map((id) => reference(eventIds, id));
+    const evidence = (items: HypothesisAssessment["supportingEvidence"]) =>
+      items.map((item) => [item.code, item.description, refs(item.eventIds)]);
+    return {
+      verificationStatus: value.verificationStatus,
+      supportingEvidence: evidence(value.supportingEvidence),
+      limitingEvidence: evidence(value.limitingEvidence),
+      contradictoryEvidence: evidence(value.contradictoryEvidence),
+      measurements: value.measurements.map((m) => [
+        m.key,
+        m.label,
+        m.value,
+        m.unit,
+        refs(m.eventIds),
+        m.window ?? null,
+      ]),
+      windows: value.windows.map((w) => [
+        w.id,
+        w.start,
+        w.end,
+        w.period,
+        w.boundary,
+      ]),
+      missingInformation: value.missingInformation,
+      verificationChecks: value.verificationChecks.map((c) => [
+        c.code,
+        c.passed,
+        refs(c.eventIds),
+      ]),
+    };
+  }
   function assessment(value: unknown): unknown {
     if (Array.isArray(value)) return value.map(assessment);
     if (!value || typeof value !== "object") return value;
     return Object.fromEntries(
       Object.entries(value).map(([key, item]) => {
+        if (key === "assessment" && item && typeof item === "object")
+          return [key, selectionAssessment(item as HypothesisAssessment)];
         if (key === "eventIds" && Array.isArray(item))
           return [
             "eventRefs",
@@ -151,6 +193,7 @@ export function evidenceWire() {
     const limitationRefs = limits.map((s) => reference(limitations, s));
     const result = {
       ...rest,
+      ...(extra.assessments ? { assessmentColumns } : {}),
       ...(!sentSource ? { source } : {}),
       eventDetail: summaryEvents
         ? "summary; query for coordinates, outcomes and possession"
