@@ -77,26 +77,6 @@
           "plannedSeconds": 114,
           "actualSeconds": 114.001,
           "label": "End of rehearsal"
-        },
-        {
-          "plannedSeconds": 0,
-          "actualSeconds": 203.93,
-          "label": "Join 63:24, 1\u20130, Plain English"
-        },
-        {
-          "plannedSeconds": 13,
-          "actualSeconds": 203.984,
-          "label": "Catch Me Up Quick"
-        },
-        {
-          "plannedSeconds": 22,
-          "actualSeconds": 204.393,
-          "label": "Full recap then Quick"
-        },
-        {
-          "plannedSeconds": 29,
-          "actualSeconds": 204.979,
-          "label": "Close recap and select Football Analysis"
         }
       ],
       "replayState": null,
@@ -272,5 +252,30 @@
       "elapsedSeconds": 114.001,
       "note": "Replay dispatch was 3.680 seconds late due to tool handoff, but completed by the 69-second verification cue. Other principal cues met their schedule. Silent narration holds; human read-aloud and final export remain pending."
     }
-  ]
+  ],
+  "discardedHarnessEvents": {
+    "note": "An attempted timing reset reused the first clock closure. These four actions occurred after the first rehearsal ended and are not part of its 114-second duration. Retained as abandoned harness activity, not a successful take.",
+    "events": [
+      {
+        "plannedSeconds": 0,
+        "actualSeconds": 203.93,
+        "label": "Join 63:24, 1\u20130, Plain English"
+      },
+      {
+        "plannedSeconds": 13,
+        "actualSeconds": 203.984,
+        "label": "Catch Me Up Quick"
+      },
+      {
+        "plannedSeconds": 22,
+        "actualSeconds": 204.393,
+        "label": "Full recap then Quick"
+      },
+      {
+        "plannedSeconds": 29,
+        "actualSeconds": 204.979,
+        "label": "Close recap and select Football Analysis"
+      }
+    ]
+  }
 }
