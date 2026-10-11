@@ -22,6 +22,7 @@ import { EvidenceReplay } from "./evidence-replay";
 import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
+import { GuidedInvestigation } from "./guided-investigation";
 import { StorylineHistory } from "./storyline-history";
 
 export function BroadcastPreview({
@@ -564,6 +565,14 @@ export function DirectorStory({
             {busy ? "Checking the passage and its supporting events…" : notice}
           </p>
         )}
+        <GuidedInvestigation
+          match={match}
+          story={story}
+          time={time}
+          provider={provider}
+          onExplore={onExplore}
+          onEvent={onEvent}
+        />
         <StoryEvidence
           story={story}
           match={match}

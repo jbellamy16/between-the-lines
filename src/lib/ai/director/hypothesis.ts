@@ -109,7 +109,7 @@ function sameClaim(a: Candidate, b: Candidate) {
     ] as const
   ).every((key) => same(a[key], b[key]));
 }
-function validIdentity(match: MatchData, event: NormalizedEvent) {
+export function validIdentity(match: MatchData, event: NormalizedEvent) {
   const period = match.periods.find((p) => p.id === event.period);
   return (
     event.matchId === match.id &&
