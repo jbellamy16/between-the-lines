@@ -56,6 +56,12 @@ async function mockAI(
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
 });
+test.afterEach(async ({ page }) => {
+  // Cancellation tests deliberately leave a response in flight. On a remote
+  // host its offline fixture fetch can outlive the assertions; dispose the
+  // interception before Playwright closes its request context.
+  await page.unrouteAll({ behavior: "ignoreErrors" });
+});
 test("offline question is keyboard accessible, preserves story and replay, and renders at each viewport", async ({
   page,
 }, info) => {

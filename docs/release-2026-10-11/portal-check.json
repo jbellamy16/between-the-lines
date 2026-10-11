@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-11T19:06:27.445Z",
+  "officialRules": "https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md",
+  "entry": "https://aka.ms/insidethegame",
+  "portal": "https://innovationstudio.microsoft.com/hackathons/insidethegamedeveloperhackathon",
+  "observedSignedOut": "Redirect to login.microsoftonline.com; page title Sign in to your account",
+  "unverified": [
+    "registration",
+    "eligibility",
+    "Projects fields",
+    "field limits",
+    "additional authenticated requirements"
+  ],
+  "termsAccepted": false,
+  "entrySubmitted": false
+}

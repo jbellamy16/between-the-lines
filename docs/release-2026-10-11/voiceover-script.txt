@@ -1,0 +1,24 @@
+Between the Lines — final 113-second voiceover
+Public Azure release 2014a497 · synthetic match · AI disabled
+Neutral synthetic narrator: macOS Samantha
+
+00:00:00,000 – 00:00:12,000 | Join at 63:24
+Joining a match late should not mean decoding a wall of statistics. Between the Lines explains what changed. This is the public Azure release, with fictional teams and AI switched off.
+
+00:00:12,000 – 00:00:27,000 | Catch Me Up: Quick and Full
+Harbor lead one nil. Catch Me Up connects that score to the story: four shots in the latest spell, after none in the previous equal period. Quick and Full control how much recap you see.
+
+00:00:27,000 – 00:00:40,000 | Plain English and Football Analysis
+Plain English and Football Analysis explain the same checked facts. Style and recap length are independent. More shots do not prove better chances: there were no earlier shots to compare for average quality.
+
+00:00:40,000 – 00:01:03,000 | Jump to 70:00; guided fading question
+Now jump to seventy minutes and ask: has this increase already faded? The direct answer is yes. Across the wider windows, shots rose from one to four. But inside the latest window, they fell from three to one. That slowdown does not erase the wider increase, or predict what happens next.
+
+00:01:03,000 – 00:01:19,000 | Answer evidence and shot replay
+Open the answer evidence to inspect those counts. Choose the fifty nine oh nine shot and replay its recorded passage. These are schematic event positions, not player tracking or broadcast footage. The match clock stays at seventy minutes.
+
+00:01:19,000 – 00:01:48,000 | Working app; optional Foundry role and honest results
+Microsoft Foundry is an optional investigator: it can select claims and request bounded evidence checks. Application code calculates, independently verifies, and renders the facts. In the completed guided study, five model answers matched the deterministic baseline, with one correct no call. Additional investigative benefit was not demonstrated. Public AI remains disabled, and real viewer testing is still pending.
+
+00:01:48,000 – 00:01:53,000 | Final app hold
+Between the Lines. More than the score. Explore the working demo.
