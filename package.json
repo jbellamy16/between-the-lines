@@ -26,7 +26,8 @@
     "data:statsbomb": "tsx scripts/import-statsbomb.ts",
     "data:benchmark": "tsx scripts/benchmark-football.ts",
     "eval:director": "vitest run tests/director.test.ts tests/director-evaluation.test.ts tests/hypothesis.test.ts tests/storylines.test.ts tests/intelligence-evaluation.test.ts tests/intelligence-graph.test.ts",
-    "eval:director:live": "vitest run --config vitest.director-live.config.ts"
+    "eval:director:live": "vitest run --config vitest.director-live.config.ts",
+    "eval:foundry:bounded": "vitest run --config vitest.bounded-foundry.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
