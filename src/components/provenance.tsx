@@ -58,8 +58,8 @@ export function ProvenanceDetails({
             {insights.map((i) => (
               <p key={i.id}>
                 {i.metric}: {i.current} vs {i.previous}. Windows{" "}
-                {clock(i.start)}–{clock(i.end)} and {clock(i.start - 900)}–
-                {clock(i.start)}.
+                {clock(i.start)}–{clock(i.end)} and{" "}
+                {clock(i.start - (i.end - i.start))}–{clock(i.start)}.
               </p>
             ))}
           </>

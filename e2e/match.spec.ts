@@ -9,10 +9,11 @@ test("playback, evidence, recap, and rewind stay synchronized", async ({
     if (m.type() === "error") errors.push(m.text());
   });
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(page.getByTestId("clock")).toContainText("63:24");
-  await expect(
-    page.getByRole("heading", { name: "Harbor are winning it higher" }),
-  ).toHaveCount(1);
+  await expect(page.locator(".selected-observation h2")).toContainText(
+    "Harbor are winning it higher",
+  );
   await page.getByRole("button", { name: "Show me the sequence" }).click();
   await expect(
     page.getByRole("heading", { name: "Passage replay" }),
@@ -41,6 +42,7 @@ test("scenarios, navigation, player preferences and mobile layout work", async (
   page,
 }, testInfo) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(page.getByLabel("Fixture")).toBeVisible();
   await page.getByLabel("Fixture").selectOption("quiet");
   await expect(
@@ -100,6 +102,7 @@ test("explanation provenance, category preferences, and arbitrary seeking are tr
       : route.fulfill({ json: { source: "offline" } }),
   );
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await page.getByRole("button", { name: "Explore the explanation" }).click();
   await expect(page.locator(".explanation-text")).toBeVisible();
   await expect(page.getByRole("status")).toContainText("Offline demo");
@@ -128,6 +131,7 @@ test("selected evidence drives replay, which retains its final frame", async ({
 }) => {
   await page.clock.install();
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await page.getByRole("button", { name: /^Evidence \(/ }).click();
   const first = page.locator(".evidence-list button").first();
   const selectedTime = await first.locator("time").innerText();
@@ -147,10 +151,20 @@ test("selected evidence drives replay, which retains its final frame", async ({
   await expect(
     page.getByRole("button", { name: "Pattern evidence", exact: true }),
   ).toBeVisible();
+  const nextAnchor = await page
+    .getByLabel("Recorded event", { exact: true })
+    .locator("option")
+    .first()
+    .getAttribute("value");
   await page
     .getByLabel("Recorded event", { exact: true })
-    .selectOption({ index: 0 });
-  await expect(page.locator(".event-inspector p")).toContainText(selectedTime);
+    .selectOption(nextAnchor!);
+  // Clearing returns to the main story; its first shot can have an earlier build-up.
+  await expect(
+    page.locator(
+      `.pitch-panel select[aria-label="Recorded event"] option[value="${nextAnchor}"]`,
+    ),
+  ).toHaveCount(1);
 });
 
 test("the demo shows a pattern emerging and reset clears custom filters", async ({
@@ -158,6 +172,7 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
 }) => {
   await page.clock.install();
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(
     page
       .locator(".fixture-selector")
@@ -172,9 +187,9 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
     page.getByRole("heading", { name: "Match context", exact: true }),
   ).toBeVisible();
   await page.clock.runFor(6000);
-  await expect(
-    page.getByRole("heading", { name: "Harbor are winning it higher" }),
-  ).toHaveCount(1);
+  await expect(page.locator(".selected-observation h2")).toContainText(
+    "Harbor are winning it higher",
+  );
   await page.getByRole("button", { name: "Pause match", exact: true }).click();
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   for (const name of ["Pressure", "Chances", "Rhythm"])
@@ -184,9 +199,9 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
   await page.getByRole("button", { name: "Reset demo" }).click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(page.getByTestId("clock")).toContainText("63:24");
-  await expect(
-    page.getByRole("heading", { name: "Harbor are winning it higher" }),
-  ).toHaveCount(1);
+  await expect(page.locator(".selected-observation h2")).toContainText(
+    "Harbor are winning it higher",
+  );
   await expect(
     page.getByRole("button", { name: /^(Fan|Analyst) mode$/ }),
   ).toHaveCount(0);
@@ -198,6 +213,7 @@ test("every major screen fits the viewport and captures review evidence", async 
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   for (const [label, file] of [
     ["Match centre", "match"],
     ["Insights", "insights"],
@@ -265,6 +281,7 @@ test("metadata, home-screen icons and social previews reference real files", asy
   request,
 }) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(page).toHaveTitle("Between the Lines | More than the score.");
   await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
     "content",
@@ -311,6 +328,7 @@ test("pitch markers support touch-sized selection and keyboard inspection", asyn
   page,
 }) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   const markers = page.locator(".pitch-panel .event-marker");
   await markers.last().click();
   await expect(page.locator(".event-inspector p")).toBeVisible();
@@ -321,15 +339,16 @@ test("pitch markers support touch-sized selection and keyboard inspection", asyn
   const label = await markers.first().getAttribute("aria-label");
   await markers.first().focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator(".event-inspector p")).toContainText(
-    label!.split(" ")[0],
-  );
+  await expect(
+    page.locator(".pitch-panel select[aria-label='Recorded event']"),
+  ).toContainText(label!.split(" ")[0]);
 });
 
 test("detailed explainability captures the evidence drawer", async ({
   page,
 }, testInfo) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   const details = page.locator(".detail-panel .provenance");
   await details.locator("summary").click();
   await expect(details).toContainText("Deterministic offline");
@@ -407,6 +426,7 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
     });
   });
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(
     page.getByRole("button", { name: /^(Fan|Analyst) mode$/ }),
   ).toHaveCount(0);

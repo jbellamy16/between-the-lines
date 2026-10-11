@@ -93,10 +93,7 @@ function measuredMetric(
     id: story.storyId,
     label: current.label
       .replace(/^Current /, "")
-      .replace(
-        "recoveries in the attacking third",
-        "Attacking-third recoveries",
-      ),
+      .replace("ball wins in the attacking third", "Attacking-third ball wins"),
     team: team ? match.teams[team].short : "",
     current: current.value,
     previous: previous.value,
@@ -131,6 +128,8 @@ function importance(candidate: Candidate) {
     return candidate.statistics[0]?.label === "shots" ? 50 : 40;
   return (
     {
+      "score-change": 0,
+      "full-time": 0,
       "recovery-shot": 35,
       "substitute-involvement": 30,
       "shot-sequence": 25,
@@ -167,7 +166,11 @@ export function buildBriefing(
   const interval = visible.filter((e) => since === null || e.time > since);
   const score = recordedScore(visible);
   const candidates = observe(match, cutoff, "fan", options.preferences)
-    .filter((c) => since === null || c.timestamp > since)
+    .filter(
+      (c) =>
+        !["score-change", "full-time"].includes(c.category) &&
+        (since === null || c.timestamp > since),
+    )
     .sort((a, b) => importance(b) - importance(a) || b.rank - a.rank);
   const local: BroadcastStory[] = [];
   const groups = new Set<string>();
@@ -199,7 +202,9 @@ export function buildBriefing(
   }
   const selected = (options.stories ?? []).filter(
     (s) =>
-      validStory(match, cutoff, s) && (since === null || s.timestamp > since),
+      !["score-change", "full-time"].includes(s.category) &&
+      validStory(match, cutoff, s) &&
+      (since === null || s.timestamp > since),
   );
   const stories = [
     ...selected,
@@ -255,7 +260,7 @@ export function buildBriefing(
     headline =
       metric === "shots"
         ? `${name} are getting more shots away.`
-        : metric === "attacking-third recoveries"
+        : metric === "attacking-third ball wins"
           ? `${name} are regaining the ball more often upfield.`
           : `${name}'s ${metric} are increasing.`;
     const currentWindow = mainMetric.windows[1];
@@ -274,15 +279,15 @@ export function buildBriefing(
         outcome?.value === 0
           ? " Those attempts have yet to bring a goal in this spell."
           : " That is an increase in attempts, without necessarily meaning better chances.";
-    } else if (metric === "attacking-third recoveries")
+    } else if (metric === "attacking-third ball wins")
       development +=
         " The next question is whether those regains are followed by shots.";
     else development += " This shows a change in recorded on-ball activity.";
     const regains = uniqueMetrics.find(
-      (m) => m.team === name && m.label === "Attacking-third recoveries",
+      (m) => m.team === name && m.label === "Attacking-third ball wins",
     );
     if (metric === "shots" && regains && regains.current > regains.previous)
-      development += " Their recoveries upfield have also increased.";
+      development += " Their ball wins upfield have also increased.";
   } else if (lead?.category === "player-involvement") {
     const actions = lead.hypothesis.measurements.find(
       (m) => m.key === "involvements",

@@ -4,6 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 async function startReplay(page: Page) {
   await page.clock.install();
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await page.getByRole("button", { name: "Show me the sequence" }).click();
   await expect(page.getByLabel("Replay timeline")).toBeVisible();
 }
@@ -163,6 +164,7 @@ test("320px touch controls, dialog focus trap and motion remain accessible", asy
 }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await page.getByRole("button", { name: "Show me the sequence" }).click();
   await page.getByRole("button", { name: "Pause replay", exact: true }).click();
   expect(
@@ -244,6 +246,7 @@ test("an existing insight keeps keyboard focus across match-minute updates", asy
 }) => {
   await page.clock.install();
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await page.getByRole("button", { name: "Play match", exact: true }).click();
   await page
     .getByRole("navigation")

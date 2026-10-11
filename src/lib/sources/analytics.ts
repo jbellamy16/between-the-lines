@@ -1,3 +1,4 @@
+import { isHighBallWin } from "./metrics";
 import type { MatchEvent, TeamId } from "../match";
 import type { MatchData } from "./model";
 
@@ -45,12 +46,7 @@ export function calculateStatistics(events: Action[]) {
           recoveries: own.filter(
             (e) => e.type === "recovery" && e.success !== false,
           ).length,
-          highRecoveries: own.filter(
-            (e) =>
-              ["recovery", "interception", "tackle"].includes(e.type) &&
-              e.success !== false &&
-              (e.position?.x ?? -1) >= 66.7,
-          ).length,
+          highRecoveries: own.filter(isHighBallWin).length,
           attackingThird: own.filter(
             (e) =>
               ["pass", "shot", "touch"].includes(e.type) &&

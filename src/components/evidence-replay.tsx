@@ -16,12 +16,14 @@ export function EvidenceReplay({
   identities,
   formatTime = clock,
   describe,
+  formatEventTime,
   generated = true,
 }: {
   events: ReplayEvent[];
   suspended: boolean;
   identities?: Parameters<typeof Pitch>[0]["identities"];
   formatTime?: (time: number) => string;
+  formatEventTime?: (event: ReplayEvent) => string;
   describe?: (event: ReplayEvent) => string;
   generated?: boolean;
 }) {
@@ -128,7 +130,7 @@ export function EvidenceReplay({
                 : "REPLAY PAUSED"}
           </span>
           <p>
-            {formatTime(active.time)}{" "}
+            {formatEventTime?.(active) ?? formatTime(active.time)}{" "}
             {describe
               ? describe(active)
               : `${player(active.playerId).name}: ${eventLabel(active.type)}`}
@@ -161,7 +163,8 @@ export function EvidenceReplay({
         >
           {events.map((event) => (
             <option key={event.id} value={event.id}>
-              {formatTime(event.time)} {eventLabel(event.type)} by{" "}
+              {formatEventTime?.(event) ?? formatTime(event.time)}{" "}
+              {eventLabel(event.type)} by{" "}
               {(identities?.player ?? player)(event.playerId).name}
             </option>
           ))}

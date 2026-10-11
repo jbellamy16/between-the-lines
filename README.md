@@ -17,13 +17,15 @@ Watching football and understanding how a match is changing are different things
 - Play/pause, restart, seek, five playback speeds, scenario selection, and repeatable demo reset at 63:24.
 - An interactive SVG pitch: actual event positions, numbered possession sequences, pass/shot endpoints, and progressive sequence replay. No invented tracking.
 - Event-derived score, attempts, shots on target, pass completion, high ball wins, and synthetic chance probabilities.
-- Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal 15-minute comparison windows and supporting event IDs.
+- Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal comparison windows within each half (5–15 minutes each) and supporting event IDs.
 - Consistent detailed analysis, timestamp-safe Catch Me Up, lineups, and player action maps.
 - Device-local team, player, and insight category preferences that filter and reorder observations.
 - Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Both have offline contract tests. Foundry director investigations and both recap modes passed bounded live checks; see [the latest editorial/model comparison](docs/EDITORIAL-MODEL-COMPARISON.md). Human editorial review remains pending, and public inference is disabled.**
 - Optional AI Catch Me Up, contextual insight narration, and expandable “How Between the Lines knows” evidence.
 - Shared Redis quotas, cache, and deduplication; inference remains off by default.
 - Explicit offline demonstration mode; request failures or invalid model output fall back to computed explanations without claiming AI generation.
+
+The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request.
 
 The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [100-second synthetic demo](docs/intelligence/DEMO.md) shows a development emerging, weakening and resolving without future-event leakage. New model-quality gains are not claimed without a separately authorized live comparison.
 
@@ -87,7 +89,7 @@ Coordinates use 0–100 with each team's attack normalized left to right. The pi
 
 `MatchEvent` is the future licensed-feed integration boundary. An adapter would need to normalize coordinates, player/team identity, clock semantics, outcomes, and possession IDs. No real data provider is currently integrated.
 
-Every insight contains category, team, headline, explanation, significance, what to watch, metric, current/baseline counts, both evidence ID sets, and window boundaries. Detectors use descriptive count thresholds, not statistical significance tests. They require enough observations and a meaningful change; no patterns appear before two complete windows are available. The quiet fixture has no qualifying observation at the demo timestamp. xG is the generator’s shot probability, not a trained expected-goals model. Passing activity is not mislabeled possession percentage.
+Every insight contains category, team, headline, explanation, significance, what to watch, metric, current/baseline counts, both evidence ID sets, and window boundaries. Detectors use descriptive count thresholds, not statistical significance tests. They require enough observations and a meaningful change; no patterns appear before two complete windows of at least five minutes each are available. The quiet fixture has no qualifying observation at the demo timestamp. xG is the generator’s shot probability, not a trained expected-goals model. Passing activity is not mislabeled possession percentage.
 
 ## Brand and Phase 2 refinements
 

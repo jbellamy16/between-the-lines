@@ -1,7 +1,7 @@
 "use client";
 
 import type { MatchData, NormalizedEvent } from "@/lib/sources/model";
-import { matchClock } from "@/lib/sources/model";
+import { matchClock, eventClock } from "@/lib/sources/model";
 import type { BroadcastStory } from "@/lib/ai/director/story";
 import type { DirectorResult } from "@/lib/ai/director/runner";
 import { AnimatedDetails } from "./motion";
@@ -24,11 +24,15 @@ export function StoryEvidence({
   match,
   events,
   answer,
+  open,
+  onToggle,
 }: {
   story: BroadcastStory;
   match: MatchData;
   events: NormalizedEvent[];
   answer: DirectorResult | null;
+  open?: boolean;
+  onToggle?: (open: boolean) => void;
 }) {
   const [current, previous] = story.statistics;
   const comparison =
@@ -40,17 +44,25 @@ export function StoryEvidence({
     <ol className="story-event-list">
       {items.map((event) => (
         <li key={event.id}>
-          <time>{matchClock(match, event.time)}</time>
+          <time>{eventClock(match, event)}</time>
           <span className="story-event-icon">
             <EventIcon type={event.type} size={16} />
           </span>
           <span className="story-event-player">
             <strong>
-              {match.players.find((player) => player.id === event.actorId)
-                ?.name ?? "Unidentified player"}
+              {match.players.find(
+                (player) =>
+                  player.id ===
+                  (event.type === "substitution"
+                    ? event.playerId
+                    : event.actorId),
+              )?.name ?? "Unidentified player"}
             </strong>
             <span>
               {event.type.replaceAll("_", " ")}
+              {!story.highlightedEventIds.includes(event.id)
+                ? " · comparison context"
+                : ""}
               {event.outcome ? ` · ${event.outcome}` : ""}
             </span>
           </span>
@@ -59,7 +71,14 @@ export function StoryEvidence({
     </ol>
   );
   return (
-    <AnimatedDetails className="director-disclosure story-evidence">
+    <AnimatedDetails
+      className="director-disclosure story-evidence"
+      open={open}
+      onToggle={(event) => {
+        if (event.target === event.currentTarget)
+          onToggle?.(event.currentTarget.open);
+      }}
+    >
       <summary>How we know this story</summary>
       <div className="story-evidence-body">
         <div className="story-evidence-source">
@@ -71,6 +90,7 @@ export function StoryEvidence({
           </span>
         </div>
 
+        <p>{story.whatChanged}</p>
         {comparison ? (
           <section
             className="story-comparison"

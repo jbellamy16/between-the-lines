@@ -1,3 +1,9 @@
+import {
+  comparisonWindow,
+  durationLabel,
+  isHighBallWin,
+  BALL_WIN_DEFINITION,
+} from "./sources/metrics";
 import { EMPTY_MATCH_CONTEXT, recordedContext } from "./match-context";
 import {
   eventsAt,
@@ -34,7 +40,11 @@ export type Insight = {
 export type DetectionEvent = Pick<
   MatchEvent,
   "id" | "time" | "team" | "playerId"
-> & { type: string; position: MatchEvent["position"] | null };
+> & {
+  type: string;
+  position: MatchEvent["position"] | null;
+  success?: boolean;
+};
 export function detectInsights(
   all: DetectionEvent[],
   time: number,
@@ -44,10 +54,14 @@ export function detectInsights(
     ballRecoveries: boolean;
   },
 ): Insight[] {
-  const visible = all.filter((e) => e.time <= time),
-    start = Math.max(0, time - 900),
-    priorStart = Math.max(0, start - 900);
-  if (time - (context?.periodStart ?? 0) < 1800) return [];
+  const visible = all.filter((e) => e.time <= time);
+  const {
+    width,
+    start,
+    previousStart: priorStart,
+  } = comparisonWindow(time, context?.periodStart ?? (time < 2700 ? 0 : 2700));
+  if (width < 300) return [];
+  const duration = durationLabel(width);
   const recent = visible.filter((e) => e.time > start),
     previous = visible.filter((e) => e.time > priorStart && e.time <= start);
   const insights: Insight[] = [];
@@ -74,7 +88,7 @@ export function detectInsights(
         explanation,
         why,
         watch,
-        analyst: `${evidence.length} ${metric.toLowerCase()} in the current 15-minute window; ${baseline.length} in the preceding 15 minutes. Equal-duration comparison; a descriptive threshold, not a statistical significance test. Event data describes actions, not off-ball positioning.`,
+        analyst: `${evidence.length} ${metric.toLowerCase()} in the current ${duration} window; ${baseline.length} in the preceding ${duration}. Equal-duration comparison; a descriptive threshold, not a statistical significance test. Event data describes actions, not off-ball positioning.`,
         start,
         end: time,
         evidenceIds: evidence.map((e) => e.id),
@@ -82,15 +96,10 @@ export function detectInsights(
         metric,
         current: evidence.length,
         previous: baseline.length,
-        unit: "events / 15 min",
+        unit: `events / ${duration}`,
         strength,
       });
-    const high = (ev: DetectionEvent[]) =>
-      ev.filter(
-        (e) =>
-          ["recovery", "interception", "tackle"].includes(e.type) &&
-          (e.position?.x ?? -1) >= 66.7,
-      );
+    const high = (ev: DetectionEvent[]) => ev.filter(isHighBallWin);
     const h = high(own),
       b = high(prior);
     if (
@@ -104,21 +113,25 @@ export function detectInsights(
         h,
         b,
         `${name} are winning it higher`,
-        `${name} have won the ball ${h.length} times in the attacking third in the last 15 minutes, up from ${b.length} in the previous 15.`,
-        "Winning the ball closer to goal can leave less ground to cover before a chance. It does not guarantee a shot.",
+        `${name} have won the ball ${h.length} times in the attacking third in the last ${duration}, up from ${b.length} in the previous ${duration}.`,
+        `Winning the ball closer to goal can leave less ground to cover before a chance. It does not guarantee a shot. ${BALL_WIN_DEFINITION}`,
         `Watch whether ${name} turn these recoveries into attempts on goal.`,
         "Ball wins in attacking third",
         h.length - b.length + 2,
       );
     const shots = own.filter((e) => e.type === "shot"),
       oldShots = prior.filter((e) => e.type === "shot");
-    if (shots.length >= 3 && shots.length - oldShots.length >= 2)
+    if (
+      shots.length >= 3 &&
+      shots.length - oldShots.length >= 2 &&
+      shots.length >= oldShots.length * 1.5
+    )
       add(
         "chances",
         shots,
         oldShots,
         `${name} are taking more shots`,
-        `${name} have taken ${shots.length} shots in the last 15 minutes, compared with ${oldShots.length} in the previous 15.`,
+        `${name} have taken ${shots.length} shots in the last ${duration}, compared with ${oldShots.length} in the previous ${duration}.`,
         "More attempts suggest growing attacking activity. Shot frequency alone does not establish chance quality.",
         `Watch the quality of ${name}'s next chance, not just the number of shots.`,
         "Shots",
@@ -128,6 +141,7 @@ export function detectInsights(
       oldPasses = prior.filter((e) => e.type === "pass");
     if (
       passes.length >= 20 &&
+      passes.length - oldPasses.length >= 10 &&
       oldPasses.length >= 10 &&
       passes.length > oldPasses.length * 1.5
     )
@@ -136,8 +150,8 @@ export function detectInsights(
         passes,
         oldPasses,
         `${name} are picking up the rhythm`,
-        `${name} have attempted ${passes.length} passes in the last 15 minutes, up from ${oldPasses.length}.`,
-        "More passes indicate greater on-ball activity, but do not measure possession time or ball speed.",
+        `${name} have attempted ${passes.length} passes in the last ${duration}, up from ${oldPasses.length}.`,
+        "More passes show greater activity on the ball, but do not measure possession time or ball speed.",
         `Watch whether ${name}'s passing activity leads to entries into the attacking third.`,
         "Pass attempts",
         (passes.length - oldPasses.length) / 10,

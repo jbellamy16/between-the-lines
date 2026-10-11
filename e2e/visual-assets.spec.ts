@@ -4,6 +4,7 @@ test("club assets load and replay glyphs retain their small-screen proportions",
   page,
 }) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   await expect(page.locator(".app-shell")).toHaveAttribute(
     "aria-busy",
     "false",
@@ -41,6 +42,7 @@ test("Riverside keeps its identity when an event is selected", async ({
   page,
 }) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   const clear = page.getByRole("button", {
     name: "Clear selection",
     exact: true,
@@ -98,6 +100,7 @@ test("shared match views retain SVG icons instead of text glyphs", async ({
   page,
 }) => {
   await page.goto("/");
+  await page.locator(".secondary-observations > summary").click();
   const shell = page.locator(".app-shell").filter({ visible: true });
   await expect(
     shell.locator(".selected-observation h2 .sl-icon"),

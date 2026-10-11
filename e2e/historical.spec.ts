@@ -13,6 +13,9 @@ async function historical(page: Page) {
 }
 async function seek(page: Page, time: number) {
   await page.getByRole("slider", { name: "Match timeline" }).fill(String(time));
+  const secondary = page.locator(".historical-shell .secondary-observations");
+  if ((await secondary.getAttribute("open")) === null)
+    await secondary.locator(":scope > summary").click();
 }
 test("source selection, spoiler-safe replay, event exploration and match switching", async ({
   page,
@@ -387,8 +390,10 @@ test("dense evidence conserves records and opens a recorded passage", async ({
   await historical(page);
   await seek(page, 1800);
   await page
-    .getByRole("button", { name: "Pattern evidence", exact: true })
+    .getByRole("navigation")
+    .getByRole("button", { name: "Insights", exact: true })
     .click();
+  await page.locator(".historical-shell .lead-observation").click();
   await expect(
     page.getByText("Counts per pitch area · 153 actions.", { exact: false }),
   ).toBeVisible();

@@ -187,7 +187,7 @@ describe("historical intelligence and AI", () => {
         }
       }
       expect(observations.length).toBeGreaterThan(0);
-      expect(historicalInsights(m, m.secondHalfStart + 1799)).toEqual([]);
+      expect(historicalInsights(m, m.secondHalfStart + 599)).toEqual([]);
     }
   });
   it("arbitrary cutoffs exclude future facts, future scores and future sequence actions", () => {

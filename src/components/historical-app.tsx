@@ -3,7 +3,11 @@ import { ModalHeader } from "./modal-header";
 import { RecapBriefing } from "./recap-briefing";
 import { useViewingPosition } from "./use-viewing-position";
 import { trapDialogFocus } from "./dialog-focus";
-import { DirectorStory } from "./director-story";
+import {
+  DirectorStory,
+  useDirectorStory,
+  DirectorReplay,
+} from "./director-story";
 import type { Provenance } from "@/lib/ai/service";
 import type { Narrative } from "@/lib/foundry";
 import { ANALYSIS_MODE, rankInsights } from "@/lib/intelligence";
@@ -16,6 +20,7 @@ import {
 } from "@/lib/sources/intelligence";
 import {
   matchClock,
+  eventClock,
   periodAt,
   validateMatch,
   type MatchData,
@@ -236,6 +241,15 @@ function HistoricalReplay({
     if (notice) setNotice("");
     if (loading) setLoading(false);
   }, [time, mode, sourceActive]);
+  const director = useDirectorStory({
+    match,
+    time,
+    mode,
+    preferences: prefs,
+    active: sourceActive && !recapOpen && section === "match",
+    playing,
+  });
+  const [pitchView, setPitchView] = useState<"pattern" | "recent">("pattern");
   const visible = useMemo(
     () => match.events.filter((e) => e.time <= time),
     [match, time],
@@ -261,9 +275,13 @@ function HistoricalReplay({
     .slice(-10);
   const viewEvents = sequence
     ? passage
-    : selectedInsight && insight
+    : pitchView === "pattern" && selectedInsight && insight
       ? visible.filter((e) => insight.evidenceIds.includes(e.id))
-      : recent;
+      : pitchView === "pattern" && director.story
+        ? visible.filter((e) =>
+            director.story!.highlightedEventIds.includes(e.id),
+          )
+        : recent;
   const inspector =
     viewEvents.find((e) => e.id === selected) ?? viewEvents.at(-1);
   const identities = {
@@ -285,14 +303,18 @@ function HistoricalReplay({
     setLoading(false);
   }
   function seek(value: number) {
+    director.setReplay(false);
     invalidate();
     setTime(Math.min(match.duration, Math.max(0, value)));
     setPlaying(false);
     setSelected(null);
     setSequence(false);
     setSelectedInsight(null);
+    setPitchView("pattern");
+    director.setSelectedMetric(null);
   }
   function choose(event: NormalizedEvent) {
+    director.setReplay(false);
     invalidate();
     setPlaying(false);
     setSelected(event.id);
@@ -337,6 +359,15 @@ function HistoricalReplay({
     }
   }
   function selectObservation(i: (typeof insights)[number]) {
+    director.setReplay(false);
+    director.setSelectedMetric({
+      team: i.team,
+      label:
+        i.category === "pressure"
+          ? "ball wins in the attacking third"
+          : i.metric.toLowerCase(),
+    });
+    setPitchView("pattern");
     invalidate();
     setPlaying(false);
     setSelectedInsight(`${i.team}-${i.category}`);
@@ -430,11 +461,13 @@ function HistoricalReplay({
         onSpeed={setSpeed}
         onSeek={seek}
         onPlay={() => {
+          director.setReplay(false);
           invalidate();
           setSelected(null);
           setSequence(false);
           setSelectedInsight(null);
           if (time >= match.duration) setTime(0);
+          setPitchView("recent");
           setPlaying(!playing);
         }}
         onRecap={() => {
@@ -449,6 +482,14 @@ function HistoricalReplay({
         onSelect={(i) => {
           invalidate();
           setPlaying(false);
+          director.setSelectedMetric({
+            team: i.team,
+            label:
+              i.category === "pressure"
+                ? "ball wins in the attacking third"
+                : i.metric.toLowerCase(),
+          });
+          setPitchView("pattern");
           setSelectedInsight(`${i.team}-${i.category}`);
           setPlayerFilter("");
           setSection("match");
@@ -456,9 +497,32 @@ function HistoricalReplay({
           setSequence(false);
         }}
       />
+
       <div className="match-grid section-enter" hidden={section !== "match"}>
+        <div className="main-story">
+          <DirectorStory
+            director={director}
+            match={match}
+            time={time}
+            active={sourceActive && section === "match"}
+            playing={playing}
+            onExplore={() => setPlaying(false)}
+            onReplay={() => {
+              setPitchView("pattern");
+              setSelectedInsight(null);
+              setSequence(false);
+              setSelected(null);
+            }}
+          />
+        </div>
         <div className="match-left">
           <MatchPitch
+            storyTitle={
+              selectedInsight && insight
+                ? `Other observation — ${insight.headline}`
+                : director.story?.headline
+            }
+            storyReplay={director.replay}
             match={match}
             time={time}
             events={viewEvents}
@@ -467,37 +531,53 @@ function HistoricalReplay({
               const e = visible.find((e) => e.id === id);
               if (e) choose(e);
             }}
-            view={sequence ? "passage" : selectedInsight ? "pattern" : "recent"}
-            hasPattern={!!insight}
+            view={
+              director.replay || sequence
+                ? "passage"
+                : pitchView === "pattern" && (director.story || selectedInsight)
+                  ? "pattern"
+                  : "recent"
+            }
+            hasPattern={!!director.story || !!insight}
             hasPassage={!!active}
             onView={(view) => {
+              director.setReplay(false);
+              setPitchView(view === "recent" ? "recent" : "pattern");
               invalidate();
               setPlaying(false);
               setSelected(null);
               setSequence(view === "passage");
-              setSelectedInsight(
-                view === "pattern" && insight
-                  ? `${insight.team}-${insight.category}`
-                  : null,
-              );
+              setSelectedInsight(null);
               setPlayerFilter("");
             }}
             onClear={() => {
+              director.setReplay(false);
+              setPitchView("pattern");
               setSequence(false);
               setSelected(null);
-              setSelectedInsight(
-                insight ? `${insight.team}-${insight.category}` : null,
-              );
+              setSelectedInsight(null);
             }}
             onSeek={seek}
             replay={
-              sequence && passage.length ? (
+              director.replay && director.story ? (
+                <DirectorReplay
+                  director={director}
+                  match={match}
+                  time={time}
+                  suspended={
+                    playing || !sourceActive || recapOpen || section !== "match"
+                  }
+                />
+              ) : sequence && passage.length ? (
                 <EvidenceReplay
                   key={`${match.id}-${active?.id}`}
                   events={passage}
                   suspended={!sourceActive || recapOpen || section !== "match"}
                   identities={identities}
                   formatTime={(t) => matchClock(match, t)}
+                  formatEventTime={(e) =>
+                    eventClock(match, e as NormalizedEvent)
+                  }
                   describe={(e) =>
                     eventDescription(match, e as NormalizedEvent)
                   }
@@ -516,18 +596,7 @@ function HistoricalReplay({
           />
         </div>
         <InsightDetails
-          story={
-            <DirectorStory
-              key={match.id}
-              match={match}
-              time={time}
-              mode={mode}
-              preferences={prefs}
-              active={sourceActive && !recapOpen && section === "match"}
-              playing={playing}
-              onExplore={() => setPlaying(false)}
-            />
-          }
+          secondaryOpen={!!selectedInsight}
           match={match}
           insight={insight}
           insights={insights}

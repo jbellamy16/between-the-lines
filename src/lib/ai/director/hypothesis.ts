@@ -1,4 +1,10 @@
 import {
+  comparisonWindow,
+  isHighBallWin,
+  isBallWin,
+} from "../../sources/metrics";
+import { isMatchState } from "./editorial";
+import {
   matchClock,
   periodAt,
   type MatchData,
@@ -316,7 +322,7 @@ export function evaluateHypothesis(
   );
   check(
     "evidence-completeness",
-    support.length > 0 &&
+    (support.length > 0 || candidate.category === "full-time") &&
       support.length <= 120 &&
       support.length === candidate.evidenceIds.length &&
       new Set(candidate.evidenceIds).size === candidate.evidenceIds.length &&
@@ -327,15 +333,18 @@ export function evaluateHypothesis(
   check(
     "event-identities",
     support.every(
-      (event) => validIdentity(match, event) && event.team === candidate.team,
+      (event) =>
+        validIdentity(match, event) &&
+        (isMatchState(candidate) || event.team === candidate.team),
     ),
     "Cited event, team, player, provider and period identities agree.",
     support,
   );
   check(
     "candidate-timestamp",
-    !!support.length &&
-      candidate.timestamp === support.at(-1)!.time &&
+    (candidate.category === "full-time"
+      ? candidate.timestamp === cutoff && cutoff === match.duration
+      : !!support.length && candidate.timestamp === support.at(-1)!.time) &&
       candidate.timestamp <= cutoff,
     "The claim timestamp equals its latest recorded evidence.",
     support.slice(-1),
@@ -385,6 +394,33 @@ export function evaluateHypothesis(
     description: canonical!.brief,
     eventIds: ids(support),
   });
+  if (isMatchState(candidate)) {
+    base.hypothesis.description = canonical!.brief;
+    base.whyItMatters =
+      candidate.category === "full-time"
+        ? "The result is settled. Revisit the goals to see how the score changed."
+        : "The score has changed. The recorded goal takes priority over routine activity elsewhere on the pitch.";
+    base.windows = match.periods
+      .filter((p) => p.start <= cutoff)
+      .map((p) => ({
+        id: p.id,
+        start: p.start,
+        end: Math.min(p.end, cutoff),
+        period: p.id,
+        boundary: "[start,end]" as const,
+      }));
+    base.measurements = candidate.statistics.map((stat, index) => ({
+      key: `score-${index}`,
+      ...stat,
+      eventIds: support
+        .filter(
+          (event) =>
+            event.scoringTeam === (index === 0 ? "harbor" : "riverside"),
+        )
+        .map((event) => event.id),
+    }));
+    return base;
+  }
   const addEvidence = (
     kind: "limitingEvidence" | "contradictoryEvidence",
     code: string,
@@ -419,7 +455,7 @@ export function evaluateHypothesis(
     : undefined;
   const name = assessedPlayer?.name ?? match.teams[candidate.team].short;
   const period = periodAt(match, cutoff);
-  const width = Math.min(900, Math.floor((cutoff - period.start) / 2));
+  const { width } = comparisonWindow(cutoff, period.start);
   const comparison = [
     "activity-change",
     "shot-location",
@@ -494,11 +530,8 @@ export function evaluateHypothesis(
     const predicates: Record<string, (event: NormalizedEvent) => boolean> = {
       shots: (event) => event.type === "shot",
       "pass attempts": (event) => event.type === "pass",
-      "recoveries in the attacking third": (event) =>
-        match.capabilities.ballRecoveries &&
-        event.type === "recovery" &&
-        event.success !== false &&
-        (event.position?.x ?? -1) >= 66.7,
+      "ball wins in the attacking third": (event) =>
+        match.capabilities.ballRecoveries && isHighBallWin(event),
       "attacking-third actions": (event) =>
         ["pass", "carry", "shot"].includes(event.type) &&
         (event.position?.x ?? -1) >= 66.7,
@@ -547,8 +580,8 @@ export function evaluateHypothesis(
     base.whyItMatters =
       label === "shots"
         ? `${name}'s recorded shot activity has increased. This identifies more attempts; shot danger requires separate evidence.`
-        : label === "recoveries in the attacking third"
-          ? `${name}'s higher recovery count in the attacking third (${current.length} versus ${previous.length}) identifies advanced ball-winning starting points. Inspect subsequent same-possession shots to see whether those regains become attempts; counts alone do not establish pressing intensity.`
+        : label === "ball wins in the attacking third"
+          ? `${name}'s higher ball-win count in the attacking third (${current.length} versus ${previous.length}) identifies advanced ball-winning starting points. Inspect subsequent same-possession shots to see whether those regains become attempts; counts alone do not establish pressing intensity.`
           : `${name} recorded ${current.length} ${label} against ${previous.length} in the preceding equal window, identifying a change in on-ball activity to follow.`;
     baseline = current.length;
     target = current.length;
@@ -556,8 +589,8 @@ export function evaluateHypothesis(
     eventTypes =
       label === "shots"
         ? ["shot"]
-        : label.includes("recoveries")
-          ? ["recovery"]
+        : label.includes("ball wins")
+          ? ["recovery", "interception", "tackle"]
           : label === "attacking-third actions"
             ? ["pass", "carry", "shot"]
             : ["pass"];
@@ -611,10 +644,7 @@ export function evaluateHypothesis(
       support,
     );
     if (candidate.category === "recovery-shot") {
-      const win =
-        (first.type === "recovery" && first.success !== false) ||
-        (["interception", "tackle"].includes(first.type) &&
-          first.success === true);
+      const win = isBallWin(first);
       const seconds = shot.time - first.time;
       check(
         "recovery-shot-link",

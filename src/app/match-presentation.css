@@ -1552,3 +1552,89 @@
     border-radius: 9px;
   }
 }
+
+/* One concise lead precedes the evidence at every viewport size. */
+.data-first .director-story,
+.data-first .quiet-story {
+  margin-bottom: 18px;
+  padding: 18px 20px;
+}
+.data-first .director-story > p {
+  max-width: 78ch;
+  margin: 8px 0;
+}
+.data-first .director-story > .director-mode-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+.data-first .director-actions {
+  max-width: 620px;
+}
+.data-first .story-significance {
+  margin: 10px 0;
+}
+.data-first .secondary-observations > summary {
+  cursor: pointer;
+  padding: 18px;
+  font-weight: 600;
+  font-size: 14px;
+}
+@media (max-width: 600px) {
+  .data-first .director-story,
+  .data-first .quiet-story {
+    padding: 14px;
+  }
+  .data-first .director-story > h2 {
+    font-size: 1.2rem;
+  }
+  .data-first .director-story > p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .data-first .view-toolbar {
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+  }
+}
+
+.director-observations > div {
+  display: grid;
+  gap: 4px;
+}
+.director-observations button {
+  text-align: left;
+  padding: 10px 0;
+}
+
+.pitch-story-label {
+  margin: 8px 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (min-width: 821px) {
+  .data-first .main-story {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .data-first .match-left {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  .data-first .detail-panel {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .data-first .match-grid {
+    align-items: start;
+  }
+  .data-first .main-story .director-story {
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 820px) {
+  .data-first .main-story {
+    order: -1;
+  }
+}

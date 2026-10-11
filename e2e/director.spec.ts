@@ -33,7 +33,7 @@ test("story evidence presents the comparison and keeps technical details seconda
     "comparison",
   );
   await page.route("**/api/insights", (route) =>
-    route.fulfill({ json: { mode: "offline", proactive: false } }),
+    route.fulfill({ json: { mode: "openai", proactive: false } }),
   );
   await page.route("**/api/director", (route) =>
     route.fulfill({
@@ -48,8 +48,22 @@ test("story evidence presents the comparison and keeps technical details seconda
   );
   await page.goto("/");
   await page
-    .getByRole("button", { name: "Investigate this passage", exact: true })
+    .locator(".director-story")
+    .getByText("More from this match", { exact: true })
     .click();
+  await page
+    .getByRole("button", {
+      name: "Harbor: more ball wins in the attacking third",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByRole("button", { name: "Investigate with OpenAI", exact: true })
+    .click();
+  await expect(page.locator(".director-story h2")).toHaveText(story.headline);
+  await expect(page.locator(".pitch-story-label")).toContainText(
+    story.headline,
+  );
   const panel = page.locator(".story-evidence");
   await panel.getByText("How we know this story", { exact: true }).click();
   await expect(
@@ -103,11 +117,11 @@ test("computed story connects evidence, broadcast JSON, and rewind-safe visibili
   await page.goto("/");
   const story = page.locator(".director-story");
   await expect(story).toBeVisible();
-  await expect(story).toContainText("Deterministic offline");
+  await expect(story).toContainText("Checked from recorded events");
   await story
     .getByRole("button", { name: "Replay story evidence", exact: true })
     .click();
-  await expect(story.locator("svg").first()).toBeVisible();
+  await expect(page.locator(".pitch-panel svg").first()).toBeVisible();
   await story.getByText("Broadcast story", { exact: true }).click();
   await expect(story.locator(".broadcast-frame")).toBeVisible();
   const download = page.waitForEvent("download");
@@ -154,6 +168,9 @@ test("an investigation response cannot survive a rewind", async ({ page }) => {
     data: { scenario: "pressure", time: 3804, mode: "fan" },
   });
   const result = await response.json();
+  await page.route("**/api/insights", (route) =>
+    route.fulfill({ json: { mode: "openai", proactive: false } }),
+  );
   // Delayed UI transport fixture only; this test does not simulate successful live inference.
   result.stories[0].headline = "LATE INVESTIGATION RESULT";
   let release!: () => void;
@@ -167,7 +184,7 @@ test("an investigation response cannot survive a rewind", async ({ page }) => {
   await page.goto("/");
   const request = page.waitForRequest((r) => r.url().endsWith("/api/director"));
   await page
-    .getByRole("button", { name: "Investigate this passage", exact: true })
+    .getByRole("button", { name: "Investigate with OpenAI", exact: true })
     .click();
   await request;
   await page.getByRole("slider", { name: "Match timeline" }).fill("0");
@@ -181,6 +198,9 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
 }) => {
   await page.goto("/");
   const story = page.locator(".director-story");
+  await story
+    .getByText("Why it matters & what to watch", { exact: true })
+    .click();
   await expect(
     story.getByRole("heading", { name: "Why it matters", exact: true }),
   ).toBeVisible();

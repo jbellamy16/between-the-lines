@@ -219,11 +219,15 @@ describe("Match Director evidence boundaries", () => {
     ).toThrow();
   });
 });
-function scriptedProvider(abstain = false, invalid = false) {
+function scriptedProvider(
+  abstain = false,
+  invalid = false,
+  category = "recovery-shot",
+) {
   const session = createInvestigation(match, cutoff, "fan");
   session.execute("get_match_events", query);
   const c = session.candidates.find(
-    (c) => session.claims.has(c.id) && c.category === "recovery-shot",
+    (c) => session.claims.has(c.id) && c.category === category,
   )!;
   const plan = {
     decision: abstain ? "abstain" : "publish",
@@ -338,6 +342,15 @@ describe("bounded provider integration (scripted transport, not quality evidence
     expect(result.decision).toBe("abstain");
     expect(result.stories).toEqual([]);
     expect(result.provenance.contextFactIds).toContain("score");
+  });
+  it("rejects a retrieved routine passage as the lead without another provider turn", async () => {
+    configure();
+    const transport = scriptedProvider(false, false, "shot-sequence");
+    vi.stubGlobal("fetch", transport);
+    await expect(
+      investigate(match, cutoff, "fan", {}, "openai"),
+    ).rejects.toThrow("Routine observation cannot lead");
+    expect(transport).toHaveBeenCalledTimes(2);
   });
   it("recovers from a cross-half comparison without admitting rejected evidence or adding a model turn", async () => {
     configure();
