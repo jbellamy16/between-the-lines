@@ -246,3 +246,81 @@ test("an available quality question uses its own answer and a new fixture discar
   transport.release();
   await expect(page.locator(".question-answer")).toHaveCount(0);
 });
+
+test("choosing a question cancels an older generic investigation before it can replace the source story", async ({
+  page,
+}) => {
+  const { SyntheticMatchSource } = await import("../src/lib/sources/synthetic");
+  const { observe, claimEmphasis } =
+    await import("../src/lib/ai/director/observer");
+  const { packageStory } = await import("../src/lib/ai/director/story");
+  const match = new SyntheticMatchSource().read("pressure");
+  const candidate = observe(match, 3804).find(
+    (c) =>
+      c.category === "activity-change" &&
+      c.statistics[0].label === "ball wins in the attacking third",
+  )!;
+  const differentStory = packageStory(
+    candidate,
+    match,
+    3804,
+    "analyst",
+    "foundry",
+    "brief",
+    claimEmphasis[candidate.category],
+  );
+  await page.route("**/api/insights", (r) =>
+    r.fulfill({
+      json: {
+        mode: "foundry",
+        proactive: false,
+        directorContext: "guided-race",
+      },
+    }),
+  );
+  let release!: () => void;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/director", async (route) => {
+    const data = route.request().postDataJSON();
+    const baseline = await (
+      await page.request.post("/api/director", { data })
+    ).json();
+    if (!data.question) await held;
+    await route.fulfill({
+      json: {
+        ...baseline,
+        source: "foundry",
+        cacheContext: "guided-race",
+        ...(data.question ? {} : { stories: [differentStory] }),
+      },
+    });
+  });
+  await ready(page);
+  const heading = await page.locator(".director-story h2").innerText();
+  await page
+    .getByRole("button", {
+      name: "Investigate with Microsoft Foundry",
+      exact: true,
+    })
+    .click();
+  await panel(page)
+    .getByRole("button", {
+      name: "Is the other team improving too?",
+      exact: true,
+    })
+    .click();
+  await expect(panel(page)).toContainText("Independently verified");
+  release();
+  await expect(
+    page.getByRole("button", {
+      name: "Investigate with Microsoft Foundry",
+      exact: true,
+    }),
+  ).toBeEnabled();
+  await expect(page.locator(".director-story h2")).toHaveText(heading);
+  await expect(panel(page).locator(".question-answer h4")).toHaveText(
+    "Is the other team improving too?",
+  );
+});

@@ -349,6 +349,13 @@ export function useDirectorStory({
     setEvidenceOpen,
     provider,
     investigate,
+    cancelInvestigation: () => {
+      request.current?.abort();
+      request.current = null;
+      requestCutoff.current = null;
+      setBusy(false);
+      setNotice("");
+    },
     setSelectedMetric,
     candidates,
     selectCandidate: (id: string) => {
@@ -570,7 +577,10 @@ export function DirectorStory({
           story={story}
           time={time}
           provider={provider}
-          onExplore={onExplore}
+          onExplore={() => {
+            director.cancelInvestigation();
+            onExplore();
+          }}
           onEvent={onEvent}
         />
         <StoryEvidence

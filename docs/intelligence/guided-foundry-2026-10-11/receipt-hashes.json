@@ -1,0 +1,13 @@
+{
+  "baselines.json": "6c18a9d4eb9fe866b79728ec0144f98487d56593460021904e0070d13593fada",
+  "case-fading-increase.json": "5fc380dbac502495411369d68d4b67056b9b3b60e7fc1eb559daf68c668f6a7a",
+  "case-misleading-quality.json": "e35579c08ad228499e1325fcf11c72aec32494e8c629b2d8b70859c742803504",
+  "case-opponent-response.json": "0b64ad1f133aeb3725d2bd3a4e96df6e072b2b5db8bb95620d00898e508ee885",
+  "case-unavailable-quality.json": "8a79c3fa6ae7489f18c17114c6ab0745bf71f452fff1648b389551ab6ef700a2",
+  "case-unfamiliar-opponent.json": "fa571816ed2d6941210541f06eb0ca52adce4e29100854281c4e10df561a8690",
+  "case-unfamiliar-quality.json": "b96ac42ccc88e1745dfd40f02acdfd4902cc454204270a082878cea363f5c48f",
+  "execution-claim.json": "9168dbe8e4e27d9dd4945dd3f7deb1d81339a73685643aefc4959e3e912e27a9",
+  "manifest.json": "26a4afda3942e940a5833502452e8e21c003238abd8def33fccd6f768f90a229",
+  "results.json": "9406608e74304623b2e3cb80d03e22cd06f68f360ad5fccafe3702632c0192a6",
+  "ledger.jsonl": "18f6c4877c68063308c4f217e9ce4865f0b0f60719f8f62ffe98b00b9c8ce033"
+}

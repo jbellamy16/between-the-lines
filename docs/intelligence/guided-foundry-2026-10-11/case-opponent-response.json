@@ -1,0 +1,150 @@
+{
+  "caseId": "opponent-response",
+  "kind": "Original result before acceptance; never overwritten",
+  "result": {
+    "evidence": {
+      "version": "guided-1.0.0",
+      "question": {
+        "intent": "opponent-improvement",
+        "storyId": "live-challenge-opponent-matches:activity-change:harbor:shots:live-challenge-opponent-matches:1"
+      },
+      "matchId": "live-challenge-opponent-matches",
+      "cutoff": 1800,
+      "storyHeadline": "Harbor: more shots",
+      "team": "harbor",
+      "metric": "shots",
+      "availability": "available",
+      "reason": null,
+      "verdict": "higher",
+      "windows": [
+        {
+          "id": "previous",
+          "start": 0,
+          "end": 900,
+          "period": "1H",
+          "boundary": "(start,end]"
+        },
+        {
+          "id": "current",
+          "start": 900,
+          "end": 1800,
+          "period": "1H",
+          "boundary": "(start,end]"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "own-previous",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "previous",
+          "eventIds": [
+            "live-challenge-opponent-matches:0"
+          ],
+          "value": 1
+        },
+        {
+          "id": "own-current",
+          "team": "harbor",
+          "metric": "shots",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-opponent-matches:1",
+            "live-challenge-opponent-matches:3",
+            "live-challenge-opponent-matches:5",
+            "live-challenge-opponent-matches:7"
+          ],
+          "value": 4
+        },
+        {
+          "id": "opponent-previous",
+          "team": "riverside",
+          "metric": "shots",
+          "window": "previous",
+          "eventIds": [],
+          "value": 0
+        },
+        {
+          "id": "opponent-current",
+          "team": "riverside",
+          "metric": "shots",
+          "window": "current",
+          "eventIds": [
+            "live-challenge-opponent-matches:2",
+            "live-challenge-opponent-matches:4",
+            "live-challenge-opponent-matches:6",
+            "live-challenge-opponent-matches:8",
+            "live-challenge-opponent-matches:9"
+          ],
+          "value": 5
+        }
+      ],
+      "qualifications": [
+        "This compares recorded activity, not overall performance or control of the match.",
+        "The opponent also recorded 5 shots in the current window, against 4 for Harbor; one-sided control is not established by this sample.",
+        "Shot count and normalized shot origins cannot establish chance quality; this source does not supply xG.",
+        "Synthetic match, players and event-model xG. No continuous tracking."
+      ],
+      "eventIds": [
+        "live-challenge-opponent-matches:0",
+        "live-challenge-opponent-matches:1",
+        "live-challenge-opponent-matches:3",
+        "live-challenge-opponent-matches:5",
+        "live-challenge-opponent-matches:7",
+        "live-challenge-opponent-matches:2",
+        "live-challenge-opponent-matches:4",
+        "live-challenge-opponent-matches:6",
+        "live-challenge-opponent-matches:8",
+        "live-challenge-opponent-matches:9"
+      ]
+    },
+    "source": "foundry",
+    "supplements": [],
+    "trace": [
+      {
+        "tool": "compare_time_windows",
+        "query": {
+          "matchId": "live-challenge-opponent-matches",
+          "start": 900,
+          "end": 1800,
+          "team": null,
+          "playerId": null,
+          "eventId": null
+        },
+        "eventIds": [
+          "live-challenge-opponent-matches:0",
+          "live-challenge-opponent-matches:1",
+          "live-challenge-opponent-matches:2",
+          "live-challenge-opponent-matches:3",
+          "live-challenge-opponent-matches:4",
+          "live-challenge-opponent-matches:5",
+          "live-challenge-opponent-matches:6",
+          "live-challenge-opponent-matches:7",
+          "live-challenge-opponent-matches:8",
+          "live-challenge-opponent-matches:9"
+        ],
+        "claimIds": [
+          "live-challenge-opponent-matches:activity-change:riverside:shots:live-challenge-opponent-matches:2",
+          "live-challenge-opponent-matches:activity-change:harbor:shots:live-challenge-opponent-matches:1"
+        ],
+        "truncated": false
+      }
+    ],
+    "notice": "Investigation complete. The answer and its evidence passed independent checks.",
+    "metrics": {
+      "requests": 1,
+      "toolInvocations": 1,
+      "cached": false,
+      "latencyMs": 1472,
+      "estimatedCostUsd": null
+    },
+    "usage": {
+      "inputTokens": 2228,
+      "outputTokens": 27,
+      "cachedInputTokens": 0,
+      "complete": true,
+      "requests": 1,
+      "latencyMs": 1457
+    }
+  }
+}
