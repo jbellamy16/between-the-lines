@@ -419,9 +419,9 @@ function HistoricalReplay({
             </p>
             <h3>Measurement notes</h3>
             <p>
-              Two equal 15-minute windows within the same half. Descriptive
-              thresholds, not statistical confidence. Event counts do not
-              establish tactical cause or off-ball movement.
+              Complete equal windows within the same half, up to 15 minutes
+              each. Descriptive thresholds, not statistical confidence. Event
+              counts do not establish tactical cause or off-ball movement.
             </p>
             <p>
               Evidence through{" "}
@@ -506,6 +506,10 @@ function HistoricalReplay({
             time={time}
             active={sourceActive && section === "match"}
             playing={playing}
+            onEvent={(id) => {
+              const event = visible.find((e) => e.id === id);
+              if (event) choose(event);
+            }}
             onExplore={() => setPlaying(false)}
             onReplay={() => {
               setPitchView("pattern");
@@ -520,7 +524,7 @@ function HistoricalReplay({
             storyTitle={
               selectedInsight && insight
                 ? `Other observation — ${insight.headline}`
-                : director.story?.headline
+                : director.wording?.headline
             }
             storyReplay={director.replay}
             match={match}
@@ -615,15 +619,7 @@ function HistoricalReplay({
           tab={detailTab}
           onTab={setDetailTab}
           empty={empty}
-          explanation={
-            <>
-              <p className="explanation-text">
-                {answer?.narrative?.explanation ?? insight?.explanation}
-              </p>
-              <p>{answer?.narrative?.why ?? insight?.why}</p>
-              <p>{answer?.narrative?.watch ?? insight?.watch}</p>
-            </>
-          }
+          selectedFacts={answer?.narrative ? answer.provenance.facts : []}
         >
           {answerPanel()}
         </InsightDetails>

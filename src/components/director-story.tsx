@@ -1,5 +1,10 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { presentStory } from "@/lib/explanation";
+import {
+  ExplanationSelector,
+  useExplanationStyle,
+} from "./explanation-preference";
 import { requestDirector } from "@/lib/ai/director/client-cache";
 import type { MatchData } from "@/lib/sources/model";
 import {
@@ -19,17 +24,29 @@ import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
 import { StorylineHistory } from "./storyline-history";
 
-export function BroadcastPreview({ story }: { story: BroadcastStory }) {
+export function BroadcastPreview({
+  story,
+  match,
+}: {
+  story: BroadcastStory;
+  match: MatchData;
+}) {
+  const style = useExplanationStyle();
+  const wording = presentStory(story, match, style);
   return (
     <AnimatedDetails className="director-disclosure broadcast-preview">
       <summary>Broadcast story</summary>
       <div className="broadcast-frame">
         <span className="eyebrow">
-          BETWEEN THE LINES · {story.audience.toUpperCase()}
+          BETWEEN THE LINES ·{" "}
+          {style === "plain" ? "PLAIN ENGLISH" : "FOOTBALL ANALYSIS"}
         </span>
-        <h3>{story.headline}</h3>
-        <p>{story.explanation}</p>
-        <p>{story.whyItMatters}</p>
+        <h3>{wording.headline}</h3>
+        <p>{wording.explanation}</p>
+        <p>{wording.why}</p>
+        {wording.qualifications.map((q) => (
+          <p key={q.code}>{q.text}</p>
+        ))}
         <svg
           viewBox="0 0 100 64"
           role="img"
@@ -109,6 +126,7 @@ export function useDirectorStory({
   active: boolean;
   playing: boolean;
 }) {
+  const style = useExplanationStyle();
   const [answer, setAnswer] = useState<DirectorResult | null>(null),
     [busy, setBusy] = useState(false),
     [replay, setReplay] = useState(false);
@@ -319,6 +337,7 @@ export function useDirectorStory({
   }, [candidateEpisode, active, playing, proactive]);
   return {
     story,
+    wording: story ? presentStory(story, match, style) : null,
     storylines,
     validAnswer,
     busy,
@@ -358,17 +377,21 @@ export function DirectorStory({
   active,
   onExplore,
   onReplay,
+  onEvent,
 }: {
   director: ReturnType<typeof useDirectorStory>;
   match: MatchData;
   time: number;
   playing: boolean;
   active: boolean;
+  onEvent: (id: string) => void;
   onExplore: () => void;
   onReplay: () => void;
 }) {
+  const style = useExplanationStyle();
   const {
     story,
+    wording,
     storylines,
     validAnswer,
     busy,
@@ -409,16 +432,43 @@ export function DirectorStory({
   if (!story)
     return (
       <div className="quiet-story panel">
+        <ExplanationSelector />
         <span className="eyebrow">What matters now</span>
         <p>
-          No new headline. Explore the recorded actions while the next passage
-          develops.
+          {style === "plain"
+            ? "No new headline. Explore the recorded actions while the next passage develops."
+            : "No new headline. No eligible lead meets the evidence thresholds at this cutoff; secondary observations remain available."}
         </p>
         {notice && (
           <p className="notice" role="status">
             {notice}
           </p>
         )}
+        <AnimatedDetails className="director-disclosure quiet-evidence">
+          <summary>Explore evidence</summary>
+          <p>
+            Recorded events through {matchClock(match, time)}. No new headline
+            does not mean nothing happened.
+          </p>
+          {match.events
+            .filter((e) => e.time <= time && e.type !== "possession")
+            .slice(-8)
+            .map((e) => (
+              <button
+                className="text-button"
+                key={e.id}
+                onClick={() => onEvent(e.id)}
+              >
+                {eventClock(match, e)} · {e.type.replaceAll("_", " ")} · Replay
+              </button>
+            ))}
+          <p>{match.attribution}</p>
+          <ul>
+            {match.limitations.map((l) => (
+              <li key={l}>{l}</li>
+            ))}
+          </ul>
+        </AnimatedDetails>
         {more}
         <StorylineHistory match={match} time={time} storylines={storylines} />
       </div>
@@ -429,18 +479,26 @@ export function DirectorStory({
   return (
     <>
       <Reveal change={story.storyId} className="director-story panel">
+        <ExplanationSelector />
         <span className="eyebrow">
           {selectionActive ? "Selected observation" : "What matters now"} ·{" "}
           {match.kind === "synthetic" ? "Synthetic demo" : "Recorded match"}
         </span>
-        <h2>{story.headline}</h2>
-        <p>{story.explanation}</p>
+        <h2>{wording!.headline}</h2>
+        <p>
+          {wording!.explanation} {wording!.why}
+        </p>
+        {wording!.qualifications.length > 0 && (
+          <p className="story-qualification">
+            {wording!.qualifications.map((q) => q.text).join(" ")}
+          </p>
+        )}
         <AnimatedDetails className="director-disclosure story-significance">
           <summary>Why it matters & what to watch</summary>
           <h3>Why it matters</h3>
-          <p>{story.whyItMatters}</p>
+          <p>{wording!.why}</p>
           <h3>Watch next</h3>
-          <p>{story.watchNext}</p>
+          <p>{wording!.watch}</p>
         </AnimatedDetails>
         <small>
           Through {matchClock(match, story.cutoff)} ·{" "}
@@ -466,7 +524,6 @@ export function DirectorStory({
           </button>
           <button
             className="text-button"
-            disabled={busy}
             onClick={() => {
               onExplore();
               setEvidenceOpen(true);
@@ -518,11 +575,12 @@ export function DirectorStory({
           match={match}
           events={events}
           answer={validAnswer}
+          onEvent={onEvent}
           open={evidenceOpen}
           onToggle={setEvidenceOpen}
         />
         {more}
-        <BroadcastPreview story={story} />
+        <BroadcastPreview story={story} match={match} />
       </Reveal>
       <StorylineHistory match={match} time={time} storylines={storylines} />
     </>

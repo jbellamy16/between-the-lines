@@ -4,6 +4,7 @@ import type { Category } from "@/lib/intelligence";
 import type { TeamId } from "@/lib/match";
 import type { MatchData } from "@/lib/sources/model";
 import { useAppearance, type Appearance } from "./appearance";
+import { ExplanationSelector } from "./explanation-preference";
 import { Check } from "./icons";
 export type MatchPreferences = {
   team: TeamId | "all";
@@ -80,6 +81,7 @@ export function MatchSettings({
   return (
     <>
       <p className="muted">Preferences are saved on this device.</p>
+      <ExplanationSelector settings />
       <label className="setting-label appearance-setting">
         Appearance
         <select

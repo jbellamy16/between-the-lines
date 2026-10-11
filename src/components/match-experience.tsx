@@ -1,6 +1,7 @@
 "use client";
 import type { Fixture } from "@/lib/sources/catalog";
 import { useState } from "react";
+import { ExplanationPreference } from "./explanation-preference";
 import { MatchApp } from "./match-app";
 import { HistoricalApp } from "./historical-app";
 import type { MatchSection } from "./match-shell";
@@ -41,7 +42,7 @@ export function MatchExperience({
     </SelectionGroup>
   ) : null;
   return (
-    <>
+    <ExplanationPreference>
       <div hidden={source !== "synthetic"}>
         <MatchApp
           sourceSelector={selector}
@@ -61,6 +62,6 @@ export function MatchExperience({
           />
         </div>
       )}
-    </>
+    </ExplanationPreference>
   );
 }

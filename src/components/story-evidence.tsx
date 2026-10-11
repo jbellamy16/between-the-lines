@@ -4,6 +4,7 @@ import type { MatchData, NormalizedEvent } from "@/lib/sources/model";
 import { matchClock, eventClock } from "@/lib/sources/model";
 import type { BroadcastStory } from "@/lib/ai/director/story";
 import type { DirectorResult } from "@/lib/ai/director/runner";
+import { storyDefinition } from "@/lib/explanation";
 import { AnimatedDetails } from "./motion";
 import { EventIcon, Shield } from "./icons";
 
@@ -26,6 +27,7 @@ export function StoryEvidence({
   answer,
   open,
   onToggle,
+  onEvent,
 }: {
   story: BroadcastStory;
   match: MatchData;
@@ -33,6 +35,7 @@ export function StoryEvidence({
   answer: DirectorResult | null;
   open?: boolean;
   onToggle?: (open: boolean) => void;
+  onEvent?: (id: string) => void;
 }) {
   const [current, previous] = story.statistics;
   const comparison =
@@ -44,7 +47,19 @@ export function StoryEvidence({
     <ol className="story-event-list">
       {items.map((event) => (
         <li key={event.id}>
-          <time>{eventClock(match, event)}</time>
+          <time>
+            {onEvent ? (
+              <button
+                className="text-button"
+                aria-label={`Replay ${event.type} at ${eventClock(match, event)}`}
+                onClick={() => onEvent(event.id)}
+              >
+                {eventClock(match, event)}
+              </button>
+            ) : (
+              eventClock(match, event)
+            )}
+          </time>
           <span className="story-event-icon">
             <EventIcon type={event.type} size={16} />
           </span>
@@ -91,6 +106,17 @@ export function StoryEvidence({
         </div>
 
         <p>{story.whatChanged}</p>
+        <h3>Definitions & comparison windows</h3>
+        <p>{storyDefinition(story)}</p>
+        <p>
+          {story.hypothesis.windows
+            .map(
+              (w) =>
+                `${w.id}: ${matchClock(match, w.start)}–${matchClock(match, w.end)} (${w.boundary === "(start,end]" ? "start excluded, end included" : "both endpoints included"})`,
+            )
+            .join("; ")}
+          . Times marked ~ are approximate to the source minute.
+        </p>
         {comparison ? (
           <section
             className="story-comparison"
