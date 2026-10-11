@@ -1,6 +1,6 @@
 # Between the Lines — submission package
 
-Prepared October 11, 2026 (America/Chicago). Product PR [#26](https://github.com/jbellamy16/second-look/pull/26) is merged. The [public Azure release](https://between-the-lines-jb-f5539b65.azurewebsites.net/) serves **2014a497c84c799952c218a0229ec0c16bd964b1**, identified by [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json). Public AI is disabled; only synthetic matches are accessible. See [release verification](release-2026-10-11/RELEASE.md), [viewer test](release-2026-10-11/VIEWER-TEST.md), and [113-second demo](intelligence/DEMO.md). Video publication, registration, human validation and submission are not complete.
+Prepared October 11, 2026 (America/Chicago). Product PR [#26](https://github.com/jbellamy16/second-look/pull/26) is merged. The [public Azure release](https://between-the-lines-jb-f5539b65.azurewebsites.net/) serves **2014a497c84c799952c218a0229ec0c16bd964b1**, identified by [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json). Public AI is disabled; only synthetic matches are accessible. See [release verification](release-2026-10-11/RELEASE.md), [viewer test](release-2026-10-11/VIEWER-TEST.md), and [113-second demo](intelligence/DEMO.md). Registration and authenticated portal fields remain unverified. Human validation, video publication and entry submission remain pending.
 
 ## Pitch
 
