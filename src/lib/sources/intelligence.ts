@@ -22,10 +22,7 @@ import type { TeamId } from "../match";
 export function historicalInsights(match: MatchData, time: number) {
   return detectInsights(match.events, time, {
     teams: match.teams,
-    periodStart:
-      match.capabilities.comparisonScope === "continuous"
-        ? 0
-        : periodAt(match, time).start,
+    periodStart: periodAt(match, time).start,
     ballRecoveries: match.capabilities.ballRecoveries,
   });
 }

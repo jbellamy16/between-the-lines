@@ -3,7 +3,7 @@ import type { Mode } from "../../intelligence";
 import { periodAt, type MatchData } from "../../sources/model";
 import type { ProviderMode } from "../providers";
 import { DIRECTOR_VERSION, claimEmphasis, type Candidate } from "./observer";
-import { evidenceOverlaps } from "./editorial";
+import { evidenceOverlaps, isMatchState } from "./editorial";
 import { evaluateHypothesis, type HypothesisAssessment } from "./hypothesis";
 import { reconstructStorylines, type TemporalStoryline } from "./storylines";
 import { buildIntelligenceGraph, type IntelligenceGraph } from "./graph";
@@ -43,6 +43,8 @@ export type BroadcastStory = {
   claimIds: string[];
   statistics: Candidate["statistics"];
   evidenceEventIds: string[];
+  /** The claim itself; contextual measurements and counter-evidence stay in evidenceEventIds. */
+  highlightedEventIds: string[];
   coordinates: { eventId: string; x: number; y: number; type: string }[];
   audience: Mode;
   visualization: "sequence" | "comparison" | "contribution";
@@ -99,20 +101,22 @@ export function packageStory(
     .toLowerCase()
     .replace(/^current /, "");
   const storyline =
-    storylines.find(
-      (line) =>
-        line.matchId === match.id &&
-        line.cutoff === cutoff &&
-        line.team === candidate.team &&
-        (!["activity-change", "window-comparison"].includes(
-          candidate.category,
-        ) ||
-          (comparisonMetric === "shots"
-            ? line.metric === "shots"
-            : comparisonMetric === "recoveries in the attacking third" &&
-              line.metric === "attacking-third-recoveries")) &&
-        line.evidenceIds.some((id) => candidate.evidenceIds.includes(id)),
-    ) ?? null;
+    (!isMatchState(candidate)
+      ? storylines.find(
+          (line) =>
+            line.matchId === match.id &&
+            line.cutoff === cutoff &&
+            line.team === candidate.team &&
+            (!["activity-change", "window-comparison"].includes(
+              candidate.category,
+            ) ||
+              (comparisonMetric === "shots"
+                ? line.metric === "shots"
+                : comparisonMetric === "recoveries in the attacking third" &&
+                  line.metric === "attacking-third-recoveries")) &&
+            line.evidenceIds.some((id) => candidate.evidenceIds.includes(id)),
+        )
+      : null) ?? null;
   const period = periodAt(match, cutoff);
   const nextAssessment =
     period.start + (Math.floor((cutoff - period.start) / 300) + 1) * 300;
@@ -128,7 +132,9 @@ export function packageStory(
     whyItMatters: hypothesis.whyItMatters,
     watchNext:
       hypothesis.watchNext?.description ??
-      "Full time. Revisit the recorded evidence.",
+      (candidate.category === "score-change"
+        ? "Watch how the teams respond in the next passage of play."
+        : "Full time. Revisit the recorded evidence."),
     hypothesis,
     storyline,
     intelligenceGraph: buildIntelligenceGraph(
@@ -145,6 +151,7 @@ export function packageStory(
     claimIds: [candidate.id],
     statistics: candidate.statistics,
     evidenceEventIds: evidenceIds,
+    highlightedEventIds: [...candidate.evidenceIds],
     coordinates: events.flatMap((e) =>
       e?.position ? [{ eventId: e.id, ...e.position, type: e.type }] : [],
     ),

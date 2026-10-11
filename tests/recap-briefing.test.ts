@@ -12,7 +12,7 @@ import { requestDirector } from "../src/lib/ai/director/client-cache";
 const source = new SyntheticMatchSource();
 const match = source.read("pressure");
 describe("evidence-controlled football briefing", () => {
-  it("uses the real 552-second comparison and preserves the separate 15-minute analysis", () => {
+  it("uses the shared 552-second comparison and ball-win definition", () => {
     const result = buildBriefing(match, 3804);
     const shots = result.metrics.find((m) => m.label === "shots")!;
     expect(shots.current).toBe(4);
@@ -24,9 +24,9 @@ describe("evidence-controlled football briefing", () => {
     expect(result.narrative).toContain("9m 12s");
     expect(result.narrative).not.toContain("15-minute");
     const recovery = result.metrics.find(
-      (m) => m.label === "Attacking-third recoveries",
+      (m) => m.label === "Attacking-third ball wins",
     )!;
-    expect(recovery.current).toBe(2); // Legacy ball wins include tackles/interceptions; this metric does not.
+    expect(recovery.current).toBe(4); // Recoveries, successful interceptions and tackles.
     expect(result.headline).toBe("Harbor are getting more shots away.");
     expect(result.narrative.split(/\s+/).length).toBeLessThanOrEqual(75);
     expect(result.narrative.match(/recorded 4 shots/g)).toHaveLength(1);

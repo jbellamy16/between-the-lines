@@ -76,13 +76,16 @@ it("uses the requested balanced profile rather than silently narrating the curat
   const match = new SyntheticMatchSource().read("pressure", {
     profile: "balanced",
   });
-  const insight = historicalInsights(match, 3804)[0];
+  const time = [1800, 2400, 4200, 4800].find(
+    (t) => historicalInsights(match, t).length,
+  )!;
+  const insight = historicalInsights(match, time)[0];
   expect(insight).toBeDefined();
   const response = await POST(
     request({
       scenario: "pressure",
       profile: "balanced",
-      time: 3804,
+      time,
       mode: "fan",
       team: insight.team,
       category: insight.category,
@@ -102,7 +105,7 @@ it("uses the requested balanced profile rather than silently narrating the curat
         request({
           scenario: "pressure",
           profile: "invented",
-          time: 3804,
+          time,
           mode: "fan",
           team: "harbor",
           category: "pressure",

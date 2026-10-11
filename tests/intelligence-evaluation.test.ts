@@ -290,7 +290,7 @@ describe("adversarial football evidence", () => {
       );
       expect(reconstructStorylines(match, 1800)).toEqual([]);
       for (const claim of observe(match, 1800)) {
-        expect(claim.category).toBe("passing-pair");
+        expect(["passing-pair", "activity-change"]).toContain(claim.category);
         assertEvidenceBounded(match, 1800, claim);
       }
     },

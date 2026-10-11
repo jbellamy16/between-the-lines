@@ -54,16 +54,13 @@ describe("editorial evidence and presentation regressions", () => {
   });
   it("surfaces the early-half shot and recovery changes over equal complete windows", () => {
     const candidates = observe(match, 3804);
-    for (const label of ["shots", "recoveries in the attacking third"]) {
+    for (const label of ["shots", "ball wins in the attacking third"]) {
       const claim = candidates.find(
         (c) =>
           c.category === "activity-change" && c.statistics[0].label === label,
       )!;
       expect(claim).toBeDefined();
-      expect(claim.statistics.map((s) => s.value)).toEqual([
-        label === "shots" ? 4 : 2,
-        0,
-      ]);
+      expect(claim.statistics.map((s) => s.value)).toEqual([4, 0]);
       expect(
         claim.statistics.every((s) => s.unit === "events / 552 seconds"),
       ).toBe(true);
@@ -82,7 +79,7 @@ describe("editorial evidence and presentation regressions", () => {
     unsupported.capabilities.ballRecoveries = false;
     expect(
       observe(unsupported, 3804).some(
-        (c) => c.statistics[0]?.label === "recoveries in the attacking third",
+        (c) => c.statistics[0]?.label === "ball wins in the attacking third",
       ),
     ).toBe(false);
     expect(

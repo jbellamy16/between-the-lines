@@ -1,5 +1,9 @@
 "use client";
-import { DirectorStory } from "./director-story";
+import {
+  DirectorStory,
+  useDirectorStory,
+  DirectorReplay,
+} from "./director-story";
 import { RecapBriefing } from "./recap-briefing";
 import { trapDialogFocus } from "./dialog-focus";
 import { useViewingPosition } from "./use-viewing-position";
@@ -92,6 +96,18 @@ export function MatchApp({
     () => new SyntheticMatchSource().read(scenario, { profile }),
     [scenario, profile],
   );
+  const director = useDirectorStory({
+    match: canonicalMatch,
+    time,
+    mode: ANALYSIS_MODE,
+    preferences: {
+      team: prefs.team,
+      player: prefs.player,
+      categories: prefs.categories,
+    },
+    active: active && !modal && section === "match",
+    playing,
+  });
   const events = useMemo(
     () => toLegacyEvents(canonicalMatch.events),
     [canonicalMatch],
@@ -139,9 +155,13 @@ export function MatchApp({
           .slice(-10)
       : event
         ? sequence
-        : insight
+        : selectedKey && insight
           ? evidence
-          : sequence;
+          : director.story
+            ? visible.filter((e) =>
+                director.story!.highlightedEventIds.includes(e.id),
+              )
+            : sequence;
   const activePitchEvent =
     playing || pitchView === "recent" ? pitchEvents.at(-1) : event;
   const replayEvents = replay
@@ -254,14 +274,24 @@ export function MatchApp({
     return () => window.removeEventListener("scroll", remember);
   }, [section, active]);
   function seek(t: number) {
+    director.setReplay(false);
     setTime(t);
     setPlaying(false);
     setSelectedEvent(null);
     setReplay(null);
     setNarrative(null);
-    setPitchView("recent");
+    setPitchView("pattern");
+    director.setSelectedMetric(null);
   }
   function selectInsight(i: Insight) {
+    director.setReplay(false);
+    director.setSelectedMetric({
+      team: i.team,
+      label:
+        i.category === "pressure"
+          ? "ball wins in the attacking third"
+          : i.metric.toLowerCase(),
+    });
     if (insight)
       setSeenEvidenceIds((seen) =>
         [...new Set([...seen, ...insight.evidenceIds])].slice(-200),
@@ -280,6 +310,7 @@ export function MatchApp({
     );
   }
   function selectEvent(e: MatchEvent) {
+    director.setReplay(false);
     setPitchView("passage");
     if (e.type === "substitution") {
       setFocusedPlayer(e.playerId);
@@ -612,6 +643,13 @@ export function MatchApp({
         onSelect={(i) => {
           setPlaying(false);
           setPitchView("pattern");
+          director.setSelectedMetric({
+            team: i.team,
+            label:
+              i.category === "pressure"
+                ? "ball wins in the attacking third"
+                : i.metric.toLowerCase(),
+          });
           setSelectedKey(`${i.team}-${i.category}`);
           setSelectedEvent(null);
           setReplay(null);
@@ -625,6 +663,7 @@ export function MatchApp({
         onSpeed={setSpeed}
         onSeek={seek}
         onPlay={() => {
+          director.setReplay(false);
           if (time === DURATION) seek(0);
           setReplay(null);
           setSelectedEvent(null);
@@ -636,10 +675,33 @@ export function MatchApp({
           setModal("recap");
         }}
       />
+
       {
         <div className="match-grid section-enter" hidden={section !== "match"}>
+          <div className="main-story">
+            <DirectorStory
+              director={director}
+              match={canonicalMatch}
+              time={time}
+              active={active && section === "match"}
+              playing={playing}
+              onExplore={() => setPlaying(false)}
+              onReplay={() => {
+                setPitchView("pattern");
+                setSelectedKey(null);
+                setSelectedEvent(null);
+                setReplay(null);
+              }}
+            />
+          </div>
           <div className="match-left">
             <MatchPitch
+              storyTitle={
+                selectedKey && insight
+                  ? `Other observation — ${insight.headline}`
+                  : director.story?.headline
+              }
+              storyReplay={director.replay}
               match={canonicalMatch}
               time={time}
               events={canonicalMatch.events.filter((e) =>
@@ -651,11 +713,17 @@ export function MatchApp({
                 if (e) selectEvent(e);
               }}
               view={
-                replay || event ? "passage" : playing ? "recent" : pitchView
+                director.replay || replay || event
+                  ? "passage"
+                  : playing
+                    ? "recent"
+                    : pitchView
               }
-              hasPattern={!!insight}
+              hasPattern={!!director.story || !!insight}
               hasPassage={!!latest}
               onView={(view) => {
+                director.setReplay(false);
+                setSelectedKey(null);
                 setPlaying(false);
                 setSelectedEvent(null);
                 setReplay(null);
@@ -663,13 +731,24 @@ export function MatchApp({
                 if (view === "passage") replayEvidence();
               }}
               onClear={() => {
+                director.setReplay(false);
+                setSelectedKey(null);
                 setSelectedEvent(null);
                 setReplay(null);
                 setPitchView("pattern");
               }}
               onSeek={seek}
               replay={
-                replay && replayEvents.length ? (
+                director.replay && director.story ? (
+                  <DirectorReplay
+                    director={director}
+                    match={canonicalMatch}
+                    time={time}
+                    suspended={
+                      playing || !!modal || section !== "match" || !active
+                    }
+                  />
+                ) : replay && replayEvents.length ? (
                   <EvidenceReplay
                     key={replay.version}
                     events={replayEvents}
@@ -688,22 +767,7 @@ export function MatchApp({
             />
           </div>
           <InsightDetails
-            story={
-              <DirectorStory
-                key={canonicalMatch.id}
-                match={canonicalMatch}
-                time={time}
-                mode={ANALYSIS_MODE}
-                preferences={{
-                  team: prefs.team,
-                  player: prefs.player,
-                  categories: prefs.categories,
-                }}
-                active={active && !modal && section === "match"}
-                playing={playing}
-                onExplore={() => setPlaying(false)}
-              />
-            }
+            secondaryOpen={!!selectedKey}
             match={canonicalMatch}
             insight={insight}
             insights={insights}

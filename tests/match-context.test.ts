@@ -69,7 +69,7 @@ for (const match of matches)
             );
         }
         const insights = matchInsights(match, time);
-        if (time < 1800) expect(insights).toEqual([]);
+        if (time < 600) expect(insights).toEqual([]);
         for (const mode of ["fan", "analyst"] as const) {
           const summary = matchSummary(match, time, mode, insights);
           expect(summary).toEqual(

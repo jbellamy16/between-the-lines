@@ -1,4 +1,5 @@
 "use client";
+import { durationLabel } from "@/lib/sources/metrics";
 import { ANALYSIS_MODE, type Insight, type Mode } from "@/lib/intelligence";
 import { clock } from "@/lib/match";
 import scoreboardStyles from "./scoreboard.module.css";
@@ -313,12 +314,18 @@ export function InsightComparison({
             {insight.current - insight.previous > 0 ? "+" : ""}
             {insight.current - insight.previous}
           </span>
-          <small>vs previous 15 min</small>
+          <small>
+            vs previous {durationLabel(insight.end - insight.start)}
+          </small>
         </div>
       </div>
       {[
         [insight.current, insight.start, insight.end],
-        [insight.previous, insight.start - 900, insight.start],
+        [
+          insight.previous,
+          insight.start - (insight.end - insight.start),
+          insight.start,
+        ],
       ].map(([value, start, end], n) => (
         <div className={`window-row ${n ? "baseline" : ""}`} key={n}>
           <span>
@@ -521,8 +528,10 @@ export function InsightDetails({
   children,
   empty,
   story,
+  secondaryOpen = false,
 }: {
   story?: ReactNode;
+  secondaryOpen?: boolean;
   match: MatchData;
   insight?: Insight;
   insights: Insight[];
@@ -544,124 +553,136 @@ export function InsightDetails({
   return (
     <aside className="panel detail-panel" aria-label="Match intelligence">
       {story}
-      {insight ? (
-        <>
-          <div className="selected-observation">
-            <div className="insight-badges">
-              <span className="observation-team">
-                <i className={`team-marker ${insight.team}`} />
-                {match.teams[insight.team].name}
-              </span>
-              <span className="context-label">Analytical insight</span>
+      <AnimatedDetails
+        className="secondary-observations"
+        open={secondaryOpen || !insight || undefined}
+      >
+        <summary>Other observations & comparisons</summary>
+        {insight ? (
+          <>
+            <div className="selected-observation">
+              <div className="insight-badges">
+                <span className="observation-team">
+                  <i className={`team-marker ${insight.team}`} />
+                  {match.teams[insight.team].name}
+                </span>
+                <span className="context-label">Analytical insight</span>
+              </div>
+              <h2>
+                <InsightGlyph insight={insight} />
+                {insight.headline}
+              </h2>
+              {mode === "analyst" && <p>{insight.analyst}</p>}
+              <InsightComparison insight={insight} match={match} />
             </div>
-            <h2>
-              <InsightGlyph insight={insight} />
-              {insight.headline}
-            </h2>
-            {mode === "analyst" && <p>{insight.analyst}</p>}
-            <InsightComparison insight={insight} match={match} />
-          </div>
-          <SelectionGroup
-            className="detail-tabs"
-            label="Insight details"
-            value={tab}
-          >
-            {(["visual", "evidence", "explanation"] as const).map((t) => (
-              <button
-                key={t}
-                className={tab === t ? "selected" : ""}
-                aria-pressed={tab === t}
-                onClick={() => onTab(t)}
-              >
-                {t === "evidence"
-                  ? `Evidence (${evidence.length})`
-                  : t[0].toUpperCase() + t.slice(1)}
-              </button>
-            ))}
-          </SelectionGroup>
-          <div className="detail-content">
-            {tab === "visual" && (
-              <>
-                <div className="comparison-pitches">
-                  {[insight.evidenceIds, insight.baselineIds].map((ids, n) => (
-                    <div key={n}>
-                      <Pitch
-                        compact
-                        aggregate={ids.length > 24}
-                        events={pitchEvents(
-                          match.events.filter(
-                            (e) => e.time <= insight.end && ids.includes(e.id),
-                          ),
-                        )}
-                        identities={identitiesFor(match)}
-                      />
-                      <span>
-                        {n ? "Previous 15 minutes" : "Last 15 minutes"}
+            <SelectionGroup
+              className="detail-tabs"
+              label="Insight details"
+              value={tab}
+            >
+              {(["visual", "evidence", "explanation"] as const).map((t) => (
+                <button
+                  key={t}
+                  className={tab === t ? "selected" : ""}
+                  aria-pressed={tab === t}
+                  onClick={() => onTab(t)}
+                >
+                  {t === "evidence"
+                    ? `Evidence (${evidence.length})`
+                    : t[0].toUpperCase() + t.slice(1)}
+                </button>
+              ))}
+            </SelectionGroup>
+            <div className="detail-content">
+              {tab === "visual" && (
+                <>
+                  <div className="comparison-pitches">
+                    {[insight.evidenceIds, insight.baselineIds].map(
+                      (ids, n) => (
+                        <div key={n}>
+                          <Pitch
+                            compact
+                            aggregate={ids.length > 24}
+                            events={pitchEvents(
+                              match.events.filter(
+                                (e) =>
+                                  e.time <= insight.end && ids.includes(e.id),
+                              ),
+                            )}
+                            identities={identitiesFor(match)}
+                          />
+                          <span>
+                            {n ? "Previous" : "Last"}{" "}
+                            {durationLabel(insight.end - insight.start)}
+                          </span>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                  <p className="metric-note">
+                    {insight.metric} locations · attacking direction normalized.
+                  </p>
+                </>
+              )}
+              {tab === "evidence" && (
+                <div
+                  className="evidence-list"
+                  tabIndex={0}
+                  aria-label="Supporting actions"
+                >
+                  {evidence.map((e) => (
+                    <button key={e.id} onClick={() => onEvent(e.id)}>
+                      <time>{eventClock(match, e)}</time>
+                      <span className={`event-glyph ${e.team}`}>
+                        <EventIcon type={e.type} />
                       </span>
-                    </div>
+                      <span>
+                        {eventDescription(match, e)}
+                        <small>{match.teams[e.team].short}</small>
+                      </span>
+                      <Play size={16} />
+                    </button>
                   ))}
                 </div>
-                <p className="metric-note">
-                  {insight.metric} locations · attacking direction normalized.
-                </p>
-              </>
-            )}
-            {tab === "evidence" && (
-              <div
-                className="evidence-list"
-                tabIndex={0}
-                aria-label="Supporting actions"
-              >
-                {evidence.map((e) => (
-                  <button key={e.id} onClick={() => onEvent(e.id)}>
-                    <time>{displayClock(match, e.time)}</time>
-                    <span className={`event-glyph ${e.team}`}>
-                      <EventIcon type={e.type} />
-                    </span>
-                    <span>
-                      {eventDescription(match, e)}
-                      <small>{match.teams[e.team].short}</small>
-                    </span>
-                    <Play size={16} />
-                  </button>
+              )}
+              {tab === "explanation" &&
+                (explanation ?? (
+                  <>
+                    <p>{insight.explanation}</p>
+                    <p>{insight.why}</p>
+                    <p>{insight.watch}</p>
+                  </>
                 ))}
-              </div>
+              <button className="sequence-button" onClick={onReplay}>
+                Show me the sequence <ArrowRight size={20} />
+              </button>
+              {children}
+            </div>
+            {insights.length > 1 && (
+              <AnimatedDetails className="more-observations">
+                <summary>
+                  More observations{" "}
+                  <span className="disclosure-count">
+                    {insights.length - 1}
+                  </span>
+                </summary>
+                {insights
+                  .filter((i) => i.id !== insight.id)
+                  .map((i) => (
+                    <InsightCard
+                      key={`${i.team}-${i.category}`}
+                      insight={i}
+                      match={match}
+                      onSelect={() => onSelect(i)}
+                    />
+                  ))}
+              </AnimatedDetails>
             )}
-            {tab === "explanation" &&
-              (explanation ?? (
-                <>
-                  <p>{insight.explanation}</p>
-                  <p>{insight.why}</p>
-                  <p>{insight.watch}</p>
-                </>
-              ))}
-            <button className="sequence-button" onClick={onReplay}>
-              Show me the sequence <ArrowRight size={20} />
-            </button>
-            {children}
-          </div>
-          {insights.length > 1 && (
-            <AnimatedDetails className="more-observations">
-              <summary>
-                More observations{" "}
-                <span className="disclosure-count">{insights.length - 1}</span>
-              </summary>
-              {insights
-                .filter((i) => i.id !== insight.id)
-                .map((i) => (
-                  <InsightCard
-                    key={`${i.team}-${i.category}`}
-                    insight={i}
-                    match={match}
-                    onSelect={() => onSelect(i)}
-                  />
-                ))}
-            </AnimatedDetails>
-          )}
-        </>
-      ) : (
-        empty
-      )}
+          </>
+        ) : (
+          empty
+        )}
+      </AnimatedDetails>
     </aside>
   );
 }
@@ -678,6 +699,8 @@ export function MatchPitch({
   replay,
   onClear,
   onSeek,
+  storyTitle,
+  storyReplay = false,
 }: {
   match: MatchData;
   time: number;
@@ -691,6 +714,8 @@ export function MatchPitch({
   replay?: ReactNode;
   onClear: () => void;
   onSeek: (time: number) => void;
+  storyTitle?: string;
+  storyReplay?: boolean;
 }) {
   const actions = events.filter(
     (e) => !["possession", "substitution"].includes(e.type),
@@ -700,11 +725,13 @@ export function MatchPitch({
     <section className="panel pitch-panel">
       <div className="panel-header">
         <h2>
-          {view === "passage"
-            ? "Passage replay"
-            : view === "pattern"
-              ? "Where it happened"
-              : "Recent actions"}
+          {storyReplay
+            ? "Story evidence replay"
+            : view === "passage"
+              ? "Passage replay"
+              : view === "pattern"
+                ? "Where it happened"
+                : "Recent actions"}
         </h2>
         {view === "passage" && (
           <button className="text-button" onClick={onClear}>
@@ -712,6 +739,9 @@ export function MatchPitch({
           </button>
         )}
       </div>
+      {storyTitle && (view === "pattern" || storyReplay) && (
+        <p className="pitch-story-label">Evidence for: {storyTitle}</p>
+      )}
       <PitchViewControl
         value={view}
         onChange={onView}
@@ -744,7 +774,7 @@ export function MatchPitch({
             <div>
               <p>
                 {active
-                  ? `${displayClock(match, active.time)} · ${eventDescription(match, active)}`
+                  ? `${eventClock(match, active)} · ${eventDescription(match, active)}`
                   : "No actions in this window."}
               </p>
             </div>
@@ -756,7 +786,7 @@ export function MatchPitch({
               >
                 {actions.map((e) => (
                   <option key={e.id} value={e.id}>
-                    {displayClock(match, e.time)} · {eventDescription(match, e)}
+                    {eventClock(match, e)} · {eventDescription(match, e)}
                   </option>
                 ))}
               </select>
@@ -837,7 +867,7 @@ export function MatchEventFeed({
       <div className="event-feed-list" tabIndex={0} aria-label="Recent events">
         {events.map((e) => (
           <button key={e.id} onClick={() => onEvent(e.id)}>
-            <time>{displayClock(match, e.time)}</time>
+            <time>{eventClock(match, e)}</time>
             <span className={`event-glyph ${e.team}`}>
               <EventIcon type={e.type} />
             </span>

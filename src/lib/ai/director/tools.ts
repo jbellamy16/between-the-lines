@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   recordedScore,
   matchClock,
+  eventClock,
   type MatchData,
   type NormalizedEvent,
 } from "../../sources/model";
@@ -72,6 +73,7 @@ export function publicEvent(
     id: e.id,
     time: e.time,
     period: e.period,
+    clock: eventClock(match, e),
     team: e.team,
     actorId: e.actorId,
     playerName: match.players.find((p) => p.id === e.actorId)?.name ?? null,
@@ -87,6 +89,9 @@ export function publicEvent(
       provider: e.source.provider,
       eventId: e.source.eventId,
       precision: e.source.precision,
+      ...(e.source.reportedMinute === undefined
+        ? {}
+        : { reportedMinute: e.source.reportedMinute }),
     },
   };
 }

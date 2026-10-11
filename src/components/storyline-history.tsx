@@ -25,7 +25,10 @@ export function StorylineHistory({
       <summary>How the match story is changing</summary>
       <p className="metric-note">
         Measured every five match minutes from recorded events. A storyline can
-        weaken even while an earlier passage remains worth replaying.
+        weaken even while an earlier passage remains worth replaying. Recovery
+        counts here include recoveries only; the main ball-win comparison also
+        includes successful interceptions and tackles. These five-minute checks
+        use a different period from the rolling comparison.
       </p>
       {current.map((line) => (
         <section

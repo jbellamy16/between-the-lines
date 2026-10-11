@@ -145,7 +145,7 @@ describe("portable intelligence graph and story packaging", () => {
 
   it("includes every measurement event even when it is contextual rather than the candidate's evidence", () => {
     const match = source.read("pressure");
-    const candidate = comparison(match, "recoveries in the attacking third");
+    const candidate = comparison(match, "ball wins in the attacking third");
     const story = packageStory(candidate, match, cutoff, "analyst", "offline");
     const measured = story.hypothesis.measurements.flatMap(
       (measurement) => measurement.eventIds,
@@ -174,12 +174,13 @@ describe("portable intelligence graph and story packaging", () => {
         });
     }
     expectCompleteGraph(story.intelligenceGraph, match);
-    expect(story.storyline?.metric).toBe("attacking-third-recoveries");
-    expect(story.intelligenceGraph.edges).toContainEqual({
-      from: story.intelligenceGraph.root,
-      to: `storyline:${story.storyline!.id}`,
-      relationship: "continues",
-    });
+    // Broad ball wins are not the recovery-only five-minute storyline.
+    expect(story.storyline).toBeNull();
+    expect(
+      story.intelligenceGraph.edges.some(
+        (edge) => edge.relationship === "continues",
+      ),
+    ).toBe(false);
   });
 
   it("keeps contradictory opponent events explicitly linked to the hypothesis and their own identities", () => {
@@ -233,7 +234,7 @@ describe("portable intelligence graph and story packaging", () => {
 
   it("is prefix invariant and emits no raw payload or future references", () => {
     const match = source.read("pressure");
-    const candidate = comparison(match, "recoveries in the attacking third");
+    const candidate = comparison(match, "ball wins in the attacking third");
     const expected = packageStory(
       candidate,
       match,
@@ -272,11 +273,7 @@ describe("portable intelligence graph and story packaging", () => {
         (node) => node.kind !== "event" || !future.has(node.reference),
       ),
     ).toBe(true);
-    expect(
-      actual.storyline!.observations.every(
-        (observation) => observation.timestamp <= cutoff,
-      ),
-    ).toBe(true);
+    expect(actual.storyline).toBeNull();
   });
 
   it("does not fabricate possessions when the source cannot provide them", () => {

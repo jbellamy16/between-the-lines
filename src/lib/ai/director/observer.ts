@@ -1,12 +1,21 @@
+import {
+  comparisonWindow,
+  durationLabel,
+  isBallWin,
+  isHighBallWin,
+  BALL_WIN_DEFINITION,
+} from "../../sources/metrics";
 import type { Mode, StoryPreferences } from "../../intelligence";
 import {
   matchClock,
+  eventClock,
+  recordedScore,
   periodAt,
   type MatchData,
   type NormalizedEvent,
 } from "../../sources/model";
 
-export const DIRECTOR_VERSION = "director-1.2.0";
+export const DIRECTOR_VERSION = "director-1.3.0";
 export type Claim = {
   id: string;
   headline: string;
@@ -18,6 +27,8 @@ export type Claim = {
 };
 export type Candidate = Claim & {
   category:
+    | "score-change"
+    | "full-time"
     | "recovery-shot"
     | "passing-pair"
     | "shot-sequence"
@@ -32,6 +43,8 @@ export type Candidate = Claim & {
   rank: number; // editorial ordering only, never a probability
 };
 export const claimEmphasis = {
+  "score-change": "sequence",
+  "full-time": "sequence",
   "recovery-shot": "sequence",
   "shot-sequence": "sequence",
   "passing-pair": "contribution",
@@ -86,6 +99,61 @@ export function observe(
     (e) => e.time > Math.max(period.start - 0.001, cutoff - 900),
   );
   const candidates: Candidate[] = [];
+  const goals = visible.filter(
+    (event) => event.scoringTeam && event.period !== "PS",
+  );
+  const latestGoal = goals.at(-1);
+  const score = recordedScore(visible);
+  const fullTime = cutoff === match.duration;
+  const lateCloseGoal =
+    latestGoal &&
+    latestGoal.time >= match.duration - 900 &&
+    Math.abs(score.harbor - score.riverside) <= 1;
+  if (
+    fullTime ||
+    (latestGoal && cutoff - latestGoal.time <= (lateCloseGoal ? 900 : 300))
+  ) {
+    const team = latestGoal?.scoringTeam ?? "harbor";
+    const category = fullTime ? "full-time" : "score-change";
+    const scoreline = `${match.teams.harbor.short} ${score.harbor}–${score.riverside} ${match.teams.riverside.short}`;
+    const scorer =
+      match.players.find((player) => player.id === latestGoal?.playerId)
+        ?.name ?? "An unidentified player";
+    const goalText = latestGoal
+      ? `${scorer} ${latestGoal.ownGoal ? "scored an own goal" : "scored"} at ${eventClock(match, latestGoal)}.`
+      : "No goals were recorded.";
+    const result =
+      score.harbor === score.riverside
+        ? "The match finished level."
+        : `${match.teams[score.harbor > score.riverside ? "harbor" : "riverside"].short} won ${Math.max(score.harbor, score.riverside)}–${Math.min(score.harbor, score.riverside)}.`;
+    candidates.push({
+      id: `${match.id}:${category}:${latestGoal?.id ?? "goalless"}`,
+      category,
+      team,
+      timestamp: fullTime ? cutoff : latestGoal!.time,
+      importance: "major",
+      rank: fullTime ? 1000 : 100,
+      headline: `${fullTime ? "Full time" : "Goal"}: ${scoreline}`,
+      brief: fullTime ? `${result} ${goalText}` : `${goalText} ${scoreline}.`,
+      detail: `${fullTime ? result : scoreline + "."} ${goalText} The score is counted from the recorded goals available at this point.`,
+      evidenceIds: goals.map((event) => event.id),
+      statistics: [
+        {
+          label: `${match.teams.harbor.short} goals`,
+          value: score.harbor,
+          unit: "goals",
+        },
+        {
+          label: `${match.teams.riverside.short} goals`,
+          value: score.riverside,
+          unit: "goals",
+        },
+      ],
+      limitations: [
+        "The score is based on recorded scoring events, excluding penalty shootouts. No explanation of the result's cause is claimed.",
+      ],
+    });
+  }
   const add = (
     category: Candidate["category"],
     team: Candidate["team"],
@@ -100,9 +168,13 @@ export function observe(
     const preferenceCategory =
       category === "recovery-shot" ||
       (category === "activity-change" &&
-        statistics[0]?.label === "recoveries in the attacking third")
+        statistics[0]?.label === "ball wins in the attacking third")
         ? "pressure"
-        : ["passing-pair", "substitute-involvement"].includes(category)
+        : ["passing-pair", "substitute-involvement"].includes(category) ||
+            (category === "activity-change" &&
+              ["pass attempts", "forward passes"].includes(
+                statistics[0]?.label,
+              ))
           ? "rhythm"
           : "chances";
     if (
@@ -147,15 +219,10 @@ export function observe(
       const shooter = match.players.find(
         (p) => p.id === shot.actorId && p.team === team,
       );
-      const shotLabel = `${shooter?.name ?? name}'s shot at ${matchClock(match, shot.time)}`;
+      const shotLabel = `${shooter?.name ?? name}'s shot at ${eventClock(match, shot)}`;
       const sequence = possessionBefore(match, visible, shot);
       const wins = sequence.filter(
-        (e) =>
-          e.order < shot.order &&
-          ((e.type === "recovery" && e.success !== false) ||
-            (["interception", "tackle"].includes(e.type) &&
-              e.success === true)) &&
-          shot.time - e.time <= 30,
+        (e) => e.order < shot.order && isBallWin(e) && shot.time - e.time <= 30,
       );
       const win = wins.at(-1);
       if (match.capabilities.ballRecoveries && win) {
@@ -165,8 +232,8 @@ export function observe(
           team,
           sequence.filter((e) => e.order >= win.order),
           `${name}: recovery to shot`,
-          `${name} won the ball at ${matchClock(match, win.time)} before ${shotLabel} in the same possession.`,
-          `${name}'s recorded ${win.type} at ${matchClock(match, win.time)} was followed by ${shotLabel} in the same possession. ${win.source.precision === "minute" || shot.source.precision === "minute" ? "Source timestamps have minute precision; elapsed seconds are not claimed." : `The recorded interval was ${seconds} seconds.`} This is sequence evidence, not proof that the recovery caused the chance.`,
+          `${name} won the ball at ${eventClock(match, win)} before ${shotLabel} in the same possession.`,
+          `${name}'s recorded ${win.type} at ${eventClock(match, win)} was followed by ${shotLabel} in the same possession. ${win.source.precision === "minute" || shot.source.precision === "minute" ? "Source timestamps have minute precision; elapsed seconds are not claimed." : `The recorded interval was ${seconds} seconds.`} This is sequence evidence, not proof that the recovery caused the chance.`,
           win.source.precision === "minute" ||
             shot.source.precision === "minute"
             ? []
@@ -263,8 +330,8 @@ export function observe(
             team,
             [sub, ...involvement],
             `${actor.name}: involvement after coming on`,
-            `${actor.name} has ${involvement.length} recorded on-ball actions since coming on at ${matchClock(match, sub.time)}${shots ? `, including ${shots} ${shots === 1 ? "shot" : "shots"}` : ""}.`,
-            `${actor.name} came on at ${matchClock(match, sub.time)} and has ${involvement.length} recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.`,
+            `${actor.name} has ${involvement.length} recorded on-ball actions since coming on at ${eventClock(match, sub)}${shots ? `, including ${shots} ${shots === 1 ? "shot" : "shots"}` : ""}.`,
+            `${actor.name} came on at ${eventClock(match, sub)} and has ${involvement.length} recorded passes, carries, shots, recoveries or interceptions since then. This does not establish a substitution effect or compare unequal playing time.`,
             [
               {
                 label: "Recorded involvements",
@@ -279,7 +346,7 @@ export function observe(
       }
     }
     // Two complete, equal windows entirely inside the current period.
-    const width = Math.min(900, Math.floor((cutoff - period.start) / 2));
+    const { width } = comparisonWindow(cutoff, period.start);
     // Allow a useful early-half comparison without crossing the interval break
     // or comparing a partial window against a full 15 minutes.
     if (width >= 300) {
@@ -296,19 +363,22 @@ export function observe(
       );
       const metrics = [
         {
+          label: "pass attempts",
+          test: (e: NormalizedEvent) => e.type === "pass",
+          min: 20,
+          delta: 10,
+        },
+        {
           label: "shots",
           test: (e: NormalizedEvent) => e.type === "shot",
           min: 3,
           delta: 2,
         },
         {
-          label: "recoveries in the attacking third",
+          label: "ball wins in the attacking third",
           test: (e: NormalizedEvent) =>
-            match.capabilities.ballRecoveries &&
-            (e.position?.x ?? -1) >= 66.7 &&
-            e.type === "recovery" &&
-            e.success !== false,
-          min: 2,
+            match.capabilities.ballRecoveries && isHighBallWin(e),
+          min: 3,
           delta: 2,
         },
         {
@@ -336,15 +406,17 @@ export function observe(
         if (
           a.length >= metric.min &&
           a.length - b.length >= metric.delta &&
-          a.length >= b.length * 1.5
+          a.length >=
+            b.length *
+              (metric.label === "ball wins in the attacking third" ? 1.6 : 1.5)
         )
           add(
             "activity-change",
             team,
             [...b, ...a],
             `${name}: more ${metric.label}`,
-            `${name} recorded ${a.length} ${metric.label} from ${matchClock(match, cutoff - width)} to ${matchClock(match, cutoff)}, compared with ${b.length} in the preceding equal window.`,
-            `${name}: ${a.length} ${metric.label} (${matchClock(match, cutoff - width)}–${matchClock(match, cutoff)}) versus ${b.length} (${matchClock(match, cutoff - 2 * width)}–${matchClock(match, cutoff - width)}). Each window is ${width} seconds in ${period.id}; this is descriptive, not evidence of cause.${metric.label === "forward passes" ? " Forward is measured in normalized action coordinates, not physical stadium direction." : ""}`,
+            `${name} ${metric.label === "shots" ? "took" : "recorded"} ${a.length} ${metric.label} in the last ${durationLabel(width)}, up from ${b.length} in the previous ${durationLabel(width)}.`,
+            `${name}: ${a.length} ${metric.label} (${matchClock(match, cutoff - width)}–${matchClock(match, cutoff)}) versus ${b.length} (${matchClock(match, cutoff - 2 * width)}–${matchClock(match, cutoff - width)}). Each window covers ${durationLabel(width)} in the same half.${metric.label === "ball wins in the attacking third" ? ` ${BALL_WIN_DEFINITION}` : ""} This counts actions; it does not explain why they happened.${metric.label === "forward passes" ? " Forward is measured in normalized action coordinates, not physical stadium direction." : ""}`,
             [
               {
                 label: metric.label,
@@ -358,7 +430,7 @@ export function observe(
               },
             ],
             metric.label === "shots" ||
-              metric.label === "recoveries in the attacking third"
+              metric.label === "ball wins in the attacking third"
               ? 9
               : 7,
             `${metric.label}:${a[0]?.id}`,
