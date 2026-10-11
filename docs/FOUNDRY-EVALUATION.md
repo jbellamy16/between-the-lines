@@ -1,5 +1,11 @@
 # Foundry live evaluation — October 10, 2026
 
+## Director 1.2 measured follow-up
+
+The [PR #18 live intelligence review](intelligence/pr18-intelligence-2026-10-10/REPORT.md) evaluates committed head `22fb00517a38a8abadf00ae19d299a74f01d1fa0` without product-code changes. Eighteen primary states and one active-player diagnostic produced 14 verified publications, four provider quota failures and one deterministic no-call abstention. There were 37 new HTTP attempts. Known token estimates total $0.13567425; retaining unknown-usage reservations brings conservative accounting to $0.37987425 under the separate $2/60-request authorization. Prior ledgers and results are preserved.
+
+No explicit counter-evidence tool call occurred. One model-selected comparison follow-up returned evidence but failed before publication. Useful final caveats came from the deterministic verifier/renderer. The verdict is **PROMISING**, with human review pending and larger live workflows unreliable under the unchanged 10,000 TPM allocation. See the new report, scorecard and blinded review package before using earlier success rates as evidence for version 1.2.
+
 ## Director 1.2 integration update — October 10, 2026
 
 This implementation retains the existing Microsoft Foundry Azure OpenAI resource endpoint, `api-key` server authentication, deployment-name model routing, Responses function calls and strict structured editorial output. It adds a selectable `inspect_counter_evidence` tool and supplies compact measured storyline context to the investigator. A fresh deterministic assessment verifies every published hypothesis, including the offline fallback. Tool and request ceilings remain four and three; no paid retries, quotas, Redis controls or provider enablement settings changed.

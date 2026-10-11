@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-11T00:25:05.765722+00:00",
+  "deployment": "between-the-lines-gpt54-mini",
+  "model": {
+    "callRateLimit": null,
+    "format": "OpenAI",
+    "name": "gpt-5.4-mini",
+    "publisher": null,
+    "source": null,
+    "sourceAccount": null,
+    "version": "2026-03-17"
+  },
+  "sku": "GlobalStandard",
+  "capacity": 10,
+  "rpm": 10.0,
+  "tpm": 10000.0,
+  "credentialAvailable": true,
+  "productionSettingsModified": false,
+  "publicInferenceEnabledByStudy": false,
+  "controlPath": "Direct investigator with isolated durable request/cost ledger; production usage controls unchanged",
+  "limits": {
+    "usd": 2,
+    "requests": 60
+  },
+  "maximumRequestReserveUsd": 0.112548,
+  "maximum60UnsettledRequestsUsd": 6.75288,
+  "maximumStudyAccountedUsd": 2,
+  "price": {
+    "input": 0.75,
+    "cachedInput": 0.075,
+    "output": 4.5
+  },
+  "priceReference": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-openai%E2%80%99s-gpt-5-4-mini-and-gpt-5-4-nano-for-low-latency-ai/4500569",
+  "quotaReference": "https://learn.microsoft.com/en-us/azure/foundry-classic/openai/how-to/quota?view=foundry-classic",
+  "shutdown": "Create artifacts/pr18-intelligence-2026-10-10/STOP or interrupt process; active calls retain reservations; 18s request and 55s workflow abort limits unchanged."
+}

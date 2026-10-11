@@ -1,2 +1,16 @@
 # Preserve the licensed mapping files byte-for-byte, including source CRLF.
 data/historical/*.csv -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep the narrative reports, rubric, harness and tests prominent in PR review.
+# Full sanitized machine receipts remain tracked and can be expanded/downloaded.
+docs/intelligence/pr18-intelligence-2026-10-10/cases.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/results.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/requests.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/synthetic-evidence.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/historical-comparison.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/ledger.jsonl linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/coordinator-key.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/scorecard.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/receipt-hashes.json linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/*.html linguist-generated=true
+docs/intelligence/pr18-intelligence-2026-10-10/*.zip linguist-generated=true

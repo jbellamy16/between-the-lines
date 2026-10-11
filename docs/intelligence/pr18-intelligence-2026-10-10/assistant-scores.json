@@ -1,0 +1,420 @@
+{
+  "kind": "Assistant preliminary editorial assessment, not human review or an independent LLM judge",
+  "scale": "1-5; null is not applicable or no published output. See METHOD.md for anchors.",
+  "rows": [
+    {
+      "id": "misleading-quality",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 3,
+        "explanatoryValue": 4,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "notes": "The xG caveat stops shot volume being mistaken for chance quality. The model selected the lone prepared change and did not investigate counter-evidence; the renderer supplied the qualification. Fractional seconds and a one-more-shot watch criterion reduce usefulness.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "opponent-matches",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "notes": "Both teams appear, preventing a one-sided story. Repeated shot-activity and no-goal caveats make the significance text cumbersome; no optional investigation examined the opposing evidence.",
+      "repetitive": true,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "fading-burst",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 2,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 2,
+        "narrativeContinuity": 2,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "notes": "The wider-window count is true and the renderer mentions fading, but the lead still revives a burst that ended around 15:40 at a 30:00 cutoff. The available resolved storyline never becomes a clear editorial resolution.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "inactive-favorite",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 3,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": 4,
+        "broadcastUsefulness": 3
+      },
+      "notes": "No invented favorite contribution and match-wide development stays first. The model made no player query; restraint is demonstrated, useful personalized discovery is not.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "quiet-routine",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 2,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 5,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "notes": "Thirty safe passes between two players is observable, but the unchanged low-location repetitive pattern supplies little match understanding. The next criterion is merely one further pass. Preliminary judgment: silence would be preferable in a live insight feed; a viewer could reasonably find the unusual pair count interesting.",
+      "repetitive": false,
+      "shouldAbstain": true,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "kickoff",
+      "assessmentStatus": "reviewed",
+      "systemC": null,
+      "notes": "Correct deterministic no-candidate abstention, zero paid requests. This does not demonstrate model judgment.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "pressure-fan",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "notes": "Leads with four shots versus zero and identifies Theo March at 62:50. The second choice is a routine five-pass route; an available named recovery-to-shot sequence could be more informative. No follow-up distinguishes the two.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 4,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "historicalBNotes": "Recorded 1.0.2: useful shot rise and recovery/shot relationship, but unnamed shot and generic significance.",
+      "systemA": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "systemANotes": "Original detector includes its own useful why/watch text, including that shot frequency does not establish chance quality. Full Fan or Analyst wording and all why/watch fields are retained in the blinded form. Counts are traceable and concise; there is no specific sequence or player contribution. Comparison windows and the broader ball-win definition differ from the Director."
+    },
+    {
+      "id": "pressure-analyst",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 3,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "notes": "The meaningful shot rise leads, but all three slots are filled, including an ordinary three-pass pairing. The long sequence of limitations and two passing observations makes the output harder to use.",
+      "repetitive": true,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 3,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 4,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "historicalBNotes": "Recorded 1.0.2: shot rise plus two sequences; dense caveats and no useful significance beyond descriptive non-causality.",
+      "systemA": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "systemANotes": "Original detector includes its own useful why/watch text, including that shot frequency does not establish chance quality. Full Fan or Analyst wording and all why/watch fields are retained in the blinded form. Counts are traceable and concise; there is no specific sequence or player contribution. Comparison windows and the broader ball-win definition differ from the Director."
+    },
+    {
+      "id": "temporal-emerging",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 4,
+        "narrativeContinuity": 2,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 4
+      },
+      "notes": "Useful four-shot rise plus Milo Serrano recovery-to-shot passage. The model chose this over higher-ranked recoveries, but it did not make the emerging recovery storyline the story and made no optional follow-up. A strong inspectable sequence, not demonstrated temporal reasoning.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "temporal-weakening",
+      "assessmentStatus": "reviewed",
+      "systemC": null,
+      "notes": "HTTP 429 on the editorial request. No new model explanation was published; model continuity quality is unavailable for this state. The deterministic fallback is separate.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "temporal-resolved",
+      "assessmentStatus": "reviewed",
+      "systemC": null,
+      "notes": "HTTP 429 on the editorial request. No new model explanation was published; do not credit the offline resolution to Foundry.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "rewind",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 4,
+        "narrativeContinuity": 3,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 4
+      },
+      "notes": "The new response exactly matches the earlier 65:00 narrative and selected claims after future events are removed. Cutoff evidence passes. This is one successful repeated sample, not proof that every stochastic run returns identical choices or a browser-session test.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "after-substitution",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "notes": "Names Nico Wells and five recorded actions after coming on, explicitly avoiding a causal improvement claim. Strong restraint and specificity. Three stories and lengthy caveats still need broadcast editing; the zero-shot involvement is modest rather than a major impact.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 3,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 4,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "historicalBNotes": "Recorded 1.0.2: two repetitive passing passages and unnamed substitute involvement; no causal overclaim.",
+      "systemA": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "systemANotes": "Original detector includes its own useful why/watch text, including that shot frequency does not establish chance quality. Full Fan or Analyst wording and all why/watch fields are retained in the blinded form. Counts are traceable and concise; there is no specific sequence or player contribution. Comparison windows and the broader ball-win definition differ from the Director."
+    },
+    {
+      "id": "player-preference",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 4,
+        "narrativeContinuity": null,
+        "personalizationRelevance": 4,
+        "broadcastUsefulness": 4
+      },
+      "notes": "Preserves the shot increase and a useful Milo Serrano recovery-to-shot passage without forcing Leon Costa into it. Inspection found Leon had only one recorded pass in this window: omission is appropriate restraint, not an active-favorite failure. A separate active-Theo diagnostic addresses the coverage gap.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 3,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": 4,
+        "broadcastUsefulness": 3
+      },
+      "historicalBNotes": "Recorded 1.0.2: preserves match change and does not invent an inactive favorite contribution; no useful personalized discovery.",
+      "systemA": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": 3,
+        "broadcastUsefulness": 3
+      },
+      "systemANotes": "Original detector includes its own useful why/watch text, including that shot frequency does not establish chance quality. Full Fan or Analyst wording and all why/watch fields are retained in the blinded form. Counts are traceable and concise; there is no specific sequence or player contribution. Comparison windows and the broader ball-win definition differ from the Director."
+    },
+    {
+      "id": "unfamiliar-8911",
+      "assessmentStatus": "reviewed",
+      "systemC": null,
+      "notes": "HTTP 429 prevented a verified editorial result. This is the one matching historically recorded Director 1.1.2 synthetic state, so the best pre-PR model comparison remains unresolved rather than improved.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 4,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 4
+      },
+      "historicalBNotes": "Recorded 1.1.2: useful shot rise and named Leon Costa recovery-to-shot moment. Current 1.2.0 failed before publication.",
+      "systemA": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 4,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "systemANotes": "Original detector includes its own useful why/watch text, including that shot frequency does not establish chance quality. Full Fan or Analyst wording and all why/watch fields are retained in the blinded form. Counts are traceable and concise; there is no specific sequence or player contribution. Comparison windows and the broader ball-win definition differ from the Director."
+    },
+    {
+      "id": "unfamiliar-73129",
+      "assessmentStatus": "reviewed",
+      "systemC": null,
+      "notes": "The model chose a valid equal-window follow-up. It compared combined shot activity (two versus three) and passing activity, but the third request received HTTP 429. A real investigation occurred; its editorial usefulness and final qualification cannot be scored.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "quiet-fan",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 3,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 3
+      },
+      "notes": "The quiet scenario still contains a specific late shot and a measurable attacking-third action rise. Selecting these is defensible, and the renderer notes fading. It is not a true no-event state and cannot establish appropriate model abstention. The explanation remains mostly descriptive.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null,
+      "historicalB": {
+        "footballRelevance": 2,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 4,
+        "editorialQuality": 2,
+        "narrativeContinuity": null,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "historicalBNotes": "Recorded 1.0.2: ordinary passing measures dominate and significance is generic.",
+      "systemA": null,
+      "systemANotes": "No new legacy detector observation; silence may be reasonable but is not scored as an explanation."
+    },
+    {
+      "id": "full-time",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 3,
+        "explanatoryValue": 2,
+        "evidenceGrounding": 5,
+        "editorialQuality": 2,
+        "narrativeContinuity": 2,
+        "personalizationRelevance": null,
+        "broadcastUsefulness": 2
+      },
+      "notes": "Preserves the 2-1 final score, latest goal and 15-3 shot count; correctly replaces watch-next with a full-time revisit. The model-selected content is a seven-pass possession and a forward-pass increase that is already fading. It does not coherently summarize the earlier pressure or its resolution. The full-time clock also renders as 90+00:00.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    },
+    {
+      "id": "active-favorite-theo",
+      "assessmentStatus": "reviewed",
+      "systemC": {
+        "footballRelevance": 4,
+        "explanatoryValue": 3,
+        "evidenceGrounding": 5,
+        "editorialQuality": 3,
+        "narrativeContinuity": null,
+        "personalizationRelevance": 3,
+        "broadcastUsefulness": 3
+      },
+      "notes": "The selected second story names the active favorite Theo March, and the useful shot rise remains first. However, the narrative and selected claims are identical to the no-preference pressure Fan case. No player query was made despite nine pass attempts and two shots in the review window. Relevant output, but no demonstrated incremental personalization.",
+      "repetitive": false,
+      "shouldAbstain": false,
+      "inappropriateAbstention": false,
+      "humanScores": null
+    }
+  ]
+}

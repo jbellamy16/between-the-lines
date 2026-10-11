@@ -1,5 +1,9 @@
 # Intelligence evolution and evaluation
 
+## Subsequent real Foundry evaluation
+
+The implementation account below describes the original offline work. The subsequent [PR #18 live review](pr18-intelligence-2026-10-10/REPORT.md) froze Director 1.2.0 at its committed head and made 37 bounded HTTP attempts under a separate durable $2/60-request ledger. It found 14 verified publications, four quota failures and one no-call abstention across 18 primary states plus one diagnostic. The new explanatory safeguards are visible, but there were no explicit model counter-evidence investigations, and the sole optional comparison failed before publication. Human review remains pending. See the [measured scorecard](pr18-intelligence-2026-10-10/SCORECARD.md), [baseline limitations](pr18-intelligence-2026-10-10/BASELINE-COMPARISON.md), and [prepared independent review](pr18-intelligence-2026-10-10/HUMAN-REVIEW.md). The historical offline measurements below are preserved, not relabelled as live quality evidence.
+
 ## Audit of the starting implementation
 
 The comparison starts at `f7b0b87986efba09ca95bdf8750a39df31f1258f`, Director `1.1.2`. The app already has a canonical event model, synthetic and licensed historical adapters, seven bounded read-only tools, model-directed follow-up queries, independently replayed evidence retrieval, structured editorial plans, a `BroadcastStory` contract, caching, Redis spending controls, provenance and replay. Replacing this architecture would discard working safeguards.

@@ -1,0 +1,221 @@
+{
+  "warning": "Coordinator only. Send each reviewer only their assigned HTML file. Source identity can sometimes be inferred from writing style; this is blinded labelling, not perfect indistinguishability.",
+  "reviews": [
+    {
+      "reviewer": 1,
+      "caseNumber": 1,
+      "caseId": "pressure-analyst",
+      "order": {
+        "1": "B",
+        "2": "A",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 1,
+      "caseNumber": 2,
+      "caseId": "after-substitution",
+      "order": {
+        "1": "C",
+        "2": "B",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 1,
+      "caseNumber": 3,
+      "caseId": "unfamiliar-8911",
+      "order": {
+        "1": "B",
+        "2": "A",
+        "3": "C"
+      },
+      "BVersion": "director-1.1.2",
+      "COutcome": "provider-failed"
+    },
+    {
+      "reviewer": 1,
+      "caseNumber": 4,
+      "caseId": "pressure-fan",
+      "order": {
+        "1": "C",
+        "2": "B",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 1,
+      "caseNumber": 5,
+      "caseId": "quiet-fan",
+      "order": {
+        "1": "A",
+        "2": "C",
+        "3": "B"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 1,
+      "caseNumber": 6,
+      "caseId": "player-preference",
+      "order": {
+        "1": "C",
+        "2": "B",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 1,
+      "caseId": "pressure-fan",
+      "order": {
+        "1": "A",
+        "2": "B",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 2,
+      "caseId": "unfamiliar-8911",
+      "order": {
+        "1": "C",
+        "2": "A",
+        "3": "B"
+      },
+      "BVersion": "director-1.1.2",
+      "COutcome": "provider-failed"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 3,
+      "caseId": "pressure-analyst",
+      "order": {
+        "1": "B",
+        "2": "A",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 4,
+      "caseId": "quiet-fan",
+      "order": {
+        "1": "C",
+        "2": "A",
+        "3": "B"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 5,
+      "caseId": "player-preference",
+      "order": {
+        "1": "B",
+        "2": "C",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 2,
+      "caseNumber": 6,
+      "caseId": "after-substitution",
+      "order": {
+        "1": "A",
+        "2": "B",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 1,
+      "caseId": "unfamiliar-8911",
+      "order": {
+        "1": "A",
+        "2": "C",
+        "3": "B"
+      },
+      "BVersion": "director-1.1.2",
+      "COutcome": "provider-failed"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 2,
+      "caseId": "after-substitution",
+      "order": {
+        "1": "B",
+        "2": "C",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 3,
+      "caseId": "pressure-fan",
+      "order": {
+        "1": "A",
+        "2": "C",
+        "3": "B"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 4,
+      "caseId": "quiet-fan",
+      "order": {
+        "1": "C",
+        "2": "B",
+        "3": "A"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 5,
+      "caseId": "player-preference",
+      "order": {
+        "1": "A",
+        "2": "B",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    },
+    {
+      "reviewer": 3,
+      "caseNumber": 6,
+      "caseId": "pressure-analyst",
+      "order": {
+        "1": "A",
+        "2": "B",
+        "3": "C"
+      },
+      "BVersion": "director-1.0.2",
+      "COutcome": "accepted"
+    }
+  ]
+}
