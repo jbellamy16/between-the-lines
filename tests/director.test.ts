@@ -241,34 +241,18 @@ function scriptedProvider(
           },
         ],
   };
-  return vi
-    .fn()
-    .mockResolvedValueOnce(
-      Response.json({
-        status: "completed",
-        usage: { input_tokens: 100, output_tokens: 30 },
-        output: [
-          {
-            type: "function_call",
-            name: "get_match_events",
-            call_id: "call1",
-            arguments: JSON.stringify(query),
-          },
-        ],
-      }),
-    )
-    .mockResolvedValueOnce(
-      Response.json({
-        status: "completed",
-        usage: { input_tokens: 300, output_tokens: 50 },
-        output: [
-          {
-            type: "message",
-            content: [{ type: "output_text", text: JSON.stringify(plan) }],
-          },
-        ],
-      }),
-    );
+  return vi.fn().mockResolvedValueOnce(
+    Response.json({
+      status: "completed",
+      usage: { input_tokens: 300, output_tokens: 50 },
+      output: [
+        {
+          type: "message",
+          content: [{ type: "output_text", text: JSON.stringify(plan) }],
+        },
+      ],
+    }),
+  );
 }
 describe("bounded provider integration (scripted transport, not quality evidence)", () => {
   it.each(["fan", "analyst"] as const)(
@@ -278,44 +262,20 @@ describe("bounded provider integration (scripted transport, not quality evidence
       const transport = scriptedProvider();
       vi.stubGlobal("fetch", transport);
       await investigate(match, cutoff, mode, {}, "foundry");
-      for (const [index, call] of (
-        transport.mock.calls as unknown as [string, RequestInit][]
-      ).entries()) {
-        const request = JSON.parse(String(call[1].body));
-        expect(request.text.format.schema.properties.stories.maxItems).toBe(
-          index === 0 ? 0 : mode === "fan" ? 2 : 3,
-        );
-        if (!index) {
-          expect(request.text.format.schema.properties.decision.const).toBe(
-            "abstain",
-          );
-          expect(request.tool_choice).toEqual({
-            type: "function",
-            name: "get_match_events",
-          });
-          expect(request.tools).toHaveLength(1);
-          expect(request.tools[0].parameters.properties.start.enum).toEqual([
-            2700,
-          ]);
-          expect(request.tools[0].parameters.properties.end.enum).toEqual([
-            cutoff,
-          ]);
-          expect(request.tools[0].parameters.properties.team).toEqual({
-            type: "null",
-          });
-        }
-        if (index) {
-          const retrieved = JSON.parse(
-            request.input.find(
-              (item: { type: string }) => item.type === "function_call_output",
-            ).output,
-          ).claims.map((c: { id: string }) => c.id);
-          expect(
-            request.text.format.schema.properties.stories.items.properties
-              .claimId.enum,
-          ).toEqual(retrieved);
-        }
-      }
+      const request = JSON.parse(String(transport.mock.calls[0][1].body));
+      expect(request.text.format.schema.properties.stories.maxItems).toBe(
+        mode === "fan" ? 2 : 3,
+      );
+      expect(request.tool_choice).toBe("auto");
+      const initial = JSON.parse(request.input[0].content);
+      expect(initial.reviewWindow).toEqual({ start: 2700, end: cutoff });
+      expect(initial.candidates).toBeUndefined();
+      expect(initial.evidence.claims.length).toBeGreaterThan(0);
+      expect(
+        request.text.format.schema.properties.stories.items.properties.claimId
+          .enum,
+      ).toEqual(initial.evidence.claims.map((c: { id: string }) => c.id));
+      expect(transport).toHaveBeenCalledTimes(1);
     },
   );
   it.each(["openai", "foundry"] as const)(
@@ -326,10 +286,10 @@ describe("bounded provider integration (scripted transport, not quality evidence
       vi.stubGlobal("fetch", transport);
       const result = await investigate(match, cutoff, "fan", {}, provider);
       expect(result.source).toBe(provider);
-      expect(result.metrics.requests).toBe(2);
+      expect(result.metrics.requests).toBe(1);
       expect(result.trace).toHaveLength(1);
       expect(result.stories[0].provider).toBe(provider);
-      expect(result.provenance.usage?.inputTokens).toBe(400);
+      expect(result.provenance.usage?.inputTokens).toBe(300);
       expect(transport.mock.calls[0][0]).toContain(
         provider === "openai" ? "api.openai.com" : "example.openai.azure.com",
       );
@@ -350,14 +310,13 @@ describe("bounded provider integration (scripted transport, not quality evidence
     await expect(
       investigate(match, cutoff, "fan", {}, "openai"),
     ).rejects.toThrow("Routine observation cannot lead");
-    expect(transport).toHaveBeenCalledTimes(2);
+    expect(transport).toHaveBeenCalledTimes(1);
   });
   it("recovers from a cross-half comparison without admitting rejected evidence or adding a model turn", async () => {
     configure();
     const successful = scriptedProvider();
     const transport = vi
       .fn()
-      .mockImplementationOnce(successful)
       .mockResolvedValueOnce(
         Response.json({
           status: "completed",
@@ -380,8 +339,8 @@ describe("bounded provider integration (scripted transport, not quality evidence
       "get_match_events",
     ]);
     expect(result.metrics.toolInvocations).toBe(2);
-    expect(transport).toHaveBeenCalledTimes(3);
-    const lastRequest = JSON.parse(transport.mock.calls[2][1].body);
+    expect(transport).toHaveBeenCalledTimes(2);
+    const lastRequest = JSON.parse(transport.mock.calls[1][1].body);
     const rejected = JSON.parse(lastRequest.input.at(-1).output);
     expect(rejected.error).toContain("equal complete windows");
     expect(rejected.claims).toBeUndefined();
@@ -397,7 +356,7 @@ describe("bounded provider integration (scripted transport, not quality evidence
       expect(previous[1] - previous[0]).toBe(current[1] - current[0]);
       expect(current[1] - current[0]).toBeLessThanOrEqual(900);
     }
-    expect(lastRequest.tools).toBeUndefined();
+    expect(lastRequest.tool_choice).toBe("auto");
   });
   it("rejects unsupported generated claims without another paid retry", async () => {
     configure();
@@ -406,34 +365,31 @@ describe("bounded provider integration (scripted transport, not quality evidence
     await expect(
       investigate(match, cutoff, "fan", {}, "openai"),
     ).rejects.toThrow("Uninvestigated");
-    expect(transport).toHaveBeenCalledTimes(2);
+    expect(transport).toHaveBeenCalledTimes(1);
   });
   it.each([false, true])(
     "handles repeated final messages and rejects conflicts: %s",
     async (conflicting) => {
       configure();
       const successful = scriptedProvider(true);
-      const transport = vi
-        .fn()
-        .mockImplementationOnce(successful)
-        .mockImplementationOnce(async () => {
-          const response = await successful();
-          const body = await response.json();
-          const duplicate = structuredClone(body.output[0]);
-          if (conflicting)
-            duplicate.content[0].text = JSON.stringify({
-              decision: "publish",
-              stories: [],
-            });
-          body.output.push(duplicate);
-          return Response.json(body);
-        });
+      const transport = vi.fn().mockImplementationOnce(async () => {
+        const response = await successful();
+        const body = await response.json();
+        const duplicate = structuredClone(body.output[0]);
+        if (conflicting)
+          duplicate.content[0].text = JSON.stringify({
+            decision: "publish",
+            stories: [],
+          });
+        body.output.push(duplicate);
+        return Response.json(body);
+      });
       vi.stubGlobal("fetch", transport);
       const result = investigate(match, cutoff, "fan", {}, "openai");
       if (conflicting)
         await expect(result).rejects.toThrow("conflicting editorial");
       else expect((await result).decision).toBe("abstain");
-      expect(transport).toHaveBeenCalledTimes(2);
+      expect(transport).toHaveBeenCalledTimes(1);
     },
   );
   it("never calls a model for offline, restricted evidence, empty candidates or cancelled work", async () => {
@@ -464,7 +420,7 @@ describe("bounded provider integration (scripted transport, not quality evidence
     expect(first.source).toBe("openai");
     expect(second.metrics.cached).toBe(true);
     expect(second.metrics.requests).toBe(0);
-    expect(transport).toHaveBeenCalledTimes(2);
+    expect(transport).toHaveBeenCalledTimes(1);
   });
   it("validates API inputs, returns offline packages, and never trusts client events", async () => {
     vi.stubEnv("AI_ENABLED", "false");

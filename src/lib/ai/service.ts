@@ -63,8 +63,8 @@ export async function narratePacket(packet: EvidencePacket) {
   try {
     let task = pending.get(key);
     if (!task) {
-      task = controlledNarration(identity, () =>
-        composeNarration(packet, provider),
+      task = controlledNarration(identity, (signal) =>
+        composeNarration(packet, provider, signal),
       );
       pending.set(key, task);
     }

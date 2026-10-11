@@ -262,18 +262,20 @@ test("an in-flight review cannot overwrite a later recap after rewinding", async
   });
   await page.goto("/");
   const dialog = await open(page);
+  const started = page.waitForRequest((r) => r.url().endsWith("/api/director"));
   await dialog.getByRole("button", { name: "Review verified recap" }).click();
+  await started;
+  const cancelled = page.waitForEvent("requestfailed", {
+    predicate: (r) => r.url().endsWith("/api/director"),
+  });
   await expect(
     dialog.getByRole("button", { name: "Checking evidence…" }),
   ).toBeDisabled();
   await page.keyboard.press("Escape");
   await page.getByRole("slider", { name: "Match timeline" }).fill("0");
   await open(page);
-  const returned = page.waitForResponse((r) =>
-    r.url().endsWith("/api/director"),
-  );
   release();
-  await returned;
+  await cancelled;
   await expect(dialog.locator(".recap-summary")).toHaveText(
     "The sides are level at 0–0. No match developments to highlight yet.",
   );

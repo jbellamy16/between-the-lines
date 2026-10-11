@@ -1,0 +1,156 @@
+{
+  "kind": "Offline scripted transport; not live provider results or quality scores",
+  "fixtureSource": "docs/intelligence/pr18-intelligence-2026-10-10",
+  "baselineRef": "cd4b67d",
+  "outputAllowance": 1800,
+  "tokenEstimate": "ceil(UTF-8 serialized request bytes / 3) + 256 framing + 1800 output; not billed usage",
+  "rows": [
+    {
+      "caseId": "misleading-quality",
+      "before": {
+        "requests": 2,
+        "requestBytes": [7661, 20184],
+        "totalBytes": 27845,
+        "estimatedTokensIncludingOutput": [4610, 8784],
+        "totalEstimatedTokensIncludingOutput": 13394,
+        "claimCount": 1,
+        "selectedClaim": "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [9365],
+        "totalBytes": 9365,
+        "estimatedTokensIncludingOutput": [5178],
+        "totalEstimatedTokensIncludingOutput": 5178,
+        "claimCount": 1,
+        "selectedClaim": "live-challenge-misleading-quality:activity-change:harbor:shots:live-challenge-misleading-quality:1"
+      }
+    },
+    {
+      "caseId": "pressure-fan",
+      "before": {
+        "requests": 2,
+        "requestBytes": [11969, 51628],
+        "totalBytes": 63597,
+        "estimatedTokensIncludingOutput": [6046, 19266],
+        "totalEstimatedTokensIncludingOutput": 25312,
+        "claimCount": 8,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-410"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [18084],
+        "totalBytes": 18084,
+        "estimatedTokensIncludingOutput": [8084],
+        "totalEstimatedTokensIncludingOutput": 8084,
+        "claimCount": 8,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-410"
+      }
+    },
+    {
+      "caseId": "pressure-analyst",
+      "before": {
+        "requests": 2,
+        "requestBytes": [11975, 51636],
+        "totalBytes": 63611,
+        "estimatedTokensIncludingOutput": [6048, 19268],
+        "totalEstimatedTokensIncludingOutput": 25316,
+        "claimCount": 8,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-410"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [18094],
+        "totalBytes": 18094,
+        "estimatedTokensIncludingOutput": [8088],
+        "totalEstimatedTokensIncludingOutput": 8088,
+        "claimCount": 8,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-410"
+      }
+    },
+    {
+      "caseId": "temporal-weakening",
+      "before": {
+        "requests": 2,
+        "requestBytes": [13470, 56902],
+        "totalBytes": 70372,
+        "estimatedTokensIncludingOutput": [6546, 21024],
+        "totalEstimatedTokensIncludingOutput": 27570,
+        "claimCount": 10,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-435"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [20220],
+        "totalBytes": 20220,
+        "estimatedTokensIncludingOutput": [8796],
+        "totalEstimatedTokensIncludingOutput": 8796,
+        "claimCount": 10,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-435"
+      }
+    },
+    {
+      "caseId": "temporal-resolved",
+      "before": {
+        "requests": 2,
+        "requestBytes": [14284, 56982],
+        "totalBytes": 71266,
+        "estimatedTokensIncludingOutput": [6818, 21050],
+        "totalEstimatedTokensIncludingOutput": 27868,
+        "claimCount": 10,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-451"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [20432],
+        "totalBytes": 20432,
+        "estimatedTokensIncludingOutput": [8867],
+        "totalEstimatedTokensIncludingOutput": 8867,
+        "claimCount": 10,
+        "selectedClaim": "pressure:activity-change:harbor:shots:pressure-202632-451"
+      }
+    },
+    {
+      "caseId": "unfamiliar-8911",
+      "before": {
+        "requests": 2,
+        "requestBytes": [15594, 73742],
+        "totalBytes": 89336,
+        "estimatedTokensIncludingOutput": [7254, 26637],
+        "totalEstimatedTokensIncludingOutput": 33891,
+        "claimCount": 12,
+        "selectedClaim": "synthetic-pressure-8911-balanced:activity-change:harbor:shots:synthetic-pressure-8911-balanced:pressure-8911-960"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [22338],
+        "totalBytes": 22338,
+        "estimatedTokensIncludingOutput": [9502],
+        "totalEstimatedTokensIncludingOutput": 9502,
+        "claimCount": 12,
+        "selectedClaim": "synthetic-pressure-8911-balanced:activity-change:harbor:shots:synthetic-pressure-8911-balanced:pressure-8911-960"
+      }
+    },
+    {
+      "caseId": "unfamiliar-73129",
+      "before": {
+        "requests": 2,
+        "requestBytes": [12243, 51140],
+        "totalBytes": 63383,
+        "estimatedTokensIncludingOutput": [6137, 19103],
+        "totalEstimatedTokensIncludingOutput": 25240,
+        "claimCount": 5,
+        "selectedClaim": "synthetic-pressure-73129-balanced:recovery-shot:harbor:synthetic-pressure-73129-balanced:pressure-73129-983"
+      },
+      "after": {
+        "requests": 1,
+        "requestBytes": [18024],
+        "totalBytes": 18024,
+        "estimatedTokensIncludingOutput": [8064],
+        "totalEstimatedTokensIncludingOutput": 8064,
+        "claimCount": 5,
+        "selectedClaim": "synthetic-pressure-73129-balanced:recovery-shot:harbor:synthetic-pressure-73129-balanced:pressure-73129-983"
+      }
+    }
+  ]
+}

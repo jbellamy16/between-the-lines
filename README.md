@@ -61,7 +61,7 @@ flowchart LR
   C --> E[Verified insight + event IDs]
   E --> F[Fan / analyst presentation]
   E --> G[Server-side provider workflow]
-  G --> H[Forced evidence retrieval tool]
+  G --> H[Application evidence retrieval + optional follow-up tools]
   H --> I[Structured narrative]
   I --> J[Schema and evidence validation]
   J --> F
@@ -103,14 +103,14 @@ The evidence inspector offers a readable event summary and a native event picker
 
 ## Optional AI: OpenAI, Microsoft Foundry, or offline
 
-`AI_PROVIDER=openai|foundry|offline` selects the provider. `AI_ENABLED=true` is a separate spending opt-in. OpenAI defaults to `gpt-5.4-mini` through `/v1/responses`. Foundry retains its Azure Responses endpoint, resource key authentication, endpoint allowlist, deployment name, forced tool call, and structured-output workflow. Managed identity is not implemented. No provider is enabled by default; no resource creation or deployment is part of this change.
+`AI_PROVIDER=openai|foundry|offline` selects the provider. `AI_ENABLED=true` is a separate spending opt-in. OpenAI defaults to `gpt-5.4-mini` through `/v1/responses`. Foundry retains its Azure Responses endpoint, resource key authentication, endpoint allowlist, deployment name and structured-output workflow. Director investigations receive application-retrieved evidence before the first model request, with optional read-only follow-ups. Managed identity is not implemented. No provider is enabled by default; no resource creation or deployment is part of this change.
 
 The [official model page](https://developers.openai.com/api/docs/models/gpt-5.4-mini) confirms Responses, function calling and structured-output support. Both adapters share the same evidence, output schema, validation, timeout, cache, controls and fallback. Credentials are server-only and ignored in `.env.local`; never prefix them with `NEXT_PUBLIC_`.
 
 AI runs only after an explicit **Explain with…** or **Catch me up with…** action. Playback, seeking, opening Catch Me Up, and switching audience do not call a model. Responses belong to an exact timestamp, fixture, evidence set and audience; stale results disappear when context changes.
 
 1. Deterministic detectors find supported changes in equal time windows. Editorial ranking considers magnitude, support, recency, novelty, previously viewed evidence, preferences and audience. This score is not statistical confidence.
-2. The provider must call `get_verified_evidence` with the current observation ID. Only already-recorded events, comparisons and verified statements are supplied.
+2. The Director receives the required broad retrieval before inference. Compact claims keep their exact measurements, limitations, support references and source provenance; optional tools investigate unresolved questions. The legacy insight narrator still retrieves `get_verified_evidence`. Only already-recorded events and verified statements are supplied.
 3. The server supplies required match context; the model chooses and orders additional useful statements. Insight context can include contributors, recorded shots after high recoveries, and zero-baseline cautions. Recaps prioritize score, the latest available goal, supported changes and explicit abstention.
 4. The server rejects unknown facts, duplicate selections, arbitrary prose, wrong tools, incomplete responses and refusals. It renders every factual sentence from checked data. AI cannot invent statistics or causal claims through this contract.
 5. The drawer shows actual provider/model, selected observations, events, comparisons, completed tool activity, validation and limitations. It never exposes private reasoning. Errors show deterministic content without an AI label.
@@ -121,7 +121,11 @@ This is **constrained editorial narration**, not unrestricted generated prose. I
 
 Production requires an existing **TLS Redis** store via `AI_REDIS_URL=rediss://…`. All instances and both providers/routes must share the same store. The app fails closed if it is missing or unavailable. `AI_USAGE_STORE=memory` is permitted only outside production for isolated local testing.
 
-Atomic Redis reservations enforce global per-minute/hour/day and persistent total narration allowances (defaults **4 / 30 / 60 / 100**). Each reservation permits at most two requests, each limited to 1,800 output tokens, 128 KiB input payload and a 25-second timeout. Potentially billed failures consume a reservation. No automatic provider retries occur. Shared locks prevent duplicate inference across instances; local concurrent requests share a promise. Other instances receive a truthful temporary fallback while work is pending. Validated results cache for one hour. Failures receive only a five-second cooldown (up to the 70-second lease if the store or process fails).
+Atomic Redis reservations retain global workflow allowances (defaults **4 per minute / 30 per hour / 60 per day / 100 total**). Individual HTTP attempts also consume hourly, daily and persistent total allowances at those same settings. Shared rolling-minute request/token accounting adds hard ceilings of **10 requests / 10,000 estimated tokens**, with at least six seconds between dispatches at the default request ceiling. Estimates cover serialized input plus framing and the unchanged **1,800-token output allowance**. These application ceilings are based on the historical review, not a statement of current Azure capacity. Limits may be lowered; this milestone does not raise spending settings or reset existing counters.
+
+Director investigations allow at most **three HTTP attempts including retries**, four evidence queries including application retrieval, and a 55-second workflow deadline. Only an explicit provider 429 can receive one bounded retry per response operation, within the remaining attempt/time/token budget. Retry headers extend a shared cooldown. Network failures, timeouts, 5xx responses, malformed/incomplete output and verification failures are not automatically replayed. Every reservation remains charged, including unknown usage; recovered unknown usage has no invented cost estimate.
+
+Shared locks prevent duplicate inference across instances; local concurrent subscribers share work without sharing cancellation ownership. Other instances receive a temporary fallback while work is pending. Validated results cache for one hour. Failure locks cool down for five seconds (up to the 70-second lease after a process/store failure). Browser caches retain successful reviews, including intentionally offline reviews, but never failure fallbacks. Before reuse, the browser checks an opaque provider/model/implementation fingerprint; exact cutoff, evidence-object revision and preferences remain distinct. See [Foundry efficiency measurements and validation](docs/intelligence/foundry-efficiency-2026-10-11/REPORT.md).
 
 Use Redis persistence and **no-eviction** for quota state. Never flush the store or delete `{second-look-ai}:budget` to recover from an outage; that resets the persistent allowance. Raising the total allowance is an explicit operator spending decision. These are application request limits, not a dollar-denominated billing cap; alerts alone are not spending controls. Shared global limits can be consumed by one visitor, so authenticated per-user allocation or a gateway may be appropriate for a wider launch.
 

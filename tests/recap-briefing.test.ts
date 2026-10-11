@@ -160,24 +160,29 @@ it("scopes last-viewed positions to match and revision, validating stored and re
 afterEach(() => vi.unstubAllGlobals());
 it("coalesces recap requests, reuses results and invalidates on evidence, time or preference changes", async () => {
   const m = structuredClone(match);
-  const fetcher = vi.fn(async (_url, init) => ({
-    ok: true,
-    json: async () => ({
-      stories: [],
-      provenance: { cutoff: JSON.parse(init.body).time },
-    }),
-  }));
+  const fetcher = vi.fn(async (url, init) =>
+    url === "/api/insights"
+      ? Response.json({ directorContext: "model-a" })
+      : Response.json({
+          source: "foundry",
+          cacheContext: "model-a",
+          stories: [],
+          provenance: { cutoff: JSON.parse(init.body).time },
+        }),
+  );
+  const posts = () =>
+    fetcher.mock.calls.filter(([url]) => url === "/api/director");
   vi.stubGlobal("fetch", fetcher);
   await Promise.all([
     requestDirector(m, 3804, "analyst", {}),
     requestDirector(m, 3804, "analyst", {}),
   ]);
   await requestDirector(m, 3804, "analyst", {});
-  expect(fetcher).toHaveBeenCalledTimes(1);
+  expect(posts()).toHaveLength(1);
   await requestDirector(m, 3805, "analyst", {});
   await requestDirector(m, 3804, "analyst", { team: "harbor" });
   await requestDirector(structuredClone(m), 3804, "analyst", {});
-  expect(fetcher).toHaveBeenCalledTimes(4);
+  expect(posts()).toHaveLength(4);
 });
 
 it("explains away-team leads in the leading team's order and full-time outcomes through decisive goals", () => {

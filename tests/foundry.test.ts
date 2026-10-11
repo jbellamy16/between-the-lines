@@ -1,7 +1,9 @@
-import { afterEach, expect, it, vi } from "vitest";
+import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { narrate } from "../src/lib/foundry";
 import { generateMatch, DEMO_TIME } from "../src/lib/match";
 import { detectInsights } from "../src/lib/intelligence";
+import { configure } from "./ai-helpers";
+beforeEach(() => configure("foundry"));
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
@@ -122,5 +124,5 @@ it("does not accept incomplete model output", async () => {
   const events = generateMatch("pressure");
   await expect(
     narrate(detectInsights(events, DEMO_TIME)[0], events, "fan"),
-  ).rejects.toThrow("incomplete");
+  ).rejects.toMatchObject({ category: "invalid_response" });
 });

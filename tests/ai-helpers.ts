@@ -1,5 +1,6 @@
 import { requiredContext } from "../src/lib/ai/narration";
 import { vi } from "vitest";
+import * as requestControls from "../src/lib/ai/request-controls";
 import type { EvidencePacket } from "../src/lib/ai/evidence";
 export function editorialBaseline(packet: EvidencePacket) {
   const ids = requiredContext(packet);
@@ -40,7 +41,13 @@ export function mockProvider(
       }),
     );
 }
-export function configure(provider = "openai") {
+export function configure(provider = "openai", realAccounting = false) {
+  // Existing editorial tests exercise scripted decisions, not wall-clock pacing.
+  // Reliability tests opt into real accounting with fake time and mocked HTTP.
+  if (!realAccounting) {
+    vi.spyOn(requestControls, "reserveProviderAttempt").mockResolvedValue();
+    vi.spyOn(requestControls, "providerCooldown").mockResolvedValue();
+  }
   vi.stubEnv("AI_ENABLED", "true");
   vi.stubEnv("AI_PROVIDER", provider);
   vi.stubEnv("OPENAI_API_KEY", "test-only");

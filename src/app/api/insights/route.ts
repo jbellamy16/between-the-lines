@@ -6,6 +6,7 @@ import { buildEvidence, matchRequestSchema } from "@/lib/ai/evidence";
 import { configuredProvider } from "@/lib/ai/providers";
 import { usageStoreReady } from "@/lib/ai/controls";
 import { json, narratePacket, readInput } from "@/lib/ai/service";
+import { directorConfiguration } from "@/lib/ai/director/configuration";
 export const runtime = "nodejs";
 const requestSchema = matchRequestSchema
   .extend({
@@ -16,6 +17,7 @@ const requestSchema = matchRequestSchema
 export async function GET() {
   const configured = configuredProvider();
   return json({
+    directorContext: directorConfiguration(),
     mode: usageStoreReady() ? configured : "offline",
     configured,
     proactive:

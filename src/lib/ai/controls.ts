@@ -1,6 +1,18 @@
 import "server-only";
 import { createHash, randomUUID } from "node:crypto";
 import { createClient } from "@redis/client";
+import { sharedTasks, untilAborted } from "./wait";
+export class WorkflowFailure extends Error {
+  constructor(readonly category: "controls" | "budget" | "busy") {
+    super(
+      category === "busy"
+        ? "Narration already in progress; try again shortly"
+        : category === "budget"
+          ? "Narration usage limit reached"
+          : "Shared usage controls unavailable",
+    );
+  }
+}
 export function usageStoreReady() {
   return (
     !!process.env.AI_REDIS_URL ||
@@ -8,7 +20,7 @@ export function usageStoreReady() {
       process.env.AI_USAGE_STORE === "memory")
   );
 }
-function limit(name: string, fallback: number, ceiling: number) {
+export function limit(name: string, fallback: number, ceiling: number) {
   const raw = Number(process.env[name] ?? fallback);
   return Number.isFinite(raw)
     ? Math.max(0, Math.min(ceiling, Math.floor(raw)))
@@ -82,7 +94,11 @@ async function redis() {
   }
   return connection!;
 }
-async function evalScript(script: string, keys: string[], args: string[]) {
+export async function evalScript(
+  script: string,
+  keys: string[],
+  args: string[],
+) {
   const client = await redis();
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
@@ -104,13 +120,16 @@ async function evalScript(script: string, keys: string[], args: string[]) {
     clearTimeout(timer);
   }
 }
-const localCache = new Map<string, { expires: number; value?: unknown }>();
+const localCache = new Map<
+  string,
+  { expires: number; value?: unknown; owner?: string }
+>();
 const localWindows = [60, 3600, 86400, 0].map((seconds) => ({
   seconds,
   start: Date.now(),
   used: 0,
 }));
-function localClaim(key: string): [string, string?] {
+function localClaim(key: string, owner: string): [string, string?] {
   const now = Date.now();
   for (const [k, v] of localCache) if (v.expires <= now) localCache.delete(k);
   const cached = localCache.get(key);
@@ -128,17 +147,31 @@ function localClaim(key: string): [string, string?] {
   )
     return ["limited"];
   localWindows.forEach((w) => w.used++);
-  localCache.set(key, { expires: now + 70000 });
+  localCache.set(key, { expires: now + 70000, owner });
   return ["acquired"];
 }
+const share = sharedTasks<{ result: unknown; cached: boolean }>();
 export async function controlledNarration<T>(
   identity: unknown,
-  generate: () => Promise<T>,
+  generate: (signal: AbortSignal) => Promise<T>,
+  signal?: AbortSignal,
 ) {
-  if (!usageStoreReady()) throw new Error("Shared usage controls unavailable");
+  if (!usageStoreReady()) throw new WorkflowFailure("controls");
   const key = createHash("sha256")
     .update(JSON.stringify(identity))
     .digest("hex");
+  return share(
+    key,
+    (sharedSignal) => claimAndGenerate(key, generate, sharedSignal),
+    signal,
+  ) as Promise<{ result: T; cached: boolean }>;
+}
+async function claimAndGenerate<T>(
+  key: string,
+  generate: (signal: AbortSignal) => Promise<T>,
+  signal: AbortSignal,
+) {
+  signal.throwIfAborted();
   const keys = [
     `{second-look-ai}:v1:cache:${key}`,
     `{second-look-ai}:v1:lock:${key}`,
@@ -146,29 +179,54 @@ export async function controlledNarration<T>(
   ];
   const token = randomUUID();
   const useRedis = !!process.env.AI_REDIS_URL;
-  const [status, cached] = (
-    useRedis
-      ? await evalScript(CLAIM_SCRIPT, keys, [...limits().map(String), token])
-      : localClaim(key)
-  ) as string[];
-  if (status === "cached")
-    return { result: JSON.parse(cached) as T, cached: true };
+  const [status, cached] = await (async () => {
+    try {
+      return (
+        useRedis
+          ? await evalScript(CLAIM_SCRIPT, keys, [
+              ...limits().map(String),
+              token,
+            ])
+          : localClaim(key, token)
+      ) as string[];
+    } catch {
+      throw new WorkflowFailure("controls");
+    }
+  })();
+  if (status === "cached") {
+    try {
+      return { result: JSON.parse(cached) as T, cached: true };
+    } catch {
+      throw new WorkflowFailure("controls");
+    }
+  }
   if (status !== "acquired")
-    throw new Error(
-      status === "busy"
-        ? "Narration already in progress; try again shortly"
-        : "Narration usage limit reached",
+    throw new WorkflowFailure(
+      status === "busy" ? "busy" : status === "limited" ? "budget" : "controls",
     );
+  const workflowSignal = AbortSignal.any([signal, AbortSignal.timeout(55000)]);
   try {
-    const result = await generate();
-    if (useRedis)
-      await evalScript(FINISH_SCRIPT, keys, [token, JSON.stringify(result)]);
-    else localCache.set(key, { expires: Date.now() + 3600000, value: result });
+    workflowSignal.throwIfAborted();
+    const result = await untilAborted(generate(workflowSignal), workflowSignal);
+    workflowSignal.throwIfAborted();
+    if (useRedis) {
+      try {
+        const finished = await evalScript(FINISH_SCRIPT, keys, [
+          token,
+          JSON.stringify(result),
+        ]);
+        if (finished !== 1) throw new WorkflowFailure("controls");
+      } catch {
+        throw new WorkflowFailure("controls");
+      }
+    } else if (localCache.get(key)?.owner === token)
+      localCache.set(key, { expires: Date.now() + 3600000, value: result });
     return { result, cached: false };
   } catch (error) {
     if (useRedis)
       await evalScript(FINISH_SCRIPT, keys, [token, ""]).catch(() => {});
-    else localCache.set(key, { expires: Date.now() + 5000 });
+    else if (localCache.get(key)?.owner === token)
+      localCache.set(key, { expires: Date.now() + 5000 });
     throw error;
   }
 }
