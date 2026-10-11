@@ -21,7 +21,7 @@ describe("evidence-controlled football briefing", () => {
       [2700, 3252],
       [3252, 3804],
     ]);
-    expect(result.narrative).toContain("9m 12s");
+    expect(result.narrative).toContain("9 min 12 sec");
     expect(result.narrative).not.toContain("15-minute");
     const recovery = result.metrics.find(
       (m) => m.label === "Attacking-third ball wins",

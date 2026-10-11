@@ -12,7 +12,7 @@ test("playback, evidence, recap, and rewind stay synchronized", async ({
   await page.locator(".secondary-observations > summary").click();
   await expect(page.getByTestId("clock")).toContainText("63:24");
   await expect(page.locator(".selected-observation h2")).toContainText(
-    "Harbor are winning it higher",
+    "Harbor are winning the ball near the opponent’s goal more often.",
   );
   await page.getByRole("button", { name: "Show me the sequence" }).click();
   await expect(
@@ -132,7 +132,7 @@ test("selected evidence drives replay, which retains its final frame", async ({
   await page.clock.install();
   await page.goto("/");
   await page.locator(".secondary-observations > summary").click();
-  await page.getByRole("button", { name: /^Evidence \(/ }).click();
+  await page.getByRole("button", { name: /^Explore evidence \(/ }).click();
   const first = page.locator(".evidence-list button").first();
   const selectedTime = await first.locator("time").innerText();
   await first.click();
@@ -188,7 +188,7 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
   ).toBeVisible();
   await page.clock.runFor(6000);
   await expect(page.locator(".selected-observation h2")).toContainText(
-    "Harbor are winning it higher",
+    "Harbor are winning the ball near the opponent’s goal more often.",
   );
   await page.getByRole("button", { name: "Pause match", exact: true }).click();
   await page.getByRole("button", { name: "Settings", exact: true }).click();
@@ -200,7 +200,7 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(page.getByTestId("clock")).toContainText("63:24");
   await expect(page.locator(".selected-observation h2")).toContainText(
-    "Harbor are winning it higher",
+    "Harbor are winning the ball near the opponent’s goal more often.",
   );
   await expect(
     page.getByRole("button", { name: /^(Fan|Analyst) mode$/ }),
@@ -364,7 +364,9 @@ test("detailed explainability captures the evidence drawer", async ({
   await page.getByRole("button", { name: "Catch me up", exact: true }).click();
   await page
     .getByRole("dialog")
-    .getByText("How we reached this conclusion", { exact: true })
+    .getByText("Explore evidence · How we reached this conclusion", {
+      exact: true,
+    })
     .click();
   await expect(page.getByRole("dialog")).toContainText(
     "Evidence through 63:24",
@@ -417,7 +419,13 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
           model: "gpt-5.4-mini",
           cached: false,
           cutoff: 3804,
-          facts: [],
+          facts: [
+            {
+              id: "mock-additional-fact",
+              text: "This is a mocked supporting fact for a browser test.",
+              evidenceIds: [],
+            },
+          ],
           activity: ["get_verified_evidence completed"],
           validation: ["Selection schema passed"],
           limitations: ["Synthetic events"],
@@ -431,7 +439,7 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
     page.getByRole("button", { name: /^(Fan|Analyst) mode$/ }),
   ).toHaveCount(0);
   await expect(page.locator(".selected-observation")).toContainText(
-    "descriptive threshold",
+    "previous equal spell",
   );
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await expect(page.getByLabel("Follow a team")).toHaveValue("harbor");
@@ -447,14 +455,18 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
     .getByRole("button", { name: "Explain with OpenAI", exact: true })
     .click();
   await expect(
-    page.getByText(/This is a mocked narration for a browser test/),
+    page.locator(".detail-content > p").filter({
+      hasText: "This is a mocked supporting fact for a browser test.",
+    }),
   ).toBeVisible();
   expect(calls).toBe(1);
   await page.getByRole("button", { name: "Play match", exact: true }).click();
   await expect(page.getByTestId("clock")).not.toContainText("63:24");
   expect(calls).toBe(1);
   await expect(
-    page.getByText(/This is a mocked narration for a browser test/),
+    page.locator(".detail-content > p").filter({
+      hasText: "This is a mocked supporting fact for a browser test.",
+    }),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Restart match" }).click();
   await expect(page.getByTestId("clock")).toContainText("00:00");

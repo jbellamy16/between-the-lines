@@ -1,3 +1,4 @@
+import { presentStory } from "../src/lib/explanation";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
@@ -33,10 +34,10 @@ test("one story controls the initial pitch, secondary selection and replay; offl
   );
   const story = page.locator(".director-story");
   await expect(story.getByRole("heading", { level: 2 })).toHaveText(
-    expected.headline,
+    presentStory(expected, match, "plain").headline,
   );
   await expect(page.locator(".pitch-story-label")).toContainText(
-    expected.headline,
+    presentStory(expected, match, "plain").headline,
   );
   const ids = await page
     .locator(".pitch-panel .action-picker option")
@@ -67,9 +68,11 @@ test("one story controls the initial pitch, secondary selection and replay; offl
     })
     .click();
   await expect(story.getByRole("heading", { level: 2 })).toHaveText(
-    "Harbor: more ball wins in the attacking third",
+    "Harbor are winning the ball near the opponent’s goal more often.",
   );
-  await expect(page.locator(".pitch-story-label")).toContainText("ball wins");
+  await expect(page.locator(".pitch-story-label")).toContainText(
+    "winning the ball",
+  );
   const winIds = await page
     .locator(".pitch-panel .action-picker option")
     .evaluateAll((options) =>

@@ -10,6 +10,10 @@ import { eventClock, type MatchData } from "@/lib/sources/model";
 import type { StoryPreferences } from "@/lib/intelligence";
 import type { DirectorResult } from "@/lib/ai/director/runner";
 import { requestDirector } from "@/lib/ai/director/client-cache";
+import {
+  ExplanationSelector,
+  useExplanationStyle,
+} from "./explanation-preference";
 import { ArrowRight, EventIcon } from "./icons";
 import { Crest } from "./team-identity";
 import { StorylineHistory } from "./storyline-history";
@@ -35,6 +39,7 @@ export function RecapBriefing({
   onMoment: (id: string) => void;
   onBack: () => void;
 }) {
+  const style = useExplanationStyle();
   const [mode, setMode] = useState<"quick" | "full">("quick");
   const [wholeMatch, setWholeMatch] = useState(false);
   const [entrySince] = useState(since);
@@ -60,8 +65,9 @@ export function RecapBriefing({
         since: wholeMatch ? null : entrySince,
         preferences: JSON.parse(preferenceKey),
         stories: answer?.stories,
+        style,
       }),
-    [match, time, entrySince, wholeMatch, preferenceKey, answer],
+    [match, time, entrySince, wholeMatch, preferenceKey, answer, style],
   );
   const metrics = briefing.metrics.slice(0, mode === "quick" ? 2 : 6);
   const moments = briefing.moments
@@ -128,6 +134,7 @@ export function RecapBriefing({
             </button>
           </div>
         )}
+        <ExplanationSelector />
         <div className={styles.tabs} role="tablist" aria-label="Recap length">
           {(["quick", "full"] as const).map((value) => (
             <button
@@ -330,7 +337,7 @@ export function RecapBriefing({
         )}
       </div>
       <AnimatedDetails className={`provenance ${styles.method}`}>
-        <summary>How we reached this conclusion</summary>
+        <summary>Explore evidence · How we reached this conclusion</summary>
         <div className={styles.methodBody}>
           <p>
             <strong>Evidence through {clock}.</strong> {match.attribution}
@@ -378,6 +385,7 @@ export function RecapBriefing({
                 story.evidenceEventIds.includes(e.id),
               )}
               answer={answer}
+              onEvent={onMoment}
             />
           ))}
           <h4>Source events</h4>

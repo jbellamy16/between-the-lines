@@ -1612,6 +1612,54 @@
   color: var(--muted);
 }
 
+.explanation-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+.explanation-control select,
+.explanation-setting select {
+  min-height: 36px;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 28px 6px 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.explanation-setting {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+.explanation-setting label {
+  font-weight: 600;
+}
+.explanation-setting p {
+  margin: 0;
+  font-size: 13px;
+}
+.story-qualification {
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.quiet-evidence > button {
+  display: block;
+  text-align: left;
+}
+.recap-modal .explanation-control select {
+  background: #20242b;
+  border-color: #4b5260;
+  color: #f3f4f6;
+}
+
 @media (min-width: 821px) {
   .data-first .main-story {
     grid-column: 2;

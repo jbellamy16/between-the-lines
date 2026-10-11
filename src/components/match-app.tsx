@@ -685,6 +685,10 @@ export function MatchApp({
               time={time}
               active={active && section === "match"}
               playing={playing}
+              onEvent={(id) => {
+                const event = visible.find((e) => e.id === id);
+                if (event) selectEvent(event);
+              }}
               onExplore={() => setPlaying(false)}
               onReplay={() => {
                 setPitchView("pattern");
@@ -699,7 +703,7 @@ export function MatchApp({
               storyTitle={
                 selectedKey && insight
                   ? `Other observation — ${insight.headline}`
-                  : director.story?.headline
+                  : director.wording?.headline
               }
               storyReplay={director.replay}
               match={canonicalMatch}
@@ -781,15 +785,7 @@ export function MatchApp({
             tab={tab}
             onTab={setTab}
             empty={context}
-            explanation={
-              <>
-                <p className="explanation-text">
-                  {currentNarrative?.explanation ?? insight?.explanation}
-                </p>
-                <p>{currentNarrative?.why ?? insight?.why}</p>
-                <p>{currentNarrative?.watch ?? insight?.watch}</p>
-              </>
-            }
+            selectedFacts={currentNarrative ? narrative!.provenance.facts : []}
           >
             <button
               className="narrate-button"

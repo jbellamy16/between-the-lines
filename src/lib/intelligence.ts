@@ -15,7 +15,7 @@ import {
   TEAMS,
 } from "./match";
 export type Mode = "fan" | "analyst";
-// The app presents the detailed analysis consistently; legacy API modes remain supported.
+// Investigation/selection mode. Explanation style is an independent client preference.
 export const ANALYSIS_MODE = "analyst" as const;
 export type Category = "pressure" | "chances" | "rhythm";
 export type Insight = {

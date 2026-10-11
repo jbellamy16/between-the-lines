@@ -1,4 +1,10 @@
 "use client";
+import type { Provenance } from "@/lib/ai/service";
+import { presentInsight, presentSupportingFact } from "@/lib/explanation";
+import {
+  ExplanationSelector,
+  useExplanationStyle,
+} from "./explanation-preference";
 import { durationLabel } from "@/lib/sources/metrics";
 import { ANALYSIS_MODE, type Insight, type Mode } from "@/lib/intelligence";
 import { clock } from "@/lib/match";
@@ -369,6 +375,8 @@ export function InsightCard({
   lead?: boolean;
   mode?: Mode;
 }) {
+  const style = useExplanationStyle();
+  const wording = presentInsight(insight, match, style);
   return (
     <button
       className={`observation-card insight-card ${lead ? "lead-observation" : ""}`}
@@ -379,11 +387,13 @@ export function InsightCard({
           <i className={`team-marker ${insight.team}`} />
           {match.teams[insight.team].name}
         </span>
-        <span className="context-label">Analytical insight</span>
+        <span className="context-label">
+          {style === "plain" ? "Match observation" : "Analytical insight"}
+        </span>
       </span>
       <h3>
         <InsightGlyph insight={insight} />
-        {insight.headline}
+        {wording.headline}
       </h3>
       {lead ? (
         <InsightComparison insight={insight} match={match} />
@@ -396,7 +406,12 @@ export function InsightCard({
           </span>
         </p>
       )}
-      {mode === "analyst" && <p>{insight.analyst}</p>}
+      <p>{wording.explanation}</p>
+      {wording.qualifications.length > 0 && (
+        <p className="story-qualification">
+          {wording.qualifications.map((q) => q.text).join(" ")}
+        </p>
+      )}
       <span className="explore-evidence">
         {insight.evidenceIds.length} supporting actions <ArrowRight size={16} />
       </span>
@@ -487,6 +502,7 @@ export function InsightOverview({
   return (
     <section className="observations-page" aria-label="Insights">
       <h2 className="sr-only">Insights</h2>
+      <ExplanationSelector />
       {insights.length ? (
         <>
           <InsightCard
@@ -529,7 +545,9 @@ export function InsightDetails({
   empty,
   story,
   secondaryOpen = false,
+  selectedFacts = [],
 }: {
+  selectedFacts?: Provenance["facts"];
   story?: ReactNode;
   secondaryOpen?: boolean;
   match: MatchData;
@@ -545,6 +563,8 @@ export function InsightDetails({
   children: ReactNode;
   empty: ReactNode;
 }) {
+  const style = useExplanationStyle();
+  const wording = insight ? presentInsight(insight, match, style) : null;
   const evidence = insight
     ? match.events.filter(
         (e) => e.time <= insight.end && insight.evidenceIds.includes(e.id),
@@ -566,13 +586,22 @@ export function InsightDetails({
                   <i className={`team-marker ${insight.team}`} />
                   {match.teams[insight.team].name}
                 </span>
-                <span className="context-label">Analytical insight</span>
+                <span className="context-label">
+                  {style === "plain"
+                    ? "Match observation"
+                    : "Analytical insight"}
+                </span>
               </div>
               <h2>
                 <InsightGlyph insight={insight} />
-                {insight.headline}
+                {wording!.headline}
               </h2>
-              {mode === "analyst" && <p>{insight.analyst}</p>}
+              <p>{wording!.explanation}</p>
+              {wording!.qualifications.length > 0 && (
+                <p className="story-qualification">
+                  {wording!.qualifications.map((q) => q.text).join(" ")}
+                </p>
+              )}
               <InsightComparison insight={insight} match={match} />
             </div>
             <SelectionGroup
@@ -588,7 +617,7 @@ export function InsightDetails({
                   onClick={() => onTab(t)}
                 >
                   {t === "evidence"
-                    ? `Evidence (${evidence.length})`
+                    ? `Explore evidence (${evidence.length})`
                     : t[0].toUpperCase() + t.slice(1)}
                 </button>
               ))}
@@ -648,9 +677,16 @@ export function InsightDetails({
               {tab === "explanation" &&
                 (explanation ?? (
                   <>
-                    <p>{insight.explanation}</p>
-                    <p>{insight.why}</p>
-                    <p>{insight.watch}</p>
+                    <p className="explanation-text">{wording!.explanation}</p>
+                    <p>{wording!.why}</p>
+                    <p>{wording!.watch}</p>
+                    {selectedFacts
+                      .filter((fact) => fact.id !== insight.id)
+                      .map((fact) => (
+                        <p key={fact.id}>
+                          {presentSupportingFact(fact, insight, match, style)}
+                        </p>
+                      ))}
                   </>
                 ))}
               <button className="sequence-button" onClick={onReplay}>

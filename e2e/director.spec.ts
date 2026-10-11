@@ -1,3 +1,4 @@
+import { presentStory } from "../src/lib/explanation";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
@@ -60,9 +61,11 @@ test("story evidence presents the comparison and keeps technical details seconda
   await page
     .getByRole("button", { name: "Investigate with OpenAI", exact: true })
     .click();
-  await expect(page.locator(".director-story h2")).toHaveText(story.headline);
+  await expect(page.locator(".director-story h2")).toHaveText(
+    presentStory(story, match, "plain").headline,
+  );
   await expect(page.locator(".pitch-story-label")).toContainText(
-    story.headline,
+    presentStory(story, match, "plain").headline,
   );
   const panel = page.locator(".story-evidence");
   await panel.getByText("How we know this story", { exact: true }).click();
@@ -198,15 +201,12 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
 }) => {
   await page.goto("/");
   const story = page.locator(".director-story");
-  await story
-    .getByText("Why it matters & what to watch", { exact: true })
-    .click();
-  await expect(
-    story.getByRole("heading", { name: "Why it matters", exact: true }),
-  ).toBeVisible();
-  await expect(
-    story.getByRole("heading", { name: "Watch next", exact: true }),
-  ).toBeVisible();
+  await expect(story.locator(".story-qualification")).toBeVisible();
+  await expect(story.locator(".story-qualification")).toContainText(
+    "More shots need not mean better chances",
+  );
+  await story.getByText("What to watch next", { exact: true }).click();
+  await expect(story.locator(".story-significance > p")).toBeVisible();
   const slider = page.getByRole("slider", { name: "Match timeline" });
   await slider.fill("3900");
   const history = page.locator(".storyline-history");

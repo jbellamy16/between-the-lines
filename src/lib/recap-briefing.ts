@@ -1,3 +1,8 @@
+import {
+  presentStory,
+  metricWording,
+  type ExplanationStyle,
+} from "./explanation";
 import { observe, claimEmphasis, type Candidate } from "./ai/director/observer";
 import { packageStory, type BroadcastStory } from "./ai/director/story";
 import {
@@ -6,6 +11,7 @@ import {
 } from "./ai/director/storylines";
 import type { ObservationWindow } from "./ai/director/hypothesis";
 import {
+  eventClock,
   recordedScore,
   matchClock as sourceMatchClock,
   periodAt,
@@ -114,7 +120,8 @@ function validStory(match: MatchData, cutoff: number, story: BroadcastStory) {
     ["confirmed-observation", "supported-interpretation"].includes(
       story.hypothesis.verificationStatus,
     ) &&
-    story.hypothesis.timestamp === cutoff &&
+    story.hypothesis.timestamp === story.timestamp &&
+    story.timestamp <= cutoff &&
     story.hypothesis.verificationChecks.every((c) => c.passed) &&
     story.hypothesis.windows.every((w) => w.start >= 0 && w.end <= cutoff) &&
     [
@@ -146,6 +153,7 @@ export function buildBriefing(
   cutoff: number,
   options: {
     since?: number | null;
+    style?: ExplanationStyle;
     preferences?: StoryPreferences;
     /** Only the existing server-verified Director result may supply these stories. */
     stories?: BroadcastStory[];
@@ -153,6 +161,7 @@ export function buildBriefing(
 ): Briefing {
   if (!Number.isFinite(cutoff) || cutoff < 0 || cutoff > match.duration)
     throw new Error("Invalid briefing cutoff");
+  const style = options.style ?? "plain";
   const since =
     typeof options.since === "number" &&
     Number.isFinite(options.since) &&
@@ -211,6 +220,7 @@ export function buildBriefing(
     ...local.filter((s) => !selected.some((p) => p.storyId === s.storyId)),
   ].slice(0, 6);
   const lead = stories[0];
+  const wording = lead ? presentStory(lead, match, style) : null;
   const team =
     lead && match.events.find((e) => e.id === lead.evidenceEventIds[0])?.team;
   const name = team ? match.teams[team].short : "";
@@ -248,78 +258,16 @@ export function buildBriefing(
       ? `${match.teams[leader].name} finish ${leaderScore} winners.`
       : `The match finishes level at ${scoreText}.`;
   else if (latestGoal)
-    context = `${person(match, latestGoal.playerId)}${latestGoal.ownGoal ? "'s own goal" : "'s goal"} at ${matchClock(match, latestGoal.time)} ${leader ? `leaves ${match.teams[leader].name} leading ${leaderScore}` : `leaves the sides level at ${scoreText}`}.`;
+    context = `${person(match, latestGoal.playerId)}${latestGoal.ownGoal ? "'s own goal" : "'s goal"} at ${eventClock(match, latestGoal)} ${leader ? `leaves ${match.teams[leader].name} leading ${leaderScore}` : `leaves the sides level at ${scoreText}`}.`;
   else if (since !== null)
     context += ` No goals have been recorded since ${matchClock(match, since)}.`;
   let headline = leader
     ? `${match.teams[leader].short} hold the advantage.`
     : "All square so far.";
   let development = "";
-  if (lead && mainMetric) {
-    const metric = mainMetric.label.toLowerCase();
-    headline =
-      metric === "shots"
-        ? `${name} are getting more shots away.`
-        : metric === "attacking-third ball wins"
-          ? `${name} are regaining the ball more often upfield.`
-          : `${name}'s ${metric} are increasing.`;
-    const currentWindow = mainMetric.windows[1];
-    const spell =
-      currentWindow.end === cutoff
-        ? `in the latest ${durationLabel(currentWindow.end - currentWindow.start)}`
-        : `from ${matchClock(match, currentWindow.start)} to ${matchClock(match, currentWindow.end)}`;
-    if (currentWindow.end < cutoff)
-      headline = `${name}'s earlier rise in ${metric}.`;
-    development = `${name} have recorded ${mainMetric.current} ${metric} ${spell}, against ${mainMetric.previous} in the preceding equal spell.`;
-    if (metric === "shots") {
-      const outcome = lead.hypothesis.measurements.find(
-        (m) => m.key === "current-shot-goal-outcomes",
-      );
-      development +=
-        outcome?.value === 0
-          ? " Those attempts have yet to bring a goal in this spell."
-          : " That is an increase in attempts, without necessarily meaning better chances.";
-    } else if (metric === "attacking-third ball wins")
-      development +=
-        " The next question is whether those regains are followed by shots.";
-    else development += " This shows a change in recorded on-ball activity.";
-    const regains = uniqueMetrics.find(
-      (m) => m.team === name && m.label === "Attacking-third ball wins",
-    );
-    if (metric === "shots" && regains && regains.current > regains.previous)
-      development += " Their ball wins upfield have also increased.";
-  } else if (lead?.category === "player-involvement") {
-    const actions = lead.hypothesis.measurements.find(
-      (m) => m.key === "involvements",
-    );
-    const shots = lead.hypothesis.measurements.find(
-      (m) => m.key === "player-shots",
-    );
-    const first = visible.find((e) => e.id === actions?.eventIds[0]);
-    const window = lead.hypothesis.windows[0];
-    if (actions && shots && first && window) {
-      const who = person(match, first.actorId);
-      headline = `${who}'s involvement in focus.`;
-      development = `${who} has ${actions.value} recorded on-ball actions, including ${shots.value} shots, from ${matchClock(match, window.start)} to ${matchClock(match, window.end)}. This describes their contribution on the ball, without establishing an effect on team performance.`;
-    }
-  } else if (
-    lead &&
-    [
-      "recovery-shot",
-      "shot-sequence",
-      "substitute-involvement",
-      "passing-pair",
-      "player-involvement",
-    ].includes(lead.category)
-  ) {
-    // The Director's brief is already constrained and independently checked. Use one, never concatenate overlapping claims.
-    const candidate = candidates.find((c) => c.id === lead.storyId);
-    development = candidate?.brief ?? "";
-    if (development)
-      headline =
-        lead.category === "recovery-shot"
-          ? `A ball win precedes ${name}'s shot.`
-          : lead.headline;
+  if (wording) {
+    headline = wording.headline;
+    development = `${wording.explanation} ${wording.why}`;
   }
   if (!development) {
     const shots = interval.filter((e) => e.type === "shot");
@@ -343,7 +291,7 @@ export function buildBriefing(
     const shots = interval.filter((e) => e.type === "shot");
     development = [
       decisive
-        ? `${person(match, decisive.playerId)}${decisive.ownGoal ? "'s own goal" : "'s goal"} at ${matchClock(match, decisive.time)} put ${match.teams[leader!].short} ahead for the last time.`
+        ? `${person(match, decisive.playerId)}${decisive.ownGoal ? "'s own goal" : "'s goal"} at ${eventClock(match, decisive)} put ${match.teams[leader!].short} ahead for the last time.`
         : "",
       shots.length
         ? `${match.teams.harbor.short} recorded ${shots.filter((e) => e.team === "harbor").length} shots to ${match.teams.riverside.short}'s ${shots.filter((e) => e.team === "riverside").length}${since === null ? " across the match" : " since your last viewing position"}.`
@@ -365,36 +313,18 @@ export function buildBriefing(
           ? s.metric === "shots"
           : s.metric === "attacking-third-recoveries"),
     ) ?? storylines.find((s) => s.state !== "resolved");
-  const qualifications: string[] = [];
-  if (lead) {
-    for (const e of lead.hypothesis.contradictoryEvidence) {
-      if (e.code === "latest-rate-not-sustained")
-        qualifications.push(
-          "The increase has eased in the latest part of that spell.",
-        );
-      if (e.code === "opponent-shot-response")
-        qualifications.push(
-          "The opposition have matched or exceeded that shot count, so this is not one-way traffic.",
-        );
-      if (e.code === "shot-volume-without-xg-increase")
-        qualifications.push(
-          "More shots have not raised the total expected goals in this comparison.",
-        );
-    }
-  }
+  const qualifications = wording?.qualifications.map((q) => q.text) ?? [];
+  // Keep the fixed five-minute history distinct from the rolling comparison.
   if (
     line &&
     line.team === team &&
     ["weakening", "resolved"].includes(line.state) &&
-    ((mainMetric?.label.toLowerCase() === "shots" && line.metric === "shots") ||
-      (mainMetric?.label === "Attacking-third recoveries" &&
-        line.metric === "attacking-third-recoveries"))
+    mainMetric?.label.toLowerCase() === "shots" &&
+    line.metric === "shots"
   ) {
-    headline = `${match.teams[line.team].short}'s earlier ${line.metric === "shots" ? "shooting surge" : "rise in high recoveries"} has eased.`;
+    headline = `${match.teams[line.team].short}'s earlier rise in shots has eased.`;
     qualifications.push(
-      line.state === "resolved"
-        ? "Two completed five-minute spells no longer support the earlier increase."
-        : "The latest completed five-minute spell no longer supports the earlier increase.",
+      `${line.state === "resolved" ? "Two completed five-minute spells no longer support" : "The latest completed five-minute spell no longer supports"} the earlier increase. This is a separate check from the longer comparison.`,
     );
   }
   if (latestGoal && cutoff - latestGoal.time <= 300) {
@@ -481,7 +411,11 @@ export function buildBriefing(
       Math.ceil(line.baseline.count * 1.5),
     );
     const label =
-      line.metric === "shots" ? "shots" : "attacking-third recoveries";
+      line.metric === "shots"
+        ? "shots"
+        : style === "plain"
+          ? "ball recoveries near the opponent’s goal (recoveries only)"
+          : "attacking-third recoveries";
     watch = {
       headline: `Can ${match.teams[line.team].short} ${line.state === "weakening" ? "revive" : "sustain"} this spell?`,
       text: `${target} or more ${label} in the five-minute spell ending at ${matchClock(match, line.updatedAt + 300)} would support the earlier increase. Fewer would ${line.state === "weakening" ? "end that measured run" : "weaken the pattern"}.`,
@@ -495,7 +429,12 @@ export function buildBriefing(
     mainMetric
   ) {
     const next = lead.hypothesis.watchNext;
-    const label = mainMetric.label.toLowerCase();
+    const label = metricWording(
+      mainMetric.label.toLowerCase() === "attacking-third ball wins"
+        ? "ball wins in the attacking third"
+        : mainMetric.label.toLowerCase(),
+      style,
+    );
     const comparable =
       next.windowSeconds ===
         mainMetric.windows[1].end - mainMetric.windows[1].start &&
@@ -509,6 +448,8 @@ export function buildBriefing(
         criterion: next.description,
       };
   }
+  if (style === "analysis" && cutoff >= match.duration)
+    development += ` The result covers the whole match; shot totals cover ${since === null ? "kickoff" : matchClock(match, since)}–${matchClock(match, cutoff)}; shot counts do not establish chance quality or explain the result.`;
   const expanded: string[] = [];
   if (since !== null)
     expanded.push(
@@ -521,15 +462,21 @@ export function buildBriefing(
     (since === null || firstGoal.time > since)
   )
     expanded.push(
-      `${person(match, firstGoal.playerId)} ${firstGoal.ownGoal ? "put the ball into their own net" : "opened the scoring"} at ${matchClock(match, firstGoal.time)}.`,
+      `${person(match, firstGoal.playerId)} ${firstGoal.ownGoal ? "put the ball into their own net" : "opened the scoring"} at ${eventClock(match, firstGoal)}.`,
     );
   const sequence = stories.find(
     (s) => s !== lead && s.category === "recovery-shot",
   );
-  const sequenceCandidate =
-    sequence && candidates.find((c) => c.id === sequence.storyId);
-  if (sequenceCandidate && !development.includes(sequenceCandidate.brief))
-    expanded.push(sequenceCandidate.brief);
+  if (sequence) {
+    const extra = presentStory(sequence, match, style);
+    expanded.push(
+      [
+        extra.explanation,
+        extra.why,
+        ...extra.qualifications.map((q) => q.text),
+      ].join(" "),
+    );
+  }
   if (!expanded.length && lead)
     expanded.push(
       "Explore the measured comparisons and recorded passages below to see where the change occurred.",

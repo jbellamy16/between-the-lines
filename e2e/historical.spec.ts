@@ -53,13 +53,15 @@ test("source selection, spoiler-safe replay, event exploration and match switchi
   );
   await expect(
     page
-      .getByRole("heading", { name: "Arsenal are picking up the rhythm" })
+      .getByRole("heading", {
+        name: "Arsenal's rise in attempted passes has eased.",
+      })
       .first(),
   ).toBeVisible();
   await expect(
     page
       .locator(".historical-shell .selected-observation")
-      .getByText(/153 pass attempts in the current/),
+      .getByText(/153 attempted passes in the last 15 min, up from 83/),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Pattern evidence", exact: true })
@@ -173,7 +175,9 @@ test("historical accessibility, offline explanation and cutoff validation", asyn
     .click();
   await page
     .getByRole("dialog")
-    .getByText("How we reached this conclusion", { exact: true })
+    .getByText("Explore evidence · How we reached this conclusion", {
+      exact: true,
+    })
     .click();
   await expect(page.getByRole("dialog")).toContainText(
     "Evidence through 30:00",

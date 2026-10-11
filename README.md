@@ -18,14 +18,14 @@ Watching football and understanding how a match is changing are different things
 - An interactive SVG pitch: actual event positions, numbered possession sequences, pass/shot endpoints, and progressive sequence replay. No invented tracking.
 - Event-derived score, attempts, shots on target, pass completion, high ball wins, and synthetic chance probabilities.
 - Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal comparison windows within each half (5–15 minutes each) and supporting event IDs.
-- Consistent detailed analysis, timestamp-safe Catch Me Up, lineups, and player action maps.
+- Plain English by default or Football Analysis over the same verified facts, with independent Quick/Full recaps, timestamp-safe Catch Me Up, lineups, and player action maps.
 - Device-local team, player, and insight category preferences that filter and reorder observations.
 - Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Both have offline contract tests. Foundry director investigations and both recap modes passed bounded live checks; see [the latest editorial/model comparison](docs/EDITORIAL-MODEL-COMPARISON.md). Human editorial review remains pending, and public inference is disabled.**
 - Optional AI Catch Me Up, contextual insight narration, and expandable “How Between the Lines knows” evidence.
 - Shared Redis quotas, cache, and deduplication; inference remains off by default.
 - Explicit offline demonstration mode; request failures or invalid model output fall back to computed explanations without claiming AI generation.
 
-The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request.
+The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request. The [second editorial milestone](docs/EDITORIAL-MILESTONE-2.md) adds synchronized, locally saved explanation styles across the main story, recap and Insights; changing wording preserves the current selection and investigation.
 
 The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [100-second synthetic demo](docs/intelligence/DEMO.md) shows a development emerging, weakening and resolving without future-event leakage. New model-quality gains are not claimed without a separately authorized live comparison.
 
@@ -99,7 +99,7 @@ Metadata serves the supplied SVG/ICO favicons, Apple touch icon, Safari mask, 19
 
 The evidence inspector offers a readable event summary and a native event picker alongside touch/keyboard pitch markers. Replays follow recorded time gaps at 8× speed and hold the final frame. The selected evidence event determines the replay. On mobile, the insight detail follows the cards before the event feed. The original navigation, modes, stats, lineups, preferences, player maps, and Catch Me Up remain available.
 
-**Watch the build-up** restores the pressure fixture and starts at 60:00 at 16×. High-ball-win evidence qualifies shortly afterward; the default 63:24 view has Harbor ahead 1–0 with four high ball wins and four shots in the recent window, each versus zero in the previous window. **Reset demo** restores that view, Fan mode, all categories, neutral preferences, and 8× playback. Catch Me Up avoids duplicating scoring shots as separate highlights and ends with a full-time message when appropriate.
+**Watch the build-up** restores the pressure fixture and starts at 60:00 at 16×. High-ball-win evidence qualifies shortly afterward; the default 63:24 view has Harbor ahead 1–0 with four high ball wins and four shots in the recent window, each versus zero in the previous window. **Reset demo** restores that view, all categories, neutral favorites, and 8× playback. Explanation style is a separate saved preference. Catch Me Up avoids duplicating scoring shots as separate highlights and ends with a full-time message when appropriate.
 
 ## Optional AI: OpenAI, Microsoft Foundry, or offline
 
