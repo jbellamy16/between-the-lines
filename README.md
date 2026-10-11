@@ -6,6 +6,8 @@ Previously called Second Look. The product is now Between the Lines; the reposit
 
 Between the Lines is a second-screen football intelligence experience. It turns synthetic match events into a small number of explainable stories, then lets viewers inspect the actions behind each claim. Built for an individual entry in Microsoft’s 2026 Inside the Game Developer Hackathon.
 
+**Released October 11:** [public synthetic demo](https://between-the-lines-jb-f5539b65.azurewebsites.net/) · [deployed commit](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json) · [submission package](docs/SUBMISSION.md) · [release verification](docs/release-2026-10-11/RELEASE.md). Public AI is disabled and hosted inference quotas are zero.
+
 ## The problem
 
 Watching football and understanding how a match is changing are different things. A wall of statistics does little to bridge that gap. Between the Lines connects an observation, its supporting events, a tactical visualization, and a cautious explanation in one interaction.
@@ -19,15 +21,16 @@ Watching football and understanding how a match is changing are different things
 - Event-derived score, attempts, shots on target, pass completion, high ball wins, and synthetic chance probabilities.
 - Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal comparison windows within each half (5–15 minutes each) and supporting event IDs.
 - Plain English by default or Football Analysis over the same verified facts, with independent Quick/Full recaps, timestamp-safe Catch Me Up, lineups, and player action maps.
+- Guided questions about chance quality, opponent activity and fading increases, with direct deterministic answers, qualifications and replay links.
 - Device-local team, player, and insight category preferences that filter and reorder observations.
-- Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Current Director 1.4.0 and explanation styles have automated offline validation. Earlier Foundry live results apply only to their recorded versions; see [evaluation status](docs/FOUNDRY-EVALUATION.md). Current live evaluation and human review remain pending.**
+- Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Director 1.4.1 and guided questions are included. The [completed guided study](docs/intelligence/guided-investigations/REPORT.md) produced five verified model answers and one correct no-call for $0.01632525; all answers matched the deterministic baseline. No added investigative benefit was demonstrated. Human review remains pending.**
 - Optional AI Catch Me Up, contextual insight narration, and expandable “How Between the Lines knows” evidence.
 - Shared Redis quotas, cache, and deduplication; inference remains off by default.
 - Explicit offline demonstration mode; request failures or invalid model output fall back to computed explanations without claiming AI generation.
 
 The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request. The [second editorial milestone](docs/EDITORIAL-MILESTONE-2.md) adds synchronized, locally saved explanation styles across the main story, recap and Insights; changing wording preserves the current selection and investigation.
 
-The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [114-second synthetic demo](docs/intelligence/DEMO.md) shows joining a match, Catch Me Up, shared facts across styles, evidence replay and a weakening qualification. New model-quality gains are not claimed without a separately authorized live comparison.
+The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [113-second public synthetic demo](docs/intelligence/DEMO.md) shows joining a match, Catch Me Up, shared facts across styles, evidence replay and a weakening qualification. New model-quality gains are not claimed without a separately authorized live comparison.
 
 ## Run locally
 

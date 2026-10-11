@@ -1,8 +1,14 @@
 # Deploy Between the Lines to Azure
 
-An earlier Azure release is hosted. For the alternative Cloudflare route, see [Cloudflare deployment](CLOUDFLARE.md).
+The current synthetic release is verified on the existing Azure host. Cloudflare is unchanged; its alternative runbook remains [here](CLOUDFLARE.md).
 
-## Submission read-only check — October 11, 2026
+## Current verified release — October 11, 2026
+
+PR #26 merged as `2014a497c84c799952c218a0229ec0c16bd964b1`. The public [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json) identifies the compiled artifact. Deployment `4d102384-bafe-4d4b-98f1-a71c22bbdad3` completed successfully; the actual signed-out desktop/mobile walkthrough was verified at 2:10 p.m. America/Chicago. [Full release record, checks, screenshots and rollback](release-2026-10-11/RELEASE.md).
+
+AI and proactive inference remain disabled, quotas remain zero, Foundry stays 30 RPM / 30,000 TPM, and hosting remains F1 Free. Build and runtime explicitly set `HISTORICAL_MATCHES_ENABLED=false` and `RECORDED_MATCHES_VISIBLE=false`. This release uses the existing authenticated Azure CLI; it does not enable basic publishing authentication. The following provisioning and older read-only observations are historical, not the current release status.
+
+## Earlier submission read-only check — October 11, 2026
 
 PR #23 merged as `fb108863dae6a69a7af0df0101ca1fbc66ab4be1`; no deployment followed. Public homepage and status GETs returned 200 from Azure, with `mode: offline` and `proactive: false`. They expose no deployed commit; returned HTML lacks the new style labels. Current-release parity is unverified. See [saved observations](submission-preparation/public-status.json). These checks made no model requests and changed no Azure settings. Recheck the exact deployed version after a separately authorized release.
 
@@ -74,21 +80,26 @@ Configure the existing app:
 - Public access, HTTPS only; no login barrier for judges.
 - Keep `AI_ENABLED=false` until paid inference is approved. Production inference requires an existing TLS Redis store shared across all instances; see the controls and persistence requirements in `AI-EVALUATION.md`.
 
-## 2. Configure GitHub
+## 2. Package and deploy with the existing authenticated CLI
 
-The new app has basic publishing authentication disabled and no GitHub deployment credentials configured. The existing workflow below uses a publish profile and therefore cannot deploy to this app as-is. Prefer updating the workflow to OIDC or deploying with the signed-in Azure CLI. Set `NEXT_PUBLIC_SITE_URL` to the reserved app origin before building; the runtime setting alone does not update built metadata.
+The existing GitHub deploy workflow expects a publish-profile secret that is not configured for this app. Do not run it as-is or enable basic publishing authentication. A future OIDC workflow is optional separate work. The current supported mechanism is `az webapp deploy` using the existing signed-in Azure CLI session.
 
-Create a GitHub environment named `production`. Add:
+1. Fetch/review/merge the approved product commit with passing checks. Use a clean isolated checkout; do not copy local `.env` files or credentials. Keep generated files in the original checkout intact.
+2. Install from the lockfile, run type checking and unit tests with their normal test fixtures. Apply disabled-AI and synthetic-only flags to the **production build and runtime**; applying zero production quotas to mocked-provider unit tests changes those tests' intended environment.
+3. Set `NEXT_PUBLIC_SITE_URL=https://between-the-lines-jb-f5539b65.azurewebsites.net` **before** `npm run build`. `postbuild` copies `public` and `.next/static` into `.next/standalone`.
+4. If building on macOS, add Linux x64 Sharp/libvips runtime packages at the lockfile's exact versions and verify their SHA-512 integrity. Preserve the Linux Node 24 runtime. Package only the standalone directory.
+5. Generate `public/release.json` **inside the packaged standalone artifact** with product name, full source commit, UTC build time and `.next/BUILD_ID`. Do not include host paths, identity data or secrets. Scan the ZIP to reject `.env*` files and keys. Record its SHA-256 and retain the previous verified package.
+6. Confirm the intended subscription, free plan, security settings, disabled inference and zero quotas. For this submission both build and runtime require `HISTORICAL_MATCHES_ENABLED=false` and `RECORDED_MATCHES_VISIBLE=false`.
+7. Deploy the approved local ZIP (substitute its actual path):
 
-| Kind                 | Name                           | Meaning                                       |
-| -------------------- | ------------------------------ | --------------------------------------------- |
-| Environment variable | `AZURE_WEBAPP_NAME`            | Existing App Service name                     |
-| Environment variable | `AZURE_WEBAPP_URL`             | Full public HTTPS URL, without trailing slash |
-| Environment secret   | `AZURE_WEBAPP_PUBLISH_PROFILE` | Existing app’s downloaded publish profile XML |
+```sh
+az webapp deploy --resource-group rg-between-the-lines --name between-the-lines-jb-f5539b65 --src-path APPROVED_RELEASE.zip --type zip --clean true --restart true --timeout 600000
+```
 
-Upload the profile directly into GitHub Secrets; never commit it or paste it into a chat. Publish-profile deployment requires SCM publishing authentication enabled on the app. If organizational policy disables it, replace the workflow with approved OIDC authentication rather than weakening policy. Rotate/revoke the profile when no longer needed.
+8. Verify runtime success, `/release.json` identity, `/api/insights` offline status and actual signed-out desktop/mobile flows. Historical GET and narration/Director endpoints must reject access. Verify source restrictions, recap styles/lengths, guided answers, replay, rewind, preferences, browser errors and overflow. See [current evidence](release-2026-10-11/RELEASE.md).
+9. On verification failure, redeploy the retained known-good ZIP through the same command, keep AI disabled and source restrictions in place, and verify recovery. The prior package path/hash and deployment ID are in the release record. A successful upload is not a successful release.
 
-Run **Deploy existing Azure App Service** manually on `main` from the Actions tab. It checks types, runs unit and browser tests against a production build, deploys the standalone package, and verifies the returned HTML and intelligence-status endpoint. A failed URL verification means deployment is not yet verified even if upload succeeded.
+No authentication tokens, publish profiles, provider keys or unfiltered app settings should appear in logs, documentation or packages.
 
 ## 3. Configure an optional provider after spending approval
 
