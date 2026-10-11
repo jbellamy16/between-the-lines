@@ -314,6 +314,7 @@ describe("bounded provider integration (scripted transport, not quality evidence
   });
   it("recovers from a cross-half comparison without admitting rejected evidence or adding a model turn", async () => {
     configure();
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
     const successful = scriptedProvider();
     const transport = vi
       .fn()
@@ -532,6 +533,7 @@ it("compares shot origins only with enough located shots in equal windows", () =
 });
 it("stops a provider that requests more tools after capacity requires a final plan", async () => {
   configure();
+  vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
   const transport = vi.fn(async (_url: unknown, _init: RequestInit) =>
     Response.json({
       status: "completed",

@@ -76,18 +76,21 @@ it.skipIf(!url)(
 );
 afterAll(() => vi.unstubAllEnvs());
 
-it.skipIf(!url)(
-  "real Redis coordinates per-attempt pacing, rolling tokens, cooldowns and durable budgets across instances",
-  async () => {
+it.skipIf(!url).each([
+  { rpm: 10, tpm: 10000, firstTokens: 6000, nextTokens: 5000 },
+  { rpm: 30, tpm: 30000, firstTokens: 18000, nextTokens: 15000 },
+])(
+  "real Redis coordinates pacing, rolling tokens, cooldowns and durable budgets at $tpm TPM across instances",
+  async ({ rpm, tpm, firstTokens, nextTokens }) => {
     const a = await createClient({ url }).connect(),
       b = await createClient({ url }).connect();
     const prefix = `{second-look-attempt-test-${randomUUID()}}`;
     const keys = ["times", "tokens", "pacing", "budget"].map(
       (key) => `${prefix}:${key}`,
     );
-    const args = (id: string, tokens = 6000) => [
-      "10",
-      "10000",
+    const args = (id: string, tokens = firstTokens) => [
+      String(rpm),
+      String(tpm),
       String(tokens),
       "30",
       "60",
@@ -115,7 +118,7 @@ it.skipIf(!url)(
       await a.hSet(keys[2], "nextAt", "0");
       const waitForTokens = (await b.eval(ATTEMPT_SCRIPT, {
         keys,
-        arguments: args("next", 5000),
+        arguments: args("next", nextTokens),
       })) as string[];
       expect(waitForTokens[0]).toBe("wait");
       expect(Number(waitForTokens[1])).toBeGreaterThan(59000);
@@ -125,7 +128,10 @@ it.skipIf(!url)(
       );
       await a.zAdd(keys[0], { score: 0, value: id });
       expect(
-        await b.eval(ATTEMPT_SCRIPT, { keys, arguments: args("next", 5000) }),
+        await b.eval(ATTEMPT_SCRIPT, {
+          keys,
+          arguments: args("next", nextTokens),
+        }),
       ).toEqual(["acquired"]);
       expect(await b.hGet(keys[3], "attemptUsed3")).toBe("2");
       await a.eval(COOLDOWN_SCRIPT, { keys: [keys[2]], arguments: ["25000"] });

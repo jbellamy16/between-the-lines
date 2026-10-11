@@ -28,7 +28,7 @@ On October 10, 2026, the owner authorized deployment of the app's model. Deploym
 
 - Model: `gpt-5.4-mini`, version `2026-03-17`.
 - Deployment type: `GlobalStandard`, pay-per-token; no provisioned throughput was purchased.
-- Capacity: 10 units. Azure reports 10 requests and 10,000 tokens per minute. These are throughput limits, not a spending cap.
+- Capacity: **30 units**, increased from 10 under the owner’s explicit October 11 authorization. Azure confirms **30 requests and 30,000 tokens per minute**, state `Succeeded`; [before/after receipt](intelligence/foundry-capacity-2026-10-11.json). The application defaults and hard ceilings match. These are throughput limits, not a spending cap; this allocation remains in place.
 - Provisioning state verified: `Succeeded`; the quota allocation succeeded.
 - The web app now has `FOUNDRY_ENDPOINT=https://josh-5098-resource.openai.azure.com`, `FOUNDRY_DEPLOYMENT=between-the-lines-gpt54-mini` and the resource key stored only in its server-side settings. `AI_PROVIDER=foundry`, but `AI_ENABLED=false`, legacy `FOUNDRY_ENABLED=false`, proactive inference disabled and all application quotas zero.
 - No model inference requests were made during provisioning. Subsequent isolated Foundry evaluation completed 43 HTTP attempts for approximately $0.20 in known token charges; see [the full report](FOUNDRY-EVALUATION.md) for failures, fixes and the unresolved editorial-quality limitation. The evaluation temporarily raised throughput capacity and restored it to 10. The evaluation fixes are included in the current release candidate. A persistent TLS Redis usage store and an approved finite request allowance are still required.
