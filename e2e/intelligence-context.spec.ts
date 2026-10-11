@@ -68,7 +68,7 @@ for (const { source, match } of fixtures) {
           /No clear change|Play ahead to compare/,
         );
         if (insights.length) {
-          await expect(area).toContainText("Analytical insight");
+          await expect(area).toContainText("Match observation");
           await expect(area.getByTestId("match-context")).toHaveCount(0);
         } else if (context.items.length) {
           await expect(
@@ -76,7 +76,7 @@ for (const { source, match } of fixtures) {
           ).toBeVisible();
           for (const item of context.items)
             await expect(area).toContainText(item.text);
-          await expect(area).not.toContainText("Analytical insight");
+          await expect(area).not.toContainText("Match observation");
         } else {
           await expect(area).toContainText(
             "No match developments to highlight yet.",

@@ -314,6 +314,19 @@ export function buildBriefing(
           : s.metric === "attacking-third-recoveries"),
     ) ?? storylines.find((s) => s.state !== "resolved");
   const qualifications = wording?.qualifications.map((q) => q.text) ?? [];
+  // Keep the fixed five-minute history distinct from the rolling comparison.
+  if (
+    line &&
+    line.team === team &&
+    ["weakening", "resolved"].includes(line.state) &&
+    mainMetric?.label.toLowerCase() === "shots" &&
+    line.metric === "shots"
+  ) {
+    headline = `${match.teams[line.team].short}'s earlier rise in shots has eased.`;
+    qualifications.push(
+      `${line.state === "resolved" ? "Two completed five-minute spells no longer support" : "The latest completed five-minute spell no longer supports"} the earlier increase. This is a separate check from the longer comparison.`,
+    );
+  }
   if (latestGoal && cutoff - latestGoal.time <= 300) {
     const before = recordedScore(
       visible.filter((e) => e.order < latestGoal.order),
@@ -436,7 +449,7 @@ export function buildBriefing(
       };
   }
   if (style === "analysis" && cutoff >= match.duration)
-    development += ` Result and shot totals cover ${since === null ? "kickoff" : matchClock(match, since)}–${matchClock(match, cutoff)}; shot counts do not establish chance quality or explain the result.`;
+    development += ` The result covers the whole match; shot totals cover ${since === null ? "kickoff" : matchClock(match, since)}–${matchClock(match, cutoff)}; shot counts do not establish chance quality or explain the result.`;
   const expanded: string[] = [];
   if (since !== null)
     expanded.push(

@@ -1,0 +1,342 @@
+[
+  {
+    "label": "More shots",
+    "matchId": "pressure",
+    "cutoff": 3804,
+    "storyId": "pressure:activity-change:harbor:shots:pressure-202632-410",
+    "sourceKind": "synthetic",
+    "plain": {
+      "headline": "Harbor are getting more shots away.",
+      "explanation": "Harbor recorded 4 shots in the last 9 min 12 sec, up from 0 in the previous equal spell. None scored.",
+      "why": "More shots need not mean better chances.",
+      "watch": "Watch for at least 4 shots from 63:24 to 72:36. That would match the count in this spell; fewer would weaken the reading.",
+      "qualifications": []
+    },
+    "analysis": {
+      "headline": "Harbor: more shots",
+      "explanation": "Harbor: 4 shots (54:12–63:24) versus 0 (45:00–54:12). Equal 9 min 12 sec windows in the same half. None scored.",
+      "why": "Shot volume has increased; chance quality needs separate evidence.",
+      "watch": "Harbor: record at least 4 shots in the next equal 9m 12s window to sustain the measured count.",
+      "qualifications": []
+    },
+    "statistics": [
+      {
+        "label": "shots",
+        "value": 4,
+        "unit": "events / 552 seconds"
+      },
+      {
+        "label": "Previous shots",
+        "value": 0,
+        "unit": "events / 552 seconds"
+      }
+    ],
+    "windows": [
+      {
+        "id": "previous",
+        "start": 2700,
+        "end": 3252,
+        "period": "2H",
+        "boundary": "(start,end]"
+      },
+      {
+        "id": "current",
+        "start": 3252,
+        "end": 3804,
+        "period": "2H",
+        "boundary": "(start,end]"
+      }
+    ],
+    "evidenceEventIds": [
+      "pressure-202632-410",
+      "pressure-202632-435",
+      "pressure-202632-451",
+      "pressure-202632-463"
+    ]
+  },
+  {
+    "label": "More ball wins near goal",
+    "matchId": "pressure",
+    "cutoff": 3804,
+    "storyId": "pressure:activity-change:harbor:ball wins in the attacking third:pressure-202632-415",
+    "sourceKind": "synthetic",
+    "plain": {
+      "headline": "Harbor are winning the ball near the opponent’s goal more often.",
+      "explanation": "Harbor recorded 4 ball wins near the opponent’s goal in the last 9 min 12 sec, up from 0 in the previous equal spell.",
+      "why": "These ball wins leave less ground to cover before reaching goal. They do not guarantee a shot or tell us how hard the team pressed.",
+      "watch": "Watch for at least 4 ball wins near the opponent’s goal from 63:24 to 72:36. That would match the count in this spell; fewer would weaken the reading.",
+      "qualifications": []
+    },
+    "analysis": {
+      "headline": "Harbor: more ball wins in the attacking third",
+      "explanation": "Harbor: 4 ball wins in the attacking third (54:12–63:24) versus 0 (45:00–54:12). Equal 9 min 12 sec windows in the same half.",
+      "why": "More attacking-third regains give starting points to examine for subsequent same-possession shots. They do not establish pressing intensity.",
+      "watch": "Harbor: record at least 4 ball wins in the attacking third in the next equal 9m 12s window to sustain the measured count.",
+      "qualifications": []
+    },
+    "statistics": [
+      {
+        "label": "ball wins in the attacking third",
+        "value": 4,
+        "unit": "events / 552 seconds"
+      },
+      {
+        "label": "Previous ball wins in the attacking third",
+        "value": 0,
+        "unit": "events / 552 seconds"
+      }
+    ],
+    "windows": [
+      {
+        "id": "previous",
+        "start": 2700,
+        "end": 3252,
+        "period": "2H",
+        "boundary": "(start,end]"
+      },
+      {
+        "id": "current",
+        "start": 3252,
+        "end": 3804,
+        "period": "2H",
+        "boundary": "(start,end]"
+      }
+    ],
+    "evidenceEventIds": [
+      "pressure-202632-415",
+      "pressure-202632-422",
+      "pressure-202632-445",
+      "pressure-202632-456",
+      "pressure-202632-410",
+      "pressure-202632-435",
+      "pressure-202632-451",
+      "pressure-202632-463"
+    ]
+  },
+  {
+    "label": "Weakening",
+    "matchId": "pressure",
+    "cutoff": 4200,
+    "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435",
+    "sourceKind": "synthetic",
+    "plain": {
+      "headline": "Harbor's increase in shots has eased within this spell.",
+      "explanation": "Harbor recorded 4 shots in the last 12 min 30 sec, up from 1 in the previous equal spell. None scored.",
+      "why": "More shots need not mean better chances.",
+      "watch": "Watch for at least 4 shots from 70:00 to 82:30. That would match the count in this spell; fewer would weaken the reading.",
+      "qualifications": [
+        {
+          "code": "latest-rate-not-sustained",
+          "text": "The increase has eased: 1 shot in the later half of this spell, after 3 in the first half."
+        }
+      ]
+    },
+    "analysis": {
+      "headline": "Harbor's increase in shots has eased within this spell.",
+      "explanation": "Harbor: 4 shots (57:30–70:00) versus 1 (45:00–57:30). Equal 12 min 30 sec windows in the same half. None scored.",
+      "why": "Shot volume has increased; chance quality needs separate evidence.",
+      "watch": "Harbor: record at least 4 shots in the next equal 12m 30s window to sustain the measured count.",
+      "qualifications": [
+        {
+          "code": "latest-rate-not-sustained",
+          "text": "The rate declined within the current window: 1 shot in its second half versus 3 in its first. The increase may be fading."
+        }
+      ]
+    },
+    "statistics": [
+      {
+        "label": "shots",
+        "value": 4,
+        "unit": "events / 750 seconds"
+      },
+      {
+        "label": "Previous shots",
+        "value": 1,
+        "unit": "events / 750 seconds"
+      }
+    ],
+    "windows": [
+      {
+        "id": "previous",
+        "start": 2700,
+        "end": 3450,
+        "period": "2H",
+        "boundary": "(start,end]"
+      },
+      {
+        "id": "current",
+        "start": 3450,
+        "end": 4200,
+        "period": "2H",
+        "boundary": "(start,end]"
+      }
+    ],
+    "evidenceEventIds": [
+      "pressure-202632-410",
+      "pressure-202632-435",
+      "pressure-202632-451",
+      "pressure-202632-463",
+      "pressure-202632-506",
+      "pressure-202632-501"
+    ]
+  },
+  {
+    "label": "Goal",
+    "matchId": "pressure",
+    "cutoff": 60,
+    "storyId": "pressure:score-change:pressure-202632-7",
+    "sourceKind": "synthetic",
+    "plain": {
+      "headline": "Goal: Harbor 1–0 Riverside",
+      "explanation": "Arlo Hayes scored at 01:00. Harbor 1–0 Riverside.",
+      "why": "The goal changes the score. Watch how the next passage develops.",
+      "watch": "Watch how the teams respond in the next passage of play.",
+      "qualifications": []
+    },
+    "analysis": {
+      "headline": "Goal: Harbor 1–0 Riverside",
+      "explanation": "Arlo Hayes scored at 01:00. Harbor 1–0 Riverside. Scoring events through this cutoff determine the score; penalty shootouts are excluded.",
+      "why": "The goal changes the score. Watch how the next passage develops.",
+      "watch": "Watch how the teams respond in the next passage of play.",
+      "qualifications": []
+    },
+    "statistics": [
+      {
+        "label": "Harbor goals",
+        "value": 1,
+        "unit": "goals"
+      },
+      {
+        "label": "Riverside goals",
+        "value": 0,
+        "unit": "goals"
+      }
+    ],
+    "windows": [
+      {
+        "id": "1H",
+        "start": 0,
+        "end": 60,
+        "period": "1H",
+        "boundary": "[start,end]"
+      }
+    ],
+    "evidenceEventIds": ["pressure-202632-7"]
+  },
+  {
+    "label": "Recorded result",
+    "matchId": "2499719",
+    "cutoff": 5861,
+    "storyId": "2499719:full-time:wyscout-2499719-177960902",
+    "sourceKind": "historical",
+    "plain": {
+      "headline": "Full time: Arsenal 4–3 Leicester City",
+      "explanation": "O. Giroud scored at 84:34. Arsenal 4–3 Leicester City.",
+      "why": "The result is settled. Revisit the goals to see how the score changed.",
+      "watch": "Full time. Revisit the recorded evidence.",
+      "qualifications": []
+    },
+    "analysis": {
+      "headline": "Full time: Arsenal 4–3 Leicester City",
+      "explanation": "O. Giroud scored at 84:34. Arsenal 4–3 Leicester City. Scoring events through this cutoff determine the score; penalty shootouts are excluded.",
+      "why": "The result is settled. Revisit the goals to see how the score changed.",
+      "watch": "Full time. Revisit the recorded evidence.",
+      "qualifications": []
+    },
+    "statistics": [
+      {
+        "label": "Arsenal goals",
+        "value": 4,
+        "unit": "goals"
+      },
+      {
+        "label": "Leicester City goals",
+        "value": 3,
+        "unit": "goals"
+      }
+    ],
+    "windows": [
+      {
+        "id": "1H",
+        "start": 0,
+        "end": 2853,
+        "period": "1H",
+        "boundary": "[start,end]"
+      },
+      {
+        "id": "2H",
+        "start": 2854,
+        "end": 5861,
+        "period": "2H",
+        "boundary": "[start,end]"
+      }
+    ],
+    "evidenceEventIds": [
+      "wyscout-2499719-177959212",
+      "wyscout-2499719-177959280",
+      "wyscout-2499719-177959759",
+      "wyscout-2499719-177960130",
+      "wyscout-2499719-177960379",
+      "wyscout-2499719-177960849",
+      "wyscout-2499719-177960902"
+    ]
+  },
+  {
+    "label": "Approximate source time",
+    "matchId": "2499719",
+    "cutoff": 5861,
+    "storyId": "2499719:substitute-involvement:riverside:wyscout-2499719-teamsData.1631.formation.substitutions.2",
+    "sourceKind": "historical",
+    "plain": {
+      "headline": "D. Gray: involvement after coming on",
+      "explanation": "D. Gray has 3 recorded actions with the ball, including 0 shots, since coming on at ~88′.",
+      "why": "This shows how the player has been involved, but does not tell us whether they made the team play better.",
+      "watch": "Full time. Revisit the recorded evidence.",
+      "qualifications": [
+        {
+          "code": "minute-precision",
+          "text": "A ~ before a time means the source gives only an approximate minute."
+        }
+      ]
+    },
+    "analysis": {
+      "headline": "D. Gray: recorded on-ball involvement after coming on",
+      "explanation": "D. Gray has 3 recorded on-ball actions, including 0 shots, since coming on at ~88′.",
+      "why": "Observed contribution does not isolate a substitution effect, off-ball influence or change in team performance.",
+      "watch": "Full time. Revisit the recorded evidence.",
+      "qualifications": [
+        {
+          "code": "minute-precision",
+          "text": "Times marked ~ have source minute precision; exact seconds are unavailable."
+        }
+      ]
+    },
+    "statistics": [
+      {
+        "label": "Recorded involvements",
+        "value": 3,
+        "unit": "events"
+      },
+      {
+        "label": "Shots",
+        "value": 0,
+        "unit": "events"
+      }
+    ],
+    "windows": [
+      {
+        "id": "observation",
+        "start": 5494,
+        "end": 5861,
+        "period": "2H",
+        "boundary": "[start,end]"
+      }
+    ],
+    "evidenceEventIds": [
+      "wyscout-2499719-teamsData.1631.formation.substitutions.2",
+      "wyscout-2499719-177960948",
+      "wyscout-2499719-177960985",
+      "wyscout-2499719-177961008"
+    ]
+  }
+]

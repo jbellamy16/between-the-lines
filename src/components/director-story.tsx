@@ -432,13 +432,13 @@ export function DirectorStory({
   if (!story)
     return (
       <div className="quiet-story panel">
-        <ExplanationSelector />
         <span className="eyebrow">What matters now</span>
         <p>
           {style === "plain"
             ? "No new headline. Explore the recorded actions while the next passage develops."
             : "No new headline. No eligible lead meets the evidence thresholds at this cutoff; secondary observations remain available."}
         </p>
+        <ExplanationSelector />
         {notice && (
           <p className="notice" role="status">
             {notice}
@@ -479,25 +479,19 @@ export function DirectorStory({
   return (
     <>
       <Reveal change={story.storyId} className="director-story panel">
-        <ExplanationSelector />
         <span className="eyebrow">
           {selectionActive ? "Selected observation" : "What matters now"} ·{" "}
           {match.kind === "synthetic" ? "Synthetic demo" : "Recorded match"}
         </span>
         <h2>{wording!.headline}</h2>
-        <p>
-          {wording!.explanation} {wording!.why}
+        <p>{wording!.explanation}</p>
+        <p className="story-qualification">
+          {style === "analysis" && <strong>Interpretation: </strong>}
+          {wording!.why} {wording!.qualifications.map((q) => q.text).join(" ")}
         </p>
-        {wording!.qualifications.length > 0 && (
-          <p className="story-qualification">
-            {wording!.qualifications.map((q) => q.text).join(" ")}
-          </p>
-        )}
+        <ExplanationSelector />
         <AnimatedDetails className="director-disclosure story-significance">
-          <summary>Why it matters & what to watch</summary>
-          <h3>Why it matters</h3>
-          <p>{wording!.why}</p>
-          <h3>Watch next</h3>
+          <summary>What to watch next</summary>
           <p>{wording!.watch}</p>
         </AnimatedDetails>
         <small>

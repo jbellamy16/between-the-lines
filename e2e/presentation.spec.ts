@@ -47,7 +47,8 @@ test("both sources share the layout and evidence flow at the same viewport", asy
     geometry[source] = await shell(page)
       .locator(".fixture-selector,.scoreboard,.playback,.pitch-panel")
       .evaluateAll((els) => {
-        // The synthetic badge can add a row on phones; scorer credits also vary.
+        // The synthetic badge can add a row on phones; scorer credits and the
+        // primary explanation's height also vary with the verified story.
         // Compare spacing from each preceding block, without forcing source content
         // to have identical heights or hiding a gap/overlap regression.
         const fixture = els
@@ -59,7 +60,13 @@ test("both sources share the layout and evidence flow at the same viewport", asy
         return els.flatMap((el) => {
           const b = el.getBoundingClientRect();
           const y = el.matches(".pitch-panel")
-            ? b.y - el.closest(".match-grid")!.getBoundingClientRect().top
+            ? b.y -
+              (innerWidth > 820
+                ? el.closest(".match-grid")!.getBoundingClientRect().top
+                : el
+                    .closest(".match-grid")!
+                    .querySelector(".main-story")!
+                    .getBoundingClientRect().bottom)
             : el.matches(".scoreboard")
               ? b.y - fixture.bottom
               : el.matches(".playback")
@@ -120,7 +127,7 @@ test("both sources share the layout and evidence flow at the same viewport", asy
     await expect(
       page.getByRole("button", { name: "Pattern evidence", exact: true }),
     ).toHaveAttribute("aria-pressed", "true");
-    await page.getByRole("button", { name: /^Evidence \(/ }).click();
+    await page.getByRole("button", { name: /^Explore evidence \(/ }).click();
     await shell(page)
       .locator(".detail-panel")
       .evaluate((el) =>

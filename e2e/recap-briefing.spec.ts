@@ -48,7 +48,9 @@ test("quick/full, accurate windows, event exploration and evidence disclosure", 
     await dialog.locator(".recap-timeline button").count(),
   ).toBeGreaterThan(3);
   await dialog
-    .getByText("How we reached this conclusion", { exact: true })
+    .getByText("Explore evidence · How we reached this conclusion", {
+      exact: true,
+    })
     .click();
   await expect(dialog).toContainText("start excluded, end included");
   await expect(dialog).toContainText("Evidence through 63:24");

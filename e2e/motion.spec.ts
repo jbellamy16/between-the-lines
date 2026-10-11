@@ -112,7 +112,7 @@ test("rapid changes cancel stale motion and leave immediate truthful state", asy
   await page.locator(".detail-panel .provenance summary").click();
   await expect(page.getByText("Measurement notes")).toBeVisible();
   await expect(page.getByTestId("score")).toHaveText("1:0");
-  for (const name of ["Evidence (4)", "Explanation", "Visual"])
+  for (const name of ["Explore evidence (4)", "Explanation", "Visual"])
     await page.getByRole("button", { name, exact: true }).click();
   await page.clock.runFor(1000);
   await expect
