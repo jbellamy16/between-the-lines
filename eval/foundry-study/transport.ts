@@ -1,6 +1,7 @@
 import { retryAfter } from "../../src/lib/ai/providers";
 import { untilAborted } from "../../src/lib/ai/wait";
 import { StudyLedger, usageSchema } from "./ledger";
+import { responseReceipt } from "./response-receipt";
 
 /** Install only in the isolated evaluation process, beneath providerResponse.
  * Retries, pacing, timeouts, shared quotas and cache stay in the real runtime. */
@@ -8,6 +9,7 @@ export function studyTransport(
   ledger: StudyLedger,
   destination: string,
   transport: typeof fetch,
+  checkAllowance?: () => Promise<unknown>,
 ) {
   let pending = 0;
   const underlying = new Set<Promise<unknown>>();
@@ -30,7 +32,15 @@ export function studyTransport(
     )
       ledger.refuse("accounting");
     const signal = init!.signal!;
+    if (checkAllowance) {
+      try {
+        await untilAborted(checkAllowance(), signal);
+      } catch {
+        ledger.refuse(signal.aborted ? "cancelled" : "accounting");
+      }
+    }
     if (signal.aborted) ledger.refuse("cancelled");
+    const startedAt = Date.now();
     const reserved = ledger.reserve(init!.body as string);
     // No await between durable reservation, dispatch marker and actual fetch.
     ledger.dispatch(reserved.id);
@@ -59,6 +69,8 @@ export function studyTransport(
         retryAfterMs: retryAfter(response.headers),
         responseStatus,
         usage,
+        latencyMs: Date.now() - startedAt,
+        editorial: responseReceipt(value),
       });
       settled = true;
       if (signal.aborted)
@@ -84,7 +96,10 @@ export function studyTransport(
       });
     } catch (error) {
       if (!settled)
-        ledger.settle(reserved.id, { responseStatus: "unavailable" });
+        ledger.settle(reserved.id, {
+          responseStatus: "unavailable",
+          latencyMs: Date.now() - startedAt,
+        });
       ledger.stop(
         signal.aborted
           ? signal.reason?.name === "TimeoutError"

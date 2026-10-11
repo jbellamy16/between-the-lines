@@ -63,7 +63,7 @@ export function allowanceBlockers(a: Allowance) {
     Math.min(...a.limits.slice(1, 4)) < CAPS.attempts
   )
     reasons.push(
-      "Existing application hourly/daily/total limits cannot support six workflows and twelve attempts; increasing them is prohibited.",
+      "Application hourly/daily/total limits cannot support six workflows and twelve attempts.",
     );
   if (
     a.store !== "shared" ||

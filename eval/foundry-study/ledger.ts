@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { dirname } from "node:path";
 import { z } from "zod";
+import { responseReceiptSchema } from "./response-receipt";
 
 export const STUDY = "foundry-bounded-2026-10-11";
 export const DEPLOYMENT = "between-the-lines-gpt54-mini";
@@ -106,6 +107,8 @@ const eventSchema = z.discriminatedUnion("kind", [
       at: integer,
       status: integer.max(599).optional(),
       retryAfterMs: integer.optional(),
+      latencyMs: integer.optional(),
+      editorial: responseReceiptSchema.optional(),
       responseStatus: z.enum([
         "completed",
         "incomplete",
@@ -373,7 +376,15 @@ export class StudyLedger {
   }
   settle(
     id: number,
-    data: Pick<Settle, "status" | "retryAfterMs" | "responseStatus" | "usage">,
+    data: Pick<
+      Settle,
+      | "status"
+      | "retryAfterMs"
+      | "responseStatus"
+      | "usage"
+      | "latencyMs"
+      | "editorial"
+    >,
   ) {
     this.append({
       kind: "settle",

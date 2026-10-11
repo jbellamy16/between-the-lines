@@ -22,25 +22,54 @@ import {
   digest,
 } from "./ledger";
 import { studyTransport } from "./transport";
+import {
+  CONTINUATION,
+  CONTINUATION_OUTPUT,
+  STUDY_REDIS_URL,
+  studyStore,
+  verifyParent,
+} from "./continuation";
 
 // Fixed path for this authorization. Never offer a new path/reset/force option.
 export const OUTPUT = resolve(`docs/intelligence/${STUDY}`);
 const git = (...args: string[]) =>
   execFileSync("git", args, { encoding: "utf8" }).trim();
-const writeNew = (name: string, value: unknown) =>
+const writeNewAt = (output: string, name: string, value: unknown) =>
   writeFileSync(
-    `${OUTPUT}/${name}.json`,
+    `${output}/${name}.json`,
     JSON.stringify(value, null, 2) + "\n",
     { flag: "wx" },
   );
 
-export async function runStudy(mode: "prepare" | "live") {
+export async function runStudy(mode: "prepare" | "live" | "continuation") {
+  const OUTPUT =
+    mode === "continuation"
+      ? CONTINUATION_OUTPUT
+      : resolve(`docs/intelligence/${STUDY}`);
+  const writeNew = (name: string, value: unknown) =>
+    writeNewAt(OUTPUT, name, value);
   if (existsSync(`${OUTPUT}/manifest.json`))
     throw new Error(
       "Study receipts already exist. Do not overwrite or start another paid campaign.",
     );
   if (git("status", "--porcelain"))
     throw new Error("Commit candidate/harness before freezing the study.");
+  const parent = mode === "continuation" ? verifyParent() : undefined;
+  let initialStore;
+  if (parent) {
+    if (
+      process.env.AI_REDIS_URL !== STUDY_REDIS_URL ||
+      process.env.AI_USAGE_STORE !== "redis" ||
+      JSON.stringify(quotaSnapshot(process.env)) !==
+        JSON.stringify([2, 12, 12, 12, 10, 10000])
+    )
+      throw new Error(
+        "Continuation requires the dedicated store and authorized process limits",
+      );
+    initialStore = await studyStore("inspect");
+    if (initialStore.owner.execution)
+      throw new Error("Continuation already executed");
+  }
   const evaluatedCommit = git("rev-parse", "HEAD"),
     cases = loadCases();
   const sourcePaths = git(
@@ -48,6 +77,7 @@ export async function runStudy(mode: "prepare" | "live") {
     "src",
     "eval",
     "scripts/ai-local-config.mjs",
+    "scripts/run-foundry-continuation.mjs",
     "package.json",
     "package-lock.json",
     "vitest.config.ts",
@@ -56,6 +86,9 @@ export async function runStudy(mode: "prepare" | "live") {
   const historicalPaths = [
     "docs/intelligence/pr18-intelligence-2026-10-10/cases.json",
     "docs/intelligence/pr18-intelligence-2026-10-10/synthetic-evidence.json",
+    ...(parent
+      ? ["docs/intelligence/foundry-continuation-setup-2026-10-11.json"]
+      : []),
   ];
   const sourceHashes = Object.fromEntries(
     [...sourcePaths, ...historicalPaths].map((p) => [
@@ -76,6 +109,9 @@ export async function runStudy(mode: "prepare" | "live") {
   }));
   const manifest = {
     study: STUDY,
+    continuation: parent ? CONTINUATION : undefined,
+    parent,
+    initialStore,
     frozenAt: new Date().toISOString(),
     evaluatedCommit,
     mergedPr24: "9b2cd5015391817d0eb0641637cc77c9e897fb7e",
@@ -84,6 +120,9 @@ export async function runStudy(mode: "prepare" | "live") {
     promptSha256: sourceHashes["src/lib/ai/director/runner.ts"],
     sourceHashes,
     provider: "foundry",
+    credentialHandling: parent
+      ? "Existing key retrieved privately by the launcher; process environment only; no key in receipts"
+      : "Caller supplied",
     account: "josh-5098-resource",
     endpointSha256: digest(
       "https://josh-5098-resource.openai.azure.com/openai/v1/responses",
@@ -163,8 +202,8 @@ export async function runStudy(mode: "prepare" | "live") {
     const config = localConfiguration();
     for (const [name, value] of Object.entries(config))
       if (/^(AI_|FOUNDRY_)/.test(name)) process.env[name] = value;
-    // Only enable this process. Never increase application quotas, switch its
-    // store, create counters, or fetch/write Azure keys/configuration here.
+    // Only the continuation launcher supplies the newly authorized dedicated
+    // allowance. No persistent environment or hosted settings are changed.
     process.env.AI_ENABLED = "true";
     process.env.AI_PROVIDER = "foundry";
     process.env.AI_PROACTIVE_ENABLED = "false";
@@ -189,7 +228,18 @@ export async function runStudy(mode: "prepare" | "live") {
       )
     )
       l.refuse("verification");
-    const guarded = studyTransport(l, destination, originalFetch);
+    const manifestHash = digest(JSON.stringify(manifest));
+    if (parent)
+      writeNew("execution-claim", await studyStore("claim", manifestHash));
+    const checkStore = parent
+      ? async () => {
+          const state = await studyStore("inspect");
+          if (state.owner.execution !== manifestHash)
+            throw new Error("Execution owner changed");
+          return state;
+        }
+      : undefined;
+    const guarded = studyTransport(l, destination, originalFetch, checkStore);
     globalThis.fetch = guarded.fetch;
     let completedAt = 0;
     for (const c of cases) {
@@ -199,6 +249,7 @@ export async function runStudy(mode: "prepare" | "live") {
         controller.signal,
       );
       if (existsSync(`${OUTPUT}/STOP`)) l.refuse("cancelled");
+      if (checkStore) await checkStore();
       l.begin(c.id);
       const countBefore = l.dispatched;
       const result = await directMatch(
@@ -221,6 +272,18 @@ export async function runStudy(mode: "prepare" | "live") {
         result,
       });
       rows.push(row);
+      if (checkStore) {
+        const state = await checkStore();
+        row.applicationAfter = state;
+        const expectedWorkflows = cases
+          .slice(0, l.workflows.length)
+          .filter((item) => item.eligibility !== "no-call").length;
+        if (
+          Number(state.budget.used4) !== expectedWorkflows ||
+          Number(state.budget.attemptUsed3) !== l.dispatched
+        )
+          l.stop("accounting");
+      }
       if (
         guarded.pending() ||
         result.metrics.requests !== l.dispatched - countBefore ||
@@ -257,12 +320,13 @@ export async function runStudy(mode: "prepare" | "live") {
     // and the durable request ledger, never raw exceptions or model reasoning.
     l.stop(controller.signal.aborted ? "cancelled" : "verification");
     if (l.active) {
-      rows.push({
-        caseId: l.active,
-        outcome: "failed",
-        reason: l.stopped?.reason,
-        humanReview: null,
-      });
+      if (!rows.some((row) => row.caseId === l.active))
+        rows.push({
+          caseId: l.active,
+          outcome: "failed",
+          reason: l.stopped?.reason,
+          humanReview: null,
+        });
       l.end("failed");
     }
   } finally {
@@ -288,12 +352,14 @@ export async function runStudy(mode: "prepare" | "live") {
       mode,
       stop: l.stopped?.reason,
       acceptanceCriteriaPassed:
-        mode === "live" &&
+        mode !== "prepare" &&
         !preflight.blockers.length &&
         rows.every(
           (r) => r.outcome === "completed" || r.outcome === "abstained",
         ),
       workflows: l.workflows.length,
+      parent,
+      continuation: parent ? CONTINUATION : undefined,
       actualHttpAttempts: l.dispatched,
       rows,
       reportedUsage: l.settlements.filter((s) => s.usage).map((s) => s.usage),
