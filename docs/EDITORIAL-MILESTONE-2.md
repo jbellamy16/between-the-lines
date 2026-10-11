@@ -67,3 +67,13 @@ Inspected at 1440px desktop, 834px tablet, and 390px/360px phone widths. Phone c
 - Can they find Explore evidence, understand the two comparison periods and replay the relevant action? Do they recognize `~88′` as approximate?
 
 No reviewers were contacted. These questions are for subsequent human review; no human validation is claimed.
+
+### Current submission participant protocol
+
+Still **pending** as of October 11, 2026; no participants contacted. Recruit at least one casual viewer and one knowledgeable football viewer for a small formative review after the owner authorizes outreach. Their roles and this small sample must be disclosed; this is not a representative preference study.
+
+Use the current offline build at `fb108863dae6a69a7af0df0101ca1fbc66ab4be1` and the [demo's 63:24 and 70:00 checkpoints](intelligence/DEMO.md). Alternate which explanation style each person sees first. Ask them to describe the development unaided, distinguish shot count from quality, notice weakening, switch Quick/Full, find evidence and replay 59:09. Use the existing approximate-time and diagnostic-quality examples as separately labelled follow-up tasks. Do not suggest expected answers before their response.
+
+Record separately for each participant: anonymous ID, date, role, source commit, style order, task completion, verbatim explanation, missed caveats, factual objections, ease/usefulness ratings (1–5 or N/A), preferred style/tie and reason. Leave fields blank until a real response arrives. Retain disagreements and failures; do not average a factual objection away. Proposed pilot gate: both can correctly explain the development and weakening caveat, neither confuses more shots with better chances, and no unresolved factual objection remains. A preference count from two people is only formative feedback.
+
+Physical-device Safari and assistive-technology testing require separate actual device sessions. The [older blinded football/broadcast reviewer package](intelligence/pr18-intelligence-2026-10-10/HUMAN-REVIEW.md) remains usable for its historical version comparisons; its answers would not validate the current styles. Do not overwrite or relabel those forms as current evidence.

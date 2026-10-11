@@ -20,14 +20,14 @@ Watching football and understanding how a match is changing are different things
 - Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal comparison windows within each half (5–15 minutes each) and supporting event IDs.
 - Plain English by default or Football Analysis over the same verified facts, with independent Quick/Full recaps, timestamp-safe Catch Me Up, lineups, and player action maps.
 - Device-local team, player, and insight category preferences that filter and reorder observations.
-- Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Both have offline contract tests. Foundry director investigations and both recap modes passed bounded live checks; see [the latest editorial/model comparison](docs/EDITORIAL-MODEL-COMPARISON.md). Human editorial review remains pending, and public inference is disabled.**
+- Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Current Director 1.4.0 and explanation styles have automated offline validation. Earlier Foundry live results apply only to their recorded versions; see [evaluation status](docs/FOUNDRY-EVALUATION.md). Current live evaluation and human review remain pending.**
 - Optional AI Catch Me Up, contextual insight narration, and expandable “How Between the Lines knows” evidence.
 - Shared Redis quotas, cache, and deduplication; inference remains off by default.
 - Explicit offline demonstration mode; request failures or invalid model output fall back to computed explanations without claiming AI generation.
 
 The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request. The [second editorial milestone](docs/EDITORIAL-MILESTONE-2.md) adds synchronized, locally saved explanation styles across the main story, recap and Insights; changing wording preserves the current selection and investigation.
 
-The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [100-second synthetic demo](docs/intelligence/DEMO.md) shows a development emerging, weakening and resolving without future-event leakage. New model-quality gains are not claimed without a separately authorized live comparison.
+The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [114-second synthetic demo](docs/intelligence/DEMO.md) shows joining a match, Catch Me Up, shared facts across styles, evidence replay and a weakening qualification. New model-quality gains are not claimed without a separately authorized live comparison.
 
 ## Run locally
 
@@ -35,11 +35,10 @@ Use Node.js **24 LTS** (CI and container target). Next.js 16.4 requires at least
 
 ```sh
 npm ci
-cp .env.example .env.local
-npm run dev
+AI_ENABLED=false AI_PROVIDER=offline FOUNDRY_ENABLED=false AI_PROACTIVE_ENABLED=false HISTORICAL_MATCHES_ENABLED=false RECORDED_MATCHES_VISIBLE=false npm run dev
 ```
 
-Open http://localhost:3000. No account, database, Azure service, or model key is needed for the offline demo.
+Open http://localhost:3000. No account, database, Azure service, or model key is needed for the offline demo. Explicit flags preserve existing local environment files. For a production judge build and exact walkthrough, use [submission setup](docs/SUBMISSION.md#judge-setup-and-walkthrough).
 
 ```sh
 npm run typecheck
@@ -59,12 +58,13 @@ flowchart LR
   B --> C[Deterministic statistics and pattern detector]
   B --> D[Pitch / score / lineup / recap]
   C --> E[Verified insight + event IDs]
-  E --> F[Fan / analyst presentation]
+  E --> F[Plain English / Football Analysis]
   E --> G[Server-side provider workflow]
   G --> H[Application evidence retrieval + optional follow-up tools]
-  H --> I[Structured narrative]
+  H --> I[Structured claim selection]
   I --> J[Schema and evidence validation]
-  J --> F
+  J --> L[Controlled factual wording]
+  L --> F
   G --> K[Truthful offline fallback]
   K --> F
 ```
@@ -107,7 +107,7 @@ The evidence inspector offers a readable event summary and a native event picker
 
 The [official model page](https://developers.openai.com/api/docs/models/gpt-5.4-mini) confirms Responses, function calling and structured-output support. Both adapters share the same evidence, output schema, validation, timeout, cache, controls and fallback. Credentials are server-only and ignored in `.env.local`; never prefix them with `NEXT_PUBLIC_`.
 
-AI runs only after an explicit **Explain with…** or **Catch me up with…** action. Playback, seeking, opening Catch Me Up, and switching audience do not call a model. Responses belong to an exact timestamp, fixture, evidence set and audience; stale results disappear when context changes.
+With proactive inference disabled, AI runs only after an explicit investigation/review action. Opening Catch Me Up and changing explanation style or Quick/Full do not create model requests. Optional proactive playback investigation requires its own enable flag. Responses belong to an exact timestamp, fixture, evidence set and audience; stale results disappear when context changes.
 
 1. Deterministic detectors find supported changes in equal time windows. Editorial ranking considers magnitude, support, recency, novelty, previously viewed evidence, preferences and audience. This score is not statistical confidence.
 2. The Director receives the required broad retrieval before inference. Compact claims keep their exact measurements, limitations, support references and source provenance; optional tools investigate unresolved questions. The legacy insight narrator still retrieves `get_verified_evidence`. Only already-recorded events and verified statements are supplied.
@@ -141,7 +141,7 @@ Cloudflare Workers remains an alternative hosting route alongside the verified A
 
 ## Azure deployment
 
-**Live:** [Between the Lines on Azure](https://between-the-lines-jb-f5539b65.azurewebsites.net). Deployed and verified October 10, 2026, on the owner's F1 Free Linux App Service with Node 24 and HTTPS. Inference remains disabled with zero quotas. The release includes the favorite star and recorded carry counts. Type checking, 301 unit checks and 111 enabled production-browser checks passed; public desktop/mobile smoke checks verified navigation, preferences, playback, offline APIs and branding assets. See [the deployment runbook](docs/DEPLOYMENT.md) for resource details and verification limits.
+**Previously deployed:** [Between the Lines on Azure](https://between-the-lines-jb-f5539b65.azurewebsites.net). Read-only checks on October 11 found the homepage accessible and the status API reporting offline. The public response does not expose its commit, and current source parity is unverified. PR #23 was merged on GitHub and local main updated; no deployment followed. See [deployment history](docs/DEPLOYMENT.md) and [current validation](docs/submission-preparation/VALIDATION.md).
 
 Included:
 
@@ -151,7 +151,7 @@ Included:
 
 ## Hackathon context
 
-Primary target: overall prize. Secondary target: Best Use of Microsoft Foundry. The [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) were reviewed October 9, 2026. Their five equally weighted judging criteria map to the synthetic feed and tests, evidence-first tool workflow, second-screen utility, responsive experience, and Microsoft integration. Registration ends October 20 at noon Pacific; submission ends October 27 at 11:59 p.m. Pacific. Video must be less than two minutes; repository must be public; judges need free access through the judging period.
+Primary target: overall prize. Secondary target: Best Use of Microsoft Foundry. The [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) were checked October 11, 2026. Their five equally weighted judging criteria map to the synthetic feed and tests, evidence-first tool workflow, second-screen utility, responsive experience, and Microsoft integration. Registration ends October 20 at noon Pacific; submission ends October 27 at 11:59 p.m. Pacific. Video must be less than two minutes; repository must be public; judges need free access through the judging period.
 
 Read [submission preparation](docs/SUBMISSION.md) for the pitch, demo flow, 90-second script, and remaining steps. The offline application is deployed and cloud-verified; this is **not a claim of a submitted entry or public AI enablement**.
 
@@ -161,8 +161,8 @@ Read [submission preparation](docs/SUBMISSION.md) for the pitch, demo flow, 90-s
 - Test the deployed Azure app on actual mobile Safari; browser accessibility checks passed in Chromium, but physical-device review remains outstanding.
 - The feed simplifies football mechanics and only detects three pattern families; validate it with football domain review.
 - No audio, multilingual narratives, authentication, or persisted cross-device preferences.
-- AI editorial benefit remains unproven; Foundry investigations and both recap modes passed bounded live validation. Configure an existing shared Redis store before production inference.
-- Consider a measured substitution comparison detector and exportable broadcast insight JSON as follow-up refinements.
+- AI editorial benefit remains unproven; historical Foundry calls do not validate the current Director 1.4.0 workflow or new display styles. Configure an existing shared Redis store before production inference.
+- Verified broadcast-story JSON export is implemented; causal substitution effects remain unmeasured.
 
 Original application graphics are SVG/CSS. UI symbols use Lucide (ISC license); third-party library licenses remain applicable. No affiliation with fictional teams is implied, and no official league branding is reproduced.
 
