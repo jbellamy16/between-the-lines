@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { rememberDirectorResult } from "@/lib/ai/director/client-cache";
 import type { MatchData } from "@/lib/sources/model";
 import { matchClock } from "@/lib/sources/model";
 import type { Mode, StoryPreferences } from "@/lib/intelligence";
@@ -239,6 +240,17 @@ export function DirectorStory({
       });
       if (!response.ok) throw new Error("Unavailable");
       const result: DirectorResult = await response.json();
+      if (!controller.signal.aborted)
+        rememberDirectorResult(
+          match,
+          cutoff,
+          mode,
+          {
+            ...preferences,
+            seenEvidenceIds: [...presentedEvidence.current].slice(-200),
+          },
+          result,
+        );
       if (
         !controller.signal.aborted &&
         latestTime.current >= cutoff &&

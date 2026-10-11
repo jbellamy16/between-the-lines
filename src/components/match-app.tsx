@@ -1,5 +1,8 @@
 "use client";
 import { DirectorStory } from "./director-story";
+import { RecapBriefing } from "./recap-briefing";
+import { trapDialogFocus } from "./dialog-focus";
+import { useViewingPosition } from "./use-viewing-position";
 import { buildEvidence } from "@/lib/ai/evidence";
 import type { Provenance } from "@/lib/ai/service";
 import type { Narrative } from "@/lib/foundry";
@@ -13,7 +16,6 @@ import {
   SCENARIOS,
   sequenceFor,
 } from "@/lib/match";
-import { matchSummary } from "@/lib/sources/context";
 import { matchInsights } from "@/lib/sources/intelligence";
 import { pitchEvents as toLegacyEvents } from "@/lib/sources/model";
 import { SyntheticMatchSource } from "@/lib/sources/synthetic";
@@ -31,7 +33,6 @@ import {
   MatchEventFeed,
   MatchHeader,
   MatchPitch,
-  MatchRecap,
 } from "./match-presentation";
 import {
   defaultPreferences as defaultPrefs,
@@ -83,13 +84,6 @@ export function MatchApp({
     provenance: Provenance;
   } | null>(null);
   const [seenEvidenceIds, setSeenEvidenceIds] = useState<string[]>([]);
-  const [recapNarrative, setRecapNarrative] = useState<{
-    key: string;
-    value: Narrative;
-    provenance: Provenance;
-  } | null>(null);
-  const [recapNotice, setRecapNotice] = useState("");
-  const [recapLoading, setRecapLoading] = useState(false);
   const [focusedPlayer, setFocusedPlayer] = useState("harbor-9");
   const requestVersion = useRef(0);
   const narrationRequest = useRef<AbortController | null>(null);
@@ -156,7 +150,6 @@ export function MatchApp({
   const displayKey = `${scenario}-${profile}-${time}-${ANALYSIS_MODE}-${insight?.id}`;
   const currentNarrative =
     narrative?.key === displayKey ? narrative.value : null;
-  const summary = matchSummary(canonicalMatch, time, ANALYSIS_MODE, insights);
   const context = (
     <MatchContext
       match={canonicalMatch}
@@ -170,14 +163,12 @@ export function MatchApp({
       }}
     />
   );
-  const recapKey = JSON.stringify({
-    scenario,
-    profile,
+  const viewing = useViewingPosition(
+    canonicalMatch,
     time,
-    prefs,
-    seenEvidenceIds,
-  });
-  const currentRecap = recapNarrative?.key === recapKey ? recapNarrative : null;
+    active,
+    modal !== null,
+  );
   function computedProvenance(selected?: Insight): Provenance {
     const packet = buildEvidence(
       visible,
@@ -248,9 +239,7 @@ export function MatchApp({
     narrationRequest.current?.abort();
     setNotice("");
     setLoading(false);
-    setRecapLoading(false);
-    setRecapNotice("");
-  }, [displayKey, recapKey]);
+  }, [displayKey]);
   useEffect(() => {
     if (!active) return;
     window.scrollTo({
@@ -337,57 +326,6 @@ export function MatchApp({
       block: "center",
     });
   }
-  async function narrateRecap() {
-    if (recapLoading) return;
-    setPlaying(false);
-    setRecapLoading(true);
-    setRecapNotice("");
-    const version = ++requestVersion.current;
-    narrationRequest.current?.abort();
-    const controller = new AbortController();
-    narrationRequest.current = controller;
-    try {
-      const res = await fetch("/api/director", {
-        method: "POST",
-        signal: controller.signal,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          scenario,
-          profile,
-          time: Math.floor(time),
-          mode: ANALYSIS_MODE,
-          preferences: {
-            team: prefs.team,
-            player: prefs.player,
-            categories: prefs.categories,
-            seenEvidenceIds,
-          },
-        }),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      const data = await res.json();
-      if (version !== requestVersion.current) return;
-      if (data.narrative)
-        setRecapNarrative({
-          key: recapKey,
-          value: data.narrative,
-          provenance: data.provenance,
-        });
-      setRecapNotice(
-        data.notice ??
-          (data.source === "offline"
-            ? "Verified event-derived recap. AI narration is disabled."
-            : ""),
-      );
-    } catch {
-      if (version === requestVersion.current)
-        setRecapNotice(
-          "Narration is unavailable. Your verified recap is still here.",
-        );
-    } finally {
-      if (version === requestVersion.current) setRecapLoading(false);
-    }
-  }
   async function explain() {
     if (!insight || loading) return;
     setPlaying(false);
@@ -453,23 +391,7 @@ export function MatchApp({
                 : "About Between the Lines"
           }
           className={`modal ${dialogContent === "recap" ? "recap-modal" : ""}`}
-          onKeyDown={(e) => {
-            if (e.key !== "Tab") return;
-            const controls = [
-              ...e.currentTarget.querySelectorAll<HTMLElement>(
-                'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex="0"]',
-              ),
-            ].filter((el) => el.getClientRects().length > 0);
-            const first = controls[0],
-              last = controls.at(-1);
-            if (e.shiftKey && document.activeElement === first) {
-              e.preventDefault();
-              last?.focus();
-            } else if (!e.shiftKey && document.activeElement === last) {
-              e.preventDefault();
-              first?.focus();
-            }
-          }}
+          onKeyDown={trapDialogFocus}
           onCancel={(e) => {
             e.preventDefault();
             setModal(null);
@@ -498,59 +420,36 @@ export function MatchApp({
             onClose={() => setModal(null)}
           />
           {dialogContent === "recap" ? (
-            <>
-              <MatchRecap
+            modal === "recap" && (
+              <RecapBriefing
+                key={`${canonicalMatch.id}-${time}`}
                 match={canonicalMatch}
                 time={time}
-                summary={currentRecap?.value.explanation ?? summary.summary}
-                moments={summary.moments.map((m) => ({
-                  id: m.event.id,
-                  time: m.event.time,
-                  label: m.label,
-                }))}
-                watch={currentRecap?.value.watch ?? summary.watch}
+                since={viewing.since}
+                preferences={{
+                  team: prefs.team,
+                  player: prefs.player,
+                  categories: prefs.categories,
+                  seenEvidenceIds,
+                }}
+                provider={provider}
                 onMoment={(id) => {
-                  const e = visible.find((e) => e.id === id);
-                  if (e) {
+                  const event = visible.find((e) => e.id === id);
+                  if (event) {
                     setModal(null);
-                    selectEvent(e);
-                    setSection("match");
+                    selectEvent(event);
+                    setSection(
+                      event.type === "substitution" ? "players" : "match",
+                    );
                   }
                 }}
-              >
-                <button
-                  className="narrate-button"
-                  disabled={recapLoading || loading}
-                  onClick={narrateRecap}
-                >
-                  {recapLoading
-                    ? "Checking evidence…"
-                    : provider !== "offline"
-                      ? `Catch me up with ${providerLabel(provider)}`
-                      : "Review verified recap"}
-                </button>
-                {recapNotice && (
-                  <p className="notice" role="status">
-                    {recapNotice}
-                  </p>
-                )}
-                <ProvenanceDetails
-                  provenance={currentRecap?.provenance ?? computedProvenance()}
-                  events={visible}
-                  insights={insights}
-                />
-                <button
-                  className="primary-button"
-                  onClick={() => {
-                    setModal(null);
-                    setSection("match");
-                    setPlaying(time < DURATION);
-                  }}
-                >
-                  Back to the match <Play size={16} />
-                </button>
-              </MatchRecap>
-            </>
+                onBack={() => {
+                  viewing.acknowledge(time);
+                  setModal(null);
+                  setSection("match");
+                }}
+              />
+            )
           ) : dialogContent === "settings" ? (
             <>
               <MatchSettings

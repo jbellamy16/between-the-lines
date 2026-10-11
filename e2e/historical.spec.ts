@@ -170,7 +170,7 @@ test("historical accessibility, offline explanation and cutoff validation", asyn
     .click();
   await page
     .getByRole("dialog")
-    .getByText("How Between the Lines knows", { exact: true })
+    .getByText("How we reached this conclusion", { exact: true })
     .click();
   await expect(page.getByRole("dialog")).toContainText(
     "Evidence through 30:00",
@@ -199,7 +199,11 @@ test("replays stoppage time before the second half without revealing future goal
   );
   await page.getByRole("button", { name: "Catch me up" }).click();
   await expect(page.getByRole("dialog")).not.toContainText("4–3");
-  await expect(page.getByRole("dialog")).toContainText("Shots so far");
+  await expect(
+    page
+      .getByRole("dialog")
+      .getByRole("region", { name: "The numbers behind the story" }),
+  ).toContainText("Shots");
 });
 test("an emerging insight notifies once, without autonomous inference", async ({
   page,

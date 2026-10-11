@@ -143,8 +143,11 @@ test("Catch Me Up calls the director and remains explicitly offline", async ({
   expect(result.source).toBe("offline");
   expect(result.metrics.requests).toBe(0);
   await expect(page.getByRole("dialog")).toContainText(
-    result.narrative.explanation,
+    "Verified from recorded events",
   );
+  await expect(
+    page.getByRole("dialog").locator(".recap-summary"),
+  ).not.toContainText("statistical significance");
 });
 test("an investigation response cannot survive a rewind", async ({ page }) => {
   const response = await page.request.post("/api/director", {

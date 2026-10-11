@@ -1,10 +1,12 @@
 "use client";
 import { ModalHeader } from "./modal-header";
+import { RecapBriefing } from "./recap-briefing";
+import { useViewingPosition } from "./use-viewing-position";
+import { trapDialogFocus } from "./dialog-focus";
 import { DirectorStory } from "./director-story";
 import type { Provenance } from "@/lib/ai/service";
 import type { Narrative } from "@/lib/foundry";
 import { ANALYSIS_MODE, rankInsights } from "@/lib/intelligence";
-import { matchSummary } from "@/lib/sources/context";
 import { type Fixture } from "@/lib/sources/catalog";
 import {
   eventDescription,
@@ -32,7 +34,6 @@ import {
   MatchEventFeed,
   MatchHeader,
   MatchPitch,
-  MatchRecap,
 } from "./match-presentation";
 import { MatchSettings, useMatchPreferences } from "./match-settings";
 import { MatchShell, type SectionProps } from "./match-shell";
@@ -191,6 +192,7 @@ function HistoricalReplay({
   } | null>(null);
   const [notice, setNotice] = useState("");
   const [recapOpen, setRecapOpen] = useState(false);
+  const viewing = useViewingPosition(match, time, sourceActive, recapOpen);
   const dialog = useRef<HTMLDialogElement>(null),
     request = useRef<AbortController | null>(null);
   const visiblePage = usePageVisibility();
@@ -218,8 +220,14 @@ function HistoricalReplay({
     if (time >= match.duration) setPlaying(false);
   }, [time, match.duration]);
   useEffect(() => {
-    if (recapOpen) dialog.current?.showModal();
-    else dialog.current?.close();
+    if (recapOpen) {
+      dialog.current?.showModal();
+      const overflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = overflow;
+      };
+    } else dialog.current?.close();
   }, [recapOpen]);
   useEffect(() => {
     request.current?.abort();
@@ -266,10 +274,6 @@ function HistoricalReplay({
         number: null,
       },
   };
-  const packet = useMemo(
-    () => historicalEvidence(match, time, mode),
-    [match, time, mode],
-  );
   const insightPacket = useMemo(
     () => (insight ? historicalEvidence(match, time, mode, insight.id) : null),
     [match, time, mode, insight],
@@ -297,29 +301,26 @@ function HistoricalReplay({
     setPlayerFilter("");
     setSection("match");
   }
-  async function narrate(recap: boolean) {
+  async function narrate() {
     if (loading) return;
-    if (!recap) setDetailTab("explanation");
+    setDetailTab("explanation");
     invalidate();
     setPlaying(false);
     setLoading(true);
     const controller = new AbortController();
     request.current = controller;
     try {
-      const res = await fetch(
-        recap ? "/api/director" : "/api/historical/narrate",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          signal: controller.signal,
-          body: JSON.stringify({
-            matchId: match.id,
-            time,
-            mode,
-            ...(!recap && insight ? { insightId: insight.id } : {}),
-          }),
-        },
-      );
+      const res = await fetch("/api/historical/narrate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          matchId: match.id,
+          time,
+          mode,
+          ...(insight ? { insightId: insight.id } : {}),
+        }),
+      });
       if (!res.ok) throw new Error("Narration unavailable");
       const result = await res.json();
       if (!controller.signal.aborted) {
@@ -346,7 +347,6 @@ function HistoricalReplay({
     setSection("match");
     window.scrollTo({ top: 0, behavior: "instant" });
   }
-  const summary = matchSummary(match, time, mode, insights);
   const empty = (
     <MatchContext
       match={match}
@@ -360,20 +360,14 @@ function HistoricalReplay({
       }}
     />
   );
-  const answerPanel = (recap: boolean) => (
+  const answerPanel = () => (
     <>
-      <button
-        className="narrate-button"
-        disabled={loading}
-        onClick={() => narrate(recap)}
-      >
+      <button className="narrate-button" disabled={loading} onClick={narrate}>
         {loading
           ? "Checking the evidence…"
           : provider === "offline"
-            ? recap
-              ? "Review verified recap"
-              : "Explore the explanation"
-            : `${recap ? "Catch me up" : "Explain"} with ${providerLabel(provider)}`}
+            ? "Explore the explanation"
+            : `Explain with ${providerLabel(provider)}`}
       </button>
       {notice && <p role="status">{notice}</p>}
       {
@@ -403,12 +397,11 @@ function HistoricalReplay({
               {matchClock(match, answer?.provenance.cutoff ?? time)}. AI selects
               verified wording; it cannot invent claims.
             </p>
-            {(
-              answer?.provenance.facts ??
-              (recap ? packet.facts : (insightPacket?.facts ?? []))
-            ).map((f) => (
-              <p key={f.id}>{f.text}</p>
-            ))}
+            {(answer?.provenance.facts ?? insightPacket?.facts ?? []).map(
+              (f) => (
+                <p key={f.id}>{f.text}</p>
+              ),
+            )}
             <ul>
               {(
                 answer?.provenance.validation ?? [
@@ -563,7 +556,7 @@ function HistoricalReplay({
             </>
           }
         >
-          {answerPanel(false)}
+          {answerPanel()}
         </InsightDetails>
       </div>
       {section === "insights" && (
@@ -627,6 +620,7 @@ function HistoricalReplay({
         ref={dialog}
         className="modal recap-modal"
         aria-label="Catch me up"
+        onKeyDown={trapDialogFocus}
         aria-hidden={!recapOpen}
         inert={!recapOpen}
         onCancel={() => {
@@ -642,41 +636,27 @@ function HistoricalReplay({
           }}
         />
         {recapOpen && (
-          <MatchRecap
+          <RecapBriefing
+            key={`${match.id}-${time}`}
             match={match}
             time={time}
-            summary={answer?.narrative?.explanation ?? summary.summary}
-            moments={summary.moments.map(({ event, label }) => ({
-              id: event.id,
-              time: event.time,
-              label,
-            }))}
-            watch={
-              time >= match.duration
-                ? summary.watch
-                : (answer?.narrative?.watch ?? summary.watch)
-            }
+            since={viewing.since}
+            preferences={prefs}
+            provider={provider}
             onMoment={(id) => {
-              const e = visible.find((e) => e.id === id);
-              if (e) {
-                choose(e);
+              const event = visible.find((e) => e.id === id);
+              if (event) {
+                choose(event);
                 setRecapOpen(false);
               }
             }}
-          >
-            {answerPanel(true)}
-            <button
-              className="primary-button"
-              onClick={() => {
-                invalidate();
-                setRecapOpen(false);
-                setSection("match");
-                setPlaying(time < match.duration);
-              }}
-            >
-              Back to the match <Play size={16} />
-            </button>
-          </MatchRecap>
+            onBack={() => {
+              viewing.acknowledge(time);
+              invalidate();
+              setRecapOpen(false);
+              setSection("match");
+            }}
+          />
         )}
       </dialog>
     </>

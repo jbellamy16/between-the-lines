@@ -1518,3 +1518,37 @@
     padding-inline: 8px;
   }
 }
+
+/* The shared editorial briefing owns its palette, including in light mode. */
+.data-first .modal.recap-modal {
+  width: min(780px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 24px 30px;
+  color: #f3f4f6;
+  background: #17191d;
+  border: 1px solid #383d45;
+  border-radius: 12px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.data-first .recap-modal .modal-header {
+  margin-bottom: 18px;
+}
+.data-first .recap-modal .modal-header h2 {
+  font-size: 21px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+.data-first .recap-modal .modal-header .icon-button {
+  color: #c2c8d0;
+  background: transparent;
+  border-color: #383d45;
+}
+@media (max-width: 540px) {
+  .data-first .modal.recap-modal {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 24px);
+    padding: 18px 16px;
+    border-radius: 9px;
+  }
+}

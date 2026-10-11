@@ -29,7 +29,7 @@ test("playback, evidence, recap, and rewind stay synchronized", async ({
   await expect(page.getByTestId("clock")).toContainText("00:00");
   await page.getByRole("button", { name: "Catch me up", exact: true }).click();
   await expect(page.getByRole("dialog").locator(".recap-summary")).toHaveText(
-    "No match developments to highlight yet.",
+    "The sides are level at 0–0. No match developments to highlight yet.",
   );
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page.getByRole("button", { name: "Play match", exact: true }).click();
@@ -343,8 +343,13 @@ test("detailed explainability captures the evidence drawer", async ({
   });
   await expect(details).toContainText("descriptive threshold");
   await page.getByRole("button", { name: "Catch me up", exact: true }).click();
-  await page.getByRole("dialog").locator(".provenance summary").click();
-  await expect(page.getByRole("dialog")).toContainText("Through 63:24");
+  await page
+    .getByRole("dialog")
+    .getByText("How we reached this conclusion", { exact: true })
+    .click();
+  await expect(page.getByRole("dialog")).toContainText(
+    "Evidence through 63:24",
+  );
   await page.screenshot({
     path: `artifacts/${testInfo.project.name}-recap-evidence.png`,
   });

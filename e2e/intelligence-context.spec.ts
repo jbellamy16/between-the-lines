@@ -3,7 +3,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
 import { normalizeHistorical } from "../src/lib/sources/historical";
-import { matchContext, matchSummary } from "../src/lib/sources/context";
+import { matchContext } from "../src/lib/sources/context";
+import { buildBriefing } from "../src/lib/recap-briefing";
 import { matchInsights } from "../src/lib/sources/intelligence";
 
 const fixtures = [
@@ -86,12 +87,12 @@ for (const { source, match } of fixtures) {
         .getByRole("button", { name: "Catch me up", exact: true })
         .click();
       const dialog = page.getByRole("dialog");
-      const recap = matchSummary(match, time, "analyst", insights);
+      const recap = buildBriefing(match, time);
       await expect(dialog.locator(".recap-summary")).toHaveText(
-        recap.summary || "No match developments to highlight yet.",
+        recap.narrative,
       );
       await expect(dialog.locator(".recap-timeline button")).toHaveCount(
-        recap.moments.length,
+        Math.min(3, recap.moments.length),
       );
       await expect(dialog).not.toContainText(
         /No clear change|No major moments|Play ahead to compare/,

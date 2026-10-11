@@ -13,7 +13,7 @@ const schema = z
       .string()
       .regex(/^(2499719|2499943|2499841|statsbomb-8658)$/)
       .optional(),
-    time: z.number().int().min(0).max(7200),
+    time: z.number().finite().min(0).max(7200),
     mode: z.enum(["fan", "analyst"]),
     preferences: preferencesSchema.optional(),
   })

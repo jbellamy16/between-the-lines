@@ -59,7 +59,9 @@ test("dialogs and section changes pause replay, preserve focus and allow manual 
   const time = await page.getByLabel("Replay timeline").inputValue();
   await page.clock.runFor(5000);
   expect(await page.getByLabel("Replay timeline").inputValue()).toBe(time);
-  await expect(page.getByRole("dialog")).toContainText("Through 63:24");
+  await expect(page.getByRole("dialog")).toContainText(
+    "Everything you missed through 63:24",
+  );
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", { name: "Catch me up", exact: true }),

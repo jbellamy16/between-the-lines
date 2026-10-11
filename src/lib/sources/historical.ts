@@ -63,7 +63,7 @@ export const HISTORICAL_LIMITATIONS = [
   "No calibrated xG, possession duration, pass recipients or off-ball positions. Possession is not reconstructed from contested touches. High-ball-win/pressing claims are disabled.",
   "Substitutions come from match metadata at minute precision, appear at the end of the reported minute, and have no pitch position. Jersey numbers are unavailable.",
   "Replay preserves both halves and stoppage time, omits the interval, and ends at the last available record. Counts describe this dataset, not an independent official statistics feed.",
-  "Comparisons require two 15-minute windows within one half. They describe activity, not statistical significance or tactical cause.",
+  "Activity comparisons use equal windows within one half. Their actual duration is shown with each measurement. They describe activity, not statistical significance or tactical cause.",
 ];
 export function normalizeHistorical(input: unknown): MatchData {
   const raw = rawMatchSchema.parse(input),
