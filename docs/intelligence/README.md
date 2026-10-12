@@ -1,10 +1,12 @@
 # AI Match Director 1.2
 
-Implemented foundation: [bounded evidence discovery](EVIDENCE-DISCOVERY.md), a shared versioned catalogue of developments, legal scopes, deterministic answers and evidence coverage. Offline only; no investigator orchestration or inference activation.
+Implemented foundation: [bounded evidence discovery](EVIDENCE-DISCOVERY.md), a shared versioned catalogue of developments, legal scopes, deterministic answers and evidence coverage. Shared by offline policies and the bounded investigator; no public inference activation.
 
 Implemented offline policies: [deterministic editorial baselines B1/B2](EDITORIAL-BASELINES.md). Both share discovery and independent verification. On 12 authored development cases they match every lead label, with one editorial improvement over production and zero additional football facts; B2 avoids unnecessary bundle reads. Human preference and incremental AI value remain unmeasured.
 
-Next design: [bounded agentic investigator proposal](AGENTIC-INVESTIGATOR-PROPOSAL.md). It incorporates the 35/35 deterministic-evidence result and the merged equal-xG correction, and proposes a single investigator, stronger deterministic baselines and held-out decision tests. Design only; incremental Foundry value remains unproven and public inference remains disabled.
+Design: [bounded agentic investigator proposal](AGENTIC-INVESTIGATOR-PROPOSAL.md). It incorporates the 35/35 deterministic-evidence result and the merged equal-xG correction, and proposes a single investigator, stronger deterministic baselines and held-out decision tests. The proposal remains the evaluation specification; incremental Foundry value remains unproven and public inference remains disabled.
+
+Implemented bounded contracts: [single investigator orchestration](BOUNDED-INVESTIGATOR.md), with typed evidence selection, independent replay, stopping and receipts. Normal mode uses B2 without inference; only mocked transport ran. The scripted arm matches B2 on 12 development cases, with no demonstrated model advantage.
 
 Focused investigation: [shot-surge implementation and offline validation](SHOT-SURGE-IMPLEMENTATION.md), following the [competing-explanations proposal](COMPETING-EXPLANATIONS-PROPOSAL.md). The deterministic comparison and bounded typed Foundry path are implemented; live reliability and incremental AI value remain unestablished. Public inference remains disabled.
 
