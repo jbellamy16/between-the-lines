@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadCases } from "../eval/foundry-study/cases";
+import {
+  buildCase,
+  cases as diagnosticCases,
+} from "../eval/director-offline/cases";
 import { observe } from "../src/lib/ai/director/observer";
 import {
   guidedQuestions,
@@ -40,6 +44,39 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 describe("typed guided questions", () => {
+  it.each([
+    [0.1, 0.1, "level"],
+    [0.3, 0.3, "level"],
+    [0, 0, "level"],
+    [1, 1, "level"],
+    [0.1, 0.100001, "higher"],
+    [0.1, 0.099999, "lower"],
+  ] as const)(
+    "compares per-shot quality without summation noise: %s → %s is %s",
+    (earlier, current, verdict) => {
+      const match = buildCase(diagnosticCases[0]);
+      for (const event of match.events)
+        if (event.type === "shot")
+          event.xg = event.time <= 900 ? earlier : current;
+      const story = observe(match, 1800, "fan", {}, { unranked: true }).find(
+        (s) =>
+          s.team === "harbor" &&
+          s.category === "activity-change" &&
+          s.statistics[0].label === "shots",
+      )!;
+      const evidence = questionEvidence(match, 1800, {
+        intent: "chance-quality",
+        storyId: story.id,
+      })!;
+      expect(evidence.availability).toBe("available");
+      expect(evidence.verdict).toBe(verdict);
+      if (verdict === "level")
+        for (const style of ["plain", "fan", "analysis"] as const)
+          expect(presentQuestion(evidence, match, style).answer).not.toMatch(
+            /higher|lower/i,
+          );
+    },
+  );
   it("separates per-shot quality, total xG and volume on misleading evidence in both styles", () => {
     const c = fixture();
     const e = questionEvidence(c.match, c.cutoff, c.question)!;
