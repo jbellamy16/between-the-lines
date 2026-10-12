@@ -10,10 +10,7 @@
     "usageControls": false
   },
   "seconds": 116,
-  "viewport": [
-    1600,
-    790
-  ],
+  "viewport": [1600, 790],
   "actions": [
     {
       "target": 1,

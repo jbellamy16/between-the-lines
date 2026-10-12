@@ -3,10 +3,7 @@
   "sha256": "befaee11e9a2cc9336fda61dcced02b62e483a8b35fb4ee572c16f3ccda9301a",
   "rawDurationSeconds": 116.56,
   "trimmedLoadingSeconds": 0.5600000000000023,
-  "dimensions": [
-    1920,
-    1080
-  ],
+  "dimensions": [1920, 1080],
   "framesPerSecond": 30,
   "videoCodec": "H.264",
   "audioCodec": "AAC",
