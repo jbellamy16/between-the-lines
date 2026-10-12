@@ -92,7 +92,7 @@ test("a temporary investigation fallback keeps the story visible and allows a sa
     "Investigation complete",
   );
   expect(attempts).toBe(2);
-  await expect(story).toContainText("Checked with Microsoft Foundry");
+  await expect(story).toContainText("Investigated with Microsoft Foundry");
   await page.screenshot({
     path: `artifacts/foundry-reliability/${info.project.name}-recovered.png`,
   });

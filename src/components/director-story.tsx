@@ -24,6 +24,8 @@ import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
 import { GuidedInvestigation } from "./guided-investigation";
 import { StorylineHistory } from "./storyline-history";
+import { InvestigationSource } from "./investigation-source";
+import { InvestigationEvidence } from "./investigation-evidence";
 
 export function BroadcastPreview({
   story,
@@ -492,16 +494,25 @@ export function DirectorStory({
           {match.kind === "synthetic" ? "Synthetic demo" : "Recorded match"}
         </span>
         <h2>{wording!.headline}</h2>
+        <h3 className="investigation-heading">What changed</h3>
         <p>{wording!.explanation}</p>
-        <p className="story-qualification">
-          {style === "analysis" && <strong>Interpretation: </strong>}
-          {wording!.why} {wording!.qualifications.map((q) => q.text).join(" ")}
-        </p>
-        <ExplanationSelector />
-        <AnimatedDetails className="director-disclosure story-significance">
-          <summary>What to watch next</summary>
+        <InvestigationSource
+          source={story.provider}
+          cached={validAnswer?.metrics.cached}
+        />
+        <h3 className="investigation-heading">Why it matters</h3>
+        <p className="story-qualification">{wording!.why}</p>
+        <InvestigationEvidence
+          story={story}
+          match={match}
+          wording={wording!}
+          onEvent={onEvent}
+        />
+        <section className="story-significance" aria-label="What to watch next">
+          <h3>What to watch next</h3>
           <p>{wording!.watch}</p>
-        </AnimatedDetails>
+        </section>
+        <ExplanationSelector />
         <small>
           Through {matchClock(match, story.cutoff)} ·{" "}
           {story.highlightedEventIds.length} highlighted actions
@@ -560,13 +571,6 @@ export function DirectorStory({
             </button>
           )}
         </div>
-        <p className="director-mode-note">
-          {story.provider === "offline"
-            ? provider === "offline"
-              ? "Checked from recorded events. AI is off or unavailable."
-              : "Checked from recorded events. AI investigation is available."
-            : `Checked with ${providerLabel(story.provider)}.`}
-        </p>
         {(busy || notice) && (
           <p className="notice" role="status">
             {busy ? "Checking the passage and its supporting events…" : notice}

@@ -1,0 +1,111 @@
+import type { BroadcastStory } from "@/lib/ai/director/story";
+import type { StoryWording } from "@/lib/explanation";
+import { eventClock, type MatchData } from "@/lib/sources/model";
+
+export function InvestigationEvidence({
+  story,
+  match,
+  wording,
+  onEvent,
+}: {
+  story: BroadcastStory;
+  match: MatchData;
+  wording: StoryWording;
+  onEvent: (id: string) => void;
+}) {
+  const assessment = story.hypothesis;
+  const supportIds = new Set(
+    assessment.supportingEvidence.flatMap((e) => e.eventIds),
+  );
+  const events = match.events.filter(
+    (e) => e.time <= story.cutoff && supportIds.has(e.id),
+  );
+  const contrary = new Set(assessment.contradictoryEvidence.map((e) => e.code));
+  const challenges = wording.qualifications.filter(
+    (q) => contrary.has(q.code) || q.code === "storyline-eased",
+  );
+  const limits = wording.qualifications.filter((q) => !challenges.includes(q));
+  return (
+    <div className="investigation-evidence">
+      <section aria-label="Supporting evidence">
+        <h3>Evidence that supports it</h3>
+        <p>
+          {events.length} recorded {events.length === 1 ? "action" : "actions"}
+          {assessment.windows.some((w) => w.id === "previous")
+            ? " across the compared windows."
+            : " behind this observation."}
+          {events.length > 0 && " Select a moment to replay."}
+        </p>
+        {assessment.supportingEvidence
+          .filter(
+            (e) =>
+              !["recorded-observation", "current-shot-outcomes"].includes(
+                e.code,
+              ),
+          )
+          .map((e) => (
+            <p key={e.code}>{e.description}</p>
+          ))}
+        <div className="investigation-citations">
+          {events.slice(-3).map((event) => (
+            <button
+              className="text-button"
+              key={event.id}
+              onClick={() => onEvent(event.id)}
+              aria-label={`Replay supporting ${event.type.replaceAll("_", " ")} at ${eventClock(match, event)}`}
+            >
+              {eventClock(match, event)} · {event.type.replaceAll("_", " ")}
+            </button>
+          ))}
+        </div>
+      </section>
+      <section
+        className="investigation-challenges"
+        aria-label="Counter-evidence and limits"
+      >
+        <h3>What challenges it</h3>
+        {challenges.length ? (
+          challenges.map((q) => {
+            const evidence = assessment.contradictoryEvidence.find(
+              (e) => e.code === q.code,
+            );
+            const event = match.events.findLast(
+              (e) =>
+                e.time <= story.cutoff && evidence?.eventIds.includes(e.id),
+            );
+            return (
+              <div key={q.code}>
+                <p>{q.text}</p>
+                {event && (
+                  <button
+                    className="text-button"
+                    onClick={() => onEvent(event.id)}
+                  >
+                    Replay counter-evidence · {eventClock(match, event)}
+                  </button>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <p>
+            No counter-evidence identified in this sample. That does not prove
+            the interpretation.
+          </p>
+        )}
+        {limits.map((q) => (
+          <p key={q.code}>
+            <strong>Missing context: </strong>
+            {q.text}
+          </p>
+        ))}
+        {!limits.length && assessment.missingInformation.length > 0 && (
+          <p className="investigation-limit">
+            Recorded actions cannot explain intent or show movement away from
+            the ball.
+          </p>
+        )}
+      </section>
+    </div>
+  );
+}

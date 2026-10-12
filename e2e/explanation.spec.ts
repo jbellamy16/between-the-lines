@@ -202,10 +202,14 @@ test("an in-flight investigation survives a style change and its verified result
     "Checking the passage",
   );
   release();
-  await expect(story(page)).toContainText("Checked with Microsoft Foundry");
+  await expect(story(page)).toContainText(
+    "Investigated with Microsoft Foundry",
+  );
   const ids = await recordedOptions(page);
   await selector(page).selectOption("plain");
-  await expect(story(page)).toContainText("Checked with Microsoft Foundry");
+  await expect(story(page)).toContainText(
+    "Investigated with Microsoft Foundry",
+  );
   expect(await recordedOptions(page)).toEqual(ids);
   expect(requests).toBe(1);
   await page.getByRole("button", { name: "Catch me up", exact: true }).click();

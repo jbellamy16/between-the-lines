@@ -4441,6 +4441,131 @@ main {
 .question-answer .story-qualification {
   font-size: 0.85rem;
 }
+.question-answer .story-qualification + .story-qualification {
+  margin-top: 0.65rem;
+}
 .question-answer .text-button {
   min-height: 44px;
+}
+
+/* The investigation brief shares the match centre's type, colour and spacing. */
+.investigation-source {
+  margin: 0.75rem 0 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+.investigation-source-label {
+  width: fit-content;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  color: var(--text);
+  background: var(--sl-selected);
+}
+.investigation-source .director-mode-note {
+  margin: 0;
+  font-size: 0.75rem;
+}
+.investigation-heading,
+.investigation-evidence h3 {
+  margin: 1rem 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+.director-story > h2 + .investigation-heading {
+  margin: 0;
+  line-height: 1.2;
+}
+@media (max-width: 600px) {
+  .data-first .director-story > h2 {
+    margin-bottom: 0;
+  }
+  .data-first .director-story > .investigation-heading + p {
+    margin-top: 0;
+  }
+}
+.investigation-evidence {
+  margin-top: 1rem;
+  border-block: 1px solid var(--border);
+}
+.investigation-evidence > section {
+  padding-bottom: 0.85rem;
+}
+.investigation-evidence > section + section {
+  border-top: 1px solid var(--border);
+}
+.investigation-evidence p {
+  font-size: 0.8125rem;
+}
+.investigation-evidence p + p,
+.investigation-challenges > div + div {
+  margin-top: 0.5rem;
+}
+.investigation-citations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+.investigation-evidence .text-button {
+  min-height: 44px;
+  font-size: 0.75rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-align: left;
+}
+.investigation-limit,
+.guided-intro {
+  color: var(--muted);
+}
+.guided-investigation .guided-intro {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+}
+.question-answer .investigation-heading {
+  margin: 0.85rem 0 0.35rem;
+}
+.question-followup {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--border);
+}
+.investigation-comparison table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  margin-block: 0.75rem;
+}
+.investigation-comparison caption {
+  text-align: left;
+  color: var(--muted);
+  padding-bottom: 0.5rem;
+}
+.investigation-comparison th,
+.investigation-comparison td {
+  padding: 0.65rem 0.35rem;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.investigation-comparison th:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+.investigation-comparison td:last-child {
+  font-weight: 650;
+}
+.director-story .investigation-readings {
+  list-style: none;
+  padding: 0;
+  margin-block: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+.investigation-readings strong {
+  font-size: 0.75rem;
+}
+.investigation-readings p,
+.investigation-comparison > p {
+  font-size: 0.8125rem;
 }
