@@ -1,0 +1,824 @@
+{
+  "kind": "scripted-orchestration-only",
+  "modelIntelligence": "unmeasured",
+  "humanPreference": "unmeasured",
+  "sourceHashes": {
+    "src/lib/ai/director/investigator.ts": "7d881e94c90568eba56921caea0eb8a66c3f020af2eb97fc4ddd1f5f6d5acd4f",
+    "src/lib/ai/director/investigator-contract.ts": "acd93ddafba56be489acc25a1457659f3ace7e5e71479a69d355c9d3237cb49e",
+    "src/lib/ai/director/investigator-wire.ts": "50ee0e7fe3bf27f7c317d2a09e661a45c3cadf034a21099f6441a9c320314a8e",
+    "eval/investigator/scripted.ts": "cd93785d38d2ae1279df9a881c21a20e77e4625357dbb88a53729c2ecbd3d4aa",
+    "src/lib/ai/director/editorial-baselines.ts": "c9f5e9c13280530e172fba3c6e0ffde6d155e255c6934c9bb594ad25f5f2d98f",
+    "eval/editorial-baselines/cases.ts": "f6ac3999394eb7cee59aa2bf1b77703a1f562d496ceba2c140837cf652e8044c",
+    "tests/bounded-investigator.test.ts": "e69259540b361d1648a47cb795cb0d1e17a444dcb3725b9a790ca0cc8d0143dc"
+  },
+  "paidCalls": 0,
+  "extraFootballFacts": 0,
+  "rows": [
+    {
+      "id": "spread-favored",
+      "inputHash": "e1299b7909ffb14bb66eb3bb41c4287da47898491ddc93601a0d4f22157694a7",
+      "expected": "harbor",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "c916ff0db9f2db5d84cd33cc088fb9b13df43889a1b3cd9353367641a0ce4a80",
+          "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+          "cutoff": 1800,
+          "initialDigest": "3f00eaa85885d01951a6bcb3d96fb3ed6ea046a20a7842428424614e79653c58",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:6b6e3cccc3ddcca66118811fd58f2008",
+            "option:79ff336211bcc3b80b57bc18bd05da24"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "c916ff0db9f2db5d84cd33cc088fb9b13df43889a1b3cd9353367641a0ce4a80",
+            "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+            "interpretationIds": [
+              "repeated-route",
+              "both-teams",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36494
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "fading-favored",
+      "inputHash": "cff5e1547600839a39d6ddbaee7b17b09ea17e41d208067c58487a48218fcd6f",
+      "expected": "riverside",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "c42542a8f80253e6c56812f855f715620c9c522b40dba424e22069a7b0e92592",
+          "prefixDigest": "9835fb668c2f7b77791243703a67a9c83edd026e2793f7c86ef53de0978cf2ad",
+          "cutoff": 1800,
+          "initialDigest": "74c29c7743b4af3b7fe9ea08ee866fa4b05beff1b8023e758e86e5fe406cf8cc",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:751cba549411b7681ed41fe5631fdfaa",
+            "option:5b3e3194e1afe77eecec29151787b720"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "c42542a8f80253e6c56812f855f715620c9c522b40dba424e22069a7b0e92592",
+            "focalId": "editorial-development:activity-change:riverside:shots:riverside:1000:shot",
+            "interpretationIds": [
+              "both-teams",
+              "repeated-route",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36238
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "opponent-favored",
+      "inputHash": "68d54a5ddc00039bfe52c24a3a6195eeaa693464507f5e3cab005807c48c43f3",
+      "expected": "riverside",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "77409ab5973ed0579403052fca150d8222dd49e470471ecd5a7ec7c934c08d66",
+          "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+          "cutoff": 1800,
+          "initialDigest": "fb5261f83728aa47c994268b6d8cabdd28a3920d522351d29bde71e2b19cc406",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:751cba549411b7681ed41fe5631fdfaa",
+            "option:5b3e3194e1afe77eecec29151787b720"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "77409ab5973ed0579403052fca150d8222dd49e470471ecd5a7ec7c934c08d66",
+            "focalId": "editorial-development:activity-change:riverside:shots:riverside:1000:shot",
+            "interpretationIds": [
+              "both-teams",
+              "repeated-route",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36063
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "seen-favored",
+      "inputHash": "c6934a4ec269871db3c8de23565e6e2e1e1ea9c976dfca37e4143ecbc3e790c0",
+      "expected": "riverside",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "2a10b1449922300b25a77b7dd593443e062539216423ec1dcdbfa34fe5964b5b",
+          "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+          "cutoff": 1800,
+          "initialDigest": "b1727a60837db94d27f06150b05a77ff41545aa5dee45a033b6b72357731e3de",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:751cba549411b7681ed41fe5631fdfaa",
+            "option:5b3e3194e1afe77eecec29151787b720"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:riverside:shots:riverside:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "2a10b1449922300b25a77b7dd593443e062539216423ec1dcdbfa34fe5964b5b",
+            "focalId": "editorial-development:activity-change:riverside:shots:riverside:1000:shot",
+            "interpretationIds": [
+              "both-teams",
+              "repeated-route",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36067
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "player-favored",
+      "inputHash": "cfceb22e9a84cb50771f19c170f14811f605ebcd08dcd563281e76bec7fd385a",
+      "expected": "harbor",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "31f3679956a7573b60841126aa62fc2a4e4fe8b3d17b069a18d8aae5f3e96f09",
+          "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+          "cutoff": 1800,
+          "initialDigest": "22f010e578548def2b2fc552817c3a6c9c41f3ba3219c1af7a16bc9f0207b97e",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:6b6e3cccc3ddcca66118811fd58f2008",
+            "option:79ff336211bcc3b80b57bc18bd05da24"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "31f3679956a7573b60841126aa62fc2a4e4fe8b3d17b069a18d8aae5f3e96f09",
+            "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+            "interpretationIds": [
+              "repeated-route",
+              "both-teams",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36496
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "unknown-quality",
+      "inputHash": "8be31f445b656ae52de236014e1cab26f873907004afc6623a4d1e1b9ac6e0a3",
+      "expected": "harbor",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "d4c541de051d2860866511691a948d717a429bc6b1db9c44ec43790c4e9ad546",
+          "prefixDigest": "17824a622aad6a1fa35bf63813e76001b8b667185abc3d09cc431dd6cb86ca93",
+          "cutoff": 1800,
+          "initialDigest": "df1b760a1c980f8ad45f0e1801322c427d2475c292ef497d07588f9bc2cc86b0",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:6b6e3cccc3ddcca66118811fd58f2008",
+            "option:79ff336211bcc3b80b57bc18bd05da24"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "d4c541de051d2860866511691a948d717a429bc6b1db9c44ec43790c4e9ad546",
+            "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+            "interpretationIds": [
+              "repeated-route",
+              "both-teams",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:chance-quality-incomplete"],
+            "stop": "unresolved"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "unresolved",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 37157
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "unknown-possession",
+      "inputHash": "9dba3bff26648aea0ef9bf97256001c083721b3c8ccd3b1ecdc44e8d5824f7a0",
+      "expected": "harbor",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 21
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "0d0c4974e61fdb3ee6f6e850df17e85808fb45f8229980a53d42b95cd731b68d",
+          "prefixDigest": "30e74cbfa03a1b67fa99483a003f2763916c2b0f35d12101c0709b3bb82d6bad",
+          "cutoff": 1800,
+          "initialDigest": "7492de7c651bcc937fc70a97ec649bf50da1ec3fb845113cf8d0a417be7e1a79",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:6b6e3cccc3ddcca66118811fd58f2008",
+            "option:79ff336211bcc3b80b57bc18bd05da24"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "0d0c4974e61fdb3ee6f6e850df17e85808fb45f8229980a53d42b95cd731b68d",
+            "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+            "interpretationIds": [
+              "both-teams",
+              "repeated-route",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "unresolved"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "unresolved",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 34437
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "minute-timing",
+      "inputHash": "61a305eee09e9514fdda2584a15ae14caabcf90324fc5629904c94272308781e",
+      "expected": "harbor",
+      "B1": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [
+          "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+        ],
+        "reads": 2
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "c7f311c1d1389a8e37dfd362afc796d2848e9338e9907094a099bb60477309a3",
+          "prefixDigest": "8bfc4eb729381325d8b8db61d5b639aae298ab91ddba7eda56f476a5e5375d30",
+          "cutoff": 1800,
+          "initialDigest": "ac044b3c23a4e7a4fd59664a158349405e2075cc9939e134980a5d030bdb03be",
+          "fallbackIndexId": null,
+          "initialOptionIds": [
+            "option:6b6e3cccc3ddcca66118811fd58f2008",
+            "option:79ff336211bcc3b80b57bc18bd05da24"
+          ],
+          "baselineIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "finalIds": [
+            "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+          ],
+          "trace": [],
+          "plan": {
+            "indexId": "c7f311c1d1389a8e37dfd362afc796d2848e9338e9907094a099bb60477309a3",
+            "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+            "interpretationIds": [
+              "both-teams",
+              "repeated-route",
+              "concentrated-attempts"
+            ],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": ["challenge:tracking-unavailable"],
+            "stop": "unresolved"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "unresolved",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 36192
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "quiet",
+      "inputHash": "68bd150260ff446c7b6bdd70188bbd9d30071895803f1f796a3027bb2062a50c",
+      "expected": null,
+      "B1": {
+        "ids": [],
+        "reads": 9
+      },
+      "B2": {
+        "ids": [],
+        "reads": 0
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "54d17d546db32b9c48b42d2f6c78fe17e8eb0bdbf9304ffbe8c43f6abda46e5e",
+          "prefixDigest": "b8668585288127b638a869851f66631873185138672dbf18bf65f5183d71fc8f",
+          "cutoff": 1800,
+          "initialDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "fallbackIndexId": null,
+          "initialOptionIds": [],
+          "baselineIds": [],
+          "finalIds": [],
+          "trace": [],
+          "plan": {
+            "indexId": "54d17d546db32b9c48b42d2f6c78fe17e8eb0bdbf9304ffbe8c43f6abda46e5e",
+            "focalId": null,
+            "interpretationIds": [],
+            "supportIds": [],
+            "challengeIds": [],
+            "stop": "no-material-gain"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "no-material-gain",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 8387
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "short-window",
+      "inputHash": "80a19a6766a72efa7198e960f2c90fbb5feb51bc5da88015ec34c125a404602f",
+      "expected": null,
+      "B1": {
+        "ids": [],
+        "reads": 5
+      },
+      "B2": {
+        "ids": [],
+        "reads": 0
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "795de44ba538625d2d2736e213c165b9a67154cad446fe4e8ff6a136d116b680",
+          "prefixDigest": "b8668585288127b638a869851f66631873185138672dbf18bf65f5183d71fc8f",
+          "cutoff": 240,
+          "initialDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "fallbackIndexId": null,
+          "initialOptionIds": [],
+          "baselineIds": [],
+          "finalIds": [],
+          "trace": [],
+          "plan": {
+            "indexId": "795de44ba538625d2d2736e213c165b9a67154cad446fe4e8ff6a136d116b680",
+            "focalId": null,
+            "interpretationIds": [],
+            "supportIds": [],
+            "challengeIds": [],
+            "stop": "no-material-gain"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "no-material-gain",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 8478
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "goal-over-preference",
+      "inputHash": "dad5ee83403a39ae3c7dc0921c58cfcbaee08dcfbbb4d0ec1b6979fead1a475e",
+      "expected": "score-change",
+      "B1": {
+        "ids": ["editorial-development:score-change:harbor:1790:shot"],
+        "reads": 26
+      },
+      "B2": {
+        "ids": ["editorial-development:score-change:harbor:1790:shot"],
+        "reads": 1
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "5e70bf34bc5983f3884a3d1e8fa4a1eb382a3ce1eb26c2ff62ce80db2394ee2b",
+          "prefixDigest": "1d0850b98b3f215bce3845eecf473d1537829159610810ae32b5780b073536a9",
+          "cutoff": 1800,
+          "initialDigest": "ca9907593c805ab4409efe42cf435724600297c30729ce611a9c5ccb477da4db",
+          "fallbackIndexId": null,
+          "initialOptionIds": ["option:2a611a15c3e4759beb105489b0c6ecf3"],
+          "baselineIds": [
+            "editorial-development:score-change:harbor:1790:shot"
+          ],
+          "finalIds": ["editorial-development:score-change:harbor:1790:shot"],
+          "trace": [],
+          "plan": {
+            "indexId": "5e70bf34bc5983f3884a3d1e8fa4a1eb382a3ce1eb26c2ff62ce80db2394ee2b",
+            "focalId": "editorial-development:score-change:harbor:1790:shot",
+            "interpretationIds": [],
+            "supportIds": ["support:recorded-observation"],
+            "challengeIds": [],
+            "stop": "sufficient"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "sufficient",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 19892
+        },
+        "equalToB2": true
+      }
+    },
+    {
+      "id": "category-filter",
+      "inputHash": "4d66dadadeb8f30b8ac8533d0bf528336d2549715be06ab739cfcc481e283525",
+      "expected": null,
+      "B1": {
+        "ids": [],
+        "reads": 34
+      },
+      "B2": {
+        "ids": [],
+        "reads": 0
+      },
+      "scripted": {
+        "receipt": {
+          "version": "bounded-investigator-1.0.0",
+          "promptVersion": "investigator-selection-1.0.0",
+          "catalogueVersion": "evidence-discovery-1.1.0",
+          "baselineVersion": "deterministic-editorial-1.0.0",
+          "indexId": "3f4ab7e79b7c2b9decc3536476c34b3077a3dd4d5d234dd666a79edaaf78f6dc",
+          "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+          "cutoff": 1800,
+          "initialDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "fallbackIndexId": null,
+          "initialOptionIds": [],
+          "baselineIds": [],
+          "finalIds": [],
+          "trace": [],
+          "plan": {
+            "indexId": "3f4ab7e79b7c2b9decc3536476c34b3077a3dd4d5d234dd666a79edaaf78f6dc",
+            "focalId": null,
+            "interpretationIds": [],
+            "supportIds": [],
+            "challengeIds": [],
+            "stop": "no-material-gain"
+          },
+          "stop": {
+            "origin": "model",
+            "reason": "no-material-gain",
+            "voluntary": true,
+            "scope": "available-bounded-catalogue"
+          },
+          "verification": "passed",
+          "disposition": "model-selection",
+          "attempts": 1,
+          "toolInvocations": 1,
+          "adaptiveRounds": 0,
+          "usage": {
+            "inputTokens": 100,
+            "outputTokens": 50,
+            "complete": true
+          },
+          "cached": false,
+          "maxPayloadBytes": 24120
+        },
+        "equalToB2": true
+      }
+    }
+  ]
+}
