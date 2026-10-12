@@ -18,7 +18,7 @@ import {
   type Interpretation,
 } from "./shot-routes";
 
-export const QUESTION_VERSION = "guided-1.1.1";
+export const QUESTION_VERSION = "guided-1.1.2";
 export const questionIntentSchema = z.enum([
   "shot-surge-explanations",
   "chance-quality",

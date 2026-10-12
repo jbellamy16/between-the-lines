@@ -40,6 +40,7 @@ export type ShotRoutes = {
   }[];
   eventIds: string[];
   contextBounds: { start: number; end: number };
+  referenceCoverage: { eligible: number; returned: number; omitted: number };
   complete: boolean;
   suppressed: boolean;
 };
@@ -205,6 +206,11 @@ export function compareShotRoutes(
     facts,
     relations,
     eventIds,
+    referenceCoverage: {
+      eligible: eventIds.length,
+      returned: eventIds.length,
+      omitted: 0,
+    },
     contextBounds: {
       start: Math.min(
         windows[0].start,
@@ -222,6 +228,11 @@ export function compareShotRoutes(
     result.facts = [];
     result.relations = [];
     result.eventIds = [];
+    result.referenceCoverage = {
+      eligible: eventIds.length,
+      returned: 0,
+      omitted: eventIds.length,
+    };
     for (const w of [result.previous, result.current]) {
       w.complete = false;
       w.linkedPossessions = null;

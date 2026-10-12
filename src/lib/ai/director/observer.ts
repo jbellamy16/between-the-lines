@@ -15,7 +15,12 @@ import {
   type NormalizedEvent,
 } from "../../sources/model";
 
-export const DIRECTOR_VERSION = "director-1.4.1";
+export const DIRECTOR_VERSION = "director-1.4.2";
+export type ObservationOmission = {
+  reason: "shot-anchor-limit" | "passing-pair-limit" | "claim-evidence-limit";
+  team: "harbor" | "riverside";
+  count: number;
+};
 export type Claim = {
   id: string;
   headline: string;
@@ -110,7 +115,10 @@ export function observe(
   cutoff: number,
   mode: Mode = "fan",
   preferences: StoryPreferences = {},
-  options: { unranked?: boolean } = {},
+  options: {
+    unranked?: boolean;
+    onOmission?: (omission: ObservationOmission) => void;
+  } = {},
 ): Candidate[] {
   const visible = visibleEvents(match, cutoff);
   const period = periodAt(match, cutoff);
@@ -201,7 +209,11 @@ export function observe(
       !preferences.categories.includes(preferenceCategory)
     )
       return;
-    if (!evidence.length || evidence.length > 120) return;
+    if (!evidence.length) return;
+    if (evidence.length > 120) {
+      options.onOmission?.({ reason: "claim-evidence-limit", team, count: 1 });
+      return;
+    }
     const latest = evidence.at(-1)!;
     const limitations = [...EVIDENCE_LIMITS];
     if (match.capabilities.possession === "generated")
@@ -234,7 +246,14 @@ export function observe(
   for (const team of ["harbor", "riverside"] as const) {
     const name = match.teams[team].short;
     const own = recent.filter((e) => e.team === team);
-    for (const shot of own.filter((e) => e.type === "shot").slice(-6)) {
+    const shots = own.filter((e) => e.type === "shot");
+    if (shots.length > 6)
+      options.onOmission?.({
+        reason: "shot-anchor-limit",
+        team,
+        count: shots.length - 6,
+      });
+    for (const shot of shots.slice(-6)) {
       const shooter = match.players.find(
         (p) => p.id === shot.actorId && p.team === team,
       );
@@ -304,6 +323,13 @@ export function observe(
         pairs.set(key, [...(pairs.get(key) ?? []), e]);
       }
       const pair = [...pairs.values()].sort((a, b) => b.length - a.length)[0];
+      const qualifyingPairs = [...pairs.values()].filter((p) => p.length >= 3);
+      if (qualifyingPairs.length > 1)
+        options.onOmission?.({
+          reason: "passing-pair-limit",
+          team,
+          count: qualifyingPairs.length - 1,
+        });
       if (pair && pair.length >= 3) {
         const from = match.players.find((p) => p.id === pair[0].actorId)!.name;
         const to = match.players.find(

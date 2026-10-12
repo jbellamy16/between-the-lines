@@ -1,5 +1,7 @@
 # AI Match Director 1.2
 
+Implemented foundation: [bounded evidence discovery](EVIDENCE-DISCOVERY.md), a shared versioned catalogue of developments, legal scopes, deterministic answers and evidence coverage. Offline only; no investigator orchestration or inference activation.
+
 Next design: [bounded agentic investigator proposal](AGENTIC-INVESTIGATOR-PROPOSAL.md). It incorporates the 35/35 deterministic-evidence result and the merged equal-xG correction, and proposes a single investigator, stronger deterministic baselines and held-out decision tests. Design only; incremental Foundry value remains unproven and public inference remains disabled.
 
 Focused investigation: [shot-surge implementation and offline validation](SHOT-SURGE-IMPLEMENTATION.md), following the [competing-explanations proposal](COMPETING-EXPLANATIONS-PROPOSAL.md). The deterministic comparison and bounded typed Foundry path are implemented; live reliability and incremental AI value remain unestablished. Public inference remains disabled.
