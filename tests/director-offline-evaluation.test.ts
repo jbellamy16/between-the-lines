@@ -228,12 +228,8 @@ describe("paired offline Director evaluation", () => {
           expect(result.evidence.comparison?.eligible).toBe(c.eligible);
         expect(metrics.incorrectFacts).toEqual([]);
         expect(metrics.incorrectInterpretations).toEqual([]);
-        // Preserve the discovered baseline defect in the report, not a false clean score.
-        expect(metrics.incorrectVerdicts).toEqual(
-          c.statuses && c.missing !== "xg"
-            ? [{ intent: "chance-quality", actual: "lower", expected: "level" }]
-            : [],
-        );
+        // Equal per-shot ratings must remain level in every evaluation arm.
+        expect(metrics.incorrectVerdicts).toEqual([]);
         expect(metrics.invalidReferences).toEqual([]);
         expect(metrics.incorrectCitations).toEqual([]);
         expect(metrics.missingCaveats).toEqual([]);
@@ -388,6 +384,9 @@ it("scores guided conclusions and mandatory caveats, not only displayed numbers"
     { match, question } = context(c);
   const answers = baseline(match, question!.storyId);
   const facts = factsFor(answers);
+  // Deliberately reintroduce the historical error to prove the scorer catches it.
+  answers.find((a) => a.question.intent === "chance-quality")!.verdict =
+    "lower";
   answers.forEach((a) => {
     a.qualifications = [];
     a.reason = null;

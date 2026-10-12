@@ -1,5 +1,7 @@
 # Follow the story, then check the evidence
 
+**Later audit update:** The [readiness candidate](../readiness-2026-10-12/README.md) corrects the equal-quality verdict defect and passes the same offline conclusion-safety gate. The original recording/study findings below remain historical evidence; they have not been rewritten or reclassified. Public deployment parity and video publication are still pending.
+
 October 12, 2026. **Current review package: 116 seconds. Local preview only; no publication, submission, deployment or paid inference.** Supersedes the October 11 video for this revision. The historical release and receipts remain intact. This is a demonstration/materials update, with no application behavior changes.
 
 ## Start here

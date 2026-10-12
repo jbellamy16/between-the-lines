@@ -1,5 +1,7 @@
 # Director evaluation: offline comparison
 
+**Later audit update:** The [readiness candidate](../readiness-2026-10-12/README.md) corrects the equal-quality verdict defect and passes the same offline conclusion-safety gate. The original recording/study findings below remain historical evidence; they have not been rewritten or reclassified. Public deployment parity and video publication are still pending.
+
 October 12, 2026. **The measured evidence improvement comes from deterministic code. This study establishes no incremental AI benefit.** It also finds an existing chance-quality conclusion error, so the publication-safety gate is not met.
 
 PR #29 was reviewed and squash-merged at its exact head (`d6c3f82`) after both verification and both Cloudflare CI checks passed; 87 focused review tests also passed locally. This work starts from synchronized `origin/main` at `5b76572970bff58de74965ad130d8eb38285c0a9`. It changes evaluation code and documentation, not product behavior or inference settings.

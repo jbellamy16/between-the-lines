@@ -319,6 +319,31 @@ test("public historical records use the canonical contract and exclude restricte
   request,
 }) => {
   const response = await request.get("/api/historical/2499719");
+  if (process.env.HISTORICAL_MATCHES_ENABLED === "false") {
+    // The submission build must deny recorded data, not pass the enabled-source contract.
+    expect(response.status()).toBe(404);
+    expect(await response.json()).toEqual({
+      error: "Historical matches are disabled",
+    });
+    for (const id of ["2499943", "2499841", "statsbomb-8658"])
+      expect((await request.get(`/api/historical/${id}`)).status()).toBe(404);
+    expect(
+      (
+        await request.post("/api/historical/narrate", {
+          data: { matchId: "2499719", time: 0, mode: "fan" },
+        })
+      ).status(),
+    ).toBe(404);
+    await page.goto("/");
+    await expect(page.locator(".app-shell")).toHaveAttribute(
+      "aria-busy",
+      "false",
+    );
+    await expect(
+      page.getByRole("button", { name: "Recorded", exact: true }),
+    ).toHaveCount(0);
+    return;
+  }
   expect(response.status()).toBe(200);
   const match = await response.json();
   expect(match.schemaVersion).toBe("1.0.0");

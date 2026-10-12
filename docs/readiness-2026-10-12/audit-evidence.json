@@ -1,0 +1,246 @@
+{
+  "checkedAt": "2026-10-12T17:44:24.272Z",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": null
+      },
+      "body": {
+        "bytes": 97829,
+        "threeLevels": false
+      }
+    },
+    {
+      "path": "/release.json",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=UTF-8",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": null
+      },
+      "body": {
+        "product": "Between the Lines",
+        "commit": "2014a497c84c799952c218a0229ec0c16bd964b1",
+        "builtAt": "2026-10-11T19:06:04.194701+00:00",
+        "buildId": "5RQmQSiNYhdr5N2vAfUbm"
+      }
+    },
+    {
+      "path": "/api/insights",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": null
+      },
+      "body": {
+        "directorContext": "a70040a6f43e924b74f1d4bc362ccd0ad0ae022b1e68da1592ee0659c9bd0c24",
+        "mode": "offline",
+        "configured": "offline",
+        "proactive": false,
+        "usageControls": false
+      }
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200,
+      "headers": {
+        "content-type": "application/manifest+json",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": null
+      },
+      "body": {
+        "id": "/",
+        "name": "Between the Lines",
+        "short_name": "BTL",
+        "description": "More than the score. Football insights that go deeper.",
+        "start_url": "/",
+        "scope": "/",
+        "display": "standalone",
+        "background_color": "#0b0f14",
+        "theme_color": "#0b0f14",
+        "lang": "en",
+        "categories": ["sports", "entertainment"],
+        "icons": [
+          {
+            "src": "/icon-maskable-512.png?v=btl-2026-2",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+          },
+          {
+            "src": "/icon-192.png?v=btl-2026-2",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+          },
+          {
+            "src": "/icon-512.png?v=btl-2026-2",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+          }
+        ]
+      }
+    }
+  ],
+  "syntheticGates": {
+    "checkedAt": "2026-10-12T17:48:09.143Z",
+    "status": {
+      "directorContext": "a70040a6f43e924b74f1d4bc362ccd0ad0ae022b1e68da1592ee0659c9bd0c24",
+      "mode": "offline",
+      "configured": "offline",
+      "proactive": false,
+      "usageControls": false
+    },
+    "historical": [
+      {
+        "path": "/api/historical/2499719",
+        "status": 404,
+        "body": {
+          "error": "Historical matches are disabled"
+        }
+      },
+      {
+        "path": "/api/historical/2499943",
+        "status": 404,
+        "body": {
+          "error": "Historical matches are disabled"
+        }
+      },
+      {
+        "path": "/api/historical/2499841",
+        "status": 404,
+        "body": {
+          "error": "Historical matches are disabled"
+        }
+      },
+      {
+        "path": "/api/historical/statsbomb-8658",
+        "status": 404,
+        "body": {
+          "error": "Historical matches are disabled"
+        }
+      }
+    ]
+  },
+  "azure": {
+    "appState": "Running",
+    "publicNetworkAccess": "Enabled",
+    "httpsOnly": true,
+    "minTlsVersion": "1.2",
+    "ftp": "Disabled",
+    "basicPublishingAuthentication": {
+      "scm": false,
+      "ftp": false
+    },
+    "sku": "F1",
+    "tier": "Free",
+    "runtime": "NODE|24-lts",
+    "alwaysOn": false,
+    "subscriptionSpendingLimit": "Off",
+    "AI_ENABLED": false,
+    "FOUNDRY_ENABLED": false,
+    "AI_PROACTIVE_ENABLED": false,
+    "AI_PROVIDER": "foundry",
+    "AI_MINUTE_LIMIT": 0,
+    "AI_HOURLY_LIMIT": 0,
+    "AI_DAILY_LIMIT": 0,
+    "AI_TOTAL_LIMIT": 0,
+    "HISTORICAL_MATCHES_ENABLED": false,
+    "RECORDED_MATCHES_VISIBLE": false
+  },
+  "foundry": {
+    "deployment": "between-the-lines-gpt54-mini",
+    "model": "gpt-5.4-mini",
+    "version": "2026-03-17",
+    "state": "Succeeded",
+    "sku": "GlobalStandard",
+    "capacity": 30,
+    "requestsPerMinute": 30,
+    "tokensPerMinute": 30000,
+    "inferenceRequestsThisAudit": 0
+  },
+  "security": {
+    "productionDependencyAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "trackedFileSecretScan": {
+      "scope": "Tracked working-tree files; common secret patterns only, not a full history/entropy scan",
+      "findings": [],
+      "trackedEnvFiles": [".env.example"]
+    }
+  },
+  "officialRules": {
+    "url": "https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md",
+    "upstreamCommit": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+    "upstreamCommitDate": "2026-10-06T17:23:55Z",
+    "sha256": "9af798c584c5670f37c7c284e15fbe8baf40257dbe6e2cb0e04d2d2b21743034",
+    "checkedDate": "2026-10-12"
+  },
+  "portal": {
+    "registration": "owner-confirmed 2026-10-12",
+    "eligibility": "owner-confirmed 2026-10-12",
+    "privateFields": "unverified; device authentication required",
+    "submitted": false
+  },
+  "video": {
+    "path": "artifacts/demo-2026-10-12/between-the-lines-demo.mp4",
+    "sha256": "befaee11e9a2cc9336fda61dcced02b62e483a8b35fb4ee572c16f3ccda9301a",
+    "matchesCommittedReceipt": true,
+    "durationSeconds": 116,
+    "freshFullDecodeErrors": 0,
+    "published": false
+  },
+  "validation": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "unit": {
+      "passed": 682,
+      "skipped": 6
+    },
+    "focused": {
+      "passed": 118
+    },
+    "browser": {
+      "passed": 198,
+      "skipped": 42,
+      "projects": [
+        "desktop Chromium",
+        "360px touch Chromium",
+        "390px touch Chromium"
+      ],
+      "configuration": "production; inference off; synthetic only",
+      "axeKeyboardReducedMotion": "passed covered cases; no comprehensive certification"
+    },
+    "mainCi": {
+      "runId": 38286132792,
+      "conclusion": "success"
+    },
+    "publicManual": {
+      "signedOut": true,
+      "mobileWidth": 390,
+      "horizontalOverflow": false,
+      "fadingAnswer": "1 to 4 wider; 3 to 1 recent halves",
+      "replay": "59:09 completed; six actions; main clock 70:00",
+      "browserErrors": []
+    }
+  }
+}

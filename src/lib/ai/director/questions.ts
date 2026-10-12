@@ -18,7 +18,7 @@ import {
   type Interpretation,
 } from "./shot-routes";
 
-export const QUESTION_VERSION = "guided-1.1.0";
+export const QUESTION_VERSION = "guided-1.1.1";
 export const questionIntentSchema = z.enum([
   "shot-surge-explanations",
   "chance-quality",
@@ -305,8 +305,15 @@ export function questionEvidence(
     } else {
       const mean = (events: NormalizedEvent[]) =>
         events.reduce((sum, e) => sum + e.xg!, 0) / events.length;
+      // Ratings are bounded to [0, 1]. Ignore floating-point summation noise,
+      // not meaningful source-model differences; retain raw evidence values.
+      const difference = mean(b) - mean(a);
       base.verdict =
-        mean(b) > mean(a) ? "higher" : mean(b) < mean(a) ? "lower" : "level";
+        Math.abs(difference) <= 1e-12
+          ? "level"
+          : difference > 0
+            ? "higher"
+            : "lower";
     }
     base.qualifications.push(
       "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",

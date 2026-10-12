@@ -1,5 +1,7 @@
 # Demonstration validation — October 12, 2026
 
+**Later audit update:** The [readiness candidate](../readiness-2026-10-12/README.md) corrects the equal-quality verdict defect and passes the same offline conclusion-safety gate. The original recording/study findings below remain historical evidence; they have not been rewritten or reclassified. Public deployment parity and video publication are still pending.
+
 This is assistant validation of selected software behavior and prepared media, not participant feedback, a new model evaluation or a release-readiness certification. Application code, historical study receipts and hosted settings are unchanged. No deployment, paid inference, submission or video publication occurred.
 
 ## Previous PR review and synchronization

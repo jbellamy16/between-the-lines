@@ -1,5 +1,7 @@
 # Claims and supporting evidence
 
+**Later audit update:** The [readiness candidate](../readiness-2026-10-12/README.md) corrects the equal-quality verdict defect and passes the same offline conclusion-safety gate. The original recording/study findings below remain historical evidence; they have not been rewritten or reclassified. Public deployment parity and video publication are still pending.
+
 This package distinguishes implemented behavior, measured historical model results and proposed viewer benefits. Automated checks establish that the selected path works; they do not establish comprehension or broad reliability.
 
 ## What we can show
