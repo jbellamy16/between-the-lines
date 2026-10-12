@@ -1,103 +1,80 @@
-# Between the Lines — submission package
+# Between the Lines — submission preparation
 
-Prepared October 11, 2026 (America/Chicago). Product PR [#26](https://github.com/jbellamy16/second-look/pull/26) is merged. The [public Azure release](https://between-the-lines-jb-f5539b65.azurewebsites.net/) serves **2014a497c84c799952c218a0229ec0c16bd964b1**, identified by [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json). Public AI is disabled; only synthetic matches are accessible. See [release verification](release-2026-10-11/RELEASE.md), [viewer test](release-2026-10-11/VIEWER-TEST.md), and [113-second demo](intelligence/DEMO.md). Registration and authenticated portal fields remain unverified. Human validation, video publication and entry submission remain pending.
+Updated October 12, 2026 (America/Chicago). **Review draft only. No publication, submission, deployment or paid inference in this update.** The current [116-second demonstration package](demo-2026-10-12/README.md) uses a local build after merged PR #34, with three explanation levels. It replaces the October 11 video for this revision. The older [Azure release](https://between-the-lines-jb-f5539b65.azurewebsites.net/) is a separate two-style build; do not describe it as the current demonstration.
 
 ## Pitch
 
-**More than the score.** Joining a football match late should not mean deciphering a wall of statistics. Between the Lines connects the score to what changed, offers a Quick or Full Catch Me Up, and lets viewers ask focused football questions. Plain English and Football Analysis explain the same checked facts. Every answer carries its qualifications and supporting events, which viewers can inspect and replay. The public Azure demo uses fictional teams and deterministic synthetic events. Optional Microsoft Foundry investigations select from independently verified evidence; application code controls calculations and factual wording.
+**More than the score.** You join a football match late. Harbor lead 1–0—but what changed, and is it still happening? Between the Lines turns recorded match events into explanations you can explore: choose Casual Viewer, Football Fan or Advanced Analysis, ask a focused question, inspect its evidence and replay the supporting passage. When evidence cannot establish an explanation, the app says so.
 
-## Product description
+The prototype uses fictional teams and reproducible synthetic events. Microsoft Foundry supports optional structured answer selection over application-retrieved evidence; application code calculates and checks the facts. An existing Azure App Service hosts an older public preview. Five historical Foundry answers matched deterministic baselines, with one appropriate no-call. Added investigative benefit and improved viewer understanding remain unproven.
 
-At 63:24 Harbor lead 1–0 and have taken four shots after none in the previous equal period. The app distinguishes more attempts from better chances. At 70:00 a guided question asks whether the increase has faded: the wider count rose from one to four, but the latest window's halves fell from three to one. The answer preserves both facts and explains their limits. Selecting a supporting event replays its schematic passage without moving the main match clock. Rewinding removes later information.
+## Product story
 
-The proposed benefit is faster, more accurate understanding for casual and knowledgeable viewers. That benefit still requires actual participant responses; automated checks do not establish usefulness.
+At **63:24**, Harbor lead **1–0** and have taken **four shots after none** in the previous equal period. That is a development worth explaining, but more shots do not establish better chances. The shot-surge investigation compares candidate explanations and concludes that no single explanation is established by these events.
 
-## Links for the entry
+At **70:00**, ask whether the increase has faded. The wider count rose **1 → 4**, while the latest spell's halves fell **3 → 1**. Both facts belong in the story. Inspect the supporting events and replay the **59:09** shot's schematic passage without moving the main clock. Choose the explanation level you need; Quick/Full recap length is a separate control.
 
-| Field               | Final value                                                                                                                        |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Project             | Between the Lines                                                                                                                  |
-| Tagline             | More than the score.                                                                                                               |
-| Working application | https://between-the-lines-jb-f5539b65.azurewebsites.net/                                                                           |
-| Public repository   | https://github.com/jbellamy16/second-look                                                                                          |
-| Product commit      | https://github.com/jbellamy16/second-look/commit/2014a497c84c799952c218a0229ec0c16bd964b1                                          |
-| Judge instructions  | This document, below                                                                                                               |
-| Video               | Local `artifacts/final-release-2026-10-11/demo/between-the-lines-demo.mp4`; public URL pending owner publication                   |
-| Suggested entry     | Individual, subject to eligibility/registration confirmation                                                                       |
-| Category choice     | Overall; consider Best Use of Microsoft Foundry only with the limitations below. Owner confirms the portal's available categories. |
+The intended benefit is understandable, inspectable match context for casual and knowledgeable viewers. Faster understanding, improved comprehension and audience preferences still require human testing.
 
-## Microsoft technology and architecture
+## Materials and access status
 
-| Component                                  | Implemented responsibility                                                                                                                    | Demonstrated limit                                                                                             |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Azure App Service                          | Public Next.js standalone server on Linux Node 24, existing Free F1 plan; signed-in Azure CLI deployment.                                     | Free-tier capacity and availability limits; no uptime SLA or enterprise-readiness claim.                       |
-| Microsoft Foundry / Azure OpenAI Responses | Optional server-side structured claim selection and bounded follow-up evidence queries using the existing GPT-5.4 Mini deployment.            | Disabled publicly. Guided study confirmed baseline answers; it did not show added investigative benefit.       |
-| Application TypeScript                     | Seeded events, cutoff-safe score/metrics, equal-window comparisons, typed questions, independent verification and controlled factual wording. | Synthetic event-model xG and schematic positions are not professional tracking or calibrated live predictions. |
-| React / Next.js / SVG                      | Shared story, pitch evidence, replay, independent style/recap length, local favorites and navigation.                                         | Chromium desktop/touch-size tests; physical Safari and screen-reader testing remain unperformed.               |
-| GitHub                                     | Public source, pull requests, automated checks and release evidence.                                                                          | Merging alone does not deploy the Azure application.                                                           |
+| Field                        | Prepared value and current status                                                                                                                                                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project / tagline            | Between the Lines / More than the score.                                                                                                                                                                                                                                           |
+| Repository                   | [jbellamy16/second-look](https://github.com/jbellamy16/second-look)                                                                                                                                                                                                                |
+| Current demonstration        | [116-second package](demo-2026-10-12/README.md), local build based on `f19995e8d50f5bf18fdd166f69c961a5727fcc8b`; application behavior unchanged by this materials update                                                                                                          |
+| Video                        | Local `artifacts/demo-2026-10-12/between-the-lines-demo.mp4`; no public video URL                                                                                                                                                                                                  |
+| Script and captions          | [Voiceover](demo-2026-10-12/voiceover-script.txt), [SRT](demo-2026-10-12/captions.srt), [WebVTT](demo-2026-10-12/captions.vtt)                                                                                                                                                     |
+| Working public preview       | [Existing Azure application](https://between-the-lines-jb-f5539b65.azurewebsites.net/); October 11 release `2014a497` has two styles and offline AI. Historical identity documented in [release evidence](release-2026-10-11/RELEASE.md); no new hosted parity certification here. |
+| Reproduce current experience | [Local setup and exact walkthrough](demo-2026-10-12/WALKTHROUGH.md); free, offline, no keys or account                                                                                                                                                                             |
+| Supporting evidence          | [Claims and limitations](demo-2026-10-12/EVIDENCE.md), [Foundry receipt card](demo-2026-10-12/assets/foundry-receipt.png), [validation](demo-2026-10-12/VALIDATION.md)                                                                                                             |
+| Proposed category            | Overall; Foundry considered with explicit limits on demonstrated benefit. Category choice and authenticated portal options remain owner decisions.                                                                                                                                 |
+| Entry status                 | Registration, eligibility and authenticated portal fields remain unverified. Nothing submitted.                                                                                                                                                                                    |
 
-```mermaid
-flowchart LR
-  A[Seeded synthetic events] --> B[Playback cutoff]
-  B --> C[Application measurements and qualifications]
-  C --> D[Story and guided answer]
-  D --> E[Plain English or Football Analysis]
-  D --> F[Supporting events and replay]
-  C -. optional, public AI disabled .-> G[Foundry selection and bounded checks]
-  G --> H[Independent application verification]
-  H --> D
-  E --> I[Quick or Full recap]
-```
+A matching hosted revision and public video URL are still needed before treating this as a complete entry. Keep this PR unmerged for review; merging alone does not deploy the application.
 
-This is one bounded investigator with application tools. There is no implemented Foundry Agent Service, Agent Framework, MCP orchestration, Fabric, managed identity or multi-agent system. Foundry does not write unchecked factual prose or verify its own claims. No model request is needed for public style changes, questions, evidence or replay.
+## Microsoft technology and AI contribution
 
-## Demonstrated results and limitations
+| Component                                  | Implemented responsibility                                                                                                                      | Evidence boundary                                                                                                                                     |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Microsoft Foundry / Azure OpenAI Responses | Existing GPT-5.4 Mini deployment serves optional structured selections and bounded evidence-query requests.                                     | Historical guided study: five completed answers matched baselines; one no-call. No optional follow-ups selected. This recording makes no model calls. |
+| Application TypeScript                     | Synthetic events, cutoff-safe metrics, equal-window comparisons, evidence retrieval, independent reconstruction and controlled factual wording. | These are deterministic contributions. Application correctness remains a dependency; a broader quality-comparison defect is known.                    |
+| React / Next.js / SVG                      | Three explanation levels, independent recap lengths, guided questions, evidence and pitch replay.                                               | Current local build, tested in Chromium desktop and touch-size viewports; not a physical Safari-device certification.                                 |
+| Azure App Service                          | Existing hosting of the older Next.js standalone release.                                                                                       | No deployment or capacity change in this task; current source/host parity is not claimed.                                                             |
+| GitHub                                     | Public source, review history and automated checks.                                                                                             | CI passing does not establish model quality or human usefulness.                                                                                      |
 
-The [guided campaign](intelligence/guided-investigations/REPORT.md) produced **five verified model answers and one correct no-call**, using **five HTTP attempts** and **US$0.01632525** in conservative token-rate accounting. All five model answers matched the same-question deterministic baseline; no additional follow-up evidence was selected. **Additional investigative benefit was not demonstrated.** These are assistant-analyzed synthetic/diagnostic cases, not participant feedback or broad real-match reliability.
+The optional path is **application evidence → Foundry structured selection → application verification → explanation**. The application requests initial evidence before inference. Read-only model follow-ups are bounded. Unsupported output or provider failure leads to a deterministic fallback with truthful provenance. There is no implemented Foundry Agent Service, Agent Framework, MCP orchestration, Fabric, managed identity or multi-agent system. Explanation-level switches and pitch replay are local behavior, not fresh AI generation.
 
-The paid-evaluated commit was `b56090090cf85c43a28ca07755764082d7bcaec3`. The later UI cancellation fix in `1ac8706` passed offline browser validation; the current release includes that fix. No campaign was rerun, no counters were reset, and historical receipts remain intact. Earlier failed studies remain documented in their original reports.
+## What the results establish
 
-The public walkthrough verifies initial score/clock/story, all four style/length combinations, questions and qualifications, evidence/replay, favorites/navigation, cancellation and stale responses, rewind, accessibility checks and synthetic source restrictions. Browser interception is used only in labeled cancellation/recovery tests, never in the demo footage or unmocked walkthrough. See [evidence and limitations](release-2026-10-11/RELEASE.md).
+The [October 11 guided campaign](intelligence/guided-investigations/REPORT.md) at evaluated commit `b56090090cf85c43a28ca07755764082d7bcaec3` produced **five verified model answers and one appropriate no-call**, using **five HTTP attempts**. Every completed answer matched the same-question deterministic baseline. **Added investigative benefit was not demonstrated.** These are small synthetic/diagnostic cases assessed by the assistant, not participant evidence or a broad reliability sample.
+
+The [newer offline comparison](intelligence/DIRECTOR-OFFLINE-EVALUATION.md) attributes all 28 additional useful fact–case pairs to deterministic code. It also identifies **11 incorrect equal-xG-as-lower verdicts in every arm**, caused by strict floating-point comparison. The broader publication-safety gate remains failed. This demo update does not fix or conceal that defect, and the selected validated scenes do not establish release readiness. The [proposed newer Foundry pilot](intelligence/investigation-foundry-2026-10-12/README.md) has not been executed. Older successful receipts do not validate today's shot-surge workflow.
+
+[Viewer usability testing](release-2026-10-11/VIEWER-TEST.md) is prepared, with **zero participant sessions reported**. No claims of comprehension gain, preference, speed improvement or measured real-world impact are supported yet.
 
 ## Judge setup and walkthrough
 
-Open the [public application](https://between-the-lines-jb-f5539b65.azurewebsites.net/) in a private browser window. No login, payment, key or setup is required. For an existing session: Settings → Generator profile **Curated demo** → Reset demo; select **Plain English** afterward. Choose **The pressure builds**, seed **202632**, paused.
+Use the [current local production setup](demo-2026-10-12/WALKTHROUGH.md#start-the-offline-production-preview), not the older Azure version, to reproduce this demonstration. No login, key, payment or model access is required. The timed sequence is:
 
-1. At **63:24**, confirm Harbor **1–0** Riverside. Read the story: Harbor shots **0 → 4**, equal **9m12s** windows, none scored. The quality question is unavailable because the earlier window has no shots.
-2. Open **Catch me up**. Switch Quick / Full and Plain English / Football Analysis independently. Facts and the cutoff stay consistent; only presentation changes.
-3. Return to Match centre, ask **Is the other team improving too?**, and inspect its direct answer and shared-window evidence. It compares recorded activity, not overall match control.
-4. Seek to **70:00** while paused. Drag the Match timeline near the target, then use arrow keys for one-second precision; confirm the visible clock. Ask **Has this increase already faded?** The answer is yes: wider windows **1 → 4**, recent halves **3 → 1**. The slowdown does not erase the wider increase or predict the next goal.
-5. Open **Explore answer evidence**, choose **59:09 · shot · Replay**. Six actions run from **58:39 to 59:09** at 8×; the main clock stays **70:00**. Positions are schematic, not tracking or match footage.
-6. Rewind the Match timeline to kickoff (Home key). Score becomes **0–0**, the later question disappears, and Catch Me Up has no later goal or story.
+1. **0–22 seconds:** join at 63:24, Harbor 1–0; read 0 → 4 shots and the chance-quality limitation.
+2. **22–38:** Catch Me Up; compare all three explanation levels, then Quick/Full independently.
+3. **38–53:** ask **What best describes this shot surge?**; inspect comparisons and “no single explanation.”
+4. **53–69:** explicitly jump to 70:00; ask **Has this increase already faded?**; compare wider 1 → 4 with recent 3 → 1.
+5. **69–82:** expand answer evidence and replay **59:09 · shot · Replay**, a six-action passage starting at 58:39; main clock stays 70:00.
+6. **82–108:** separate implementation and historical-result cards explain Foundry's actual role and demonstrated limits.
+7. **108–116:** return to the current recap; acknowledge pending viewer testing and close.
 
-For a local fallback, use Node 24 and a fresh checkout of the product commit:
-
-```sh
-npm ci
-AI_ENABLED=false AI_PROVIDER=offline FOUNDRY_ENABLED=false AI_PROACTIVE_ENABLED=false HISTORICAL_MATCHES_ENABLED=false RECORDED_MATCHES_VISIBLE=false npm run build
-AI_ENABLED=false AI_PROVIDER=offline FOUNDRY_ENABLED=false AI_PROACTIVE_ENABLED=false AI_MINUTE_LIMIT=0 AI_HOURLY_LIMIT=0 AI_DAILY_LIMIT=0 AI_TOTAL_LIMIT=0 HISTORICAL_MATCHES_ENABLED=false RECORDED_MATCHES_VISIBLE=false PORT=3124 HOSTNAME=127.0.0.1 npm start
-```
-
-Open http://127.0.0.1:3124. Process flags preserve existing local environment files. This runs the same deterministic experience without Azure or model access.
+The exact controls, reset behavior, recording tools and limitations are in the walkthrough. The original unmocked recording and final media remain local. No historical response is injected into the present application.
 
 ## Source attribution
 
-The demo's fictional Harbor Athletic, Riverside FC, players, seeded events, pitch graphics and Between the Lines identity are project assets. Replays are generated event visualization, not broadcast footage. No real-match data is accessible in the submission configuration. Historical Wyscout notices remain in the repository; StatsBomb research data is neither redistributed nor exposed. See [data rights](DATA-RIGHTS.md).
+Fictional Harbor Athletic, Riverside FC, players, seeded events, pitch graphics and Between the Lines identity are project assets. Replays visualize synthetic event endpoints, not licensed match footage. Historical Wyscout notices remain in the repository; StatsBomb research data is not exposed by this configuration. See [data rights](DATA-RIGHTS.md).
 
-Inter and Barlow Condensed use the retained [font licenses](brand/README.md). Lucide notices are distributed in `public/icon-licenses.txt`; dependency licenses remain applicable. The video uses neutral macOS Samantha synthetic narration, no music, and actual application footage. Ownership and entry warranties require the owner's confirmation; public repository access is not itself a license grant.
+Inter and Barlow Condensed retain their [font licenses](brand/README.md). UI library notices remain in `public/icon-licenses.txt`; dependency licenses apply. The video uses local macOS Samantha synthetic narration, actual application footage, original explanatory cards and no music. Owner eligibility, rights and entry warranties still require confirmation.
 
-## Official rules and portal status
+## Rules and remaining entry work
 
-Verified October 11 from the [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md). Registration ends **October 20, noon Pacific / 2 p.m. Chicago**; submissions end **October 27, 11:59 p.m. Pacific / October 28, 1:59 a.m. Chicago**. Keep the application available free and unrestricted through **November 10, 11:59 p.m. Pacific / November 11, 1:59 a.m. Chicago**.
+Read October 12 from the [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md): the video must show functioning software and be **less than two minutes**, with a public video URL and public GitHub repository. Registration closes **October 20 at noon Pacific**; submission closes **October 27 at 11:59 p.m. Pacific**. Project access must remain free through the judging period ending November 10. The authenticated portal was not inspected in this update; exact fields and limits remain unverified.
 
-Required materials include an English pitch, public GitHub repository, functioning project access, and a public demonstration video **under two minutes** showing the software working. Use authorized synthetic data/assets. Owner must confirm eligibility, creation after registration opened September 29, ownership, and category fit. The five judging criteria are equally weighted: implementation, agentic design/innovation, impact, experience/presentation, and category adherence.
-
-The [official entry link](https://aka.ms/insidethegame) redirects to [Innovation Studio](https://innovationstudio.microsoft.com/hackathons/insidethegamedeveloperhackathon). Fresh signed-out inspection on October 11 reached Microsoft sign-in. Registration, exact Projects fields, field limits and additional authenticated requirements remain **unverified**. No terms were accepted and no form was submitted.
-
-## Owner actions remaining
-
-- Confirm eligibility/registration and inspect authenticated Projects fields before the dates above; retain proof of registration.
-- Return actual casual and knowledgeable viewer responses using the [compact protocol/template](release-2026-10-11/VIEWER-TEST.md). Human validation remains pending.
-- Review the local 113-second export, publish it on an allowed host such as YouTube or Vimeo when ready, and paste the resulting public URL into the entry. Upload SRT captions; check signed-out playback and duration after processing. No video has been published.
-- Confirm rights, category and final entry fields, then submit personally or explicitly authorize submission. No submission has occurred.
-- Keep the existing free public app accessible through judging. Free-tier quota exhaustion or service outages require attention; do not upgrade or enable paid inference automatically.
+Owner review is still needed for eligibility/registration, actual viewer sessions, the known quality defect, category fit, eventual matching deployment, video publication and final entry. This task prepares reviewable materials only. No terms accepted, participants contacted, entry sent, video uploaded, infrastructure changed or paid campaign started.

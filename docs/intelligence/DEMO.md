@@ -1,4 +1,6 @@
-# Between the Lines — completed 113-second demo
+# Historical October 11 demonstration — 113 seconds
+
+**Superseded for current preparation by the [October 12, 116-second review package](../demo-2026-10-12/README.md).** This document and its media describe the older two-style public release. Retained as historical evidence; do not use its controls or publication instructions for the current revision.
 
 Recorded October 11, 2026 from the actual [public Azure application](https://between-the-lines-jb-f5539b65.azurewebsites.net/), commit **2014a497c84c799952c218a0229ec0c16bd964b1**. The footage is a continuous signed-out Chromium recording with functioning controls, not a screenshot sequence or rehearsal. Public AI and proactive inference are disabled. No intercepted/model responses appear in the recording; it made zero POST requests.
 
