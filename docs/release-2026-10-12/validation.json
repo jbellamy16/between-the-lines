@@ -1,0 +1,747 @@
+{
+  "deployedCommit": "10cd0aa68c4f1fab07aef2b244992c46879f44c7",
+  "typecheck": "passed",
+  "unit": {
+    "passed": 850,
+    "skipped": 11,
+    "failed": 0,
+    "note": "Normal offline unit configuration; Redis/environment-dependent cases skipped locally. Merged tree is identical to tested PR head."
+  },
+  "productionBuild": "passed with disabled-AI and synthetic-only flags",
+  "localBrowser": {
+    "startTime": "2026-10-12T21:40:34.681Z",
+    "duration": 21845.031,
+    "expected": 45,
+    "skipped": 6,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "repeatedLocalRewind": {
+    "startTime": "2026-10-12T21:43:26.407Z",
+    "duration": 20114.557999999997,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "publicBrowser": {
+    "startTime": "2026-10-12T21:46:40.121Z",
+    "duration": 125712.33,
+    "expected": 93,
+    "skipped": 6,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "publicBrowserCases": [
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance follows the system, persists overrides, and resumes system changes",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance remains usable when browser storage is unavailable",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "dark screens retain accessible contrast and a single visible brand",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance follows the system, persists overrides, and resumes system changes",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance remains usable when browser storage is unavailable",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "dark screens retain accessible contrast and a single visible brand",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance follows the system, persists overrides, and resumes system changes",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "appearance remains usable when browser storage is unavailable",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "appearance.spec.ts",
+      "title": "dark screens retain accessible contrast and a single visible brand",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "deployment.spec.ts",
+      "title": "hosted APIs preserve disabled inference, input validation and timestamp-safe recaps",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "deployment.spec.ts",
+      "title": "hosted APIs preserve disabled inference, input validation and timestamp-safe recaps",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "deployment.spec.ts",
+      "title": "hosted APIs preserve disabled inference, input validation and timestamp-safe recaps",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "event panels animate both ways, support keyboard input and survive rapid toggles",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "reduced motion keeps disclosures immediate",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "event panels animate both ways, support keyboard input and survive rapid toggles",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "reduced motion keeps disclosures immediate",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "event panels animate both ways, support keyboard input and survive rapid toggles",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "disclosures.spec.ts",
+      "title": "reduced motion keeps disclosures immediate",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "style persists, Settings stays synchronized, and selected evidence/replay/favorites stay in place",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all six level/length combinations retain qualifications, score, evidence and one reusable recap investigation",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "an in-flight investigation survives a style change and its verified result remains reusable",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "native keyboard controls, Insights and cross-tab preference synchronization",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "invalid or unavailable browser storage keeps a usable synchronized preference",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "recorded approximate times, full-time score, and rewind stay consistent across styles",
+      "project": "desktop",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all levels and quiet-spell evidence fit accessible desktop, tablet and mobile layouts",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "style persists, Settings stays synchronized, and selected evidence/replay/favorites stay in place",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all six level/length combinations retain qualifications, score, evidence and one reusable recap investigation",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "an in-flight investigation survives a style change and its verified result remains reusable",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "native keyboard controls, Insights and cross-tab preference synchronization",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "invalid or unavailable browser storage keeps a usable synchronized preference",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "recorded approximate times, full-time score, and rewind stay consistent across styles",
+      "project": "android",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all levels and quiet-spell evidence fit accessible desktop, tablet and mobile layouts",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "style persists, Settings stays synchronized, and selected evidence/replay/favorites stay in place",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all six level/length combinations retain qualifications, score, evidence and one reusable recap investigation",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "an in-flight investigation survives a style change and its verified result remains reusable",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "native keyboard controls, Insights and cross-tab preference synchronization",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "invalid or unavailable browser storage keeps a usable synchronized preference",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "recorded approximate times, full-time score, and rewind stay consistent across styles",
+      "project": "mobile",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "explanation.spec.ts",
+      "title": "all levels and quiet-spell evidence fit accessible desktop, tablet and mobile layouts",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "offline question is keyboard accessible, preserves story and replay, and renders at each viewport",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "a failed request recovers and successful reuse separates question intents",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "cancellation and question changes cannot publish a late answer",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "rewind and source changes invalidate an in-flight answer",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "an available quality question uses its own answer and a new fixture discards pending work",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "choosing a question cancels an older generic investigation before it can replace the source story",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "shot surge comparison stays deterministic for the pressure controls in both styles",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "offline question is keyboard accessible, preserves story and replay, and renders at each viewport",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "a failed request recovers and successful reuse separates question intents",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "cancellation and question changes cannot publish a late answer",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "rewind and source changes invalidate an in-flight answer",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "an available quality question uses its own answer and a new fixture discards pending work",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "choosing a question cancels an older generic investigation before it can replace the source story",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "shot surge comparison stays deterministic for the pressure controls in both styles",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "offline question is keyboard accessible, preserves story and replay, and renders at each viewport",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "a failed request recovers and successful reuse separates question intents",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "cancellation and question changes cannot publish a late answer",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "rewind and source changes invalidate an in-flight answer",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "an available quality question uses its own answer and a new fixture discards pending work",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "choosing a question cancels an older generic investigation before it can replace the source story",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "guided-investigations.spec.ts",
+      "title": "shot surge comparison stays deterministic for the pressure controls in both styles",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Synthetic: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Recorded: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "desktop",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Synthetic: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Recorded: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "android",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Synthetic: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "intelligence-context.spec.ts",
+      "title": "Recorded: intelligence and recap remain useful and spoiler-safe throughout the match",
+      "project": "mobile",
+      "status": "skipped",
+      "results": ["skipped"]
+    },
+    {
+      "file": "investigation-brief.spec.ts",
+      "title": "the five-part brief exposes evidence and challenges without opening a drawer",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "investigation-brief.spec.ts",
+      "title": "the five-part brief exposes evidence and challenges without opening a drawer",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "investigation-brief.spec.ts",
+      "title": "the five-part brief exposes evidence and challenges without opening a drawer",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "playback, evidence, recap, and rewind stay synchronized",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "scenarios, navigation, player preferences and mobile layout work",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "explanation provenance, category preferences, and arbitrary seeking are truthful",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "selected evidence drives replay, which retains its final frame",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "the demo shows a pattern emerging and reset clears custom filters",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "every major screen fits the viewport and captures review evidence",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "metadata, home-screen icons and social previews reference real files",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "pitch markers support touch-sized selection and keyboard inspection",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "detailed explainability captures the evidence drawer",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "OpenAI UI requests narration only on demand and clears stale results on rewind",
+      "project": "desktop",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "playback, evidence, recap, and rewind stay synchronized",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "scenarios, navigation, player preferences and mobile layout work",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "explanation provenance, category preferences, and arbitrary seeking are truthful",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "selected evidence drives replay, which retains its final frame",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "the demo shows a pattern emerging and reset clears custom filters",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "every major screen fits the viewport and captures review evidence",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "metadata, home-screen icons and social previews reference real files",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "pitch markers support touch-sized selection and keyboard inspection",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "detailed explainability captures the evidence drawer",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "OpenAI UI requests narration only on demand and clears stale results on rewind",
+      "project": "android",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "playback, evidence, recap, and rewind stay synchronized",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "scenarios, navigation, player preferences and mobile layout work",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "explanation provenance, category preferences, and arbitrary seeking are truthful",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "selected evidence drives replay, which retains its final frame",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "the demo shows a pattern emerging and reset clears custom filters",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "every major screen fits the viewport and captures review evidence",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "metadata, home-screen icons and social previews reference real files",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "pitch markers support touch-sized selection and keyboard inspection",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "detailed explainability captures the evidence drawer",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    },
+    {
+      "file": "match.spec.ts",
+      "title": "OpenAI UI requests narration only on demand and clears stale results on rewind",
+      "project": "mobile",
+      "status": "expected",
+      "results": ["passed"]
+    }
+  ],
+  "publicBrowserInterpretation": "Real public origin. Some existing tests intercept provider responses to verify UI recovery; these are not live AI results. Separate public-verification.json records an unmocked zero-UI-POST walkthrough. Six hidden recorded-source checks intentionally skipped.",
+  "freeze": {
+    "manifest": "c1e06e3a397bada88b59958ef41b217cd0141fdab62e11eaa115d58d10d05496",
+    "sourceHashes": 267,
+    "historicalHashes": 109,
+    "verified": true,
+    "regenerated": false
+  },
+  "deployment": {
+    "deploymentId": "ca76023a-b9db-4776-a602-4e5f71444000",
+    "errors": null,
+    "failedInstancesLogs": null,
+    "numberOfInstancesFailed": 0,
+    "numberOfInstancesInProgress": 0,
+    "numberOfInstancesSuccessful": 1,
+    "status": "RuntimeSuccessful"
+  }
+}
