@@ -1,5 +1,7 @@
 # AI Match Director 1.2
 
+Next design: [bounded agentic investigator proposal](AGENTIC-INVESTIGATOR-PROPOSAL.md). It incorporates the 35/35 deterministic-evidence result and the merged equal-xG correction, and proposes a single investigator, stronger deterministic baselines and held-out decision tests. Design only; incremental Foundry value remains unproven and public inference remains disabled.
+
 Focused investigation: [shot-surge implementation and offline validation](SHOT-SURGE-IMPLEMENTATION.md), following the [competing-explanations proposal](COMPETING-EXPLANATIONS-PROPOSAL.md). The deterministic comparison and bounded typed Foundry path are implemented; live reliability and incremental AI value remain unestablished. Public inference remains disabled.
 
 Version 1.2 adds independently verified hypotheses, selective counter-evidence, measured temporal storylines, specific significance/watch-next text and a typed evidence graph. See [the audit and implementation](EVOLUTION.md), the [real Foundry intelligence review](pr18-intelligence-2026-10-10/REPORT.md), and the [honest 100-second demonstration](DEMO.md). The live review found 14 verified publications, four quota failures and one no-call abstention across 18 primary states plus one diagnostic. Useful qualifications are demonstrated; better model-directed investigation and human preference are not established. Nothing was deployed.
