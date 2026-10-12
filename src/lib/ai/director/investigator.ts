@@ -94,9 +94,20 @@ export async function runBoundedInvestigator(
   match: MatchData,
   cutoff: number,
   context: DiscoveryContext = {},
-  options: { mode?: "normal" | "evaluation"; signal?: AbortSignal } = {},
+  options: {
+    mode?: "normal" | "evaluation";
+    signal?: AbortSignal;
+    maxHttpAttempts?: number;
+  } = {},
 ) {
   const start = Date.now();
+  // Evaluation callers may only lower the existing three-attempt ceiling.
+  const maxAttempts =
+    options.maxHttpAttempts === undefined
+      ? 3
+      : Number.isSafeInteger(options.maxHttpAttempts)
+        ? Math.max(0, Math.min(3, options.maxHttpAttempts))
+        : 0;
   const localContext = { ...context, audience: "local" as const };
   const prepared = prepareInvestigation(match, cutoff, localContext);
   const { baseline } = prepared;
@@ -165,12 +176,14 @@ export async function runBoundedInvestigator(
     return fallback(baseline.decision.stop.reason);
   if (match.provenance.redistribution === "restricted")
     return fallback("capability");
+  if (maxAttempts === 0) return fallback("budget");
   if (configuredProvider() !== "foundry") return fallback("disabled");
   if (!usageStoreReady()) return fallback("controls");
   // No public/proactive eligibility is introduced. Evaluation may intentionally
   // exercise already-solved states, unlike the normal no-inference path above.
   const identity = {
     workflow: INVESTIGATOR_VERSION,
+    maxAttempts,
     prompt: INVESTIGATOR_PROMPT_VERSION,
     catalogue: DISCOVERY_VERSION,
     baseline: EDITORIAL_BASELINE_VERSION,
@@ -204,7 +217,7 @@ export async function runBoundedInvestigator(
             throw new Error("Source changed during investigation");
           if (Date.now() >= deadline)
             throw new DOMException("Deadline", "TimeoutError");
-          if (receipt.attempts >= 3) throw new UsageFailure("budget");
+          if (receipt.attempts >= maxAttempts) throw new UsageFailure("budget");
           const material = index.developments
             .map((d) => investigationMaterial(index, bundles, d.id))
             .filter((m) => m.assessment)
@@ -243,7 +256,10 @@ export async function runBoundedInvestigator(
             decisions: receipt.trace.map((t) => t.action),
           });
           const finalBody = {
-            instructions,
+            instructions:
+              maxAttempts === 3
+                ? instructions
+                : `${instructions} This evaluation allows at most ${maxAttempts} HTTP attempts including retries; the last available request is final-only.`,
             input: [{ role: "user", content: JSON.stringify(packet) }],
             parallel_tool_calls: false,
             text: {
@@ -257,7 +273,7 @@ export async function runBoundedInvestigator(
           };
           const finalOnly =
             round === 2 ||
-            receipt.attempts >= 2 ||
+            receipt.attempts >= maxAttempts - 1 ||
             (round > 0 &&
               reservedTokens +
                 2 *
@@ -287,7 +303,7 @@ export async function runBoundedInvestigator(
           const response = await untilAborted(
             providerResponse("foundry", body, signal, {
               deadline,
-              maxAttempts: Math.min(2, 3 - receipt.attempts),
+              maxAttempts: Math.min(2, maxAttempts - receipt.attempts),
               onAttempt: () => {
                 receipt.attempts++;
                 reservedTokens += estimateRequestTokens(payload);
@@ -321,7 +337,7 @@ export async function runBoundedInvestigator(
           if (calls.length) {
             if (
               finalOnly ||
-              receipt.attempts >= 3 ||
+              receipt.attempts >= maxAttempts ||
               receipt.toolInvocations >= 4
             )
               throw new UsageFailure("budget");
