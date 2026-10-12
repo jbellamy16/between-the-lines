@@ -1,0 +1,1184 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-12T14:49:17.028Z",
+  "evaluatedRuntimeRef": "1f94aca6a4916543d2372bf402800deed65ab3fc",
+  "preparationHead": "1f94aca6a4916543d2372bf402800deed65ab3fc",
+  "preparationSourceHashes": {
+    "eval/investigation-preflight/plan.ts": "0d4f7c3e9d5c668268701a9b8d2241009774710288159d329a5f972814f7110b",
+    "scripts/prepare-investigation-evaluation.ts": "b76e051e2843df31d13c9744632e2b7490b6e467d0a0db9656b850d2ce77f9cc",
+    "tests/investigation-preflight.test.ts": "14fce72d75e15c6fc5ff7f41855ec441a3ade290841f1423610c61fc1757658f"
+  },
+  "proposal": {
+    "study": "investigation-foundry-2026-10-12",
+    "status": "proposed-not-authorized",
+    "caseIds": ["matched-separate-possessions"],
+    "caps": {
+      "workflows": 1,
+      "attempts": 2,
+      "perWorkflow": 2,
+      "nanoUsd": 500000000,
+      "spacingMs": 65000
+    },
+    "envelope": {
+      "input": 400000,
+      "output": 1800,
+      "nanoUsd": 308100000
+    },
+    "price": {
+      "input": 0.75,
+      "cachedInput": 0.075,
+      "output": 4.5
+    },
+    "deployment": "between-the-lines-gpt54-mini",
+    "model": "gpt-5.4-mini",
+    "version": "2026-03-17",
+    "region": "westus3",
+    "sku": "GlobalStandard",
+    "outputTokens": 1800,
+    "requestBytes": 131072,
+    "requestMinuteCeiling": 30,
+    "tokenMinuteCeiling": 30000,
+    "deadlineMs": 55000
+  },
+  "comparison": {
+    "offlinePreparationPassed": true,
+    "publicationSafetyPassed": false,
+    "states": 14,
+    "noCallStates": 6,
+    "comparisons": [
+      {
+        "caseId": "misleading-many-shots-one-recovery",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 19.438541999999984,
+        "tokenEstimate": {
+          "input": 23721,
+          "scriptedOutput": 619,
+          "reservation": 29121
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "misleading-many-shots-one-recovery",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 8.964958999999993,
+        "tokenEstimate": {
+          "input": 23724,
+          "scriptedOutput": 619,
+          "reservation": 29124
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "matched-separate-possessions",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "fallback",
+        "requests": 2,
+        "latencyMs": 7.256832999999972,
+        "tokenEstimate": {
+          "input": 15462,
+          "scriptedOutput": 223,
+          "reservation": 19062
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 2,
+            "precision": 0.5
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "matched-separate-possessions",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 2,
+        "latencyMs": 7.899208999999985,
+        "tokenEstimate": {
+          "input": 15464,
+          "scriptedOutput": 465,
+          "reservation": 19064
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 1,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "unchanged-route-frequency",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 7.232083000000046,
+        "tokenEstimate": {
+          "input": 23812,
+          "scriptedOutput": 600,
+          "reservation": 29212
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "unchanged-route-frequency",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 7.106334000000004,
+        "tokenEstimate": {
+          "input": 23815,
+          "scriptedOutput": 600,
+          "reservation": 29215
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "opponent-also-active",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 7.1532080000000065,
+        "tokenEstimate": {
+          "input": 24498,
+          "scriptedOutput": 590,
+          "reservation": 29898
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "opponent-current",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 2,
+            "precision": 0.5
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "opponent-also-active",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 2,
+        "latencyMs": 6.700500000000034,
+        "tokenEstimate": {
+          "input": 15374,
+          "scriptedOutput": 457,
+          "reservation": 18974
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "opponent-current",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 1,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "opponent-unchanged",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 6.9807500000000005,
+        "tokenEstimate": {
+          "input": 23231,
+          "scriptedOutput": 586,
+          "reservation": 28631
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "opponent-current",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 2,
+            "precision": 0.5
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "opponent-unchanged",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 2,
+        "latencyMs": 6.793542000000002,
+        "tokenEstimate": {
+          "input": 14538,
+          "scriptedOutput": 454,
+          "reservation": 18138
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "opponent-current",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 1,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "momentum-fades",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "fallback",
+        "requests": 2,
+        "latencyMs": 6.434417000000053,
+        "tokenEstimate": {
+          "input": 15580,
+          "scriptedOutput": 209,
+          "reservation": 19180
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "early-count",
+              "late-count",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 2,
+            "precision": 0.5
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "momentum-fades",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 2,
+        "latencyMs": 6.6860829999999964,
+        "tokenEstimate": {
+          "input": 15582,
+          "scriptedOutput": 451,
+          "reservation": 19182
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "early-count",
+              "late-count",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 1,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "matched-momentum-persists",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 6.873417000000018,
+        "tokenEstimate": {
+          "input": 24595,
+          "scriptedOutput": 600,
+          "reservation": 29995
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "early-count",
+              "late-count",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 2,
+            "precision": 0.5
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "matched-momentum-persists",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 2,
+        "latencyMs": 6.892000000000053,
+        "tokenEstimate": {
+          "input": 15430,
+          "scriptedOutput": 462,
+          "reservation": 19030
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "early-count",
+              "late-count",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 1,
+            "attempted": 1,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-possession",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 4.905999999999949,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-possession",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 5.170666000000097,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-location",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 5.048041999999896,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-location",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 4.727582999999981,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-timing",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 5.205375000000004,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-timing",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 4.816583000000037,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-xg",
+        "arm": "C-fixed-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 7.769415999999978,
+        "tokenEstimate": {
+          "input": 23534,
+          "scriptedOutput": 571,
+          "reservation": 28934
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 30,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "current-xg",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "missing-xg",
+        "arm": "D-adaptive-mock",
+        "eligible": true,
+        "disposition": "verified-script",
+        "requests": 3,
+        "latencyMs": 7.4870409999999765,
+        "tokenEstimate": {
+          "input": 23537,
+          "scriptedOutput": 571,
+          "reservation": 28937
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 30,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [
+              "current-xg",
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ],
+            "additionalVsA": [
+              "previous:linkedPossessions",
+              "current:linkedPossessions",
+              "current:largestPossession"
+            ]
+          },
+          "investigationRelevance": {
+            "relevant": 2,
+            "attempted": 2,
+            "precision": 1
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "no-recovery-links",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 4.908707999999933,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "no-recovery-links",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "deterministic",
+        "requests": 0,
+        "latencyMs": 5.325707999999963,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 30,
+          "correctAssertions": 29,
+          "unsupportedPublishedConclusions": 1,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": ["current:linkedPossessions"],
+            "additionalVsA": ["current:linkedPossessions"]
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "quiet-match",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "no-surge-question",
+        "requests": 0,
+        "latencyMs": 4.961917000000085,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 0,
+          "correctAssertions": 0,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [],
+            "additionalVsA": []
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "quiet-match",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "no-surge-question",
+        "requests": 0,
+        "latencyMs": 4.240666000000033,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 0,
+          "correctAssertions": 0,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [],
+            "additionalVsA": []
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "empty-match",
+        "arm": "C-fixed-mock",
+        "eligible": false,
+        "disposition": "no-surge-question",
+        "requests": 0,
+        "latencyMs": 4.396665999999982,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 0,
+          "correctAssertions": 0,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [],
+            "additionalVsA": []
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      },
+      {
+        "caseId": "empty-match",
+        "arm": "D-adaptive-mock",
+        "eligible": false,
+        "disposition": "no-surge-question",
+        "requests": 0,
+        "latencyMs": 4.334042000000068,
+        "tokenEstimate": {
+          "input": 0,
+          "scriptedOutput": 0,
+          "reservation": 0
+        },
+        "metrics": {
+          "assertions": 0,
+          "correctAssertions": 0,
+          "unsupportedPublishedConclusions": 0,
+          "invalidReferences": [],
+          "incorrectCitations": [],
+          "missingCaveats": [],
+          "usefulEvidence": {
+            "covered": [],
+            "additionalVsA": []
+          },
+          "investigationRelevance": {
+            "relevant": 0,
+            "attempted": 0,
+            "precision": null
+          }
+        },
+        "additionalUsefulFactsVsB": [],
+        "unsupportedConclusionDeltaVsB": 0,
+        "evidenceKind": "scripted; not model-selected"
+      }
+    ],
+    "selectedSizing": [
+      {
+        "arm": "C-fixed-mock",
+        "caseId": "matched-separate-possessions",
+        "scriptedDispatches": 2,
+        "scriptedDisposition": "fallback",
+        "tokenEstimate": {
+          "input": 15462,
+          "scriptedOutput": 223,
+          "reservation": 19062
+        },
+        "heuristicUncachedNanoUsd": 12600000,
+        "fitsProposedAttemptCap": true
+      },
+      {
+        "arm": "D-adaptive-mock",
+        "caseId": "matched-separate-possessions",
+        "scriptedDispatches": 2,
+        "scriptedDisposition": "verified-script",
+        "tokenEstimate": {
+          "input": 15464,
+          "scriptedOutput": 465,
+          "reservation": 19064
+        },
+        "heuristicUncachedNanoUsd": 13690500,
+        "fitsProposedAttemptCap": true
+      }
+    ],
+    "actualModelRequests": 0,
+    "actualCostUsd": 0,
+    "modelSelectedResults": null,
+    "meaningfulModelValue": "not measured; authorization and live readiness pending"
+  },
+  "readiness": {
+    "snapshotPath": "docs/intelligence/investigation-foundry-2026-10-12/read-only-readiness.json",
+    "snapshotDigest": "916584ba176fe1eef9f19a7c659ba7c0f1282e5663949abc857238f6fbe4067b",
+    "checkedAt": "2026-10-12T14:42:53.945Z",
+    "refreshedByOfflineCommand": false,
+    "application": {
+      "limits": [2, 2, 2, 2, 30, 30000],
+      "store": "memory",
+      "remainingWorkflows": null,
+      "remainingAttempts": null
+    },
+    "launchAllowed": false,
+    "blockers": [
+      "Explicit authorization for this proposed study is absent.",
+      "Sufficient existing durable allowance has not been verified; do not initialize or reset counters.",
+      "A separately reviewed, single-use execution adapter with durable reservation and claim is required; this command has no live mode."
+    ],
+    "beforeLive": [
+      "Recheck deployment identity, current prices and source hashes against this proposal.",
+      "Read and validate existing durable allowance and ownership without creating, resetting or repurposing a historical study store.",
+      "Use all existing production request controls, cooldowns, accounting and model settings; every retry counts toward two attempts.",
+      "Reserve 308100000 nanodollars before each dispatch in an append-only durable journal. Unknown usage retains the full reservation and stops the run.",
+      "Any failure, unsafe output, capacity rejection or ceiling stops the study. No replacements, repair calls or automatic continuation."
+    ]
+  },
+  "preservation": {
+    "filesChecked": 191,
+    "allUnchanged": true,
+    "detail": "preservation.json"
+  },
+  "artifactHashes": {
+    "offline-summary.json": "79bd280ded779ead40f96d7a213f42cd84be2cd7b649e8811d69e4835cc77964",
+    "offline-results.json": "bba8d850b0bb015608d37831580604bd568c196798530360b1da4d7ea17ca686",
+    "offline-transcripts.json": "c2f2c09cd46ad074dc81017573888fef4e191ad454a0f1dc7b795588d2aa692b"
+  }
+}
