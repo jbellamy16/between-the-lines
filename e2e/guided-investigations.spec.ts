@@ -330,3 +330,49 @@ test("choosing a question cancels an older generic investigation before it can r
     "Is the other team improving too?",
   );
 });
+
+test("shot surge comparison stays deterministic for the pressure controls in both styles", async ({
+  page,
+}) => {
+  const transport = await mockAI(page);
+  await ready(page);
+  const heading = await page.locator(".director-story h2").innerText();
+  await panel(page)
+    .getByRole("button", {
+      name: "What best describes this shot surge?",
+      exact: true,
+    })
+    .click();
+  await expect(panel(page)).toContainText("distinct linked possessions");
+  await expect(panel(page)).toContainText("No model investigation");
+  await expect(panel(page)).toContainText(
+    "Several shots after one recovery count as one linked possession",
+  );
+  await expect(page.locator(".director-story h2")).toHaveText(heading);
+  expect(transport.posts()).toBe(0);
+  await page
+    .locator(".director-story")
+    .getByLabel("Explanation style", { exact: true })
+    .selectOption("analysis");
+  await expect(panel(page)).toContainText("distinct linked possessions");
+  await expect(panel(page)).toContainText("pressing, causation");
+  await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
+  await expect(page.locator(".question-answer")).toHaveCount(0);
+  await panel(page)
+    .getByRole("button", {
+      name: "What best describes this shot surge?",
+      exact: true,
+    })
+    .click();
+  await expect(panel(page)).toContainText("No model investigation");
+  await expect(panel(page)).toContainText("1 distinct linked possessions");
+  expect(transport.posts()).toBe(0);
+  await panel(page)
+    .getByText("Explore answer evidence", { exact: true })
+    .click();
+  await panel(page)
+    .getByRole("button", { name: /Replay$/ })
+    .first()
+    .click();
+  await expect(page.getByTestId("clock")).toContainText("70:00");
+});

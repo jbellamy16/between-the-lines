@@ -106,9 +106,11 @@ function QuestionPanel({
     if (
       provider === "offline" ||
       evidence.availability === "unavailable" ||
+      evidence.comparison?.eligible === false ||
       match.provenance.redistribution === "restricted"
     ) {
       setBusy(false);
+      setNotice(evidence.comparison?.noCallReason ?? baseline.notice);
       return;
     }
     setBusy(true);

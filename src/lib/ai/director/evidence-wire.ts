@@ -190,6 +190,11 @@ export function evidenceWire() {
     } = packet;
     const extra = rest as Record<string, unknown>;
     if (extra.assessments) extra.assessments = assessment(extra.assessments);
+    if (extra.guidedMeasurements)
+      extra.guidedMeasurements = assessment(extra.guidedMeasurements);
+    if (extra.guidedAnswers)
+      extra.guidedAnswers = assessment(extra.guidedAnswers);
+    if (extra.routes) extra.routes = assessment(extra.routes);
     const limitationRefs = limits.map((s) => reference(limitations, s));
     const result = {
       ...rest,

@@ -14,6 +14,7 @@ import {
   EVIDENCE_LIMITS,
   observe,
   possessionBefore,
+  highRecoveryBefore,
   visibleEvents,
   type Candidate,
 } from "./observer";
@@ -900,17 +901,7 @@ export function evaluateHypothesis(
       match.capabilities.possession !== "unavailable"
     ) {
       const linked = currentShots.flatMap((shot) => {
-        const recovery = possessionBefore(match, visible, shot).findLast(
-          (event) =>
-            event.type === "recovery" &&
-            event.success !== false &&
-            (event.position?.x ?? -1) >= 66.7 &&
-            event.order < shot.order &&
-            shot.time >= event.time &&
-            shot.time - event.time <= 30 &&
-            event.source.precision !== "minute" &&
-            shot.source.precision !== "minute",
-        );
+        const recovery = highRecoveryBefore(match, visible, shot);
         return recovery ? [{ recovery, shot }] : [];
       });
       const linkedEvents = [

@@ -86,6 +86,25 @@ export function possessionBefore(
       e.order <= shot.order,
   );
 }
+/** Strict recorded recovery link, shared by existing assessments and route comparisons. */
+export function highRecoveryBefore(
+  match: MatchData,
+  visible: NormalizedEvent[],
+  shot: NormalizedEvent,
+) {
+  if (!match.capabilities.ballRecoveries) return undefined;
+  return possessionBefore(match, visible, shot).findLast(
+    (event) =>
+      event.type === "recovery" &&
+      event.success !== false &&
+      (event.position?.x ?? -1) >= 66.7 &&
+      event.order < shot.order &&
+      shot.time >= event.time &&
+      shot.time - event.time <= 30 &&
+      event.source.precision !== "minute" &&
+      shot.source.precision !== "minute",
+  );
+}
 export function observe(
   match: MatchData,
   cutoff: number,
