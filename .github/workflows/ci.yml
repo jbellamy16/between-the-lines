@@ -32,6 +32,7 @@ jobs:
         with:
           name: ai-evaluation
           path: |
+            artifacts/director-offline/
             artifacts/director-evaluation.json
             artifacts/intelligence-evaluation.json
             artifacts/broadcast-story.json

@@ -1,0 +1,4927 @@
+{
+  "schemaVersion": 1,
+  "kind": "offline diagnostic comparison; scripted transports, no model quality evidence",
+  "baselineRef": "78b1530edddb25d460935f28521cd836f82c7af4",
+  "implementationRef": "5b76572970bff58de74965ad130d8eb38285c0a9",
+  "manifestDigest": "2e0894c3e0fa54de48886bd15283175a317d6b14a2fa103029e5768fa71ec8df",
+  "sourceHashes": {
+    "eval/director-offline/cases.ts": "67e08d42f59746c3bfeb0489f7def26203a0dbf25e366dffef77214e9b8ec8b1",
+    "eval/director-offline/scoring.ts": "d1b10ca1605bbdff94726386d20b700a67d1424542488daea4961274782b06c5",
+    "eval/director-offline/mock.ts": "1858059a7c3d0a930884aeda1acf1187a745e444832541dd040f534c25f055d4",
+    "tests/director-offline-evaluation.test.ts": "b6dc03e85eff4cea69eba71b2d1992968242b4eebd116e1187f86788e4ff8818",
+    "src/lib/ai/director/questions.ts": "95be75254a7e34b7a7f4d0a9c7aa848db8c760af8f65f2e7598def19901e2f8e",
+    "src/lib/ai/director/shot-routes.ts": "c5c2cc4632472751bbf7c106ea4b47a71e85d12d2da93283563418e31182dbf8",
+    "src/lib/ai/director/surge-runner.ts": "c2e3a09ad5de55eb3a18f4b70954f738529681c2ab3684c37ec8cf2d2de809fe",
+    "src/lib/ai/director/hypothesis.ts": "65d55fdf9e025760f8cbc06c5e3a1aa48710eb6e21a419dd1d8c3070739ca005",
+    "src/lib/ai/director/observer.ts": "50d6469fb756f5c3ba21a0626a615bc976d6e1c5e3e617ac19b043c7b685d537",
+    "src/lib/ai/director/question-runner.ts": "f4869b528db2c531802e6768ca410dfee20b199c80b461bb26b2844d2359252b",
+    "src/lib/ai/providers.ts": "9b2e0a15c7d7eed1fbf921411eec29166cc793332e94b288d28ef04b664f02f3",
+    "src/lib/ai/request-controls.ts": "269466f76efa94800710d1743f24b65d2847edc94cf265ed16d0a85ba34d5b14",
+    "src/lib/ai/director/evidence-wire.ts": "989f21febea6e3195f80f8c79661079d7659ad1aaa4da6eb1f183bb3f72f790e",
+    "src/lib/ai/director/tools.ts": "4e27e75af19b648a1675be6c9da98b50f549ca7d65b563d9a1082a05e089693e",
+    "package-lock.json": "a7847de3b4f37df91fe4901e80b457169d965d6c115f7d84f601471d744ecb75"
+  },
+  "environment": {
+    "node": "v26.8.2",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "cases": [
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "misleading-many-shots-one-recovery",
+      "family": "grouping",
+      "category": "misleading evidence",
+      "eligible": true,
+      "statuses": ["supported", "supported", "supported"],
+      "useful": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [960, 970, 980],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": 2,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [1120, 11],
+        [1430, 12],
+        [1640, 13],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1110, 11],
+        [1420, 12],
+        [1630, 13]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "matched-separate-possessions",
+      "family": "grouping",
+      "category": "repeated routes",
+      "eligible": true,
+      "statuses": ["supported", "limited", "supported"],
+      "useful": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [1710],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 6,
+        "current:linkedPossessions": 4,
+        "current:largestPossession": 1,
+        "current:early": 3,
+        "current:late": 3,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 3,
+        "late-count": 3
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [
+        [200, 1],
+        [600, 2]
+      ],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "unchanged-route-frequency",
+      "family": "frequency",
+      "category": "misleading evidence",
+      "eligible": true,
+      "statuses": ["limited", "supported", "supported"],
+      "useful": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [960, 970, 980],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 2,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 2,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": 2,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [1120, 11],
+        [1430, 12],
+        [1640, 13],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1110, 11],
+        [1420, 12],
+        [1630, 13]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "opponent-also-active",
+      "family": "opponent",
+      "category": "opponent activity",
+      "eligible": true,
+      "statuses": ["supported", "limited", "supported"],
+      "useful": [
+        "opponent-current",
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [1710],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 6,
+        "current:linkedPossessions": 4,
+        "current:largestPossession": 1,
+        "current:early": 3,
+        "current:late": 3,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 3,
+        "late-count": 3
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [1120, 11],
+        [1430, 12],
+        [1640, 13],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1110, 11],
+        [1420, 12],
+        [1630, 13]
+      ],
+      "opponent": [410, 1450],
+      "id": "opponent-unchanged",
+      "family": "opponent",
+      "category": "opponent activity",
+      "eligible": true,
+      "statuses": ["supported", "limited", "limited"],
+      "useful": [
+        "opponent-current",
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [1710],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 6,
+        "current:linkedPossessions": 4,
+        "current:largestPossession": 1,
+        "current:early": 3,
+        "current:late": 3,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 1,
+        "early-count": 3,
+        "late-count": 3
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [1060, 11],
+        [1160, 12],
+        [1260, 13],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1050, 11],
+        [1150, 12],
+        [1250, 13]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "momentum-fades",
+      "family": "timing",
+      "category": "fading momentum",
+      "eligible": true,
+      "statuses": ["supported", "limited", "supported"],
+      "useful": [
+        "early-count",
+        "late-count",
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [1710],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 6,
+        "current:linkedPossessions": 4,
+        "current:largestPossession": 1,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [1120, 11],
+        [1430, 12],
+        [1640, 13],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1110, 11],
+        [1420, 12],
+        [1630, 13]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "matched-momentum-persists",
+      "family": "timing",
+      "category": "fading momentum",
+      "eligible": true,
+      "statuses": ["supported", "limited", "supported"],
+      "useful": [
+        "early-count",
+        "late-count",
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [1710],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 6,
+        "current:linkedPossessions": 4,
+        "current:largestPossession": 1,
+        "current:early": 3,
+        "current:late": 3,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 3,
+        "late-count": 3
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "missing-possession",
+      "family": "missing",
+      "category": "missing information",
+      "missing": "possession",
+      "eligible": false,
+      "statuses": ["unresolved", "supported", "supported"],
+      "useful": ["current:linkedPossessions"],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 1,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": null,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "missing-location",
+      "family": "missing",
+      "category": "missing information",
+      "missing": "location",
+      "eligible": false,
+      "statuses": ["unresolved", "supported", "supported"],
+      "useful": ["current:linkedPossessions"],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 1,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": null,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "missing-timing",
+      "family": "missing",
+      "category": "missing information",
+      "missing": "timing",
+      "eligible": false,
+      "statuses": ["unresolved", "supported", "supported"],
+      "useful": ["current:linkedPossessions"],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 1,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": null,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [[200, 1]],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [
+        [950, 10],
+        [1180, 20]
+      ],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "missing-xg",
+      "family": "missing",
+      "category": "missing information",
+      "missing": "xg",
+      "eligible": true,
+      "statuses": ["supported", "supported", "supported"],
+      "useful": [
+        "current-xg",
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "relevantAnchors": [960, 970, 980],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 1,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 1,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 4,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": 2,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": null,
+        "current-mean-xg": null,
+        "current-rated-shots": 5,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [],
+      "shots": [
+        [960, 10],
+        [970, 10],
+        [980, 10],
+        [1190, 20],
+        [1300, 30],
+        [1710, 40]
+      ],
+      "recoveries": [],
+      "opponent": [410, 1050, 1150, 1250, 1450, 1750],
+      "id": "no-recovery-links",
+      "family": "control",
+      "category": "settled no-call",
+      "eligible": false,
+      "statuses": ["limited", "supported", "supported"],
+      "useful": ["current:linkedPossessions"],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 0,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 0,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 6,
+        "current:linkedShots": 0,
+        "current:shotPossessions": 4,
+        "current:linkedPossessions": 0,
+        "current:largestPossession": 3,
+        "current:early": 5,
+        "current:late": 1,
+        "current-shots": 6,
+        "current-xg": 0.6,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 6,
+        "own-previous": 2,
+        "own-current": 6,
+        "opponent-previous": 1,
+        "opponent-current": 5,
+        "early-count": 5,
+        "late-count": 1
+      }
+    },
+    {
+      "previousShots": [
+        [210, 1],
+        [610, 2]
+      ],
+      "previousRecoveries": [],
+      "shots": [[1200, 10]],
+      "recoveries": [],
+      "opponent": [410, 1450],
+      "id": "quiet-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "eligible": false,
+      "statuses": null,
+      "useful": [],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 2,
+        "previous:linkedShots": 0,
+        "previous:shotPossessions": 2,
+        "previous:linkedPossessions": 0,
+        "previous:largestPossession": 1,
+        "previous:early": 1,
+        "previous:late": 1,
+        "previous-shots": 2,
+        "previous-xg": 0.2,
+        "previous-mean-xg": 0.1,
+        "previous-rated-shots": 2,
+        "current:shots": 1,
+        "current:linkedShots": 0,
+        "current:shotPossessions": 1,
+        "current:linkedPossessions": 0,
+        "current:largestPossession": 1,
+        "current:early": 1,
+        "current:late": 0,
+        "current-shots": 1,
+        "current-xg": 0.1,
+        "current-mean-xg": 0.1,
+        "current-rated-shots": 1,
+        "own-previous": 2,
+        "own-current": 1,
+        "opponent-previous": 1,
+        "opponent-current": 1,
+        "early-count": 1,
+        "late-count": 0
+      }
+    },
+    {
+      "previousShots": [],
+      "previousRecoveries": [],
+      "shots": [],
+      "recoveries": [],
+      "opponent": [],
+      "id": "empty-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "eligible": false,
+      "statuses": null,
+      "useful": [],
+      "relevantAnchors": [],
+      "referenceFacts": {
+        "previous:shots": 0,
+        "previous:linkedShots": 0,
+        "previous:shotPossessions": 0,
+        "previous:linkedPossessions": 0,
+        "previous:largestPossession": 0,
+        "previous:early": 0,
+        "previous:late": 0,
+        "previous-shots": 0,
+        "previous-xg": 0,
+        "previous-mean-xg": null,
+        "previous-rated-shots": 0,
+        "current:shots": 0,
+        "current:linkedShots": 0,
+        "current:shotPossessions": 0,
+        "current:linkedPossessions": 0,
+        "current:largestPossession": 0,
+        "current:early": 0,
+        "current:late": 0,
+        "current-shots": 0,
+        "current-xg": 0,
+        "current-mean-xg": null,
+        "current-rated-shots": 0,
+        "own-previous": 0,
+        "own-current": 0,
+        "opponent-previous": 0,
+        "opponent-current": 0,
+        "early-count": 0,
+        "late-count": 0
+      }
+    }
+  ],
+  "summary": [
+    {
+      "arm": "A-existing-deterministic",
+      "states": 14,
+      "verifiedScripts": 0,
+      "failures": 0,
+      "assertions": 216,
+      "correctAssertions": 205,
+      "unsupportedPublishedConclusions": 11,
+      "invalidReferences": 0,
+      "incorrectCitations": 0,
+      "missingCaveats": 0,
+      "usefulFacts": 7,
+      "usefulFactsAvailable": 35,
+      "additionalUsefulFactsVsA": 0,
+      "retrievedAdditionalUsefulFactsVsA": 0,
+      "additionalUsefulFactsVsB": 0,
+      "relevantQueries": 0,
+      "followupQueries": 0,
+      "requests": 0,
+      "estimatedInputTokens": 0,
+      "estimatedScriptedOutputTokens": 0,
+      "reservationTokens": 0,
+      "localLatencyMs": {
+        "n": 14,
+        "median": 4.966542000000004,
+        "p95": 15.930000000000007
+      }
+    },
+    {
+      "arm": "B-strengthened-deterministic",
+      "states": 14,
+      "verifiedScripts": 0,
+      "failures": 0,
+      "assertions": 360,
+      "correctAssertions": 349,
+      "unsupportedPublishedConclusions": 11,
+      "invalidReferences": 0,
+      "incorrectCitations": 0,
+      "missingCaveats": 0,
+      "usefulFacts": 35,
+      "usefulFactsAvailable": 35,
+      "additionalUsefulFactsVsA": 28,
+      "retrievedAdditionalUsefulFactsVsA": 0,
+      "additionalUsefulFactsVsB": 0,
+      "relevantQueries": 0,
+      "followupQueries": 0,
+      "requests": 0,
+      "estimatedInputTokens": 0,
+      "estimatedScriptedOutputTokens": 0,
+      "reservationTokens": 0,
+      "localLatencyMs": {
+        "n": 14,
+        "median": 4.889374999999973,
+        "p95": 6.86629099999999
+      }
+    },
+    {
+      "arm": "C-fixed-mock",
+      "states": 14,
+      "verifiedScripts": 6,
+      "failures": 2,
+      "assertions": 360,
+      "correctAssertions": 349,
+      "unsupportedPublishedConclusions": 11,
+      "invalidReferences": 0,
+      "incorrectCitations": 0,
+      "missingCaveats": 0,
+      "usefulFacts": 35,
+      "usefulFactsAvailable": 35,
+      "additionalUsefulFactsVsA": 28,
+      "retrievedAdditionalUsefulFactsVsA": 24,
+      "additionalUsefulFactsVsB": 0,
+      "relevantQueries": 11,
+      "followupQueries": 16,
+      "requests": 22,
+      "estimatedInputTokens": 174433,
+      "estimatedScriptedOutputTokens": 3998,
+      "reservationTokens": 214033,
+      "localLatencyMs": {
+        "n": 14,
+        "median": 6.123209000000031,
+        "p95": 18.707000000000022
+      }
+    },
+    {
+      "arm": "D-adaptive-mock",
+      "states": 14,
+      "verifiedScripts": 8,
+      "failures": 0,
+      "assertions": 360,
+      "correctAssertions": 349,
+      "unsupportedPublishedConclusions": 11,
+      "invalidReferences": 0,
+      "incorrectCitations": 0,
+      "missingCaveats": 0,
+      "usefulFacts": 35,
+      "usefulFactsAvailable": 35,
+      "additionalUsefulFactsVsA": 28,
+      "retrievedAdditionalUsefulFactsVsA": 24,
+      "additionalUsefulFactsVsB": 0,
+      "relevantQueries": 11,
+      "followupQueries": 11,
+      "requests": 19,
+      "estimatedInputTokens": 147464,
+      "estimatedScriptedOutputTokens": 4079,
+      "reservationTokens": 181664,
+      "localLatencyMs": {
+        "n": 14,
+        "median": 6.651457999999991,
+        "p95": 8.433666999999986
+      }
+    }
+  ],
+  "attacks": [
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.9602499999999736,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18456,
+      "transcriptDigest": "4b23e89941689c600872271dc6e098b3b39f24fde2e8b1e524eb7fdb5610f7ba"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.7040000000000646,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18452,
+      "transcriptDigest": "25837676e9ce30756f042c11f4df3ef644d9fc40e4922fb8510a3f3868f09e85"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.410417000000052,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18454,
+      "transcriptDigest": "26da2e8f0c8449021b3ccf1c230f48bee9de0108f88883fef141f7d1225915db"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.1934170000000677,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18452,
+      "transcriptDigest": "ce193c8de936c33a8a416e1b7836328ed7a56a7ecc89f1f0fa798509bcc77660"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.193708999999899,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18454,
+      "transcriptDigest": "bd0e10cc6b3774e26e04862e0c3b40aeb473e44cc2559d5e4091441662d7abbb"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.509208000000058,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19066,
+      "transcriptDigest": "a87e93ba4b0a63168f601938615d7214372458742d964d8833d4d2b44575c5f2"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.395999999999958,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19062,
+      "transcriptDigest": "8d760a0014ec0ee85c8ba23fefd38c341a6602c8bb3a4479fa1ba458480ce5c8"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.437667000000033,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19064,
+      "transcriptDigest": "134faeec5a75eafb4bd466ed80567d1c8be1dc11ba8cd40f31ac51b961e9d5c4"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.950790999999981,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19062,
+      "transcriptDigest": "1a133cafe944d35bd1ef72c19b83ac0822cdbd224791b5c96d18f0f37c610ce1"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.546375000000012,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19063,
+      "transcriptDigest": "99b687aeca855002b2105646899328923ddd5ee79e7d81813152f0c03356d2cf"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.735084000000029,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18509,
+      "transcriptDigest": "a5386ceea921bb6cb5fe821a38aee376bb70bdb5a02b28e06d2d3ec1fe6dd79d"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.2342499999999745,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18505,
+      "transcriptDigest": "d9c120cbd3602e5aa17d428d21e1291700eea2931b5232b24e78c130ca872e3c"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.6657500000000027,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18506,
+      "transcriptDigest": "2e83c8fd75dae5387ad71f3d9530c3e0a5e327ded05aed2eaba02a7ab8eae253"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.809458999999947,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18505,
+      "transcriptDigest": "dedef3616664c8631239bc37dcd9b0bbdc04076601f50ba6f02306ff1e2e8874"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.3070829999999205,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18506,
+      "transcriptDigest": "6460024aa68d9e87eaff65da9374a90112fa0731b4f1e158cb6124e9fc280bfe"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.5206249999999955,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18976,
+      "transcriptDigest": "3d6f2d03b41eb99ce5fbb54514b7e5308a9627b2a06c053847f2d4e9f8b3eee7"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.4613749999999754,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18972,
+      "transcriptDigest": "1ddf8be4e857a12abb6700f705e6552ed3f2457906447c88d099f5279ed9c6c5"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.2774160000000165,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18973,
+      "transcriptDigest": "807f8bb24a25f53a6f27d57f495bcdad9961ab0ff6dbc786f67f51ae29ddf1a4"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.692542000000003,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18972,
+      "transcriptDigest": "3ad9d62d720f26b1c4b79ff363b55ce4d111158e757ebeb869de96177d926af1"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.530458000000067,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18972,
+      "transcriptDigest": "4620d22e3fe5bc401419019346e58b3399bb3a040efbeeb380117bb89899010d"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.3327909999999292,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18140,
+      "transcriptDigest": "f4576ab911442889986f29b23f9d9b184d844958e2338a802be4bb5f03e7e1a3"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.125250000000051,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18136,
+      "transcriptDigest": "cb6eeb5e9d24e6a46c3d2a9d8610f7a39582cde3b66ae8dec6d6cf6fc598c549"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.269166000000041,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18138,
+      "transcriptDigest": "96c2e7d070ccbe606236379a94653ce7799f239546d7ea457e1235610142294e"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.9096660000000156,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18136,
+      "transcriptDigest": "37b1cf3adf90797cd08852e031753a7f25f058a372c9db7ee6ec26fb421e36c9"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.041417000000024,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18137,
+      "transcriptDigest": "c27055a43778b8322033176d917aae943f304353eecb0a5a0f1aafd381fbb8c0"
+    },
+    {
+      "caseId": "momentum-fades",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.2862499999999955,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19184,
+      "transcriptDigest": "bf997acbe6405465bd28363efaed64099c6d28b8731aeda6263fcda52227cb8f"
+    },
+    {
+      "caseId": "momentum-fades",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.5401669999999967,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19180,
+      "transcriptDigest": "e5876bfbb6adb91ae3cc8140d3e500bd5029bfa24954f8da6f0708b5b3167eee"
+    },
+    {
+      "caseId": "momentum-fades",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.3369579999999814,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19182,
+      "transcriptDigest": "8a4916e8c5db989caf366d9bc5be3e41bb69e0db145ff8c681e1cd65c55175ff"
+    },
+    {
+      "caseId": "momentum-fades",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.131917000000044,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19180,
+      "transcriptDigest": "d7df60a756c92a84c29523d83ba5c7ffa93103ef4fb98efa7bad20bc817dd246"
+    },
+    {
+      "caseId": "momentum-fades",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.284625000000119,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19181,
+      "transcriptDigest": "dc520cbfa56e5f6f639b5bf1140b50c07a5606efb04d517efbacb3bab7037111"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.376541999999972,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19032,
+      "transcriptDigest": "e0720d6abb17ed0e2fa55c06129c2e9982bfa288daacdfe44f20a7cb8c7a6f89"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.4649160000001302,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19028,
+      "transcriptDigest": "72a28fdfbdbab9c88e852f9641e4e2cae2e54899d3fa0b7d77626040c3022e13"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.2157090000000608,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19030,
+      "transcriptDigest": "7d78c1f7a2e95d7c728f6301dc2ef5c5148b020dc34ef09cb276c35005cf0e78"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.755583999999999,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19028,
+      "transcriptDigest": "f2b69dfecca9860ddcae1c8220ec208d7a80f5187d1ba320039ec6ed56dada53"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.2184579999998277,
+      "fallbackPreserved": true,
+      "tokenEstimate": 19029,
+      "transcriptDigest": "07d5e232b9f4e4a14d4b7c4b5fcf422c2fc149fb26c0837cef018cde38a987c5"
+    },
+    {
+      "caseId": "missing-xg",
+      "policy": "invented-reference",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.1808750000000146,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18374,
+      "transcriptDigest": "977634222a3e18e1f658c4b564a8a960c46084bda348adec6c799a192f7729a8"
+    },
+    {
+      "caseId": "missing-xg",
+      "policy": "wrong-status",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.554875000000038,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18370,
+      "transcriptDigest": "421e3e3a001cac7d3e615f60afb136996b4f9c24c237d081c06c40ba28a6b0dd"
+    },
+    {
+      "caseId": "missing-xg",
+      "policy": "omit-challenge",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 2.1277500000001055,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18372,
+      "transcriptDigest": "4b986e433af44233f8b3961b883328b1c26a145129f9910a2fdd6384ff856e60"
+    },
+    {
+      "caseId": "missing-xg",
+      "policy": "causal-prose",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.6822500000000673,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18370,
+      "transcriptDigest": "fc75fa69f9f285379e44b10b14085209ad7d6f25d5696bfef1e0aeab622fef33"
+    },
+    {
+      "caseId": "missing-xg",
+      "policy": "future-replay",
+      "rejected": true,
+      "source": "offline",
+      "requests": 2,
+      "latencyMs": 1.91862500000002,
+      "fallbackPreserved": true,
+      "tokenEstimate": 18372,
+      "transcriptDigest": "ada0a80a7752d5928ed128a2ca48dff4da398e7a8d53a331d7b41be9ca6b668c"
+    }
+  ],
+  "rows": [
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "family": "grouping",
+      "category": "misleading evidence",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "dff0b828aba250cc2bf448b1218763473e6ea8c383c467fc40e3f2de4cea08cc",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 15.930000000000007,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "family": "grouping",
+      "category": "misleading evidence",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "dff0b828aba250cc2bf448b1218763473e6ea8c383c467fc40e3f2de4cea08cc",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 6.86629099999999,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "family": "grouping",
+      "category": "misleading evidence",
+      "arm": "C-fixed-mock",
+      "inputDigest": "dff0b828aba250cc2bf448b1218763473e6ea8c383c467fc40e3f2de4cea08cc",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:misleading-many-shots-one-recovery",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:misleading-many-shots-one-recovery",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:misleading-many-shots-one-recovery:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 18.707000000000022,
+      "reservationAttempts": [8237, 10215, 10669],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23721,
+        "scriptedOutput": 619,
+        "reservation": 29121
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:misleading-many-shots-one-recovery:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": [
+            "offline-eval:misleading-many-shots-one-recovery:harbor:960:shot"
+          ]
+        }
+      ],
+      "transcriptDigest": "32912b6b33dca2d1cba5cb0454f9f1bb91254589883991738279169e51e3d9c9"
+    },
+    {
+      "caseId": "misleading-many-shots-one-recovery",
+      "family": "grouping",
+      "category": "misleading evidence",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "dff0b828aba250cc2bf448b1218763473e6ea8c383c467fc40e3f2de4cea08cc",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:misleading-many-shots-one-recovery",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:misleading-many-shots-one-recovery",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:misleading-many-shots-one-recovery:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 8.433666999999986,
+      "reservationAttempts": [8238, 10216, 10670],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23724,
+        "scriptedOutput": 619,
+        "reservation": 29124
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:misleading-many-shots-one-recovery:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": [
+            "offline-eval:misleading-many-shots-one-recovery:harbor:960:shot"
+          ]
+        }
+      ],
+      "transcriptDigest": "b7730eddf2f6b11c1a12802879ef21f590b73366bf2a6932cd176b506924bcfa"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "family": "grouping",
+      "category": "repeated routes",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "11e9b8edc7a8930d356759d5477b034bdb7cc9038fc815ffdeb6eccdfb0b0420",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 6.2522089999999935,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "family": "grouping",
+      "category": "repeated routes",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "11e9b8edc7a8930d356759d5477b034bdb7cc9038fc815ffdeb6eccdfb0b0420",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.8157920000000445,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "family": "grouping",
+      "category": "repeated routes",
+      "arm": "C-fixed-mock",
+      "inputDigest": "11e9b8edc7a8930d356759d5477b034bdb7cc9038fc815ffdeb6eccdfb0b0420",
+      "eligible": true,
+      "disposition": "fallback",
+      "failure": {
+        "category": "capacity"
+      },
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 2,
+          "precision": 0.5
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:matched-separate-possessions",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:matched-separate-possessions",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:matched-separate-possessions:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.134624999999971,
+      "reservationAttempts": [8510, 10552, 10992],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15462,
+        "scriptedOutput": 223,
+        "reservation": 19062
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "ba357fbd7ed150a080e77efb91e78d536b3fe866ddaa89c7b550bc7161d0b65a"
+    },
+    {
+      "caseId": "matched-separate-possessions",
+      "family": "grouping",
+      "category": "repeated routes",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "11e9b8edc7a8930d356759d5477b034bdb7cc9038fc815ffdeb6eccdfb0b0420",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 1,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:matched-separate-possessions",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.92670899999996,
+      "reservationAttempts": [8511, 10553],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15464,
+        "scriptedOutput": 465,
+        "reservation": 19064
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "b9eb70399bc9c5c7b2c17cf9daf128690be150db93b357cc2d906fbf712ea2f5"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "family": "frequency",
+      "category": "misleading evidence",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "4d7b286d82be0beef3b1b272ca941302410b1abbdcdecdb05344fb3491be3f2b",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.095708999999999,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "family": "frequency",
+      "category": "misleading evidence",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "4d7b286d82be0beef3b1b272ca941302410b1abbdcdecdb05344fb3491be3f2b",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.983625000000018,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "family": "frequency",
+      "category": "misleading evidence",
+      "arm": "C-fixed-mock",
+      "inputDigest": "4d7b286d82be0beef3b1b272ca941302410b1abbdcdecdb05344fb3491be3f2b",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:unchanged-route-frequency",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:unchanged-route-frequency",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:unchanged-route-frequency:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.088916999999981,
+      "reservationAttempts": [8235, 10270, 10707],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23812,
+        "scriptedOutput": 600,
+        "reservation": 29212
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:unchanged-route-frequency:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:unchanged-route-frequency:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "e9895f4c40092bfab2b69be2b855fee5956e0f8bbd40e44f9b80d063e75cdd70"
+    },
+    {
+      "caseId": "unchanged-route-frequency",
+      "family": "frequency",
+      "category": "misleading evidence",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "4d7b286d82be0beef3b1b272ca941302410b1abbdcdecdb05344fb3491be3f2b",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 3,
+          "covered": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:unchanged-route-frequency",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:unchanged-route-frequency",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:unchanged-route-frequency:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.922832999999969,
+      "reservationAttempts": [8236, 10271, 10708],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23815,
+        "scriptedOutput": 600,
+        "reservation": 29215
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:unchanged-route-frequency:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:unchanged-route-frequency:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "138c7c1858290ddea7d5e807521c132decd6f19a9cc2695e04b38c9ddffd5687"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "893f290f5b875ed8c5adae360287061908c67de1a35d51ca504c9f7c849caffc",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": ["opponent-current"],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.208250000000021,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "893f290f5b875ed8c5adae360287061908c67de1a35d51ca504c9f7c849caffc",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.2662090000000035,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "C-fixed-mock",
+      "inputDigest": "893f290f5b875ed8c5adae360287061908c67de1a35d51ca504c9f7c849caffc",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 2,
+          "precision": 0.5
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:opponent-also-active",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:opponent-also-active",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:opponent-also-active:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.0947080000000255,
+      "reservationAttempts": [8476, 10496, 10926],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 24498,
+        "scriptedOutput": 590,
+        "reservation": 29898
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:opponent-also-active:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:opponent-also-active:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "90de5727ffcf40717e2a983cef980f8d3aa38f7ced54a282b8b1fad8dc6ccb03"
+    },
+    {
+      "caseId": "opponent-also-active",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "893f290f5b875ed8c5adae360287061908c67de1a35d51ca504c9f7c849caffc",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 1,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:opponent-also-active",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.651457999999991,
+      "reservationAttempts": [8477, 10497],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15374,
+        "scriptedOutput": 457,
+        "reservation": 18974
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "ca97a04cb884bb3f434c7529063c769a05fe148bee2d320d300bb7f94172c532"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "f792173cdfa6b44042cbbb33869c9ef95b9e8270bd63a3a231a1df34709844aa",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": ["opponent-current"],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.966542000000004,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "f792173cdfa6b44042cbbb33869c9ef95b9e8270bd63a3a231a1df34709844aa",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.778165999999999,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "C-fixed-mock",
+      "inputDigest": "f792173cdfa6b44042cbbb33869c9ef95b9e8270bd63a3a231a1df34709844aa",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 2,
+          "precision": 0.5
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:opponent-unchanged",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:opponent-unchanged",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:opponent-unchanged:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.832583999999997,
+      "reservationAttempts": [8068, 10068, 10495],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23231,
+        "scriptedOutput": 586,
+        "reservation": 28631
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:opponent-unchanged:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:opponent-unchanged:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "8104ee072765e7350d346bf5ea8ae1c50cae9dbebd226cba162d9ce550697a52"
+    },
+    {
+      "caseId": "opponent-unchanged",
+      "family": "opponent",
+      "category": "opponent activity",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "f792173cdfa6b44042cbbb33869c9ef95b9e8270bd63a3a231a1df34709844aa",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "opponent-current",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 1,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:opponent-unchanged",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.629332999999974,
+      "reservationAttempts": [8069, 10069],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 14538,
+        "scriptedOutput": 454,
+        "reservation": 18138
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "6e11fb1119fa128ef2989518ef817545eb24a0029be1f0c9330505efe057b761"
+    },
+    {
+      "caseId": "momentum-fades",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "8135ef67f874d6d7b3f2c5a4de04515e9fd3c27044887a81c1f907af0b125584",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": ["early-count", "late-count"],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.9879999999999995,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "momentum-fades",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "8135ef67f874d6d7b3f2c5a4de04515e9fd3c27044887a81c1f907af0b125584",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.8549580000000105,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "momentum-fades",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "C-fixed-mock",
+      "inputDigest": "8135ef67f874d6d7b3f2c5a4de04515e9fd3c27044887a81c1f907af0b125584",
+      "eligible": true,
+      "disposition": "fallback",
+      "failure": {
+        "category": "capacity"
+      },
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 2,
+          "precision": 0.5
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:momentum-fades",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:momentum-fades",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:momentum-fades:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.123209000000031,
+      "reservationAttempts": [8588, 10592, 11014],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15580,
+        "scriptedOutput": 209,
+        "reservation": 19180
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "9e3295191ba21f32085bc392123adab94ca64c436db9fa53d59e7c3b6b864483"
+    },
+    {
+      "caseId": "momentum-fades",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "8135ef67f874d6d7b3f2c5a4de04515e9fd3c27044887a81c1f907af0b125584",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 1,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:momentum-fades",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.076333000000034,
+      "reservationAttempts": [8589, 10593],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15582,
+        "scriptedOutput": 451,
+        "reservation": 19182
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "b46c793636583bb20464b8ef40183fc43ff1c84583efaaca4f616258ff268776"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "48914b4bf1c1b0bf9f039c630499a575b0a1eb4fe3b7086b7700f91131becb7f",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": ["early-count", "late-count"],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.1219580000000065,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "48914b4bf1c1b0bf9f039c630499a575b0a1eb4fe3b7086b7700f91131becb7f",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.795082999999977,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "C-fixed-mock",
+      "inputDigest": "48914b4bf1c1b0bf9f039c630499a575b0a1eb4fe3b7086b7700f91131becb7f",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 2,
+          "precision": 0.5
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:matched-momentum-persists",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:matched-momentum-persists",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:matched-momentum-persists:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.825249999999983,
+      "reservationAttempts": [8497, 10531, 10967],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 24595,
+        "scriptedOutput": 600,
+        "reservation": 29995
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:matched-momentum-persists:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:matched-momentum-persists:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "cd53785e27bade08ac17be0ca88110de6d7989884d6c8206958e659ffe28034c"
+    },
+    {
+      "caseId": "matched-momentum-persists",
+      "family": "timing",
+      "category": "fading momentum",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "48914b4bf1c1b0bf9f039c630499a575b0a1eb4fe3b7086b7700f91131becb7f",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 5,
+          "covered": [
+            "early-count",
+            "late-count",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 1,
+          "attempted": 1,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:matched-momentum-persists",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 6.899207999999987,
+      "reservationAttempts": [8498, 10532],
+      "requests": 2,
+      "tokenEstimate": {
+        "input": 15430,
+        "scriptedOutput": 462,
+        "reservation": 19030
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "3525bb78f91b2c9d1b07a43f98c05da361aa9d05d008bf3eca19d2aaee489e93"
+    },
+    {
+      "caseId": "missing-possession",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "0d7d6e01c02593696ef6fa01287e41b56557d1d1a81b1f80f12a1f5f7373b1f6",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.237292000000025,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-possession",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "0d7d6e01c02593696ef6fa01287e41b56557d1d1a81b1f80f12a1f5f7373b1f6",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.889374999999973,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-possession",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "C-fixed-mock",
+      "inputDigest": "0d7d6e01c02593696ef6fa01287e41b56557d1d1a81b1f80f12a1f5f7373b1f6",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.966209000000049,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-possession",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "0d7d6e01c02593696ef6fa01287e41b56557d1d1a81b1f80f12a1f5f7373b1f6",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.709875000000011,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-location",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "0269668f4a19e714ecd2dbf5606d30717afe58f3e6734c8224b4a7e7dbbb3ac4",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.6082079999999905,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-location",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "0269668f4a19e714ecd2dbf5606d30717afe58f3e6734c8224b4a7e7dbbb3ac4",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.77516700000001,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-location",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "C-fixed-mock",
+      "inputDigest": "0269668f4a19e714ecd2dbf5606d30717afe58f3e6734c8224b4a7e7dbbb3ac4",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.198208000000022,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-location",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "0269668f4a19e714ecd2dbf5606d30717afe58f3e6734c8224b4a7e7dbbb3ac4",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 8.375167000000033,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-timing",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "59e6c119ed5eda7718bf92a9e71a42d9c93a2aff40205b52672400741e9127b7",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.841749999999934,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-timing",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "59e6c119ed5eda7718bf92a9e71a42d9c93a2aff40205b52672400741e9127b7",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.29808300000002,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-timing",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "C-fixed-mock",
+      "inputDigest": "59e6c119ed5eda7718bf92a9e71a42d9c93a2aff40205b52672400741e9127b7",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.74245899999994,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-timing",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "59e6c119ed5eda7718bf92a9e71a42d9c93a2aff40205b52672400741e9127b7",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.77641600000004,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-xg",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "c9a29379a23240786d063d262783228f2cb03941f5f10b84b171491a64b5f273",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 18,
+        "factualAccuracy": 1,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": ["current-xg"],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.900375000000054,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-xg",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "c9a29379a23240786d063d262783228f2cb03941f5f10b84b171491a64b5f273",
+      "eligible": true,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 30,
+        "factualAccuracy": 1,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "current-xg",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.5383339999999635,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "missing-xg",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "C-fixed-mock",
+      "inputDigest": "c9a29379a23240786d063d262783228f2cb03941f5f10b84b171491a64b5f273",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 30,
+        "factualAccuracy": 1,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "current-xg",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:missing-xg",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:missing-xg",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:missing-xg:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.658625000000029,
+      "reservationAttempts": [8228, 10142, 10564],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23534,
+        "scriptedOutput": 571,
+        "reservation": 28934
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:missing-xg:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:missing-xg:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "30f9a02634e5da0e65391ea5eec3683f42d4316416110dfffbf61e1329364b7b"
+    },
+    {
+      "caseId": "missing-xg",
+      "family": "missing",
+      "category": "missing information",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "c9a29379a23240786d063d262783228f2cb03941f5f10b84b171491a64b5f273",
+      "eligible": true,
+      "disposition": "verified-script",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 30,
+        "factualAccuracy": 1,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 4,
+          "covered": [
+            "current-xg",
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ],
+          "additionalVsA": [
+            "previous:linkedPossessions",
+            "current:linkedPossessions",
+            "current:largestPossession"
+          ]
+        },
+        "investigationRelevance": {
+          "relevant": 2,
+          "attempted": 2,
+          "precision": 1
+        }
+      },
+      "attemptedQueries": [
+        {
+          "tool": "compare_shot_routes",
+          "query": {
+            "matchId": "offline-eval:missing-xg",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": null
+          }
+        },
+        {
+          "tool": "get_recorded_sequence",
+          "query": {
+            "matchId": "offline-eval:missing-xg",
+            "start": 900,
+            "end": 1800,
+            "team": "harbor",
+            "playerId": null,
+            "eventId": "offline-eval:missing-xg:harbor:960:shot"
+          }
+        }
+      ],
+      "retrievedAdditionalUsefulVsA": [
+        "previous:linkedPossessions",
+        "current:linkedPossessions",
+        "current:largestPossession"
+      ],
+      "latencyMs": 7.2794999999999845,
+      "reservationAttempts": [8229, 10143, 10565],
+      "requests": 3,
+      "tokenEstimate": {
+        "input": 23537,
+        "scriptedOutput": 571,
+        "reservation": 28937
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [
+        {
+          "id": "replay:offline-eval:missing-xg:harbor:960:shot",
+          "text": "Inspected sequence: an illustration, not a substitute for the complete comparison.",
+          "eventIds": ["offline-eval:missing-xg:harbor:960:shot"]
+        }
+      ],
+      "transcriptDigest": "a1adec143062bc615f31e17a60110e1e16e333ab522d0bda98cbc8ac52ee581b"
+    },
+    {
+      "caseId": "no-recovery-links",
+      "family": "control",
+      "category": "settled no-call",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "a16b2a1482b7f285b75aba9eccd34588b6361997da0b6afc639066c332019c39",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 18,
+        "correctAssertions": 17,
+        "factualAccuracy": 0.9444444444444444,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.580500000000029,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "no-recovery-links",
+      "family": "control",
+      "category": "settled no-call",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "a16b2a1482b7f285b75aba9eccd34588b6361997da0b6afc639066c332019c39",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 5.28283399999998,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "no-recovery-links",
+      "family": "control",
+      "category": "settled no-call",
+      "arm": "C-fixed-mock",
+      "inputDigest": "a16b2a1482b7f285b75aba9eccd34588b6361997da0b6afc639066c332019c39",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.796333000000004,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "no-recovery-links",
+      "family": "control",
+      "category": "settled no-call",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "a16b2a1482b7f285b75aba9eccd34588b6361997da0b6afc639066c332019c39",
+      "eligible": false,
+      "disposition": "deterministic",
+      "failure": null,
+      "metrics": {
+        "assertions": 30,
+        "correctAssertions": 29,
+        "factualAccuracy": 0.9666666666666667,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [
+          {
+            "intent": "chance-quality",
+            "actual": "lower",
+            "expected": "level"
+          }
+        ],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 1,
+        "usefulEvidence": {
+          "available": 1,
+          "covered": ["current:linkedPossessions"],
+          "additionalVsA": ["current:linkedPossessions"]
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.850790999999958,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "quiet-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "48e0cc27876bb512092a57442132d5740a67c433ed007be4bb0b8aaba65c00c8",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.835042000000044,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "quiet-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "48e0cc27876bb512092a57442132d5740a67c433ed007be4bb0b8aaba65c00c8",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.337791999999922,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "quiet-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "C-fixed-mock",
+      "inputDigest": "48e0cc27876bb512092a57442132d5740a67c433ed007be4bb0b8aaba65c00c8",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.264041999999904,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "quiet-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "48e0cc27876bb512092a57442132d5740a67c433ed007be4bb0b8aaba65c00c8",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.698500000000081,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "empty-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "A-existing-deterministic",
+      "inputDigest": "99a4bc36e0fb391b737a4b9084601fa3fceda56279a67d423d6c026b8b907e30",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.304832999999917,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "empty-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "B-strengthened-deterministic",
+      "inputDigest": "99a4bc36e0fb391b737a4b9084601fa3fceda56279a67d423d6c026b8b907e30",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.703208000000018,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "empty-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "C-fixed-mock",
+      "inputDigest": "99a4bc36e0fb391b737a4b9084601fa3fceda56279a67d423d6c026b8b907e30",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.853749999999991,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "caseId": "empty-match",
+      "family": "quiet",
+      "category": "quiet match",
+      "arm": "D-adaptive-mock",
+      "inputDigest": "99a4bc36e0fb391b737a4b9084601fa3fceda56279a67d423d6c026b8b907e30",
+      "eligible": false,
+      "disposition": "no-surge-question",
+      "failure": null,
+      "metrics": {
+        "assertions": 0,
+        "correctAssertions": 0,
+        "factualAccuracy": null,
+        "incorrectFacts": [],
+        "incorrectVerdicts": [],
+        "incorrectInterpretations": [],
+        "invalidReferences": [],
+        "incorrectCitations": [],
+        "missingCaveats": [],
+        "unsupportedPublishedConclusions": 0,
+        "usefulEvidence": {
+          "available": 0,
+          "covered": [],
+          "additionalVsA": []
+        },
+        "investigationRelevance": {
+          "relevant": 0,
+          "attempted": 0,
+          "precision": null
+        }
+      },
+      "attemptedQueries": [],
+      "retrievedAdditionalUsefulVsA": [],
+      "latencyMs": 4.193834000000038,
+      "reservationAttempts": [],
+      "requests": 0,
+      "tokenEstimate": {
+        "input": 0,
+        "scriptedOutput": 0,
+        "reservation": 0
+      },
+      "providerUsage": null,
+      "costUsd": 0,
+      "supplements": [],
+      "transcriptDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "gates": {
+    "publishedConclusionSafetyPassed": false,
+    "allCanonicalCitationsCorrect": true,
+    "injectedPlansRejected": 40,
+    "injectedPlansAttempted": 40,
+    "actualAiImprovementEstablished": false
+  },
+  "liveModelQuality": null,
+  "humanPreference": null,
+  "actualModelRequests": 0,
+  "actualCostUsd": 0,
+  "methodology": {
+    "latency": "One local end-to-end sample per state/arm; includes fixture construction, evidence computation, serialization and verification. Excludes real network, inference and production pacing. One-minute token capacity is simulated using the production payload estimator and 30,000-token ceiling; over-cap attempts fail without dispatch. Nearest-rank median/p95. Never compare with live latency gates.",
+    "tokens": "Input = ceil(serialized request UTF-8 bytes/3)+256 framing; scripted output = ceil(output bytes/3). Reservation includes full 1800 output tokens per request. Repeated history is counted each turn. No tokenizer or provider usage; not an invoice.",
+    "baseline": "A runs the complete existing assessment and three pre-surge guided questions on current code; it is a feature ablation, not a historical binary. B adds deterministic route comparison. C/D run the same production answerQuestion/provider/verification path with fixed/adaptive scripts, copying the registry supplied to every model. No private gold labels reach scripts.",
+    "attribution": "Only hand-labelled useful facts absent from A receive additional-evidence credit. All such facts in these cases are deterministic route arithmetic. Queries and replay illustrations alone receive no new-fact credit. C/D gain versus B is measured against the same useful-fact rubric, not inferred from request success. Attempted follow-up queries include capacity-fallback runs. Relevance means an exact in-scope aggregate or a hand-labelled diagnostic replay anchor; it is not a human utility rating. Presentation safety is checked through typed verdicts, registered interpretations, exact numeric/citation oracles and required caveat text; unrestricted prose is not judged by a model.",
+    "scope": "14 authored synthetic diagnostics in 7 correlated families. No held-out recorded-match or blinded-human study; proposal generalization, live completion, human preference and live cost/latency gates remain unmet."
+  }
+}
