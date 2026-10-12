@@ -13,9 +13,21 @@ import {
 } from "./sources/model";
 import { durationLabel, BALL_WIN_DEFINITION } from "./sources/metrics";
 
-export type ExplanationStyle = "plain" | "analysis";
+// Keep the existing saved values compatible. This is presentation, not AI mode.
+export type ExplanationStyle = "plain" | "fan" | "analysis";
+export const explanationLabels: Record<ExplanationStyle, string> = {
+  plain: "Casual Viewer",
+  fan: "Football Fan",
+  analysis: "Advanced Analysis",
+};
+export const explanationDescriptions: Record<ExplanationStyle, string> = {
+  plain: "Simple explanations in everyday language.",
+  fan: "Match developments, player contributions and supporting context.",
+  analysis:
+    "Detailed measurements, comparisons, competing explanations and evidence.",
+};
 export const parseExplanationStyle = (value: unknown): ExplanationStyle =>
-  value === "analysis" ? "analysis" : "plain";
+  value === "analysis" || value === "fan" ? value : "plain";
 export type StoryWording = {
   headline: string;
   explanation: string;
@@ -28,7 +40,7 @@ const value = (h: HypothesisAssessment, key: string) =>
 const person = (match: MatchData, id: string | null | undefined) =>
   match.players.find((p) => p.id === id)?.name ?? "An unidentified player";
 export const metricWording = (metric: string, style: ExplanationStyle) =>
-  style === "analysis"
+  style !== "plain"
     ? metric
     : ((
         {
@@ -61,6 +73,38 @@ function countedMetric(
         : "attacking-third action",
   };
   return `${count} ${count === 1 ? (singular[metric] ?? metricWording(metric, style)) : metricWording(metric, style)}`;
+}
+
+/** Describe contributions only within the already verified measurement sample. */
+function contributors(
+  match: MatchData,
+  h: Pick<HypothesisAssessment, "measurements" | "windows">,
+  cutoff: number,
+  style: ExplanationStyle,
+) {
+  const measurement = h.measurements.find((m) => m.key === "current-count");
+  const window = h.windows.find((w) => w.id === "current");
+  if (!measurement || !window || style === "plain") return "";
+  const ids = new Set(measurement.eventIds);
+  const counts = new Map<string, number>();
+  for (const event of match.events) {
+    if (
+      !ids.has(event.id) ||
+      event.time > cutoff ||
+      event.time <= window.start ||
+      event.time > window.end ||
+      event.period !== window.period
+    )
+      continue;
+    const player = match.players.find((p) => p.id === event.actorId);
+    if (player) counts.set(player.id, (counts.get(player.id) ?? 0) + 1);
+  }
+  const leaders = [...counts]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 3);
+  return leaders.length
+    ? ` In this spell: ${leaders.map(([id, count]) => `${person(match, id)} contributed ${countedMetric(count, measurement.label, style)}`).join("; ")}.`
+    : "";
 }
 
 /** Keep every material counter-observation, including unfamiliar future codes. */
@@ -124,6 +168,7 @@ function comparisonWording(
     `${matchClock(match, w.start)}–${matchClock(match, w.end)}`;
   const high = current.label === "ball wins in the attacking third";
   const shots = current.label === "shots";
+  const contribution = contributors(match, h, cutoff, style);
   return {
     headline:
       a.end < cutoff
@@ -136,9 +181,12 @@ function comparisonWording(
               ? `${subject} are winning the ball near the opponent’s goal more often.`
               : `${subject}: more ${metric}.`,
     explanation:
-      style === "analysis"
+      (style === "analysis"
         ? `${subject}: ${current.value} ${metric} (${range(a)}) versus ${previous.value} (${range(b)}). Equal ${durationLabel(a.end - a.start)} windows in the same half.`
-        : `${subject} recorded ${current.value} ${metric} ${a.end === cutoff ? `in the last ${durationLabel(a.end - a.start)}` : `from ${range(a)}`}, up from ${previous.value} in the previous equal spell.`,
+        : style === "fan"
+          ? `${subject} stepped up from ${previous.value} to ${current.value} ${metric} across equal ${durationLabel(a.end - a.start)} spells (${range(b)}, then ${range(a)}).`
+          : `${subject} recorded ${current.value} ${metric} ${a.end === cutoff ? `in the last ${durationLabel(a.end - a.start)}` : `from ${range(a)}`}, up from ${previous.value} in the previous equal spell.`) +
+      contribution,
     why: shots
       ? style === "analysis"
         ? "Shot volume has increased; chance quality needs separate evidence."

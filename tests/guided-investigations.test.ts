@@ -45,7 +45,7 @@ describe("typed guided questions", () => {
     const e = questionEvidence(c.match, c.cutoff, c.question)!;
     expect(e.verdict).toBe("lower");
     expect(e.availability).toBe("available");
-    for (const style of ["plain", "analysis"] as const) {
+    for (const style of ["plain", "fan", "analysis"] as const) {
       const text = presentQuestion(e, c.match, style);
       expect(text.answer).toMatch(/^No\./);
       expect(text.measurement).toContain("xG per shot");

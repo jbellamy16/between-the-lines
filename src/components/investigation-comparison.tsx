@@ -1,13 +1,19 @@
-import type { QuestionEvidence } from "@/lib/ai/director/questions";
+import {
+  questionText,
+  type QuestionEvidence,
+} from "@/lib/ai/director/questions";
+import type { ExplanationStyle } from "@/lib/explanation";
 import type { MatchData } from "@/lib/sources/model";
 
 /** Layout only: every value and interpretation comes from the verified result. */
 export function InvestigationComparison({
   evidence,
   match,
+  style,
 }: {
   evidence: QuestionEvidence;
   match: MatchData;
+  style: ExplanationStyle;
 }) {
   const comparison = evidence.comparison;
   if (!comparison) return null;
@@ -43,12 +49,16 @@ export function InvestigationComparison({
                 [
                   ["Shots", a.shots, b.shots],
                   [
-                    "Shots after qualifying ball wins",
+                    style === "analysis"
+                      ? "Shots after qualifying ball wins"
+                      : "Shots after winning the ball near goal",
                     a.linkedShots,
                     b.linkedShots,
                   ],
                   [
-                    "Distinct linked possessions",
+                    style === "analysis"
+                      ? "Distinct linked possessions"
+                      : "Separate spells leading to those shots",
                     a.linkedPossessions,
                     b.linkedPossessions,
                   ],
@@ -80,7 +90,7 @@ export function InvestigationComparison({
                   ? "Not established"
                   : "Unresolved"}
             </strong>
-            <p>{reading.text}</p>
+            <p>{questionText(reading.text, style)}</p>
           </li>
         ))}
       </ul>

@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from "react";
 import {
+  explanationLabels,
+  explanationDescriptions,
   parseExplanationStyle,
   type ExplanationStyle,
 } from "@/lib/explanation";
@@ -61,19 +63,26 @@ export function ExplanationSelector({
   const id = useId();
   return (
     <div className={settings ? "explanation-setting" : "explanation-control"}>
-      <label htmlFor={id}>Explanation style</label>
+      <label htmlFor={id}>Explanation level</label>
       <select
         id={id}
         value={style}
+        aria-describedby={`${id}-description`}
         onChange={(event) => choose(parseExplanationStyle(event.target.value))}
       >
-        <option value="plain">Plain English</option>
-        <option value="analysis">Football Analysis</option>
+        {Object.entries(explanationLabels).map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
       </select>
+      <p id={`${id}-description`} className="explanation-description">
+        {explanationDescriptions[style]}
+      </p>
       {settings && (
         <p className="muted">
-          Choose everyday language or football detail. Quick and Full control
-          recap length separately.
+          All levels use the same verified facts. Quick and Full control recap
+          length separately.
         </p>
       )}
     </div>

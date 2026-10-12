@@ -1,16 +1,18 @@
 import type { BroadcastStory } from "@/lib/ai/director/story";
-import type { StoryWording } from "@/lib/explanation";
+import type { ExplanationStyle, StoryWording } from "@/lib/explanation";
 import { eventClock, type MatchData } from "@/lib/sources/model";
 
 export function InvestigationEvidence({
   story,
   match,
   wording,
+  style,
   onEvent,
 }: {
   story: BroadcastStory;
   match: MatchData;
   wording: StoryWording;
+  style: ExplanationStyle;
   onEvent: (id: string) => void;
 }) {
   const assessment = story.hypothesis;
@@ -36,16 +38,15 @@ export function InvestigationEvidence({
             : " behind this observation."}
           {events.length > 0 && " Select a moment to replay."}
         </p>
-        {assessment.supportingEvidence
-          .filter(
-            (e) =>
-              !["recorded-observation", "current-shot-outcomes"].includes(
-                e.code,
-              ),
-          )
-          .map((e) => (
-            <p key={e.code}>{e.description}</p>
-          ))}
+        {style === "analysis" &&
+          assessment.supportingEvidence
+            .filter(
+              (e) =>
+                !["recorded-observation", "current-shot-outcomes"].includes(
+                  e.code,
+                ),
+            )
+            .map((e) => <p key={e.code}>{e.description}</p>)}
         <div className="investigation-citations">
           {events.slice(-3).map((event) => (
             <button

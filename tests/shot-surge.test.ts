@@ -97,12 +97,10 @@ describe("complete shot route evidence", () => {
         spread ? "limited" : "supported",
         "supported",
       ]);
-      for (const style of ["plain", "analysis"] as const) {
+      for (const style of ["plain", "fan", "analysis"] as const) {
         const text = presentQuestion(e, c.match, style);
         expect(text.measurement).toContain(
-          spread
-            ? "1 → 4 distinct linked possessions"
-            : "1 → 2 distinct linked possessions",
+          `1 → ${spread ? 4 : 2} ${style === "analysis" ? "distinct linked possessions" : "separate spells with the ball leading to shots"}`,
         );
         expect(text.measurement).toContain("Opponent shots: 1 → 5");
         expect(text.qualifications.join(" ")).toContain("synthetic");

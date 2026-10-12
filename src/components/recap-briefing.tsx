@@ -6,6 +6,7 @@ import {
   durationLabel,
   momentLabel,
 } from "@/lib/recap-briefing";
+import { metricWording } from "@/lib/explanation";
 import { eventClock, type MatchData } from "@/lib/sources/model";
 import type { StoryPreferences } from "@/lib/intelligence";
 import type { DirectorResult } from "@/lib/ai/director/runner";
@@ -220,7 +221,14 @@ export function RecapBriefing({
               {metrics.map((metric) => (
                 <div className={styles.metric} key={metric.id}>
                   <div className={styles.metricTitle}>
-                    <strong>{metric.label}</strong>
+                    <strong>
+                      {metricWording(
+                        metric.label === "Attacking-third ball wins"
+                          ? "ball wins in the attacking third"
+                          : metric.label,
+                        style,
+                      )}
+                    </strong>
                     <span>
                       {metric.team}
                       {metric.windows.length

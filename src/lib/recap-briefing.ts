@@ -413,7 +413,7 @@ export function buildBriefing(
     const label =
       line.metric === "shots"
         ? "shots"
-        : style === "plain"
+        : style !== "analysis"
           ? "ball recoveries near the opponent’s goal (recoveries only)"
           : "attacking-third recoveries";
     watch = {

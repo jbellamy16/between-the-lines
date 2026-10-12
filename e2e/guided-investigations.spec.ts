@@ -97,7 +97,14 @@ test("offline question is keyboard accessible, preserves story and replay, and r
     .innerText();
   await page
     .locator(".director-story")
-    .getByLabel("Explanation style", { exact: true })
+    .getByLabel("Explanation level", { exact: true })
+    .selectOption("fan");
+  await expect(panel(page).locator(".question-direct-answer")).toHaveText(
+    before,
+  );
+  await page
+    .locator(".director-story")
+    .getByLabel("Explanation level", { exact: true })
     .selectOption("analysis");
   await expect(panel(page).locator(".question-direct-answer")).toHaveText(
     before,
@@ -116,7 +123,7 @@ test("offline question is keyboard accessible, preserves story and replay, and r
   await expect(page.getByTestId("clock")).toContainText("63:24");
   await page
     .locator(".director-story")
-    .getByLabel("Explanation style", { exact: true })
+    .getByLabel("Explanation level", { exact: true })
     .selectOption("plain");
   await expect(panel(page)).toContainText("No model investigation");
   expect(posts).toBe(0);
@@ -195,13 +202,21 @@ test("a failed request recovers and successful reuse separates question intents"
   );
   await page
     .locator(".director-story")
-    .getByLabel("Explanation style", { exact: true })
+    .getByLabel("Explanation level", { exact: true })
     .selectOption("analysis");
   await page.getByRole("button", { name: "Catch me up", exact: true }).click();
   await page.getByRole("tab", { name: "Full recap" }).click();
   await page.getByRole("tab", { name: "Quick recap" }).click();
   await page.keyboard.press("Escape");
   await expect(panel(page)).toContainText("Reused answer");
+  for (const level of ["fan", "plain", "analysis"]) {
+    await page
+      .locator(".director-story")
+      .getByLabel("Explanation level")
+      .selectOption(level);
+    await expect(panel(page)).toContainText("Reused answer");
+    expect(transport.posts()).toBe(3);
+  }
   expect(transport.posts()).toBe(3);
 });
 test("cancellation and question changes cannot publish a late answer", async ({
@@ -359,17 +374,19 @@ test("shot surge comparison stays deterministic for the pressure controls in bot
     })
     .click();
   await expect(
-    panel(page).getByRole("row", { name: "Distinct linked possessions" }),
+    panel(page).getByRole("row", {
+      name: "Separate spells leading to those shots",
+    }),
   ).toContainText("0");
   await expect(panel(page)).toContainText("No model investigation");
   await expect(panel(page)).toContainText(
-    "Several shots after one recovery count as one linked possession",
+    "Several shots after one recovery count as one spell with the ball leading to a shot",
   );
   await expect(page.locator(".director-story h2")).toHaveText(heading);
   expect(transport.posts()).toBe(0);
   await page
     .locator(".director-story")
-    .getByLabel("Explanation style", { exact: true })
+    .getByLabel("Explanation level", { exact: true })
     .selectOption("analysis");
   await expect(
     panel(page).getByRole("row", { name: "Distinct linked possessions" }),

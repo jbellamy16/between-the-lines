@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { presentStory } from "@/lib/explanation";
+import { explanationLabels, presentStory } from "@/lib/explanation";
 import {
   ExplanationSelector,
   useExplanationStyle,
@@ -41,8 +41,7 @@ export function BroadcastPreview({
       <summary>Broadcast story</summary>
       <div className="broadcast-frame">
         <span className="eyebrow">
-          BETWEEN THE LINES ·{" "}
-          {style === "plain" ? "PLAIN ENGLISH" : "FOOTBALL ANALYSIS"}
+          BETWEEN THE LINES · {explanationLabels[style].toUpperCase()}
         </span>
         <h3>{wording.headline}</h3>
         <p>{wording.explanation}</p>
@@ -444,7 +443,7 @@ export function DirectorStory({
       <div className="quiet-story panel">
         <span className="eyebrow">What matters now</span>
         <p>
-          {style === "plain"
+          {style !== "analysis"
             ? "No new headline. Explore the recorded actions while the next passage develops."
             : "No new headline. No eligible lead meets the evidence thresholds at this cutoff; secondary observations remain available."}
         </p>
@@ -496,6 +495,7 @@ export function DirectorStory({
         <h2>{wording!.headline}</h2>
         <h3 className="investigation-heading">What changed</h3>
         <p>{wording!.explanation}</p>
+        <ExplanationSelector />
         <InvestigationSource
           source={story.provider}
           cached={validAnswer?.metrics.cached}
@@ -506,13 +506,13 @@ export function DirectorStory({
           story={story}
           match={match}
           wording={wording!}
+          style={style}
           onEvent={onEvent}
         />
         <section className="story-significance" aria-label="What to watch next">
           <h3>What to watch next</h3>
           <p>{wording!.watch}</p>
         </section>
-        <ExplanationSelector />
         <small>
           Through {matchClock(match, story.cutoff)} ·{" "}
           {story.highlightedEventIds.length} highlighted actions

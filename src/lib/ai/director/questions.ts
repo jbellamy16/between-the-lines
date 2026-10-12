@@ -384,6 +384,31 @@ export function guidedQuestions(
       : [];
   });
 }
+/** Reword technical terms without changing measurements, verdicts or caveats. */
+export function questionText(text: string, style: ExplanationStyle) {
+  if (style === "analysis") return text;
+  return text
+    .replaceAll("source-model chance rating", "recorded chance rating")
+    .replaceAll("source xG", "recorded expected goals (chance ratings)")
+    .replaceAll(
+      "recovery-to-shot route",
+      "pattern of winning the ball and then shooting",
+    )
+    .replaceAll(
+      "repeated recovery-to-shot possessions",
+      "separate spells where the team won the ball and then shot",
+    )
+    .replaceAll(
+      "distinct linked possessions",
+      "separate spells with the ball leading to shots",
+    )
+    .replaceAll("linked possession", "spell with the ball leading to a shot")
+    .replaceAll("fixed half of this spell", "half of this spell")
+    .replaceAll("across these windows", "across these spells")
+    .replaceAll("across the same windows", "across the same spells")
+    .replaceAll("causation", "what caused the change");
+}
+
 export function presentQuestion(
   e: QuestionEvidence,
   match: MatchData,
@@ -435,7 +460,7 @@ export function presentQuestion(
           ? "No. The average shot has a lower source-model chance rating."
           : "No increase: the average shot rating is unchanged.");
     measurement = `${name}: ${number("current-shots")} shots versus ${number("previous-shots")}; ${number("current-xg")} total xG versus ${number("previous-xg")}; ${number("current-mean-xg")} xG per shot versus ${number("previous-mean-xg")}.`;
-    if (style === "plain")
+    if (style !== "analysis")
       measurement +=
         " Expected goals (xG) estimates how likely a shot is to score. Per-shot ratings separate chance quality from the number of attempts.";
   } else if (e.question.intent === "opponent-improvement") {
@@ -447,18 +472,26 @@ export function presentQuestion(
         : e.verdict === "lower"
           ? `No—${opponent} recorded fewer ${metric}.`
           : `${opponent}'s ${metric} stayed level.`;
-    measurement = `${opponent}: ${number("opponent-previous")} → ${number("opponent-current")}; ${name}: ${number("own-previous")} → ${number("own-current")} ${metric}, across the same two windows.`;
+    measurement =
+      style === "plain"
+        ? `${opponent} went from ${number("opponent-previous")} to ${number("opponent-current")} ${metric}. ${name} went from ${number("own-previous")} to ${number("own-current")} in the same two spells.`
+        : `${opponent}: ${number("opponent-previous")} → ${number("opponent-current")}; ${name}: ${number("own-previous")} → ${number("own-current")} ${metric}, across the same two windows.`;
   } else {
     answer =
       e.verdict === "lower"
         ? "Yes, the increase has eased in the latest half of this spell."
         : "No recent weakening appears in these counts.";
-    measurement = `${name}: ${number("own-previous")} → ${number("own-current")} ${metric} across the wider windows; within the current window, ${number("early-count")} → ${number("late-count")}. Each recent half lasts ${durationLabel((current.end - current.start) / 2)} (${range(e.windows[2])}, then ${range(e.windows[3])}).`;
+    measurement =
+      style === "plain"
+        ? `${name} went from ${number("own-previous")} to ${number("own-current")} ${metric} overall. In the latest spell, they recorded ${number("early-count")} in the first half and ${number("late-count")} in the second. Each half lasts ${durationLabel((current.end - current.start) / 2)}.`
+        : `${name}: ${number("own-previous")} → ${number("own-current")} ${metric} across the wider windows; within the current window, ${number("early-count")} → ${number("late-count")}. Each recent half lasts ${durationLabel((current.end - current.start) / 2)} (${range(e.windows[2])}, then ${range(e.windows[3])}).`;
   }
   return {
-    answer,
-    measurement,
-    windows: `Earlier ${range(previous)}; current ${range(current)}. Each lasts ${durationLabel(current.end - current.start)} in ${current.period}. ${style === "analysis" ? "Windows use (start, end]: start excluded, end included." : "Each window includes its end time and excludes its start."}`,
-    qualifications: [...new Set(e.qualifications)],
+    answer: questionText(answer, style),
+    measurement: questionText(measurement, style),
+    windows: `Earlier ${range(previous)}; current ${range(current)}. Each lasts ${durationLabel(current.end - current.start)}.${style === "analysis" ? ` Period ${current.period}. Windows use (start, end]: start excluded, end included.` : ""}`,
+    qualifications: [...new Set(e.qualifications)].map((text) =>
+      questionText(text, style),
+    ),
   };
 }
