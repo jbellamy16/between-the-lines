@@ -32,6 +32,7 @@
     "eval:investigation:prepare": "tsx scripts/prepare-investigation-evaluation.ts",
     "eval:editorial": "vitest run tests/editorial-baselines.test.ts",
     "eval:investigator": "vitest run tests/bounded-investigator.test.ts",
+    "eval:investigator:editorial": "node --conditions=react-server --import tsx scripts/evaluate-investigator-editorial.ts",
     "eval:investigator:prepare": "node --conditions=react-server --import tsx scripts/prepare-investigator-feasibility.ts"
   },
   "dependencies": {

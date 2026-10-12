@@ -145,10 +145,23 @@ describe("frozen feasibility preparation", () => {
     expect(frozen.cases[0].baseline.decision.work.optionReads).toBe(2);
     expect(frozen.cases[1].baseline.stories).toEqual([]);
   });
-  it("pins every runtime and evaluation source hash before model execution", () => {
-    const frozen = JSON.parse(readFileSync(`${DIRECTORY}/frozen.json`, "utf8"));
-    for (const [path, hash] of Object.entries(frozen.sourceHashes))
-      expect(digest(readFileSync(path, "utf8")), path).toBe(hash);
+  it("preserves the PR #41 freeze and requires a new candidate after the offline renderer entry is added", () => {
+    const original = readFileSync(`${DIRECTORY}/frozen.json`, "utf8");
+    expect(digest(original)).toBe(
+      "33aef062567387734bad6bd0f80ecbf8f50c51465e87481109d576ca3b85dfbf",
+    );
+    const frozen = JSON.parse(original);
+    const changed = Object.entries(frozen.sourceHashes)
+      .filter(([path, hash]) => digest(readFileSync(path, "utf8")) !== hash)
+      .map(([path]) => path);
+    // The original live runner rejects this exact source drift before authorization,
+    // preflight or Redis access. Do not refresh the historical freeze to make it pass.
+    expect(changed).toEqual(["package.json"]);
+    const restoredPackage = readFileSync("package.json", "utf8")
+      .split("\n")
+      .filter((line) => !line.includes('"eval:investigator:editorial"'))
+      .join("\n");
+    expect(digest(restoredPackage)).toBe(frozen.sourceHashes["package.json"]);
   });
   it("keeps the quiet control deterministic even with provider credentials", async () => {
     const { runBoundedInvestigator } =
