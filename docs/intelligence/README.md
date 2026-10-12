@@ -1,5 +1,7 @@
 # AI Match Director 1.2
 
+Next investigation proposal: [competing explanations for a shot surge](COMPETING-EXPLANATIONS-PROPOSAL.md). This is a documentation-only design with explicit tests against current and strengthened deterministic baselines; no new feature or live evaluation has been implemented.
+
 Version 1.2 adds independently verified hypotheses, selective counter-evidence, measured temporal storylines, specific significance/watch-next text and a typed evidence graph. See [the audit and implementation](EVOLUTION.md), the [real Foundry intelligence review](pr18-intelligence-2026-10-10/REPORT.md), and the [honest 100-second demonstration](DEMO.md). The live review found 14 verified publications, four quota failures and one no-call abstention across 18 primary states plus one diagnostic. Useful qualifications are demonstrated; better model-directed investigation and human preference are not established. Nothing was deployed.
 
 The director adds event relationships, bounded investigation, editorial selection and reusable verified stories to the existing match experience. It preserves canonical sources, the earlier detectors and explanation endpoints, provider adapters, Redis quotas, deterministic fallbacks and the visual/motion system. The original implementation sprint made no paid calls. The October 10 [Foundry evaluation](../FOUNDRY-EVALUATION.md) subsequently exercised real investigations; public inference remains disabled.
