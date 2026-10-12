@@ -72,7 +72,7 @@ describe("bounded shared evidence discovery", () => {
     );
     expect(result.coverage.bundle).toBe("complete");
     expect(index.score).toEqual({ harbor: 0, riverside: 0 });
-    expect(index.version).toBe("evidence-discovery-1.0.0");
+    expect(index.version).toBe("evidence-discovery-1.1.0");
     expect(fetch).not.toHaveBeenCalled();
   });
 

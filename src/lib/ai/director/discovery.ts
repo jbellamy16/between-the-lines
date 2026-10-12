@@ -8,6 +8,7 @@ import {
   type MatchData,
   type NormalizedEvent,
 } from "../../sources/model";
+import { canLead, editorialGroup, evidenceOverlaps } from "./editorial";
 import { comparisonWindow } from "../../sources/metrics";
 import {
   DIRECTOR_VERSION,
@@ -44,7 +45,7 @@ import {
   sourceCoverage,
 } from "./discovery-coverage";
 
-export const DISCOVERY_VERSION = "evidence-discovery-1.0.0";
+export const DISCOVERY_VERSION = "evidence-discovery-1.1.0";
 export const DISCOVERY_LIMITS = Object.freeze({
   developments: 24,
   options: 96,
@@ -464,6 +465,26 @@ function catalogue(
         timestamp: candidate.timestamp,
         headline: candidate.headline,
         statistics: candidate.statistics,
+        editorial: {
+          canLead: canLead(candidate),
+          group: editorialGroup(candidate),
+          incompatibleIds: candidates
+            .filter(
+              (other) =>
+                other.id !== candidate.id &&
+                (editorialGroup(other) === editorialGroup(candidate) ||
+                  evidenceOverlaps(candidate, other)),
+            )
+            .map((other) => other.id),
+          seenCount: candidate.evidenceIds.filter((id) =>
+            preferences.seenEvidenceIds?.includes(id),
+          ).length,
+          preferredPlayerEvidenceCount: candidate.evidenceIds.filter((id) =>
+            match.events.some(
+              (e) => e.id === id && e.actorId === preferences.player,
+            ),
+          ).length,
+        },
         evidence: {
           count: candidate.evidenceIds.length,
           firstEventId: candidate.evidenceIds[0] ?? null,
@@ -635,12 +656,40 @@ export function executeEvidenceOption(
   raw: unknown,
   context: DiscoveryContext = {},
 ) {
+  return executeCatalogue(catalogue(input, cutoff, context), raw);
+}
+
+/** Request-local memoization shared by offline policies; no provider or allowance ledger.
+ * The snapshot and cached bundles are private and copies cross the boundary.
+ * Verification must construct a new reader from the canonical source.
+ */
+export function createEvidenceReader(
+  input: MatchData,
+  cutoff: number,
+  context: DiscoveryContext = {},
+) {
+  const state = catalogue(input, cutoff, context);
+  const cache = new Map<string, ReturnType<typeof executeCatalogue>>();
+  return {
+    index: structuredClone(state.index),
+    read(raw: unknown) {
+      const request = requestSchema.parse(raw);
+      if (request.indexId !== state.index.id)
+        throw new EvidenceQueryError("Stale discovery index");
+      let result = cache.get(request.optionId);
+      if (!result) {
+        result = executeCatalogue(state, request);
+        cache.set(request.optionId, result);
+      }
+      return structuredClone(result);
+    },
+  };
+}
+
+function executeCatalogue(state: ReturnType<typeof catalogue>, raw: unknown) {
   const request = requestSchema.parse(raw);
-  const { index, match, questions, options } = catalogue(
-    input,
-    cutoff,
-    context,
-  );
+  const { index, match, questions, options } = state;
+  const cutoff = index.cutoff;
   if (request.indexId !== index.id)
     throw new EvidenceQueryError(
       "Stale discovery index or changed source/cutoff/context",
