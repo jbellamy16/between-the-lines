@@ -20,7 +20,7 @@ Watching football and understanding how a match is changing are different things
 - An interactive SVG pitch: actual event positions, numbered possession sequences, pass/shot endpoints, and progressive sequence replay. No invented tracking.
 - Event-derived score, attempts, shots on target, pass completion, high ball wins, and synthetic chance probabilities.
 - Pattern detection for attacking-third ball wins, shot frequency, and passing activity, with equal comparison windows within each half (5–15 minutes each) and supporting event IDs.
-- Plain English by default or Football Analysis over the same verified facts, with independent Quick/Full recaps, timestamp-safe Catch Me Up, lineups, and player action maps.
+- Casual Viewer by default, Football Fan, or Advanced Analysis over the same verified facts, with independent Quick/Full recaps, timestamp-safe Catch Me Up, lineups, and player action maps.
 - Guided questions about chance quality, opponent activity and fading increases, with direct deterministic answers, qualifications and replay links.
 - Device-local team, player, and insight category preferences that filter and reorder observations.
 - Server-side OpenAI (GPT-5.4 Mini) and Microsoft Foundry Responses API adapters with shared forced evidence retrieval, structured selection, validation, and honest provider attribution. **Director 1.4.1 and guided questions are included. The [completed guided study](docs/intelligence/guided-investigations/REPORT.md) produced five verified model answers and one correct no-call for $0.01632525; all answers matched the deterministic baseline. No added investigative benefit was demonstrated. Human review remains pending.**
@@ -61,7 +61,7 @@ flowchart LR
   B --> C[Deterministic statistics and pattern detector]
   B --> D[Pitch / score / lineup / recap]
   C --> E[Verified insight + event IDs]
-  E --> F[Plain English / Football Analysis]
+  E --> F[Casual Viewer / Football Fan / Advanced Analysis]
   E --> G[Server-side provider workflow]
   G --> H[Application evidence retrieval + optional follow-up tools]
   H --> I[Structured claim selection]
@@ -102,7 +102,7 @@ Metadata serves the supplied SVG/ICO favicons, Apple touch icon, Safari mask, 19
 
 The evidence inspector offers a readable event summary and a native event picker alongside touch/keyboard pitch markers. Replays follow recorded time gaps at 8× speed and hold the final frame. The selected evidence event determines the replay. On mobile, the insight detail follows the cards before the event feed. The original navigation, modes, stats, lineups, preferences, player maps, and Catch Me Up remain available.
 
-**Watch the build-up** restores the pressure fixture and starts at 60:00 at 16×. High-ball-win evidence qualifies shortly afterward; the default 63:24 view has Harbor ahead 1–0 with four high ball wins and four shots in the recent window, each versus zero in the previous window. **Reset demo** restores that view, all categories, neutral favorites, and 8× playback. Explanation style is a separate saved preference. Catch Me Up avoids duplicating scoring shots as separate highlights and ends with a full-time message when appropriate.
+**Watch the build-up** restores the pressure fixture and starts at 60:00 at 16×. High-ball-win evidence qualifies shortly afterward; the default 63:24 view has Harbor ahead 1–0 with four high ball wins and four shots in the recent window, each versus zero in the previous window. **Reset demo** restores that view, all categories, neutral favorites, and 8× playback. Explanation level is a separate saved preference. Switching levels reformats the same verified facts locally, reuses in-flight and cached investigations, and never sends an AI request. Catch Me Up avoids duplicating scoring shots as separate highlights and ends with a full-time message when appropriate.
 
 ## Optional AI: OpenAI, Microsoft Foundry, or offline
 

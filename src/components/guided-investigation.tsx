@@ -196,7 +196,11 @@ function QuestionPanel({
           </p>
           <h5 className="investigation-heading">Evidence behind the answer</h5>
           {result.evidence.comparison ? (
-            <InvestigationComparison evidence={result.evidence} match={match} />
+            <InvestigationComparison
+              evidence={result.evidence}
+              match={match}
+              style={style}
+            />
           ) : (
             <p>{wording.measurement}</p>
           )}

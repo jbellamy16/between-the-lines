@@ -17,7 +17,7 @@ import type { MatchData } from "../src/lib/sources/model";
 
 const source = new SyntheticMatchSource();
 const match = source.read("pressure");
-const styles = ["plain", "analysis"] as const;
+const styles = ["plain", "fan", "analysis"] as const;
 const storyAt = (m: MatchData, time: number, metric = "shots") =>
   packageStory(
     observe(m, time, "analyst", {}, { unranked: true }).find(
@@ -31,18 +31,11 @@ const storyAt = (m: MatchData, time: number, metric = "shots") =>
   );
 
 describe("independent explanations of shared verified evidence", () => {
-  it("defaults invalid or legacy values to Plain English", () => {
-    for (const value of [
-      null,
-      undefined,
-      "fan",
-      "analyst",
-      "advanced",
-      {},
-      "plain",
-    ])
+  it("defaults invalid values to Casual Viewer and preserves saved levels", () => {
+    for (const value of [null, undefined, "analyst", "advanced", {}, "plain"])
       expect(parseExplanationStyle(value)).toBe("plain");
     expect(parseExplanationStyle("analysis")).toBe("analysis");
+    expect(parseExplanationStyle("fan")).toBe("fan");
   });
   it("changes the reading, retains counts/windows and matches Insights without mutating a story", () => {
     for (const metric of ["shots", "ball wins in the attacking third"]) {
@@ -77,6 +70,48 @@ describe("independent explanations of shared verified evidence", () => {
         expect(analysis.why).toContain("do not establish pressing intensity");
       }
     }
+  });
+  it("gives fans named contributions only from the verified current sample", () => {
+    const story = storyAt(match, 3804);
+    const original = structuredClone(story);
+    const current = story.hypothesis.measurements.find(
+      (m) => m.key === "current-count",
+    )!;
+    const ids = new Set(current.eventIds);
+    const events = match.events.filter((e) => ids.has(e.id));
+    const actor = events[0].actorId!;
+    const name = match.players.find((p) => p.id === actor)!.name;
+    const count = events.filter((e) => e.actorId === actor).length;
+    const fan = presentStory(story, match, "fan");
+    const plain = presentStory(story, match, "plain");
+    const advanced = presentStory(story, match, "analysis");
+    expect(fan.explanation).toContain(`${name} contributed ${count} shot`);
+    expect(fan.explanation).toContain("stepped up from 0 to 4 shots");
+    expect(plain.explanation).not.toContain("contributed");
+    expect(advanced.explanation).toContain("Equal 9 min 12 sec windows");
+    expect(
+      new Set([plain.explanation, fan.explanation, advanced.explanation]).size,
+    ).toBe(3);
+    expect(fan.qualifications).toEqual(plain.qualifications);
+    expect(story).toEqual(original);
+    // An unrelated future event by the same player must not change their count.
+    const future = { ...events[0], id: "future-contribution", time: 5000 };
+    expect(
+      presentStory(
+        story,
+        { ...match, events: [...match.events, future] },
+        "fan",
+      ),
+    ).toEqual(fan);
+    const missingActors = {
+      ...match,
+      events: match.events.map((e) =>
+        ids.has(e.id) ? { ...e, actorId: null } : e,
+      ),
+    };
+    expect(presentStory(story, missingActors, "fan").explanation).not.toContain(
+      "contributed",
+    );
   });
   it("keeps lower aggregate chance quality explicit in both styles, with an explained statistic", () => {
     // Diagnostic source fixture: same valid event identities, complete supplied xG.
@@ -191,17 +226,19 @@ describe("independent explanations of shared verified evidence", () => {
       const m = source.read(scenario);
       for (const time of [0, 60, 1200, 1800, 3804, 4200, 4500, m.duration]) {
         const plain = buildBriefing(m, time, { style: "plain" });
-        const analysis = buildBriefing(m, time, { style: "analysis" });
-        for (const key of [
-          "score",
-          "cutoff",
-          "since",
-          "metrics",
-          "moments",
-          "stories",
-          "evidenceIds",
-        ] as const)
-          expect(analysis[key]).toEqual(plain[key]);
+        for (const style of ["fan", "analysis"] as const) {
+          const analysis = buildBriefing(m, time, { style });
+          for (const key of [
+            "score",
+            "cutoff",
+            "since",
+            "metrics",
+            "moments",
+            "stories",
+            "evidenceIds",
+          ] as const)
+            expect(analysis[key]).toEqual(plain[key]);
+        }
         for (const candidate of observe(m, time, "analyst")) {
           const story = packageStory(candidate, m, time, "analyst", "offline");
           for (const style of styles) {

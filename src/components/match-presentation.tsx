@@ -388,7 +388,7 @@ export function InsightCard({
           {match.teams[insight.team].name}
         </span>
         <span className="context-label">
-          {style === "plain" ? "Match observation" : "Analytical insight"}
+          {style !== "analysis" ? "Match observation" : "Analytical insight"}
         </span>
       </span>
       <h3>
@@ -587,7 +587,7 @@ export function InsightDetails({
                   {match.teams[insight.team].name}
                 </span>
                 <span className="context-label">
-                  {style === "plain"
+                  {style !== "analysis"
                     ? "Match observation"
                     : "Analytical insight"}
                 </span>

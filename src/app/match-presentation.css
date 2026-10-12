@@ -1686,3 +1686,11 @@
     order: -1;
   }
 }
+
+.explanation-control .explanation-description {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--recap-muted, var(--muted));
+  font-size: 0.75rem;
+  font-weight: 400;
+}

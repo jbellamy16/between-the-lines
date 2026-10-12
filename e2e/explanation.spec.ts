@@ -11,7 +11,7 @@ const ready = async (page: Page) => {
 const story = (page: Page) =>
   page.locator(".director-story").filter({ visible: true });
 const selector = (page: Page) =>
-  story(page).getByLabel("Explanation style", { exact: true });
+  story(page).getByLabel("Explanation level", { exact: true });
 const recordedOptions = (page: Page) =>
   page
     .locator(".pitch-panel select[aria-label='Recorded event'] option")
@@ -33,11 +33,16 @@ test("style persists, Settings stays synchronized, and selected evidence/replay/
   });
   await ready(page);
   await expect(selector(page)).toHaveValue("plain");
+  await expect(selector(page).locator("option")).toHaveText([
+    "Casual Viewer",
+    "Football Fan",
+    "Advanced Analysis",
+  ]);
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   const settings = page.getByRole("dialog", { name: "Settings" });
   await settings.getByLabel("Follow a team").selectOption("harbor");
   await settings.getByLabel("Follow a player").selectOption("harbor-9");
-  await settings.getByLabel("Explanation style").selectOption("analysis");
+  await settings.getByLabel("Explanation level").selectOption("analysis");
   await page.keyboard.press("Escape");
   await expect(selector(page)).toHaveValue("analysis");
   await story(page).getByText("More from this match", { exact: true }).click();
@@ -75,22 +80,23 @@ test("style persists, Settings stays synchronized, and selected evidence/replay/
   ).toBe(preference);
   await selector(page).selectOption("analysis");
   await expect(replay).toHaveValue(ids[1]);
+  await selector(page).selectOption("fan");
+  await expect(replay).toHaveValue(ids[1]);
+  await expect(story(page)).toContainText("contributed");
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await expect(settings.getByLabel("Explanation style")).toHaveValue(
-    "analysis",
-  );
+  await expect(settings.getByLabel("Explanation level")).toHaveValue("fan");
   await expect(settings.getByLabel("Follow a team")).toHaveValue("harbor");
   await expect(settings.getByLabel("Follow a player")).toHaveValue("harbor-9");
   await page.keyboard.press("Escape");
   await page.reload();
-  await expect(selector(page)).toHaveValue("analysis");
+  await expect(selector(page)).toHaveValue("fan");
   expect(
     await page.evaluate((key) => localStorage.getItem(key), styleKey),
-  ).toBe("analysis");
+  ).toBe("fan");
   expect(posts).toBe(0);
 });
 
-test("all four style/length combinations retain qualifications, score, evidence and one reusable recap investigation", async ({
+test("all six level/length combinations retain qualifications, score, evidence and one reusable recap investigation", async ({
   page,
 }) => {
   let investigations = 0;
@@ -107,8 +113,14 @@ test("all four style/length combinations retain qualifications, score, evidence 
     dialog.getByRole("button", { name: "Evidence reviewed" }),
   ).toBeDisabled();
   const score = (await dialog.getByLabel("Score through 70:00").textContent())!;
-  for (const style of ["plain", "analysis"]) {
-    await dialog.getByLabel("Explanation style").selectOption(style);
+  for (const style of ["plain", "fan", "analysis"]) {
+    const previousLength = await dialog
+      .getByRole("tab", { selected: true })
+      .innerText();
+    await dialog.getByLabel("Explanation level").selectOption(style);
+    await expect(dialog.getByRole("tab", { selected: true })).toHaveText(
+      previousLength,
+    );
     for (const length of ["Quick recap", "Full recap"]) {
       await dialog.getByRole("tab", { name: length }).click();
       await expect(dialog).toContainText("has eased");
@@ -119,6 +131,14 @@ test("all four style/length combinations retain qualifications, score, evidence 
       await expect(dialog.locator(".recap-summary")).toContainText(
         style === "plain" ? "previous equal spell" : "57:30–70:00",
       );
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include("dialog[open]")
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
       const evidence = dialog.locator("details.provenance");
       if ((await evidence.getAttribute("open")) === null)
         await evidence.locator(":scope > summary").click();
@@ -197,6 +217,7 @@ test("an in-flight investigation survives a style change and its verified result
   await expect(story(page).getByRole("status")).toContainText(
     "Checking the passage",
   );
+  await selector(page).selectOption("fan");
   await selector(page).selectOption("analysis");
   await expect(story(page).getByRole("status")).toContainText(
     "Checking the passage",
@@ -229,7 +250,7 @@ test("native keyboard controls, Insights and cross-tab preference synchronizatio
 }) => {
   await ready(page);
   await selector(page).focus();
-  await page.keyboard.press("f");
+  await page.keyboard.press("a");
   await page.keyboard.press("Tab");
   await expect(selector(page)).toHaveValue("analysis");
   const other = await context.newPage();
@@ -243,10 +264,10 @@ test("native keyboard controls, Insights and cross-tab preference synchronizatio
     .getByRole("button", { name: "Insights", exact: true })
     .click();
   const insights = page.getByRole("region", { name: "Insights", exact: true });
-  await expect(insights.getByLabel("Explanation style")).toHaveValue("plain");
+  await expect(insights.getByLabel("Explanation level")).toHaveValue("plain");
   const first = insights.locator(".insight-card").first();
   const plain = await first.innerText();
-  await insights.getByLabel("Explanation style").selectOption("analysis");
+  await insights.getByLabel("Explanation level").selectOption("analysis");
   await expect(first).not.toHaveText(plain);
   await expect(first).toContainText("54:12–63:24");
   await first.click();
@@ -272,7 +293,7 @@ test("invalid or unavailable browser storage keeps a usable synchronized prefere
   await selector(page).selectOption("analysis");
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await expect(
-    page.getByRole("dialog").getByLabel("Explanation style"),
+    page.getByRole("dialog").getByLabel("Explanation level"),
   ).toHaveValue("analysis");
 });
 
@@ -296,7 +317,7 @@ test("recorded approximate times, full-time score, and rewind stay consistent ac
       exact: true,
     })
     .click();
-  for (const style of ["analysis", "plain"]) {
+  for (const style of ["analysis", "fan", "plain"]) {
     await selector(page).selectOption(style);
     await expect(story(page).locator(":scope > p").first()).toContainText(
       "~88′",
@@ -320,7 +341,7 @@ test("recorded approximate times, full-time score, and rewind stay consistent ac
   await expect(shell.locator(".quiet-story")).toContainText("No new headline");
 });
 
-test("both styles and quiet-spell evidence fit accessible desktop, tablet and mobile layouts", async ({
+test("all levels and quiet-spell evidence fit accessible desktop, tablet and mobile layouts", async ({
   page,
 }, info) => {
   await ready(page);
@@ -333,7 +354,7 @@ test("both styles and quiet-spell evidence fit accessible desktop, tablet and mo
       : [page.viewportSize()!];
   for (const size of sizes) {
     await page.setViewportSize(size);
-    for (const style of ["plain", "analysis"]) {
+    for (const style of ["plain", "fan", "analysis"]) {
       await selector(page).selectOption(style);
       await page.evaluate(() => window.scrollTo(0, 0));
       expect(
@@ -361,8 +382,8 @@ test("both styles and quiet-spell evidence fit accessible desktop, tablet and mo
   await page.keyboard.press("Escape");
   await page.getByLabel("Fixture").selectOption("quiet");
   const quiet = page.locator(".quiet-story");
-  for (const style of ["plain", "analysis"]) {
-    await quiet.getByLabel("Explanation style").selectOption(style);
+  for (const style of ["plain", "fan", "analysis"]) {
+    await quiet.getByLabel("Explanation level").selectOption(style);
     await expect(quiet).toContainText("No new headline");
     const evidence = quiet.locator(".quiet-evidence");
     if ((await evidence.getAttribute("open")) === null)
