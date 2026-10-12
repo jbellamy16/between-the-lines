@@ -1,0 +1,107 @@
+{
+  "seed": "6f5c91b7e442410b0ea8f854d2f3fc180d708258727f042e8954a2d2f35f7bdb",
+  "assignments": [
+    {
+      "pairId": "001",
+      "A": "investigator",
+      "B": "B2",
+      "artifactDigest": "21fdfccc133ecfd0841123707aa9dd87baa2733673492ad90ccc5b79ab329370",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "fan",
+      "length": "detail",
+      "primary": false
+    },
+    {
+      "pairId": "002",
+      "A": "B2",
+      "B": "investigator",
+      "artifactDigest": "edfa1276b9ca1b2dec096d3cb0a10b2dacc9b6ed820b7942c4876de03e56323e",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "plain",
+      "length": "brief",
+      "primary": true
+    },
+    {
+      "pairId": "003",
+      "A": "investigator",
+      "B": "B2",
+      "artifactDigest": "eb011585e45d7485a15c1aae507d1d5cca98f6d982b5e87558a1b531786777b8",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "analysis",
+      "length": "detail",
+      "primary": false
+    },
+    {
+      "pairId": "004",
+      "A": "B2",
+      "B": "investigator",
+      "artifactDigest": "b43975faefe49974e125b6ca10fab066513c7955e16a6b248f06edb396c9bf9e",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "analysis",
+      "length": "brief",
+      "primary": false
+    },
+    {
+      "pairId": "005",
+      "A": "investigator",
+      "B": "B2",
+      "artifactDigest": "237281cc6924ab6921008784f2f4535565ef776ba31ae44827cc0f0e387f5ef0",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "fan",
+      "length": "brief",
+      "primary": false
+    },
+    {
+      "pairId": "006",
+      "A": "B2",
+      "B": "investigator",
+      "artifactDigest": "61667fc0afad1e05365aaef910178419a640c6951bdd3c36b29ce79aaa75c34e",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "style": "plain",
+      "length": "detail",
+      "primary": false
+    }
+  ]
+}

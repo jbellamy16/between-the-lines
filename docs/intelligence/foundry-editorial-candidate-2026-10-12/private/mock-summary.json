@@ -1,0 +1,167 @@
+{
+  "studyProvenance": "mock",
+  "status": "awaiting-blinded-human-review",
+  "paidCalls": 0,
+  "actualHttpAttempts": 1,
+  "operationallyValid": true,
+  "accountingReconciled": true,
+  "latencyMs": 49.69862500000002,
+  "voluntaryStop": true,
+  "humanReview": null,
+  "beyondB2Established": false,
+  "note": "Authored mock responses, simulated tokens/accounting; no Foundry or actual model measurement.",
+  "receipt": {
+    "version": "bounded-investigator-1.0.0",
+    "promptVersion": "investigator-selection-1.0.0",
+    "catalogueVersion": "evidence-discovery-1.1.0",
+    "baselineVersion": "deterministic-editorial-1.0.0",
+    "indexId": "c916ff0db9f2db5d84cd33cc088fb9b13df43889a1b3cd9353367641a0ce4a80",
+    "prefixDigest": "489973879ba786d58e23a1998b1c650bd36c8310b2be5b1fce30ac98739fc115",
+    "cutoff": 1800,
+    "initialDigest": "3f00eaa85885d01951a6bcb3d96fb3ed6ea046a20a7842428424614e79653c58",
+    "fallbackIndexId": null,
+    "initialOptionIds": [
+      "option:6b6e3cccc3ddcca66118811fd58f2008",
+      "option:79ff336211bcc3b80b57bc18bd05da24"
+    ],
+    "baselineIds": [
+      "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+    ],
+    "finalIds": [
+      "editorial-development:activity-change:harbor:shots:harbor:1000:shot"
+    ],
+    "trace": [],
+    "plan": {
+      "indexId": "c916ff0db9f2db5d84cd33cc088fb9b13df43889a1b3cd9353367641a0ce4a80",
+      "focalId": "editorial-development:activity-change:harbor:shots:harbor:1000:shot",
+      "interpretationIds": [
+        "both-teams",
+        "repeated-route",
+        "concentrated-attempts"
+      ],
+      "supportIds": [
+        "support:recorded-observation"
+      ],
+      "challengeIds": [
+        "challenge:tracking-unavailable"
+      ],
+      "stop": "sufficient"
+    },
+    "stop": {
+      "origin": "model",
+      "reason": "sufficient",
+      "voluntary": true,
+      "scope": "available-bounded-catalogue"
+    },
+    "verification": "passed",
+    "disposition": "model-selection",
+    "attempts": 1,
+    "toolInvocations": 1,
+    "adaptiveRounds": 0,
+    "usage": {
+      "inputTokens": 100,
+      "outputTokens": 50,
+      "complete": true
+    },
+    "cached": false,
+    "maxPayloadBytes": 36626
+  },
+  "differences": [
+    {
+      "style": "plain",
+      "length": "brief",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 637,
+        "investigator": 639
+      }
+    },
+    {
+      "style": "plain",
+      "length": "detail",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 731,
+        "investigator": 733
+      }
+    },
+    {
+      "style": "fan",
+      "length": "brief",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 636,
+        "investigator": 638
+      }
+    },
+    {
+      "style": "fan",
+      "length": "detail",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 730,
+        "investigator": 732
+      }
+    },
+    {
+      "style": "analysis",
+      "length": "brief",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 593,
+        "investigator": 595
+      }
+    },
+    {
+      "style": "analysis",
+      "length": "detail",
+      "comparison": {
+        "kind": "editorial-emphasis-change",
+        "identical": false,
+        "sameInformation": true,
+        "sameEmphasis": false,
+        "humanPreference": null,
+        "improvementEstablished": false
+      },
+      "words": {
+        "B2": 687,
+        "investigator": 689
+      }
+    }
+  ]
+}
