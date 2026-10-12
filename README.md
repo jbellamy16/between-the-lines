@@ -30,7 +30,7 @@ Watching football and understanding how a match is changing are different things
 
 The [first editorial milestone](docs/EDITORIAL-MILESTONE-1.md) aligns the main story, pitch evidence and replay, prioritizes score developments and full time, preserves source timestamp precision, and brings the explanation forward on mobile. Offline Explore evidence opens the checked events without a model request. The [second editorial milestone](docs/EDITORIAL-MILESTONE-2.md) adds synchronized, locally saved explanation styles across the main story, recap and Insights; changing wording preserves the current selection and investigation.
 
-The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [113-second public synthetic demo](docs/intelligence/DEMO.md) shows joining a match, Catch Me Up, shared facts across styles, evidence replay and a weakening qualification. New model-quality gains are not claimed without a separately authorized live comparison.
+The [Director 1.2 implementation](docs/intelligence/EVOLUTION.md) adds structured hypothesis verification, selective counter-evidence, a typed evidence graph and measured match storylines. The [current 116-second demo package](docs/demo-2026-10-12/README.md) shows the three explanation levels, a guided comparison, fading activity, pitch replay and a separately labeled historical Foundry result. The [October 11 public-release recording](docs/intelligence/DEMO.md) remains historical evidence. New model-quality gains are not claimed without a separately authorized live comparison.
 
 ## Run locally
 
@@ -156,7 +156,7 @@ Included:
 
 Primary target: overall prize. Secondary target: Best Use of Microsoft Foundry. The [official rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) were checked October 11, 2026. Their five equally weighted judging criteria map to the synthetic feed and tests, evidence-first tool workflow, second-screen utility, responsive experience, and Microsoft integration. Registration ends October 20 at noon Pacific; submission ends October 27 at 11:59 p.m. Pacific. Video must be less than two minutes; repository must be public; judges need free access through the judging period.
 
-Read [submission preparation](docs/SUBMISSION.md) for the pitch, 114-second demo script and remaining steps. Preparation PR #24 is merged. The authorized [Foundry continuation](docs/intelligence/foundry-bounded-2026-10-11-continuation-1/REPORT.md) executed one provider request and stopped on a local capacity failure: 0 completed, 1 failed, 0 abstained, 5 unattempted; US$0.00179925 conservatively accounted. Director 1.4.1 fixes the reproduced path offline; it has not been live-evaluated. An earlier offline version is hosted; current deployment parity remains unverified. No entry or public AI enablement is claimed.
+Read [submission preparation](docs/SUBMISSION.md) for the pitch and the [116-second current demonstration](docs/demo-2026-10-12/README.md), including the revised script, walkthrough, captions, screenshots and historical Foundry evidence. This is a local review package; the older hosted build is not source-identical and no publication or submission is claimed. The [historical guided Foundry campaign](docs/intelligence/guided-investigations/REPORT.md) completed five model answers that matched deterministic baselines, plus one appropriate no-call; it did not demonstrate extra investigative benefit. The newer [offline evaluation](docs/intelligence/DIRECTOR-OFFLINE-EVALUATION.md) attributes evidence gains to deterministic code and documents an unresolved equal-quality comparison defect. Current shot-surge model value and human usefulness remain unverified.
 
 ## Known limits and next work
 
@@ -165,7 +165,7 @@ Read [submission preparation](docs/SUBMISSION.md) for the pitch, 114-second demo
 - Test the deployed Azure app on actual mobile Safari; browser accessibility checks passed in Chromium, but physical-device review remains outstanding.
 - The feed simplifies football mechanics and only detects three pattern families; validate it with football domain review.
 - No audio, multilingual narratives, authentication, or persisted cross-device preferences.
-- AI editorial benefit remains unproven; historical Foundry calls do not validate the current Director 1.4.0 workflow or new display styles. Configure an existing shared Redis store before production inference.
+- AI editorial benefit remains unproven; historical Foundry calls do not validate the current shot-surge workflow or three explanation levels. Configure an existing shared Redis store before production inference.
 - Verified broadcast-story JSON export is implemented; causal substitution effects remain unmeasured.
 
 Original application graphics are SVG/CSS. UI symbols use Lucide (ISC license); third-party library licenses remain applicable. No affiliation with fictional teams is implied, and no official league branding is reproduced.

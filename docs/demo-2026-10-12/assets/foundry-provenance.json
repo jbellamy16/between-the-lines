@@ -1,0 +1,17 @@
+{
+  "source": "docs/intelligence/guided-foundry-2026-10-11/results.json",
+  "sha256": "9406608e74304623b2e3cb80d03e22cd06f68f360ad5fccafe3702632c0192a6",
+  "evaluatedCommit": "b56090090cf85c43a28ca07755764082d7bcaec3",
+  "caseId": "fading-increase",
+  "modelPlan": {
+    "intent": "fading-activity",
+    "verdict": "lower",
+    "supplementIds": []
+  },
+  "actualHttpAttempts": 5,
+  "completed": 5,
+  "noCall": 1,
+  "optionalFollowups": 0,
+  "live": false,
+  "scope": "Historical synthetic/diagnostic campaign; not a current workflow evaluation"
+}

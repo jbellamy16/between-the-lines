@@ -1,0 +1,31 @@
+Between the Lines — 116-second review cut
+Current local build · synthetic match · AI off
+82–108 seconds: architecture and historical Foundry receipt cards
+Narrator: macOS Samantha, local synthetic voice
+
+00:00:00,000 – 00:00:10,000 | Join the match
+You join at sixty-three minutes. Harbor lead one nil. But what changed? Between the Lines turns match events into a story you can check.
+
+00:00:10,000 – 00:00:22,000 | A meaningful development
+Four shots in the latest spell, after none in the previous equal period. More attempts, not necessarily better chances. This local preview uses fictional teams, with AI off.
+
+00:00:22,000 – 00:00:38,000 | Personalized explanations
+Choose Casual Viewer for everyday language, Football Fan for named contributions, or Advanced Analysis for precise comparisons. The facts and limits stay shared. Catch Me Up also offers Quick or Full recaps, independently of explanation level.
+
+00:00:38,000 – 00:00:53,000 | Investigate the shot surge
+What best describes this shot surge? The app compares possible explanations with supporting events. Here, no single explanation is established. It shows what is known, and where the evidence stops.
+
+00:00:53,000 – 00:01:09,000 | Follow the developing story
+Now jump to seventy minutes. Has the increase already faded? Yes. Shots rose from one to four across the wider windows, but fell from three to one within the latest spell. Both facts matter. Neither predicts the next goal.
+
+00:01:09,000 – 00:01:22,000 | Inspect and replay evidence
+Open the answer evidence. Replay the fifty-nine-oh-nine shot and its build-up. These are recorded synthetic actions, not broadcast footage or player tracking. The main match clock stays at seventy minutes.
+
+00:01:22,000 – 00:01:34,000 | Microsoft Foundry's implemented role
+Microsoft Foundry hosts GPT-five-point-four Mini for optional structured answer selection and bounded evidence queries. Application code computes and checks the facts, then renders the explanation.
+
+00:01:34,000 – 00:01:48,000 | Historical Foundry evidence
+In this historical study, five model answers matched deterministic baselines; one case correctly needed no call. No optional follow-ups were chosen. Added investigative benefit remains unproven.
+
+00:01:48,000 – 00:01:56,000 | Close
+Viewer testing is pending. Current AI stays off. Between the Lines: follow the story, then check the evidence.
