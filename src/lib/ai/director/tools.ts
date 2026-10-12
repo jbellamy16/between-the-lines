@@ -41,6 +41,9 @@ const querySchema = z
     team: z.enum(["harbor", "riverside"]).nullable(),
     playerId: z.string().max(160).nullable(),
     eventId: z.string().max(200).nullable(),
+    // Discovery resolves this server-side; existing provider schemas stay unchanged.
+    claimId: z.string().min(1).max(500).nullable().optional(),
+    boundary: z.enum(["(start,end]", "[start,end]"]).optional(),
   })
   .strict();
 export type ToolQuery = z.infer<typeof querySchema>;
@@ -150,10 +153,11 @@ export function createInvestigation(
   cutoff: number,
   mode: Mode,
   preferences: StoryPreferences = {},
+  options: { unranked?: boolean } = {},
 ) {
   const visible = visibleEvents(match, cutoff),
     allowed = new Set(visible.map((e) => e.id));
-  const candidates = observe(match, cutoff, mode, preferences);
+  const candidates = observe(match, cutoff, mode, preferences, options);
   const claims = new Map<string, Claim>();
   const trace: {
     tool: ToolName;
@@ -168,6 +172,16 @@ export function createInvestigation(
       throw new EvidenceQueryError("Unknown evidence tool");
     if (trace.length >= 4) throw new Error("Tool budget exhausted");
     const query = querySchema.parse(raw);
+    if (
+      query.claimId &&
+      (name !== "inspect_counter_evidence" ||
+        !candidates.some((c) => c.id === query.claimId))
+    )
+      throw new EvidenceQueryError("Invalid counter-evidence target");
+    if (query.boundary && name !== "inspect_counter_evidence")
+      throw new EvidenceQueryError(
+        "Boundary override only allowed for assessments",
+      );
     if (
       query.matchId !== match.id ||
       query.end > cutoff ||
@@ -187,7 +201,9 @@ export function createInvestigation(
       throw new EvidenceQueryError("Unknown or future event");
     let events = visible.filter(
       (e) =>
-        e.time > query.start &&
+        (query.boundary === "[start,end]"
+          ? e.time >= query.start
+          : e.time > query.start) &&
         e.time <= query.end &&
         (!query.team || e.team === query.team) &&
         (!query.playerId || e.actorId === query.playerId),
@@ -387,12 +403,18 @@ export function createInvestigation(
           c.evidenceIds.includes(query.eventId)),
     );
     if (name === "inspect_counter_evidence") {
-      const eligibleAssessments = supported
-        .map((candidate) => ({
-          claimId: candidate.id,
-          assessment: evaluateHypothesis(match, cutoff, candidate),
-        }))
-        .filter(({ assessment }) =>
+      const targets = candidates.filter(
+        (c) =>
+          (!query.claimId || c.id === query.claimId) &&
+          (!query.eventId || c.evidenceIds.includes(query.eventId)),
+      );
+      const considered = targets.map((candidate) => ({
+        claimId: candidate.id,
+        assessment: evaluateHypothesis(match, cutoff, candidate),
+      }));
+      const eligibleAssessments = considered.filter(
+        ({ claimId, assessment }) =>
+          supported.some((c) => c.id === claimId) &&
           [
             ...assessment.supportingEvidence,
             ...assessment.limitingEvidence,
@@ -400,7 +422,7 @@ export function createInvestigation(
             ...assessment.measurements,
             ...assessment.verificationChecks,
           ].every((item) => item.eventIds.every((id) => retrieved.has(id))),
-        );
+      );
       // Whole assessments are kept intact; select an anchor to inspect an omitted one.
       // The event list and claims still share the same bounded response budget.
       const assessments: typeof eligibleAssessments = [];
@@ -418,6 +440,19 @@ export function createInvestigation(
         assessments,
         totalAssessments: eligibleAssessments.length,
         assessmentsTruncated: assessments.length < eligibleAssessments.length,
+        assessmentCoverage: {
+          considered: considered.length,
+          eligible: eligibleAssessments.length,
+          returned: assessments.length,
+          omitted: eligibleAssessments.length - assessments.length,
+          incomplete: considered.length - eligibleAssessments.length,
+          omittedAssessmentIds: eligibleAssessments
+            .filter((item) => !assessed.has(item.claimId))
+            .map((item) => item.claimId),
+          incompleteAssessmentIds: considered
+            .filter((item) => !eligibleAssessments.includes(item))
+            .map((item) => item.claimId),
+        },
         assessmentSelection:
           "At most two complete assessments within 20000 characters. Use eventId to select an omitted claim's evidence anchor.",
       };
