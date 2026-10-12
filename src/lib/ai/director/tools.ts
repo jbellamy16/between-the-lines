@@ -18,8 +18,10 @@ import {
 import type { Mode, StoryPreferences } from "../../intelligence";
 import { editorialGroup, evidenceOverlaps } from "./editorial";
 import { evaluateHypothesis } from "./hypothesis";
+import { compareShotRoutes } from "./shot-routes";
 
 export const toolNames = [
+  "compare_shot_routes",
   "get_match_events",
   "get_team_statistics",
   "get_player_involvement",
@@ -48,6 +50,8 @@ export function toolDefinitions(matchId: string, cutoff: number) {
     name,
     strict: true,
     description: {
+      compare_shot_routes:
+        "Compare complete shot and recovery-linked possession aggregates in the supplied current window and preceding equal window. Requires team; no player or event filter.",
       get_match_events:
         "Retrieve recorded events and fully supported claims in a window.",
       get_team_statistics:
@@ -157,6 +161,7 @@ export function createInvestigation(
     eventIds: string[];
     claimIds: string[];
     truncated: boolean;
+    purpose?: string;
   }[] = [];
   function execute(name: string, raw: unknown) {
     if (!(toolNames as readonly string[]).includes(name))
@@ -312,6 +317,27 @@ export function createInvestigation(
         }
       }
       events = [...prior, ...events];
+    }
+    if (name === "compare_shot_routes") {
+      if (!query.team || query.playerId || query.eventId)
+        throw new EvidenceQueryError(
+          "Route comparison requires a team and no anchor/player filter",
+        );
+      let routes;
+      try {
+        routes = compareShotRoutes(
+          match,
+          cutoff,
+          query.team,
+          query.start,
+          query.end,
+        );
+      } catch {
+        throw new EvidenceQueryError("Invalid route comparison");
+      }
+      const refs = new Set(routes.eventIds);
+      events = visible.filter((e) => refs.has(e.id));
+      extra = { routes };
     }
     if (name === "get_match_context")
       extra = {

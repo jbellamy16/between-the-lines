@@ -11,8 +11,16 @@ import {
   type ObservationWindow,
 } from "./hypothesis";
 
-export const QUESTION_VERSION = "guided-1.0.0";
+import {
+  compareShotRoutes,
+  routeInterpretations,
+  type ShotRoutes,
+  type Interpretation,
+} from "./shot-routes";
+
+export const QUESTION_VERSION = "guided-1.1.0";
 export const questionIntentSchema = z.enum([
+  "shot-surge-explanations",
   "chance-quality",
   "opponent-improvement",
   "fading-activity",
@@ -23,6 +31,7 @@ export const questionSchema = z
   .strict();
 export type Question = z.infer<typeof questionSchema>;
 export const questionLabels: Record<QuestionIntent, string> = {
+  "shot-surge-explanations": "What best describes this shot surge?",
   "chance-quality": "Are these chances actually better?",
   "opponent-improvement": "Is the other team improving too?",
   "fading-activity": "Has this increase already faded?",
@@ -50,6 +59,14 @@ export type QuestionEvidence = {
   measurements: QuestionMeasurement[];
   qualifications: string[];
   eventIds: string[];
+  comparison?: {
+    routes: ShotRoutes;
+    interpretations: Interpretation[];
+    baseline: QuestionEvidence[];
+    eligible: boolean;
+    noCallReason: string | null;
+    decision: "publish-comparison" | "no-added-insight" | "unresolved";
+  };
 };
 export type GuidedQuestion = {
   intent: QuestionIntent;
@@ -109,6 +126,11 @@ export function questionEvidence(
     candidate.category === "shot-location"
       ? "shots"
       : candidate.statistics[0].label;
+  if (
+    question.intent === "shot-surge-explanations" &&
+    (candidate.category !== "activity-change" || metric !== "shots")
+  )
+    return null;
   const predicate = predicates[metric];
   if (!predicate) return null;
   if (
@@ -161,7 +183,84 @@ export function questionEvidence(
     ownB = sample(candidate.team, current);
   add("own-previous", candidate.team, metric, previous, ownA);
   add("own-current", candidate.team, metric, current, ownB);
-  if (question.intent === "chance-quality") {
+  if (question.intent === "shot-surge-explanations") {
+    const baseline = (
+      ["chance-quality", "opponent-improvement", "fading-activity"] as const
+    )
+      .map((intent) =>
+        questionEvidence(match, cutoff, { ...question, intent })!,
+      )
+      .filter(Boolean);
+    const opponent = baseline.find(
+      (e) => e.question.intent === "opponent-improvement",
+    )!;
+    const routes = compareShotRoutes(
+      match,
+      cutoff,
+      candidate.team,
+      current.start,
+      current.end,
+    );
+    const count = (id: string) =>
+      opponent.measurements.find((m) => m.id === id)!.value!;
+    const interpretations = routeInterpretations(routes, {
+      previous: count("opponent-previous"),
+      current: count("opponent-current"),
+    });
+    // Frozen ambiguity gate: two qualifying links leave possession repetition unresolved
+    // in the *existing* baseline. Computing the offline answer does not count as AI value.
+    const links =
+      h.measurements.find((m) => m.key === "high-recovery-linked-shots")
+        ?.value ?? 0;
+    const eligible = routes.complete && links >= 2 && ownB.length > ownA.length;
+    const noCallReason = eligible
+      ? null
+      : !routes.complete
+        ? "A complete route comparison is unavailable. Showing the supported recorded evidence without a model call."
+        : "Fewer than two qualifying recovery links cannot establish a repeated route. The recorded comparison is sufficient.";
+    base.comparison = {
+      routes,
+      interpretations,
+      baseline,
+      eligible,
+      noCallReason,
+      decision: routes.complete ? "publish-comparison" : "unresolved",
+    };
+    base.measurements = [
+      ...opponent.measurements,
+      ...routes.facts.map((f) => ({
+        ...f,
+        team: candidate.team,
+        metric: (
+          {
+            shots: "shots",
+            linkedShots: "shots following qualifying recoveries",
+            shotPossessions: "distinct possessions with shots",
+            linkedPossessions: "distinct recovery-linked possessions",
+            largestPossession: "shots in the largest possession group",
+            early: "shots in the first half of the window",
+            late: "shots in the second half of the window",
+          } as Record<string, string>
+        )[f.id.split(":")[1]],
+        window: f.id.split(":")[0],
+      })),
+    ];
+    base.qualifications.push(
+      ...baseline.flatMap((e) => [
+        ...e.qualifications,
+        ...(e.reason ? [e.reason] : []),
+      ]),
+      ...routes.previous.unavailable,
+      ...routes.current.unavailable,
+      "Several shots after one recovery count as one linked possession. A missing link does not identify another attacking route.",
+      "These descriptions can coexist. Recorded repetition does not prove pressing, causation, dominance or future continuation.",
+      routes.possessionKind === "generated"
+        ? "Possession groups are synthetic, not recorded real-world possessions."
+        : routes.possessionKind === "recorded"
+          ? "Possession groups use the source's recorded identities."
+          : "Possession identities are unavailable from this source.",
+    );
+  } else if (question.intent === "chance-quality") {
     const a = sample(candidate.team, previous, (e) => e.type === "shot"),
       b = sample(candidate.team, current, (e) => e.type === "shot");
     if (!b.length) return null;
@@ -259,7 +358,12 @@ export function questionEvidence(
       .map((e) => e.description),
   );
   base.qualifications.push(...match.limitations);
-  base.eventIds = [...new Set(base.measurements.flatMap((m) => m.eventIds))];
+  base.eventIds = [
+    ...new Set([
+      ...base.measurements.flatMap((m) => m.eventIds),
+      ...(base.comparison?.routes.eventIds ?? []),
+    ]),
+  ];
   return base;
 }
 export function guidedQuestions(
@@ -299,7 +403,30 @@ export function presentQuestion(
   const range = (w: ObservationWindow) =>
     `${matchClock(match, w.start)}–${matchClock(match, w.end)}`;
   let answer: string, measurement: string;
-  if (e.question.intent === "chance-quality") {
+  if (e.question.intent === "shot-surge-explanations" && e.comparison) {
+    const { routes, interpretations, decision } = e.comparison;
+    const a = routes.previous,
+      b = routes.current;
+    const supported = interpretations.filter((i) => i.status === "supported");
+    answer =
+      decision === "no-added-insight"
+        ? "The investigation adds no insight beyond the recorded comparison."
+        : decision === "unresolved"
+          ? routes.complete
+            ? "No single leading explanation was selected; the recorded comparisons remain available."
+            : "The evidence leaves the comparison unresolved."
+          : supported.length > 1
+            ? "Mixed evidence: several descriptions of this spell apply."
+            : supported.length === 1
+              ? supported[0].text
+              : "No single explanation is established by these events.";
+    const known = (n: number | null) => (n === null ? "unknown" : String(n));
+    measurement = routes.suppressed
+      ? "The complete route comparison exceeds the evidence limit and is unavailable."
+      : `${name}: ${a.shots} → ${b.shots} shots; ${a.linkedShots} → ${b.linkedShots} qualifying linked shots, in ${known(a.linkedPossessions)} → ${known(b.linkedPossessions)} distinct linked possessions. Largest current shot group: ${known(b.largestPossession)} of ${b.shots}; current halves: ${b.early} → ${b.late}. Opponent shots: ${number("opponent-previous")} → ${number("opponent-current")}.`;
+    // Every interpretation and every contrary fact survives editorial ordering and style.
+    measurement += " " + interpretations.map((i) => i.text).join(" ");
+  } else if (e.question.intent === "chance-quality") {
     answer =
       e.reason ??
       (e.verdict === "higher"

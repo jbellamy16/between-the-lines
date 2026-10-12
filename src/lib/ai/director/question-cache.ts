@@ -23,6 +23,12 @@ export async function requestQuestion(
   const key = JSON.stringify({
     version: QUESTION_VERSION,
     context: directorContext,
+    source: {
+      id: match.id,
+      provider: match.provenance.provider,
+      revision: match.provenance.revision,
+      adapter: match.provenance.adapterVersion,
+    },
     cutoff,
     question,
   });

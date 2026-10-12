@@ -17,6 +17,7 @@ import {
 import { UsageFailure } from "../request-controls";
 import { estimateCost } from "../cost";
 import { createInvestigation, EvidenceQueryError, followupTool } from "./tools";
+import { investigateSurge } from "./surge-runner";
 import { evidenceWire } from "./evidence-wire";
 import { evaluateHypothesis } from "./hypothesis";
 import {
@@ -72,6 +73,7 @@ export function deterministicQuestion(
     supplements: [],
     trace: [],
     notice:
+      evidence.comparison?.noCallReason ??
       evidence.reason ??
       "Checked from recorded events. This is a deterministic answer, not a model investigation.",
     metrics: {
@@ -128,7 +130,23 @@ export async function investigateQuestion(
     AbortSignal.timeout(55000),
   ]);
   const baseline = deterministicQuestion(match, cutoff, question);
-  if (baseline.evidence.availability !== "available") return baseline;
+  if (
+    baseline.evidence.availability !== "available" ||
+    baseline.evidence.comparison?.eligible === false ||
+    match.provenance.redistribution === "restricted"
+  )
+    return baseline;
+  if (question.intent === "shot-surge-explanations")
+    return investigateSurge(
+      match,
+      cutoff,
+      question,
+      provider,
+      baseline,
+      signal,
+      telemetry,
+      start,
+    );
   const session = createInvestigation(match, cutoff, "fan");
   const wire = evidenceWire();
   const registry = new Map<string, QuestionSupplement>();
@@ -340,6 +358,7 @@ export async function answerQuestion(
   signal?.throwIfAborted();
   if (
     baseline.evidence.availability === "unavailable" ||
+    baseline.evidence.comparison?.eligible === false ||
     provider === "offline" ||
     match.provenance.redistribution === "restricted" ||
     !usageStoreReady()
