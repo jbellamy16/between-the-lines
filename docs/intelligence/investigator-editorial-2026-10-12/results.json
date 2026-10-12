@@ -1,0 +1,104 @@
+{
+  "provenance": "authored mocked decisions; not model results",
+  "paidCalls": 0,
+  "modelSelectedDecisions": null,
+  "modelUsage": null,
+  "modelCostUsd": null,
+  "humanReview": null,
+  "improvementEstablished": false,
+  "newFrozenCandidateRequired": true,
+  "comparisons": 60,
+  "classifications": {
+    "editorial-emphasis-change": 18,
+    "focal-development-change": 6,
+    "reordered-only": 6,
+    "identical": 24,
+    "stopping-change": 6
+  },
+  "styles": ["plain", "fan", "analysis"],
+  "lengths": ["brief", "detail"],
+  "wordLimits": {
+    "brief": 1800,
+    "detail": 2600
+  },
+  "wordRange": [36, 807],
+  "originalPR41FreezeSha256": "33aef062567387734bad6bd0f80ecbf8f50c51465e87481109d576ca3b85dfbf",
+  "sourceHashes": {
+    "eval/investigator-editorial/artifact.ts": "cc367482ac154e1e73c204bb5ac46e4e7fa21bdabeda43dadacc5166f3a0e435",
+    "eval/investigator-editorial/controls.ts": "8412632e72c374ff8c15a5daf4a6297197e546cfff7842d28d5dd680501c73e9",
+    "eval/investigator-editorial/render.ts": "ec69e6534618f11fb43c685190fafa6e73f8ac82246fd8ea2a897d3dfe33d750",
+    "scripts/evaluate-investigator-editorial.ts": "39634f5a02d04a9c6a187a3ae8c8c8d3a18006a417750718b72a4b556eb89f77"
+  },
+  "controls": [
+    {
+      "caseId": "opponent-counter-evidence",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "identical",
+      "sameInformation": true
+    },
+    {
+      "caseId": "no-further-gain-stop",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "stopping-change",
+      "sameInformation": true
+    },
+    {
+      "caseId": "same-as-b2",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "identical",
+      "sameInformation": true
+    },
+    {
+      "caseId": "different-supported-evidence",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "editorial-emphasis-change",
+      "sameInformation": true
+    },
+    {
+      "caseId": "invalid-factual-prose",
+      "verification": "rejected",
+      "disposition": "B2-fallback",
+      "classification": "identical",
+      "sameInformation": true
+    },
+    {
+      "caseId": "quiet-no-call",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "identical",
+      "sameInformation": true
+    },
+    {
+      "caseId": "other-focal-development",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "focal-development-change",
+      "sameInformation": false
+    },
+    {
+      "caseId": "secondary-reordering",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "reordered-only",
+      "sameInformation": true
+    },
+    {
+      "caseId": "generic-counter-evidence",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "editorial-emphasis-change",
+      "sameInformation": true
+    },
+    {
+      "caseId": "limited-interpretation-focus",
+      "verification": "passed",
+      "disposition": "verified-selection",
+      "classification": "editorial-emphasis-change",
+      "sameInformation": true
+    }
+  ]
+}

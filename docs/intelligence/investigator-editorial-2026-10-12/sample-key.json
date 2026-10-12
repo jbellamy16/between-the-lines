@@ -1,0 +1,17 @@
+{
+  "pairId": "049",
+  "A": "investigator",
+  "B": "B2",
+  "artifactDigest": "56da0ecc0ee597b12554109c39db7179bcebaa54605533a53c8a4b901c5820c2",
+  "comparison": {
+    "kind": "editorial-emphasis-change",
+    "identical": false,
+    "sameInformation": true,
+    "sameEmphasis": false,
+    "humanPreference": null,
+    "improvementEstablished": false
+  },
+  "caseId": "generic-counter-evidence",
+  "style": "plain",
+  "length": "brief"
+}
