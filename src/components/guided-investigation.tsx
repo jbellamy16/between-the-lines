@@ -13,8 +13,9 @@ import {
 } from "@/lib/ai/director/questions";
 import { requestQuestion } from "@/lib/ai/director/question-cache";
 import { useExplanationStyle } from "./explanation-preference";
-import { providerLabel } from "./provenance";
 import { AnimatedDetails } from "./motion";
+import { InvestigationSource } from "./investigation-source";
+import { InvestigationComparison } from "./investigation-comparison";
 
 const sourceKeys = new WeakMap<MatchData, number>();
 let sourceSequence = 0;
@@ -154,6 +155,9 @@ function QuestionPanel({
       aria-label="Questions about this story"
     >
       <h3>Look closer</h3>
+      <p className="guided-intro">
+        Test this reading against the recorded evidence.
+      </p>
       <div className="guided-questions">
         {questions
           .filter((q) => !q.unavailable)
@@ -183,24 +187,36 @@ function QuestionPanel({
             {matchClock(match, result.evidence.cutoff)}
           </small>
           <h4>{questionLabels[result.evidence.question.intent]}</h4>
+          <InvestigationSource
+            source={result.source}
+            cached={result.metrics.cached}
+          />
           <p className="question-direct-answer">
             <strong>{wording.answer}</strong>
           </p>
-          <p>{wording.measurement}</p>
+          <h5 className="investigation-heading">Evidence behind the answer</h5>
+          {result.evidence.comparison ? (
+            <InvestigationComparison evidence={result.evidence} match={match} />
+          ) : (
+            <p>{wording.measurement}</p>
+          )}
           <p className="metric-note">{wording.windows}</p>
+          {wording.qualifications.length > 0 && (
+            <h5 className="investigation-heading">What limits this reading</h5>
+          )}
           {wording.qualifications.map((q) => (
             <p className="story-qualification" key={q}>
               {q}
             </p>
           ))}
-          {result.supplements.map((s) => (
-            <p key={s.id}>{s.text}</p>
-          ))}
-          <p className="director-mode-note">
-            {result.source === "offline"
-              ? "Checked from recorded events · No model investigation"
-              : `Investigated with ${providerLabel(result.source)} · Independently verified${result.metrics.cached ? " · Reused answer" : ""}`}
-          </p>
+          {result.supplements.length > 0 && (
+            <div className="question-followup">
+              <h5 className="investigation-heading">Follow-up evidence</h5>
+              {result.supplements.map((s) => (
+                <p key={s.id}>{s.text}</p>
+              ))}
+            </div>
+          )}
           <p role="status" aria-live="polite">
             {busy
               ? "Investigating this question. The recorded answer is visible while evidence is checked…"

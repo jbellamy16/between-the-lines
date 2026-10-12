@@ -166,10 +166,19 @@ test("a failed request recovers and successful reuse separates question intents"
   await expect(
     panel(page).getByRole("button", { name: "Retry this question" }),
   ).toBeVisible();
+  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
+    "Verified event analysis",
+  );
   await panel(page)
     .getByRole("button", { name: "Retry this question" })
     .click();
   await expect(panel(page)).toContainText("Independently verified");
+  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
+    "AI investigation",
+  );
+  await expect(panel(page)).toContainText(
+    "AI selected evidence; deterministic checks verified the recorded facts",
+  );
   expect(transport.posts()).toBe(2);
   await panel(page)
     .getByRole("button", { name: "Has this increase already faded?" })
@@ -181,6 +190,9 @@ test("a failed request recovers and successful reuse separates question intents"
     .getByRole("button", { name: "Is the other team improving too?" })
     .click();
   await expect(panel(page)).toContainText("Reused answer");
+  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
+    "AI investigation · Reused answer",
+  );
   await page
     .locator(".director-story")
     .getByLabel("Explanation style", { exact: true })
@@ -202,6 +214,9 @@ test("cancellation and question changes cannot publish a late answer", async ({
     .click();
   await expect(panel(page).getByRole("status")).toContainText(
     "Investigating this question",
+  );
+  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
+    "Verified event analysis",
   );
   await panel(page)
     .getByRole("button", { name: "Cancel investigation" })
@@ -343,7 +358,9 @@ test("shot surge comparison stays deterministic for the pressure controls in bot
       exact: true,
     })
     .click();
-  await expect(panel(page)).toContainText("distinct linked possessions");
+  await expect(
+    panel(page).getByRole("row", { name: "Distinct linked possessions" }),
+  ).toContainText("0");
   await expect(panel(page)).toContainText("No model investigation");
   await expect(panel(page)).toContainText(
     "Several shots after one recovery count as one linked possession",
@@ -354,7 +371,9 @@ test("shot surge comparison stays deterministic for the pressure controls in bot
     .locator(".director-story")
     .getByLabel("Explanation style", { exact: true })
     .selectOption("analysis");
-  await expect(panel(page)).toContainText("distinct linked possessions");
+  await expect(
+    panel(page).getByRole("row", { name: "Distinct linked possessions" }),
+  ).toBeVisible();
   await expect(panel(page)).toContainText("pressing, causation");
   await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
   await expect(page.locator(".question-answer")).toHaveCount(0);
@@ -365,7 +384,12 @@ test("shot surge comparison stays deterministic for the pressure controls in bot
     })
     .click();
   await expect(panel(page)).toContainText("No model investigation");
-  await expect(panel(page)).toContainText("1 distinct linked possessions");
+  await expect(
+    panel(page)
+      .getByRole("row", { name: "Distinct linked possessions" })
+      .getByRole("cell")
+      .last(),
+  ).toHaveText("1");
   expect(transport.posts()).toBe(0);
   await panel(page)
     .getByText("Explore answer evidence", { exact: true })

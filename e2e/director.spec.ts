@@ -205,7 +205,6 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
   await expect(story.locator(".story-qualification")).toContainText(
     "More shots need not mean better chances",
   );
-  await story.getByText("What to watch next", { exact: true }).click();
   await expect(story.locator(".story-significance > p")).toBeVisible();
   const slider = page.getByRole("slider", { name: "Match timeline" });
   await slider.fill("3900");
