@@ -160,6 +160,7 @@ Read [submission preparation](docs/SUBMISSION.md) for the pitch, 114-second demo
 
 ## Known limits and next work
 
+- Run the [10–12 minute viewer usability study](docs/release-2026-10-11/VIEWER-TEST.md) with casual and knowledgeable viewers; use its [blank session sheet](docs/release-2026-10-11/VIEWER-TEST-RECORD.md) to record completion, comprehension, confusion and feedback. The protocol covers all three explanation levels; no participant sessions have been conducted for this update.
 - Review the captured Foundry Fan/Analyst outputs with a human football reviewer before public AI enablement.
 - Test the deployed Azure app on actual mobile Safari; browser accessibility checks passed in Chromium, but physical-device review remains outstanding.
 - The feed simplifies football mechanics and only detects three pattern families; validate it with football domain review.
