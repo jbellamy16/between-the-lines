@@ -1,0 +1,35 @@
+{
+  "product": "Between the Lines",
+  "commit": "10cd0aa68c4f1fab07aef2b244992c46879f44c7",
+  "builtAt": "2026-10-12T21:45:12.872848+00:00",
+  "buildId": "dU8AxOcHi3KhXUbI-NhT3",
+  "zipFile": "azure-release-10cd0aa6.zip",
+  "zipSha256": "b4e894f2cb4171b49e644aab79a798bdaf5e4e3b396e6319d8eda5fcf5aa0ab3",
+  "zipBytes": 25375336,
+  "files": 1381,
+  "nativePackages": [
+    {
+      "package": "@img/sharp-linux-x64",
+      "version": "0.35.5",
+      "integrityVerified": true
+    },
+    {
+      "package": "@img/sharp-libvips-linux-x64",
+      "version": "1.3.4",
+      "integrityVerified": true
+    }
+  ],
+  "secretFilenameAndPatternScan": "passed; no local environment files copied",
+  "buildFlags": {
+    "AI_ENABLED": "false",
+    "FOUNDRY_ENABLED": "false",
+    "AI_PROACTIVE_ENABLED": "false",
+    "HISTORICAL_MATCHES_ENABLED": "false",
+    "RECORDED_MATCHES_VISIBLE": "false",
+    "AI_MINUTE_LIMIT": "0",
+    "AI_HOURLY_LIMIT": "0",
+    "AI_DAILY_LIMIT": "0",
+    "AI_TOTAL_LIMIT": "0",
+    "NEXT_PUBLIC_SITE_URL": "https://between-the-lines-jb-f5539b65.azurewebsites.net"
+  }
+}

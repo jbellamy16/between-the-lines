@@ -1,0 +1,48 @@
+{
+  "headRefOid": "dde92435dee44cf8e461851bb81d5f69ae19d03c",
+  "mergeStateStatus": "CLEAN",
+  "mergeable": "MERGEABLE",
+  "reviews": [],
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-12T21:42:58Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/jbellamy16/second-look/actions/runs/38311418762/job/115017799225",
+      "name": "verify",
+      "startedAt": "2026-10-12T21:34:00Z",
+      "status": "COMPLETED",
+      "workflowName": "Verify Between the Lines"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-12T21:40:31Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/jbellamy16/second-look/actions/runs/38311378314/job/115020109354",
+      "name": "verify",
+      "startedAt": "2026-10-12T21:33:35Z",
+      "status": "COMPLETED",
+      "workflowName": "Verify Between the Lines"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-12T21:39:42Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/jbellamy16/second-look/actions/runs/38311418762/job/115017799478",
+      "name": "cloudflare",
+      "startedAt": "2026-10-12T21:34:00Z",
+      "status": "COMPLETED",
+      "workflowName": "Verify Between the Lines"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-12T21:44:43Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/jbellamy16/second-look/actions/runs/38311378314/job/115020107346",
+      "name": "cloudflare",
+      "startedAt": "2026-10-12T21:40:49Z",
+      "status": "COMPLETED",
+      "workflowName": "Verify Between the Lines"
+    }
+  ]
+}

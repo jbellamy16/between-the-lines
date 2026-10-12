@@ -2,7 +2,13 @@
 
 The current synthetic release is verified on the existing Azure host. Cloudflare is unchanged; its alternative runbook remains [here](CLOUDFLARE.md).
 
-## Current verified release — October 11, 2026
+## Current release — October 12, 2026
+
+PR #43 merged after review and all four GitHub checks passed. The existing Azure app now serves `10cd0aa68c4f1fab07aef2b244992c46879f44c7`, identified by [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json), build `dU8AxOcHi3KhXUbI-NhT3`. Deployment `ca76023a-b9db-4776-a602-4e5f71444000` reached `RuntimeSuccessful`. [Release validation, controls, submission blockers and rollback](release-2026-10-12/RELEASE.md).
+
+The release brings the current demonstration's Casual Viewer, Football Fan and Advanced Analysis levels, shot-surge comparison, guided deterministic answers, evidence and pitch replay to the public host. All App Service settings are unchanged; public access remains synthetic-only with AI disabled and quotas zero. Foundry, Redis, B2 and PR #43's frozen candidate are unchanged. The October 11 ZIP is retained for rollback.
+
+## Previous verified release — October 11, 2026
 
 PR #26 merged as `2014a497c84c799952c218a0229ec0c16bd964b1`. The public [/release.json](https://between-the-lines-jb-f5539b65.azurewebsites.net/release.json) identifies the compiled artifact. Deployment `4d102384-bafe-4d4b-98f1-a71c22bbdad3` completed successfully; the actual signed-out desktop/mobile walkthrough was verified at 2:10 p.m. America/Chicago. [Full release record, checks, screenshots and rollback](release-2026-10-11/RELEASE.md).
 
