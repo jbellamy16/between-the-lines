@@ -1,0 +1,91 @@
+{
+  "verifiedAt": "2026-10-12T22:02:22.197842+00:00",
+  "pr44": {
+    "head": "33c5c25d1b67b0e9acf9c3dc89924c08eba756af",
+    "checksPassed": 4,
+    "blockingFindings": 0,
+    "reviewThreads": 0,
+    "merge": "cc1344d2da341db9db25252e32d034b905bee5c7"
+  },
+  "release": {
+    "product": "Between the Lines",
+    "commit": "10cd0aa68c4f1fab07aef2b244992c46879f44c7",
+    "builtAt": "2026-10-12T21:45:12.872848+00:00",
+    "buildId": "dU8AxOcHi3KhXUbI-NhT3"
+  },
+  "publicStatus": {
+    "directorContext": "6204c263175dd81809a0e42052d8af5b3e233dde9d232897a1886f55f8d053ed",
+    "mode": "offline",
+    "configured": "offline",
+    "proactive": false,
+    "usageControls": false
+  },
+  "publicWalkthrough": {
+    "method": "Actual in-app browser UI; no response mocks",
+    "verified": [
+      "63:24 and 1-0",
+      "all six explanation-level/recap-length combinations",
+      "shot surge: no single explanation; 0 to 4",
+      "70:00 fading: wider 1 to 4, recent halves 3 to 1",
+      "59:09 six-action replay completes; main clock remains 70:00"
+    ],
+    "scope": "Behavioral parity; current layout differs from earlier local recording",
+    "automatedRegressionSuiteRerun": false
+  },
+  "original": {
+    "path": "artifacts/demo-2026-10-12/between-the-lines-demo.mp4",
+    "sha256": "befaee11e9a2cc9336fda61dcced02b62e483a8b35fb4ee572c16f3ccda9301a",
+    "durationSeconds": 116,
+    "dimensions": [1920, 1080],
+    "fps": 30,
+    "frames": 3480,
+    "video": "H.264 High/yuv420p",
+    "audio": "AAC 48 kHz mono",
+    "audioMeanDb": -16.1,
+    "audioPeakDbfs": -1.5,
+    "decodeErrors": 0,
+    "publicationCleared": false,
+    "blocker": "macOS Samantha system-voice public-sharing restriction",
+    "humanListeningReview": "Not performed"
+  },
+  "silentAlternative": {
+    "path": "artifacts/publication-2026-10-12/between-the-lines-captioned-no-audio.mp4",
+    "sha256": "24dad946a28a33a45652f0a015b303a77ce9825cbc0b2d099402a46f44d8c3c1",
+    "bytes": 5723044,
+    "durationSeconds": 116,
+    "audioStreams": 0,
+    "videoFramesIdentical": true,
+    "decodedFrameHash": "SHA256=837f5cc0ce61cc91be86b10e210da41f3fdc8cc188245856fb6c7253f2a84cb6",
+    "ownerSelected": false
+  },
+  "captions": {
+    "count": 25,
+    "srtSha256": "33ddc73581b967683d584c698424e70e92dbc9d00c88d5cc680444e23e826b2b",
+    "vttSha256": "cfef3d19381b5bd0f3b8c14160870e3296522f078e1d76b110b747a620cfda0d",
+    "exactOriginalCopies": true
+  },
+  "youtube": {
+    "inAppBrowser": "Signed out",
+    "firefox": "Authenticated; Studio prompted Create channel and Terms of Service; canceled",
+    "uploaded": false,
+    "published": false,
+    "publicUrl": null,
+    "approvalReceived": false
+  },
+  "preservation": {
+    "originalCheckoutHashesVerified": 191,
+    "originalBranchUnchanged": true,
+    "originalNextEnvChangePreserved": true,
+    "frozenSourceHashesVerified": 267,
+    "frozenHistoricalHashesVerified": 109,
+    "frozenDigestConvention": "Existing UTF-8 text decoding; raw bytes also equal base commit"
+  },
+  "remainingBlockers": [
+    "Owner audio choice or rights-cleared replacement narration",
+    "Supplied crest publication/competition rights confirmation",
+    "YouTube channel setup",
+    "Explicit publication authorization",
+    "Signed-out verification after authorized upload",
+    "Authenticated final hackathon entry review"
+  ]
+}
