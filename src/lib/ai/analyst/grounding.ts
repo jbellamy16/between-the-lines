@@ -53,6 +53,7 @@ const CHECKED_WORDS = Object.keys(NUMBER_WORDS).filter(
 
 const CLOCK = /\b(\d{1,3})(?:\+(\d{1,2}))?:(\d{2})\b/g;
 const NUMBER = /(?<![\w.])(\d+(?:\.\d+)?)(%?)/g;
+const EVENT_REF = /\be\d{1,3}\b/gi;
 
 export function emptyFacts(): GroundingFacts {
   return {
@@ -296,6 +297,14 @@ export function verifyGrounding(
   if (!options.declining && SPECULATION.test(answer))
     issues.push(
       "The answer predicts an outcome or describes intent or feelings, which recorded events cannot show.",
+    );
+
+  // Event refs ("e4") are citation handles for the app, not words a viewer
+  // can read. The digit inside "e4" also escapes the number check above.
+  const refs = [...new Set(answer.match(EVENT_REF) ?? [])];
+  if (refs.length)
+    issues.push(
+      `The answer shows event refs (${refs.join(", ")}). Put refs only in citations and describe each moment by its time and player.`,
     );
 
   return {

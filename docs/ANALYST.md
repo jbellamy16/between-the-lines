@@ -17,7 +17,7 @@ flowchart LR
 
 - **Tools.** The same nine read-only functions the Director uses (`src/lib/ai/director/tools.ts`). They only see events at or before the viewer's clock, so the agent can't spoil the match.
 - **Agent loop.** `src/lib/ai/analyst/agent.ts`. At most 4 model requests and 5 tool calls per question, with parallel tool calls and a 45-second deadline. Invalid tool queries go back to the agent as errors it can correct.
-- **Grounding check.** `src/lib/ai/analyst/grounding.ts`. It compares every clock time, number and player name in the answer against what the tools returned. Counts are tied to what was counted: "4 shots" must match a shot count, not just any 4. It also rejects predictions and claims about feelings or intent. It is pure code with no model involved.
+- **Grounding check.** `src/lib/ai/analyst/grounding.ts`. It compares every clock time, number and player name in the answer against what the tools returned. Counts are tied to what was counted: "4 shots" must match a shot count, not just any 4. It also rejects predictions, claims about feelings or intent, and internal event references (such as "e4") left in the text instead of a time and player. It is pure code with no model involved.
 - **Streaming.** `POST /api/ask` streams NDJSON. Each step (tool call, verification, revision) appears in the UI as it happens, then the result arrives.
 - **Personalization.** The viewer's explanation level (Casual Viewer, Football Fan, Advanced Analysis) sets the agent's tone. The facts and checks stay the same.
 - **Caching.** Identical questions at the same clock reuse the verified answer for an hour at no cost.

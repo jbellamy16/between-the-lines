@@ -142,6 +142,23 @@ describe("grounding check", () => {
       false,
     );
   });
+  it("rejects event refs written into the answer text", () => {
+    const result = verifyGrounding(
+      "Theo March shot at 59:09, with Harbor on e2, e4 and E7.",
+      facts,
+      roster,
+    );
+    expect(result.passed).toBe(false);
+    expect(result.issues.join(" ")).toContain("event refs (e2, e4, E7)");
+    // Words that merely contain the pattern are fine.
+    expect(
+      verifyGrounding(
+        "Harbor took 4 shots between 54:12 and 63:24.",
+        facts,
+        roster,
+      ).passed,
+    ).toBe(true);
+  });
   it("collects clocks from free text", () => {
     const f = emptyFacts();
     addText(f, "Shot at 45+2:10");
@@ -201,6 +218,65 @@ describe("analyst agent", () => {
     const evidence = JSON.parse(second.input[2].output);
     expect(evidence.currentWindow.shots).toBe(4);
     expect(evidence.previousWindow.shots).toBe(0);
+  });
+
+  it("traces a build-up from a ref the agent was shown", async () => {
+    let shotRef = "";
+    const fetch = vi.fn(async (_url: string, init: { body: string }) => {
+      const body = JSON.parse(init.body);
+      if (fetch.mock.calls.length === 1)
+        return reply([
+          toolCall("get_shot_locations", {
+            start: 3252,
+            end: 3804,
+            team: "harbor",
+          }),
+        ]);
+      if (fetch.mock.calls.length === 2) {
+        // The agent only ever sees refs, so it traces with one.
+        const shown = JSON.parse(body.input.at(-1).output);
+        shotRef = shown.events.at(-1).ref;
+        return reply([
+          toolCall("get_recorded_sequence", {
+            start: 3252,
+            end: 3804,
+            team: "harbor",
+            eventId: shotRef,
+          }),
+        ]);
+      }
+      return reply([
+        answer({
+          status: "answered",
+          answer: "Theo March shot at 62:50.",
+          citations: [shotRef],
+        }),
+      ]);
+    });
+    vi.stubGlobal("fetch", fetch);
+    const steps: { kind: string; label: string }[] = [];
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "How did the last shot come about?",
+      "fan",
+      "foundry",
+      { onStep: (s) => steps.push(s) },
+    );
+    expect(shotRef).toMatch(/^e\d+$/);
+    expect(steps.map((s) => s.kind)).toEqual([
+      "plan",
+      "tool",
+      "tool",
+      "verify",
+    ]);
+    expect(steps[2].label).toBe("Traced the build-up to the 62:50 shot");
+    const traced = JSON.parse(
+      JSON.parse(fetch.mock.calls[2][1].body).input.at(-1).output,
+    );
+    expect(traced.error).toBeUndefined();
+    expect(traced.totalEvents).toBeGreaterThan(1);
+    expect(result.status).toBe("answered");
   });
 
   it("revises once when the verifier finds an invented number", async () => {

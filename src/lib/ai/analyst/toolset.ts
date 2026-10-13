@@ -244,6 +244,17 @@ export function analystToolset(
 
   /** Run one tool. Throws on a refused or invalid query; see refusalMessage. */
   function run(name: string, args: unknown) {
+    // The analyst only ever sees refs ("e4"); the tools take event IDs. An
+    // unknown ref passes through unchanged and is refused as before.
+    const a = args as Record<string, unknown> | null;
+    if (
+      options.eventKey === "ref" &&
+      a &&
+      typeof a === "object" &&
+      typeof a.eventId === "string" &&
+      canonical.has(a.eventId)
+    )
+      args = { ...a, eventId: canonical.get(a.eventId) };
     const executed = session.execute(name, args);
     const tool = name as ToolName;
     const query = session.trace.at(-1)!.query;

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const ANALYST_VERSION = "analyst-1.0.0";
+// Part of the answer cache key: bump it when answers change, so answers
+// cached under older rules are not served again.
+export const ANALYST_VERSION = "analyst-1.1.0";
 export const QUESTION_MAX_LENGTH = 240;
 
 export const analystStyleSchema = z.enum(["plain", "fan", "analysis"]);
