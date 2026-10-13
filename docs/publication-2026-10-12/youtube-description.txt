@@ -1,0 +1,21 @@
+You join a football match late. Harbor lead 1–0—but what changed, and is it still happening?
+
+Between the Lines turns synthetic match events into explanations you can explore. Choose Casual Viewer, Football Fan or Advanced Analysis; switch between Quick and Full recaps; investigate a rise in shots; inspect the evidence; and replay the supporting actions.
+
+Try the public app, free and without an account:
+https://between-the-lines-jb-f5539b65.azurewebsites.net/
+
+Source code and project documentation:
+https://github.com/jbellamy16/second-look
+
+This 1:56 captioned demonstration was recorded in a local preview. The demonstrated controls, shot comparisons and replay were checked against the public Azure release on October 12, 2026. The deployed layout includes later presentation updates. All teams, players and match events shown are fictional. Replay shows synthetic event endpoints, not broadcast footage or player tracking. AI is disabled in both the recorded walkthrough and public app.
+
+Microsoft Foundry / Azure OpenAI provides an optional GPT-5.4 Mini integration for structured answer selection and bounded evidence queries. Application code retrieves evidence, computes and checks the facts, and renders the explanation. Explanation levels and replay run locally; they are not model-generated features.
+
+The separately labeled October 11 historical study reports five model answers that matched deterministic baselines, one appropriate no-call, and no optional follow-ups. It does not demonstrate added investigative benefit or validate every current workflow. Viewer testing and evidence of improved understanding remain pending.
+
+Built with Next.js, React and TypeScript; hosted on Azure App Service. Prepared for Microsoft's Inside the Game Hackathon.
+
+Font and interface-icon credits/licenses:
+https://github.com/jbellamy16/second-look/tree/main/docs/brand
+https://between-the-lines-jb-f5539b65.azurewebsites.net/icon-licenses.txt
