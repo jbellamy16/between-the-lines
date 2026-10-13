@@ -304,9 +304,10 @@ export function MatchApp({
     setPlaying(false);
     setTab("visual");
     setSection("match");
+    // Land on the selected story and its pitch evidence, not the scoreboard.
     requestAnimationFrame(() =>
       document
-        .querySelector(".app-shell:not([hidden]) .match-header")
+        .querySelector(".app-shell:not([hidden]) .match-grid")
         ?.scrollIntoView({ block: "start" }),
     );
   }

@@ -474,3 +474,38 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
   await expect(page.getByTestId("clock")).toContainText("00:00");
   expect(calls).toBe(1);
 });
+
+test("Insights leads with the main observation, and choosing one lands on its story", async ({
+  page,
+}, info) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(
+    page.locator(".app-shell").filter({ visible: true }),
+  ).toHaveAttribute("aria-busy", "false");
+  await page
+    .getByRole("navigation")
+    .getByRole("button", { name: "Insights", exact: true })
+    .click();
+  const insights = page.getByRole("region", { name: "Insights", exact: true });
+  const lead = insights.locator(".lead-observation");
+  const level = insights.getByLabel("Explanation level", { exact: true });
+  const leadBox = (await lead.boundingBox())!;
+  // The level control sits above the cards, never in the lead card's place.
+  expect((await level.boundingBox())!.y).toBeLessThan(leadBox.y);
+  if (info.project.name === "desktop") {
+    const other = (await insights
+      .locator(".supporting-observations .insight-card")
+      .first()
+      .boundingBox())!;
+    expect(leadBox.width).toBeGreaterThan(other.width);
+    expect(leadBox.x).toBeLessThan(other.x);
+    expect(Math.abs(leadBox.y - other.y)).toBeLessThan(2);
+  }
+  const headline = (await lead.locator("h3").innerText()).trim();
+  await lead.click();
+  const story = page.locator(".app-shell:not([hidden]) .director-story");
+  await expect(story.locator("h2")).toHaveText(headline);
+  await expect(story).toContainText("Selected observation");
+  await expect(story.locator("h2")).toBeInViewport();
+});

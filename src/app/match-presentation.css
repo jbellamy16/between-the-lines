@@ -402,6 +402,12 @@
   gap: 24px;
   align-items: start;
 }
+/* The level control sits above both columns, not in the lead card's cell. */
+.data-first .observations-page > .explanation-control {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
 .data-first .observation-card {
   display: block;
   width: 100%;
@@ -971,8 +977,12 @@
 .data-first .selected-observation h2,
 .data-first .observation-card h3 {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+}
+/* Glyph lines up with the headline's first line, not the middle of a wrap. */
+.data-first .observation-card h3 .sl-icon {
+  margin-top: calc((1.35em - 20px) / 2);
 }
 .data-first .context-item h3 .sl-icon,
 .data-first .selected-observation h2 .sl-icon,
