@@ -4288,7 +4288,7 @@ main {
 }
 .story-event-list li {
   display: grid;
-  grid-template-columns: 2.8rem 1.75rem minmax(0, 1fr);
+  grid-template-columns: 4.5rem 1.75rem minmax(0, 1fr);
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 0;
@@ -4301,6 +4301,14 @@ main {
   font-size: 0.6875rem;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
+}
+/* The replay button fills the time column instead of spilling under the icon. */
+.story-event-list time .text-button {
+  width: 100%;
+  min-height: 40px;
+  justify-content: center;
+  padding: 6px 4px;
+  font-variant-numeric: tabular-nums;
 }
 .story-event-icon {
   display: grid;
