@@ -28,6 +28,7 @@ export function StoryEvidence({
   open,
   onToggle,
   onEvent,
+  title = "How we know this story",
 }: {
   story: BroadcastStory;
   match: MatchData;
@@ -35,6 +36,8 @@ export function StoryEvidence({
   answer: DirectorResult | null;
   open?: boolean;
   onToggle?: (open: boolean) => void;
+  /** Summary label; give each one a distinct title when several are listed. */
+  title?: string;
   onEvent?: (id: string) => void;
 }) {
   const [current, previous] = story.statistics;
@@ -94,7 +97,7 @@ export function StoryEvidence({
           onToggle?.(event.currentTarget.open);
       }}
     >
-      <summary>How we know this story</summary>
+      <summary>{title}</summary>
       <div className="story-evidence-body">
         <div className="story-evidence-source">
           <span>

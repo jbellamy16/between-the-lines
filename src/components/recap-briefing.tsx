@@ -6,7 +6,7 @@ import {
   durationLabel,
   momentLabel,
 } from "@/lib/recap-briefing";
-import { metricWording } from "@/lib/explanation";
+import { metricWording, presentStory } from "@/lib/explanation";
 import { eventClock, type MatchData } from "@/lib/sources/model";
 import type { StoryPreferences } from "@/lib/intelligence";
 import type { DirectorResult } from "@/lib/ai/director/runner";
@@ -394,6 +394,7 @@ export function RecapBriefing({
               )}
               answer={answer}
               onEvent={onMoment}
+              title={`How we know: ${presentStory(story, match, style).headline.replace(/\.$/, "")}`}
             />
           ))}
           <h4>Source events</h4>
