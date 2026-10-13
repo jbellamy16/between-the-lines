@@ -39,9 +39,10 @@ The agent is free to decide what to investigate and how to phrase the answer. It
 
 1. Open the live app. It starts at 63:24 with Harbor leading 1–0.
 2. Read the story card: Harbor have taken 4 shots after none in the equal spell before.
-3. Under **Ask the analyst**, tap a starter question: the checked answer appears at once, then the agent adds to it. Or type your own, for example "Is Riverside doing anything about it?" Watch the agent's steps, then select a cited moment to replay it on the pitch.
-4. Ask something the events can't answer, such as "Is the manager angry?", and see it decline.
-5. Open **Details** to switch the explanation level, then drag the timeline to see the story change.
+3. Drag the timeline back to about 59:00 and press play. Each time the story starts or changes, a moment card slides in with the minute and what changed. Tap one: playback pauses, jumps to that minute, replays the evidence on the pitch and opens the analyst with that moment's checked answer, then the agent adds to it. Missed a card? **Moments** lists every one so far, and none from after your position.
+4. Under **Ask the analyst**, tap a starter question: the checked answer appears at once, then the agent adds to it. Or type your own, for example "Is Riverside doing anything about it?" Watch the agent's steps, then select a cited moment to replay it on the pitch.
+5. Ask something the events can't answer, such as "Is the manager angry?", and see it decline.
+6. Open **Details** to switch the explanation level, then drag the timeline to see the story change.
 
 ## Honest limits
 

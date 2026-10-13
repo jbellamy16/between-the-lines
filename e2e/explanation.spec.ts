@@ -247,7 +247,7 @@ test("an in-flight investigation survives a style change and its verified result
   expect(requests).toBe(1);
 });
 
-test("native keyboard controls, Insights and cross-tab preference synchronization", async ({
+test("native keyboard controls, Moments and cross-tab preference synchronization", async ({
   page,
   context,
 }) => {
@@ -262,21 +262,23 @@ test("native keyboard controls, Insights and cross-tab preference synchronizatio
   await selector(other).selectOption("plain");
   await expect(selector(page)).toHaveValue("plain");
   await other.close();
-  await page
-    .getByRole("navigation")
-    .getByRole("button", { name: "Insights", exact: true })
-    .click();
-  const insights = page.getByRole("region", { name: "Insights", exact: true });
-  await expect(insights.getByLabel("Explanation level")).toHaveValue("plain");
-  const first = insights.locator(".insight-card").first();
+  const nav = (name: string) =>
+    page
+      .getByRole("navigation")
+      .getByRole("button", { name, exact: true })
+      .click();
+  // Moments are worded in the viewer's explanation level, like the story card.
+  await nav("Moments");
+  const first = page
+    .getByRole("region", { name: "Moments", exact: true })
+    .locator(".moment-timeline li")
+    .first();
   const plain = await first.innerText();
-  await insights.getByLabel("Explanation level").selectOption("analysis");
+  await nav("Match centre");
+  await openStoryDetails(page);
+  await selector(page).selectOption("analysis");
+  await nav("Moments");
   await expect(first).not.toHaveText(plain);
-  await expect(first).toContainText("54:12–63:24");
-  await first.click();
-  await expect(selector(page)).toHaveValue("analysis");
-  await page.getByRole("button", { name: "Explanation", exact: true }).click();
-  await expect(page.locator(".explanation-text")).toContainText("45:00–54:12");
 });
 
 test("invalid or unavailable browser storage keeps a usable synchronized preference", async ({

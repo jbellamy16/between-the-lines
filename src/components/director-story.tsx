@@ -387,6 +387,7 @@ export function DirectorStory({
   onExplore,
   onReplay,
   onEvent,
+  momentAsk = null,
 }: {
   director: ReturnType<typeof useDirectorStory>;
   match: MatchData;
@@ -396,6 +397,8 @@ export function DirectorStory({
   onEvent: (id: string) => void;
   onExplore: () => void;
   onReplay: () => void;
+  /** A tapped moment: open the analyst on that story's checked answer. */
+  momentAsk?: { id: string; storyId: string; cutoff: number } | null;
 }) {
   const style = useExplanationStyle();
   const {
@@ -560,6 +563,7 @@ export function DirectorStory({
           time={time}
           provider={provider}
           story={story}
+          autoAsk={momentAsk}
           onExplore={() => {
             director.cancelInvestigation();
             onExplore();

@@ -24,6 +24,7 @@ import {
   type QuestionIntent,
 } from "@/lib/ai/director/questions";
 import { singularCounts } from "@/lib/plural";
+import { presentStory } from "@/lib/explanation";
 import { useExplanationStyle } from "./explanation-preference";
 import { providerLabel } from "./provenance";
 import { AnimatedDetails } from "./motion";
@@ -35,7 +36,18 @@ type Asked = {
   cutoff: number;
   /** Set when the question is one of the story's checked questions. */
   checked?: { intent: QuestionIntent; storyId: string };
+  /** Set when a moment opened the analyst on a story with no checked question. */
+  moment?: { storyId: string };
 };
+
+/** A moment with no checked question still opens on a question about itself. */
+export function momentQuestion(category: BroadcastStory["category"]) {
+  return category === "score-change"
+    ? "How did this goal come about?"
+    : category === "full-time"
+      ? "How was this match decided?"
+      : "How did this moment come about?";
+}
 
 /**
  * Ask the Analyst: a free-text question answered by a tool-using agent.
@@ -51,6 +63,7 @@ export function AnalystPanel({
   story = null,
   onExplore,
   onEvent,
+  autoAsk = null,
 }: {
   match: MatchData;
   time: number;
@@ -58,6 +71,8 @@ export function AnalystPanel({
   story?: BroadcastStory | null;
   onExplore: () => void;
   onEvent: (id: string) => void;
+  /** Opens the panel on this story's first checked answer, once per id. */
+  autoAsk?: { id: string; storyId: string; cutoff: number } | null;
 }) {
   const style = useExplanationStyle();
   const inputId = useId();
@@ -93,20 +108,45 @@ export function AnalystPanel({
   useEffect(() => {
     if (!asked) return;
     // A checked answer belongs to one story at one exact position.
-    if (asked.checked)
-      if (time !== asked.cutoff || storyId !== asked.checked.storyId) reset();
+    const anchored = asked.checked ?? asked.moment;
+    if (anchored)
+      if (time !== asked.cutoff || storyId !== anchored.storyId) reset();
     if (time < asked.cutoff || time - asked.cutoff > 600) reset();
   }, [time, asked, storyId]);
   useEffect(() => () => request.current?.abort(), []);
+  const autoAsked = useRef<string | null>(null);
+  // Declared after the reset effects so a moment's question survives the jump.
+  useEffect(() => {
+    if (!autoAsk || autoAsked.current === autoAsk.id || !story) return;
+    if (story.storyId !== autoAsk.storyId || time !== autoAsk.cutoff) return;
+    autoAsked.current = autoAsk.id;
+    setQuestion("");
+    const starter = starters.find((s) => !s.unavailable);
+    if (starter)
+      void ask(starter.label, {
+        intent: starter.intent,
+        storyId: story.storyId,
+      });
+    else
+      void ask(momentQuestion(story.category), undefined, {
+        storyId: story.storyId,
+      });
+    // ask() reads the current position; only a new request id re-runs this.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoAsk, story, time, starters]);
 
-  async function ask(text: string, checked?: Asked["checked"]) {
+  async function ask(
+    text: string,
+    checked?: Asked["checked"],
+    moment?: Asked["moment"],
+  ) {
     const q = text.trim();
     if (q.length < 3 || match.kind !== "synthetic") return;
     onExplore();
     request.current?.abort();
     request.current = null;
     const cutoff = Math.floor(time);
-    setAsked({ question: q, cutoff, checked });
+    setAsked({ question: q, cutoff, checked, moment });
     setSteps([]);
     setResult(null);
     setError("");
@@ -158,7 +198,7 @@ export function AnalystPanel({
     } catch {
       if (request.current === controller && !controller.signal.aborted)
         setError(
-          checked
+          checked || moment
             ? "The analyst couldn't be reached. The checked answer above still stands."
             : "The analyst couldn't be reached. The story above is still checked from the recorded events.",
         );
@@ -191,9 +231,15 @@ export function AnalystPanel({
         (e) => e.time <= evidence.cutoff && evidence.eventIds.includes(e.id),
       )
     : [];
+  // A moment's checked line: the story card's own, checked from recorded events.
+  const momentLine =
+    asked?.moment && story?.storyId === asked.moment.storyId
+      ? presentStory(story, match, style).explanation
+      : null;
+  const anchored = !!(asked?.checked || asked?.moment);
   // On a checked question the agent only adds; a decline adds nothing.
   const showAgentAnswer =
-    result?.answer && (verified || (declined && !asked?.checked));
+    result?.answer && (verified || (declined && !anchored));
 
   return (
     <section className="analyst-panel" aria-label="Ask the analyst">
@@ -337,6 +383,22 @@ export function AnalystPanel({
               )}
             </div>
           )}
+          {momentLine && (
+            <div className="analyst-checked" aria-label="Checked answer">
+              <span className="analyst-badge">
+                Checked from recorded events
+              </span>
+              <p className="analyst-checked-answer">
+                <strong>{singularCounts(momentLine)}</strong>
+              </p>
+              {!live && (
+                <p className="analyst-checked-note">
+                  Deterministic rules over the recorded events · No model
+                  investigation.
+                </p>
+              )}
+            </div>
+          )}
           {(steps.length > 0 || busy) && (
             <ol className="analyst-trace" aria-label="What the analyst did">
               {steps.map((step, i) => (
@@ -363,7 +425,7 @@ export function AnalystPanel({
                 <li className="analyst-step analyst-step-pending">
                   <span className="analyst-step-mark" aria-hidden="true" />
                   <span>
-                    {asked.checked && steps.length <= 1
+                    {anchored && steps.length <= 1
                       ? "The analyst is looking for more…"
                       : steps.length <= 1
                         ? "Choosing which evidence to check…"
@@ -379,7 +441,7 @@ export function AnalystPanel({
             >
               <span className="analyst-badge">
                 {verified
-                  ? `${asked.checked ? "The analyst adds · " : ""}Verified · ${lookups} ${lookups === 1 ? "lookup" : "lookups"}${result.cached ? " · reused" : ""}`
+                  ? `${anchored ? "The analyst adds · " : ""}Verified · ${lookups} ${lookups === 1 ? "lookup" : "lookups"}${result.cached ? " · reused" : ""}`
                   : "The events can't tell us that"}
               </span>
               <p>{result.answer}</p>
@@ -405,7 +467,7 @@ export function AnalystPanel({
               {result.notice}
             </p>
           )}
-          {result && declined && asked.checked && (
+          {result && declined && anchored && (
             <p className="notice" role="status">
               The analyst found nothing to add beyond the checked answer.
             </p>

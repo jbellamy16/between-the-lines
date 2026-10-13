@@ -55,7 +55,12 @@ for (const { source, match } of fixtures) {
       await timeline.fill(String(time));
       const context = matchContext(match, time);
       const insights = matchInsights(match, time);
-      for (const section of ["Match centre", "Insights"]) {
+      // The demo's Insights section is its timeline of moments (moments.spec).
+      const sections =
+        source === "Synthetic"
+          ? ["Match centre"]
+          : ["Match centre", "Insights"];
+      for (const section of sections) {
         await page
           .getByRole("navigation")
           .getByRole("button", { name: section, exact: true })
@@ -111,7 +116,8 @@ for (const { source, match } of fixtures) {
           ).violations,
         ).toEqual([]);
         const first = shell
-          .locator(".observations-page .context-evidence")
+          .locator(".context-evidence")
+          .filter({ visible: true })
           .first();
         await first.locator("summary").click();
         const id = context.items[0].evidenceIds[0];
@@ -134,13 +140,21 @@ for (const { source, match } of fixtures) {
     }
     // Rewind must clear every later goal, player and statistic from all three views.
     await timeline.fill("0");
-    await page
-      .getByRole("navigation")
-      .getByRole("button", { name: "Insights", exact: true })
-      .click();
-    await expect(shell.locator(".observations-page")).toContainText(
-      "No match developments to highlight yet.",
-    );
+    if (source === "Synthetic") {
+      await page
+        .getByRole("navigation")
+        .getByRole("button", { name: "Moments", exact: true })
+        .click();
+      await expect(shell.locator(".moments-empty")).toBeVisible();
+    } else {
+      await page
+        .getByRole("navigation")
+        .getByRole("button", { name: "Insights", exact: true })
+        .click();
+      await expect(shell.locator(".observations-page")).toContainText(
+        "No match developments to highlight yet.",
+      );
+    }
     await expect(shell.getByTestId("score")).toHaveText("0:0");
     expect(paidRequests).toEqual([]);
   });

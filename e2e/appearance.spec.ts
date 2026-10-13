@@ -63,7 +63,7 @@ test("dark screens retain accessible contrast and a single visible brand", async
   await page.goto("/");
   for (const label of [
     "Match centre",
-    "Insights",
+    "Moments",
     "Match stats",
     "Lineups",
     "Player focus",

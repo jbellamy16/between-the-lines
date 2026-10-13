@@ -31,6 +31,7 @@ export function MatchShell({
   dialog,
   historical = false,
   ready = true,
+  nav = MATCH_NAV,
 }: {
   section: MatchSection;
   setSection: (section: MatchSection) => void;
@@ -39,6 +40,12 @@ export function MatchShell({
   dialog?: ReactNode;
   historical?: boolean;
   ready?: boolean;
+  /** Same sections; an experience may relabel one (the demo's Moments). */
+  nav?: readonly {
+    id: MatchSection;
+    label: string;
+    icon: (typeof MATCH_NAV)[number]["icon"];
+  }[];
 }) {
   return (
     <div
@@ -57,7 +64,7 @@ export function MatchShell({
           navigation
           value={section}
         >
-          {MATCH_NAV.map(({ id, label, icon: Icon }) => (
+          {nav.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               aria-label={label}
@@ -91,7 +98,7 @@ export function MatchShell({
             <BrandImage />
           </a>
           <div className="breadcrumb">
-            {MATCH_NAV.find((n) => n.id === section)?.label}
+            {nav.find((n) => n.id === section)?.label}
           </div>
           <div className="topbar-right">
             <button

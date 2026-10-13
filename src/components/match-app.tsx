@@ -26,14 +26,14 @@ import { SyntheticMatchSource } from "@/lib/sources/synthetic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppearance } from "./appearance";
 import { EvidenceReplay } from "./evidence-replay";
-import { ArrowUpRight, Play, RotateCcw } from "./icons";
+import { Activity, ArrowUpRight, Play, RotateCcw } from "./icons";
 import { Welcome } from "./welcome";
-import { InsightNotice } from "./insight-notice";
+import { MomentCard, MomentTimeline, useMatchMoments } from "./match-moments";
+import type { MatchMoment } from "@/lib/moments";
 import { ModalHeader } from "./modal-header";
 import { MatchPeople } from "./match-people";
 import {
   InsightDetails,
-  InsightOverview,
   MatchContext,
   MatchEventFeed,
   MatchHeader,
@@ -45,15 +45,20 @@ import {
   useMatchPreferences,
 } from "./match-settings";
 import {
+  MATCH_NAV,
   MatchShell,
   type PitchView,
   type MatchSection as Section,
   type SectionProps,
 } from "./match-shell";
 import { MatchStatistics } from "./match-statistics";
-import { usePageVisibility } from "./motion";
+import { usePageVisibility, useReducedMotion } from "./motion";
 import { ProvenanceDetails, providerLabel } from "./provenance";
 import { useMatchPlayback } from "./use-match-playback";
+// In the synthetic demo the Insights section is the timeline of moments.
+const DEMO_NAV = MATCH_NAV.map((item) =>
+  item.id === "insights" ? { ...item, label: "Moments", icon: Activity } : item,
+);
 export function MatchApp({
   sourceSelector,
   section,
@@ -109,6 +114,43 @@ export function MatchApp({
     active: active && !modal && section === "match",
     playing,
   });
+  const momentPreferences = useMemo(
+    () => ({
+      team: prefs.team,
+      player: prefs.player,
+      categories: prefs.categories,
+    }),
+    [prefs.team, prefs.player, prefs.categories],
+  );
+  const moments = useMatchMoments(
+    canonicalMatch,
+    time,
+    ANALYSIS_MODE,
+    momentPreferences,
+  );
+  const reducedMotion = useReducedMotion();
+  const [momentAsk, setMomentAsk] = useState<{
+    id: string;
+    storyId: string;
+    cutoff: number;
+  } | null>(null);
+  // The director clears its replay when the viewer rewinds; a tapped moment
+  // starts its replay once the story at that minute is on screen.
+  const [pendingReplay, setPendingReplay] = useState<{
+    storyId: string;
+    cutoff: number;
+  } | null>(null);
+  useEffect(() => {
+    if (
+      pendingReplay &&
+      time === pendingReplay.cutoff &&
+      director.story?.storyId === pendingReplay.storyId
+    ) {
+      director.setReplay(true);
+      setPendingReplay(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingReplay, time, director.story?.storyId]);
   const events = useMemo(
     () => toLegacyEvents(canonicalMatch.events),
     [canonicalMatch],
@@ -284,6 +326,28 @@ export function MatchApp({
     setPitchView("pattern");
     director.setSelectedMetric(null);
   }
+  /** Pause, jump to the moment, replay its evidence and open the analyst. */
+  function openMoment(moment: MatchMoment) {
+    seek(moment.time);
+    director.clearSelection();
+    setSelectedKey(null);
+    setTab("visual");
+    setSection("match");
+    setPendingReplay({ storyId: moment.story.storyId, cutoff: moment.time });
+    setMomentAsk({
+      id: `${moment.id}:${performance.now()}`,
+      storyId: moment.story.storyId,
+      cutoff: moment.time,
+    });
+    requestAnimationFrame(() =>
+      document
+        .querySelector(".app-shell:not([hidden]) .match-grid")
+        ?.scrollIntoView({
+          block: "start",
+          behavior: reducedMotion ? "instant" : "smooth",
+        }),
+    );
+  }
   function selectInsight(i: Insight) {
     director.setReplay(false);
     director.setSelectedMetric({
@@ -413,6 +477,7 @@ export function MatchApp({
       setSection={setSection}
       onSettings={() => setModal("settings")}
       ready={ready}
+      nav={DEMO_NAV}
       dialog={
         <dialog
           ref={dialogRef}
@@ -639,24 +704,13 @@ export function MatchApp({
         </select>
         <span className="synthetic-badge">Synthetic demo</span>
       </div>
-      <InsightNotice
-        key={scenario}
-        insights={allInsights}
+      <MomentCard
+        key={canonicalMatch.id}
+        match={canonicalMatch}
+        moments={moments}
+        time={time}
         playing={playing}
-        onSelect={(i) => {
-          setPlaying(false);
-          setPitchView("pattern");
-          director.setSelectedMetric({
-            team: i.team,
-            label:
-              i.category === "pressure"
-                ? "ball wins in the attacking third"
-                : i.metric.toLowerCase(),
-          });
-          setSelectedKey(`${i.team}-${i.category}`);
-          setSelectedEvent(null);
-          setReplay(null);
-        }}
+        onOpen={openMoment}
       />
       <MatchHeader
         match={canonicalMatch}
@@ -688,6 +742,7 @@ export function MatchApp({
               time={time}
               active={active && section === "match"}
               playing={playing}
+              momentAsk={momentAsk}
               onEvent={(id) => {
                 const event = visible.find((e) => e.id === id);
                 if (event) selectEvent(event);
@@ -819,12 +874,11 @@ export function MatchApp({
         </div>
       }
       {section === "insights" && (
-        <InsightOverview
+        <MomentTimeline
           match={canonicalMatch}
-          insights={insights}
-          onSelect={selectInsight}
-          mode={ANALYSIS_MODE}
-          empty={context}
+          moments={moments}
+          time={time}
+          onOpen={openMoment}
         />
       )}
       {section === "stats" && (

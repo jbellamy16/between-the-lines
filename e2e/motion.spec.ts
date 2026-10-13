@@ -241,20 +241,23 @@ test("mid-pass motion freezes on pause and cancels when reduced motion changes",
   await expect(page.getByTestId("clock")).toContainText("63:24");
 });
 
-test("an existing insight keeps keyboard focus across match-minute updates", async ({
+test("an existing moment keeps keyboard focus across match-minute updates", async ({
   page,
 }) => {
   await page.clock.install();
   await page.goto("/");
   await page.locator(".secondary-observations > summary").click();
+  // Moments before the opening position are found in background slices.
+  await page.clock.runFor(100);
   await page.getByRole("button", { name: "Play match", exact: true }).click();
   await page
     .getByRole("navigation")
-    .getByRole("button", { name: "Insights", exact: true })
+    .getByRole("button", { name: "Moments", exact: true })
     .click();
-  const card = page.locator(".observations-page .insight-card").first();
+  const card = page.locator(".moment-timeline button").first();
   await card.focus();
   await page.clock.runFor(6000);
-  await expect(page.getByTestId("clock")).toContainText("64:12");
+  // The match minute moved on while the card kept focus.
+  await expect(page.getByTestId("clock")).toContainText(/6[4-9]:\d\d/);
   await expect(card).toBeFocused();
 });
