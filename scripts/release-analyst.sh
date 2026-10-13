@@ -4,9 +4,11 @@
 #
 #   bash scripts/release-analyst.sh
 #
-# It pushes the branch, opens a PR, raises the Foundry rate limit, moves the
-# plan to B1 with Always On, deploys the verified ZIP, checks it, then turns
-# the analyst on and asks it one live question. It prompts once for your
+# It pushes the branch, opens a PR, raises the Foundry rate limit, deploys the
+# verified ZIP, checks it, then turns the analyst on and asks it one live
+# question. The paid B1 plan is opt-in for judging week:
+#
+#   UPGRADE_PLAN=1 bash scripts/release-analyst.sh It prompts once for your
 # Upstash Redis URL (input hidden; never printed or written to disk).
 set -euo pipefail
 
@@ -69,23 +71,28 @@ else
   echo "Couldn't raise it (quota?). Keeping 30k TPM; the app will pace to match."
 fi
 
-step "4/7 Move the plan to B1 and turn on Always On"
-PLAN_ID=$(az webapp show -g "$RG" -n "$APP" --query appServicePlanId -o tsv)
-PLAN=${PLAN_ID##*/}
-# `az appservice plan update --sku` crashes on some CLI versions (2.89), so
-# patch the plan's SKU through the management API instead.
-az rest --method patch --output none \
-  --url "https://management.azure.com${PLAN_ID}?api-version=2023-12-01" \
-  --body '{"sku":{"name":"B1","tier":"Basic","size":"B1","family":"B","capacity":1}}'
-for _ in $(seq 1 24); do
-  [ "$(az appservice plan show --ids "$PLAN_ID" --query sku.name -o tsv)" = "B1" ] && break
-  sleep 5
-done
-[ "$(az appservice plan show --ids "$PLAN_ID" --query sku.name -o tsv)" = "B1" ] ||
-  fail "plan didn't switch to B1"
+if [ "${UPGRADE_PLAN:-0}" = 1 ]; then
+  step "4/7 Move the plan to B1 and turn on Always On"
+  PLAN_ID=$(az webapp show -g "$RG" -n "$APP" --query appServicePlanId -o tsv)
+  PLAN=${PLAN_ID##*/}
+  # `az appservice plan update --sku` crashes on some CLI versions (2.89), so
+  # patch the plan's SKU through the management API instead.
+  az rest --method patch --output none \
+    --url "https://management.azure.com${PLAN_ID}?api-version=2023-12-01" \
+    --body '{"sku":{"name":"B1","tier":"Basic","size":"B1","family":"B","capacity":1}}'
+  for _ in $(seq 1 24); do
+    [ "$(az appservice plan show --ids "$PLAN_ID" --query sku.name -o tsv)" = "B1" ] && break
+    sleep 5
+  done
+  [ "$(az appservice plan show --ids "$PLAN_ID" --query sku.name -o tsv)" = "B1" ] ||
+    fail "plan didn't switch to B1"
 
-az webapp config set -g "$RG" -n "$APP" --always-on true --output none
-echo "Plan $PLAN is B1 with Always On (about \$13/month; move back to F1 after Nov 10)."
+  az webapp config set -g "$RG" -n "$APP" --always-on true --output none
+  echo "Plan $PLAN is B1 with Always On (about \$13/month; move back to F1 after Nov 10)."
+
+else
+  step "4/7 Plan upgrade skipped (staying on free F1; run with UPGRADE_PLAN=1 for judging week)"
+fi
 
 step "5/7 Deploy the release (analyst still off)"
 az webapp deploy -g "$RG" -n "$APP" --src-path "$ZIP" --type zip \
