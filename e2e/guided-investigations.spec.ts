@@ -1,14 +1,30 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openStoryDetails } from "./story-details";
+
+// The story's own questions are the analyst's starter chips: the checked
+// answer shows instantly and the agent adds to it.
 const panel = (page: Page) =>
-  page.getByRole("region", { name: "Questions about this story" });
+  page
+    .getByRole("region", { name: "Ask the analyst" })
+    .filter({ visible: true })
+    .first();
+const checked = (page: Page) => panel(page).locator(".analyst-checked");
 const ready = async (page: Page) => {
   await page.goto("/");
   await expect(
     page.locator(".app-shell").filter({ visible: true }),
   ).toHaveAttribute("aria-busy", "false");
 };
-async function mockAI(
+const level = async (page: Page, value: string) => {
+  await openStoryDetails(page);
+  await page
+    .locator(".director-story")
+    .getByLabel("Explanation level", { exact: true })
+    .selectOption(value);
+};
+
+async function mockAgent(
   page: Page,
   behavior: "success" | "failure" | "held" = "success",
 ) {
@@ -23,46 +39,67 @@ async function mockAI(
         })
       : r.continue(),
   );
-  let posts = 0,
-    release!: () => void;
+  const asked: { question: string; time: number }[] = [];
+  let release!: () => void;
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/api/director", async (r) => {
-    const data = r.request().postDataJSON();
-    if (!data.question) return r.continue();
-    const n = ++posts;
-    const baseline = await (
-      await page.request.post("/api/director", { data })
-    ).json();
+  await page.route("**/api/ask", async (r) => {
+    const body = r.request().postDataJSON();
+    const n = asked.push(body);
+    if (behavior === "failure" && n === 1)
+      return r.fulfill({ status: 503, json: { error: "Unavailable" } });
     if (behavior === "held" && n === 1) await held;
-    await r.fulfill({
-      json: {
-        ...baseline,
-        source: behavior === "failure" && n === 1 ? "offline" : "foundry",
-        cacheContext: "guided-browser",
-        notice:
-          behavior === "failure" && n === 1
-            ? "The investigation could not finish. You can retry."
-            : "Investigation complete.",
-        ...(behavior === "failure" && n === 1
-          ? { failure: { category: "rate_limit" } }
-          : {}),
+    const step = {
+      kind: "tool",
+      tool: "compare_time_windows",
+      label: "Compared Riverside 45:00–54:12 with 54:12–63:24",
+      events: 31,
+    };
+    const result = {
+      version: "analyst-1.0.0",
+      status: "answered",
+      matchId: "pressure",
+      cutoff: body.time,
+      question: body.question,
+      answer: `Agent answer ${n}: Riverside had 0 shots in 54:12–63:24.`,
+      citedEventIds: [],
+      steps: [step],
+      source: "foundry",
+      model: "between-the-lines-gpt54-mini",
+      cached: false,
+      metrics: {
+        requests: 1,
+        toolCalls: 1,
+        latencyMs: 900,
+        estimatedCostUsd: 0.002,
       },
-    });
+      notice: "",
+    };
+    try {
+      await r.fulfill({
+        headers: { "Content-Type": "application/x-ndjson" },
+        body:
+          JSON.stringify({ type: "step", step }) +
+          "\n" +
+          JSON.stringify({ type: "result", result }) +
+          "\n",
+      });
+    } catch {
+      /* the page cancelled this request */
+    }
   });
-  return { posts: () => posts, release: () => release() };
+  return { asked, release: () => release() };
 }
+
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
 });
 test.afterEach(async ({ page }) => {
-  // Cancellation tests deliberately leave a response in flight. On a remote
-  // host its offline fixture fetch can outlive the assertions; dispose the
-  // interception before Playwright closes its request context.
   await page.unrouteAll({ behavior: "ignoreErrors" });
 });
-test("offline question is keyboard accessible, preserves story and replay, and renders at each viewport", async ({
+
+test("offline checked questions are keyboard accessible, preserve the story and replay, and fit each viewport", async ({
   page,
 }, info) => {
   let posts = 0;
@@ -70,15 +107,7 @@ test("offline question is keyboard accessible, preserves story and replay, and r
     if (r.method() === "POST") posts++;
   });
   await ready(page);
-  await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page
-    .getByRole("dialog", { name: "Settings" })
-    .getByLabel("Follow a team")
-    .selectOption("harbor");
-  await page.keyboard.press("Escape");
-  const preferences = await page.evaluate(() =>
-    localStorage.getItem("second-look-preferences"),
-  );
+  await expect(panel(page)).toContainText("live analyst is off");
   const heading = await page.locator(".director-story h2").innerText();
   const q = panel(page).getByRole("button", {
     name: "Is the other team improving too?",
@@ -86,33 +115,21 @@ test("offline question is keyboard accessible, preserves story and replay, and r
   });
   await q.focus();
   await page.keyboard.press("Enter");
-  await expect(panel(page)).toContainText("No model investigation");
+  await expect(q).toHaveAttribute("aria-pressed", "true");
+  await expect(checked(page)).toContainText("No model investigation");
   await expect(page.locator(".director-story h2")).toHaveText(heading);
   await expect(page.getByTestId("clock")).toContainText("63:24");
-  await expect(panel(page)).toContainText(
-    "average chance quality cannot be compared",
-  );
-  const before = await panel(page)
-    .locator(".question-direct-answer")
+  const before = await checked(page)
+    .locator(".analyst-checked-answer")
     .innerText();
-  await page
-    .locator(".director-story")
-    .getByLabel("Explanation level", { exact: true })
-    .selectOption("fan");
-  await expect(panel(page).locator(".question-direct-answer")).toHaveText(
+  await level(page, "fan");
+  await expect(checked(page).locator(".analyst-checked-answer")).toHaveText(
     before,
   );
-  await page
-    .locator(".director-story")
-    .getByLabel("Explanation level", { exact: true })
-    .selectOption("analysis");
-  await expect(panel(page).locator(".question-direct-answer")).toHaveText(
-    before,
-  );
-  await panel(page)
-    .getByText("Explore answer evidence", { exact: true })
+  await checked(page)
+    .getByText("How this was checked", { exact: true })
     .click();
-  const replay = panel(page)
+  const replay = checked(page)
     .getByRole("button", { name: /Replay$/ })
     .first();
   await expect(replay).toBeVisible();
@@ -121,25 +138,21 @@ test("offline question is keyboard accessible, preserves story and replay, and r
     page.locator(".pitch-panel").getByLabel("Recorded event", { exact: true }),
   ).toBeVisible();
   await expect(page.getByTestId("clock")).toContainText("63:24");
-  await page
-    .locator(".director-story")
-    .getByLabel("Explanation level", { exact: true })
-    .selectOption("plain");
-  await expect(panel(page)).toContainText("No model investigation");
-  expect(posts).toBe(0);
-  expect(
-    await page.evaluate(() => localStorage.getItem("second-look-preferences")),
-  ).toBe(preferences);
+  await level(page, "plain");
   await panel(page)
-    .getByText("Explore answer evidence", { exact: true })
+    .getByRole("button", { name: "Are these chances actually better?" })
     .click();
+  await expect(checked(page)).toContainText(
+    "average chance quality cannot be compared",
+  );
+  expect(posts).toBe(0);
   await panel(page).scrollIntoViewIfNeeded();
   await page.screenshot({
     path: `artifacts/guided/${info.project.name}.png`,
     fullPage: true,
   });
   const audit = await new AxeBuilder({ page })
-    .include(".guided-investigation")
+    .include(".analyst-panel")
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();
   expect(audit.violations).toEqual([]);
@@ -150,11 +163,6 @@ test("offline question is keyboard accessible, preserves story and replay, and r
   ).toBe(true);
   if (info.project.name === "desktop") {
     await page.setViewportSize({ width: 820, height: 1180 });
-    await panel(page).scrollIntoViewIfNeeded();
-    await page.screenshot({
-      path: "artifacts/guided/tablet.png",
-      fullPage: true,
-    });
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -162,113 +170,92 @@ test("offline question is keyboard accessible, preserves story and replay, and r
     ).toBe(true);
   }
 });
-test("a failed request recovers and successful reuse separates question intents", async ({
+
+test("the checked answer shows before the agent answers, and the agent adds to it", async ({
   page,
 }) => {
-  const transport = await mockAI(page, "failure");
+  const agent = await mockAgent(page, "held");
   await ready(page);
   await panel(page)
     .getByRole("button", { name: "Is the other team improving too?" })
     .click();
+  await expect(checked(page)).toContainText("Checked from recorded events");
+  await expect(panel(page)).toContainText("The analyst is looking for more");
+  await expect.poll(() => agent.asked.length).toBe(1);
+  expect(agent.asked[0]).toMatchObject({
+    question: "Is the other team improving too?",
+    time: 3804,
+  });
+  agent.release();
   await expect(
-    panel(page).getByRole("button", { name: "Retry this question" }),
+    panel(page).getByText("The analyst adds · Verified · 1 lookup"),
   ).toBeVisible();
-  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
-    "Verified event analysis",
-  );
-  await panel(page)
-    .getByRole("button", { name: "Retry this question" })
-    .click();
-  await expect(panel(page)).toContainText("Independently verified");
-  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
-    "AI investigation",
-  );
-  await expect(panel(page)).toContainText(
-    "AI selected evidence; deterministic checks verified the recorded facts",
-  );
-  expect(transport.posts()).toBe(2);
-  await panel(page)
-    .getByRole("button", { name: "Has this increase already faded?" })
-    .click();
-  await expect(panel(page)).toContainText("No recent weakening");
-  await expect(panel(page)).toContainText("Independently verified");
-  expect(transport.posts()).toBe(3);
+  await expect(panel(page)).toContainText("Agent answer 1");
+  await expect(checked(page)).toBeVisible();
+});
+
+test("an agent failure keeps the checked answer and the next question still works", async ({
+  page,
+}) => {
+  const agent = await mockAgent(page, "failure");
+  await ready(page);
   await panel(page)
     .getByRole("button", { name: "Is the other team improving too?" })
     .click();
-  await expect(panel(page)).toContainText("Reused answer");
-  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
-    "AI investigation · Reused answer",
+  await expect(panel(page)).toContainText(
+    "The checked answer above still stands",
   );
-  await page
-    .locator(".director-story")
-    .getByLabel("Explanation level", { exact: true })
-    .selectOption("analysis");
-  await page.getByRole("button", { name: "Catch me up", exact: true }).click();
-  await page.getByRole("tab", { name: "Full recap" }).click();
-  await page.getByRole("tab", { name: "Quick recap" }).click();
-  await page.keyboard.press("Escape");
-  await expect(panel(page)).toContainText("Reused answer");
-  for (const level of ["fan", "plain", "analysis"]) {
-    await page
-      .locator(".director-story")
-      .getByLabel("Explanation level")
-      .selectOption(level);
-    await expect(panel(page)).toContainText("Reused answer");
-    expect(transport.posts()).toBe(3);
-  }
-  expect(transport.posts()).toBe(3);
+  await expect(checked(page)).toContainText("Checked from recorded events");
+  await panel(page)
+    .getByRole("button", { name: "Has this increase already faded?" })
+    .click();
+  await expect(checked(page)).toContainText("Checked from recorded events");
+  await expect(panel(page)).toContainText("Agent answer 2");
+  expect(agent.asked.map((a) => a.question)).toEqual([
+    "Is the other team improving too?",
+    "Has this increase already faded?",
+  ]);
 });
+
 test("cancellation and question changes cannot publish a late answer", async ({
   page,
 }) => {
-  const transport = await mockAI(page, "held");
+  const agent = await mockAgent(page, "held");
   await ready(page);
   await panel(page)
     .getByRole("button", { name: "Is the other team improving too?" })
     .click();
-  await expect(panel(page).getByRole("status")).toContainText(
-    "Investigating this question",
-  );
-  await expect(panel(page).locator(".investigation-source-label")).toHaveText(
-    "Verified event analysis",
-  );
   await panel(page)
-    .getByRole("button", { name: "Cancel investigation" })
+    .getByRole("button", { name: "Cancel", exact: true })
     .click();
-  await expect(panel(page)).toContainText("Investigation cancelled");
+  await expect(checked(page)).toContainText("Checked from recorded events");
   await panel(page)
     .getByRole("button", { name: "Has this increase already faded?" })
     .click();
-  await expect(panel(page)).toContainText("Independently verified");
-  transport.release();
-  await expect(panel(page).locator(".question-answer h4")).toHaveText(
+  await expect(panel(page)).toContainText("Agent answer 2");
+  agent.release();
+  await expect(panel(page).locator(".analyst-question")).toContainText(
     "Has this increase already faded?",
   );
+  await expect(panel(page)).not.toContainText("Agent answer 1");
   await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
-  await expect(page.locator(".question-answer")).toHaveCount(0);
+  await expect(page.locator(".analyst-checked")).toHaveCount(0);
 });
-test("rewind and source changes invalidate an in-flight answer", async ({
+
+test("rewind and fixture changes invalidate an in-flight answer", async ({
   page,
 }) => {
-  const transport = await mockAI(page, "held");
+  const agent = await mockAgent(page, "held");
   await ready(page);
   await panel(page)
     .getByRole("button", { name: "Is the other team improving too?" })
     .click();
-  await expect.poll(transport.posts).toBe(1);
+  await expect.poll(() => agent.asked.length).toBe(1);
   await page.getByRole("slider", { name: "Match timeline" }).fill("3600");
-  transport.release();
-  await expect(page.locator(".question-answer")).toHaveCount(0);
+  agent.release();
+  await expect(page.locator(".analyst-response")).toHaveCount(0);
   await page.getByRole("slider", { name: "Match timeline" }).fill("3804");
-  await expect(page.locator(".question-answer")).toHaveCount(0);
-});
-
-test("an available quality question uses its own answer and a new fixture discards pending work", async ({
-  page,
-}) => {
-  const transport = await mockAI(page, "held");
-  await ready(page);
+  await expect(page.locator(".analyst-response")).toHaveCount(0);
   await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
   await panel(page)
     .getByRole("button", {
@@ -276,14 +263,12 @@ test("an available quality question uses its own answer and a new fixture discar
       exact: true,
     })
     .click();
-  await expect(panel(page)).toContainText("xG per shot");
-  await expect.poll(transport.posts).toBe(1);
+  await expect(checked(page)).toContainText("xG per shot");
   await page.getByLabel("Fixture", { exact: true }).selectOption("quiet");
-  transport.release();
-  await expect(page.locator(".question-answer")).toHaveCount(0);
+  await expect(page.locator(".analyst-response")).toHaveCount(0);
 });
 
-test("choosing a question cancels an older generic investigation before it can replace the source story", async ({
+test("asking a checked question cancels an older story review before it can replace the story", async ({
   page,
 }) => {
   const { SyntheticMatchSource } = await import("../src/lib/sources/synthetic");
@@ -305,15 +290,7 @@ test("choosing a question cancels an older generic investigation before it can r
     "brief",
     claimEmphasis[candidate.category],
   );
-  await page.route("**/api/insights", (r) =>
-    r.fulfill({
-      json: {
-        mode: "foundry",
-        proactive: false,
-        directorContext: "guided-race",
-      },
-    }),
-  );
+  await mockAgent(page);
   let release!: () => void;
   const held = new Promise<void>((resolve) => {
     release = resolve;
@@ -323,18 +300,23 @@ test("choosing a question cancels an older generic investigation before it can r
     const baseline = await (
       await page.request.post("/api/director", { data })
     ).json();
-    if (!data.question) await held;
-    await route.fulfill({
-      json: {
-        ...baseline,
-        source: "foundry",
-        cacheContext: "guided-race",
-        ...(data.question ? {} : { stories: [differentStory] }),
-      },
-    });
+    await held;
+    try {
+      await route.fulfill({
+        json: {
+          ...baseline,
+          source: "foundry",
+          cacheContext: "guided-race",
+          stories: [differentStory],
+        },
+      });
+    } catch {
+      /* cancelled */
+    }
   });
   await ready(page);
   const heading = await page.locator(".director-story h2").innerText();
+  await openStoryDetails(page);
   await page
     .getByRole("button", {
       name: "Review story with Microsoft Foundry",
@@ -347,7 +329,7 @@ test("choosing a question cancels an older generic investigation before it can r
       exact: true,
     })
     .click();
-  await expect(panel(page)).toContainText("Independently verified");
+  await expect(panel(page)).toContainText("Agent answer 1");
   release();
   await expect(
     page.getByRole("button", {
@@ -356,62 +338,52 @@ test("choosing a question cancels an older generic investigation before it can r
     }),
   ).toBeEnabled();
   await expect(page.locator(".director-story h2")).toHaveText(heading);
-  await expect(panel(page).locator(".question-answer h4")).toHaveText(
+  await expect(panel(page).locator(".analyst-question")).toContainText(
     "Is the other team improving too?",
   );
 });
 
-test("shot surge comparison stays deterministic for the pressure controls in both styles", async ({
+test("the shot surge comparison is deterministic in both styles", async ({
   page,
 }) => {
-  const transport = await mockAI(page);
   await ready(page);
   const heading = await page.locator(".director-story h2").innerText();
-  await panel(page)
-    .getByRole("button", {
-      name: "What best describes this shot surge?",
-      exact: true,
-    })
+  const surge = panel(page).getByRole("button", {
+    name: "What best describes this shot surge?",
+    exact: true,
+  });
+  await surge.click();
+  await checked(page)
+    .getByText("How this was checked", { exact: true })
     .click();
   await expect(
-    panel(page).getByRole("row", {
+    checked(page).getByRole("row", {
       name: "Separate spells leading to those shots",
     }),
   ).toContainText("0");
-  await expect(panel(page)).toContainText("No model investigation");
-  await expect(panel(page)).toContainText(
+  await expect(checked(page)).toContainText("No model investigation");
+  await expect(checked(page)).toContainText(
     "Several shots after one recovery count as one spell with the ball leading to a shot",
   );
   await expect(page.locator(".director-story h2")).toHaveText(heading);
-  expect(transport.posts()).toBe(0);
-  await page
-    .locator(".director-story")
-    .getByLabel("Explanation level", { exact: true })
-    .selectOption("analysis");
+  await level(page, "analysis");
   await expect(
-    panel(page).getByRole("row", { name: "Distinct linked possessions" }),
+    checked(page).getByRole("row", { name: "Distinct linked possessions" }),
   ).toBeVisible();
-  await expect(panel(page)).toContainText("pressing, causation");
+  await expect(checked(page)).toContainText("pressing, causation");
   await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
-  await expect(page.locator(".question-answer")).toHaveCount(0);
-  await panel(page)
-    .getByRole("button", {
-      name: "What best describes this shot surge?",
-      exact: true,
-    })
+  await expect(page.locator(".analyst-checked")).toHaveCount(0);
+  await surge.click();
+  await checked(page)
+    .getByText("How this was checked", { exact: true })
     .click();
-  await expect(panel(page)).toContainText("No model investigation");
   await expect(
-    panel(page)
+    checked(page)
       .getByRole("row", { name: "Distinct linked possessions" })
       .getByRole("cell")
       .last(),
   ).toHaveText("1");
-  expect(transport.posts()).toBe(0);
-  await panel(page)
-    .getByText("Explore answer evidence", { exact: true })
-    .click();
-  await panel(page)
+  await checked(page)
     .getByRole("button", { name: /Replay$/ })
     .first()
     .click();

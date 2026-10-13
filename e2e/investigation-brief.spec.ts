@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openStoryDetails } from "./story-details";
 
-test("the five-part brief exposes evidence and challenges without opening a drawer", async ({
+test("the story card leads with what changed and why, and keeps the full brief one Details toggle away", async ({
   page,
 }, info) => {
   let posts = 0;
@@ -9,8 +10,25 @@ test("the five-part brief exposes evidence and challenges without opening a draw
     if (request.method() === "POST") posts++;
   });
   await page.emulateMedia({ reducedMotion: "reduce" });
+  // Follow the device theme so this test can check both.
+  await page.addInitScript(() =>
+    localStorage.setItem("second-look-appearance", "system"),
+  );
   await page.goto("/");
   const story = page.locator(".director-story");
+  for (const name of ["What changed", "Why it matters"])
+    await expect(
+      story.getByRole("heading", { name, exact: true }),
+    ).toBeVisible();
+  await expect(
+    story.getByRole("group", { name: "Story evidence" }).getByRole("button", {
+      name: /^Replay supporting/,
+    }),
+  ).toHaveCount(3);
+  await expect(
+    story.getByRole("heading", { name: "What challenges it", exact: true }),
+  ).not.toBeVisible();
+  await openStoryDetails(page);
   await expect(story.locator(".investigation-source-label")).toHaveText(
     "Verified event analysis",
   );

@@ -36,7 +36,6 @@ export function InvestigationEvidence({
           {assessment.windows.some((w) => w.id === "previous")
             ? " across the compared windows."
             : " behind this observation."}
-          {events.length > 0 && " Select a moment to replay."}
         </p>
         {style === "analysis" &&
           assessment.supportingEvidence
@@ -47,18 +46,6 @@ export function InvestigationEvidence({
                 ),
             )
             .map((e) => <p key={e.code}>{e.description}</p>)}
-        <div className="investigation-citations">
-          {events.slice(-3).map((event) => (
-            <button
-              className="text-button"
-              key={event.id}
-              onClick={() => onEvent(event.id)}
-              aria-label={`Replay supporting ${event.type.replaceAll("_", " ")} at ${eventClock(match, event)}`}
-            >
-              {eventClock(match, event)} · {event.type.replaceAll("_", " ")}
-            </button>
-          ))}
-        </div>
       </section>
       <section
         className="investigation-challenges"

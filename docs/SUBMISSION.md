@@ -21,7 +21,7 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 
 1. **Ingest:** a seeded, football-realistic synthetic event feed of two fictional clubs.
 2. **Interpret:** cutoff-safe statistics and equal-window pattern detection, so a "surge" is always compared with the equal spell before it.
-3. **Explain:** story cards (what changed, why it matters, supporting and challenging evidence, what to watch next), plus **Ask the Analyst**, a Foundry agent that answers free-text questions with grounded facts and replayable evidence.
+3. **Explain:** story cards that lead with what changed, why it matters and the moments behind it (supporting and challenging evidence and what to watch next sit under Details), plus **Ask the Analyst**, a Foundry agent that answers free-text questions with grounded facts and replayable evidence. Its starter questions come from the story: a checked answer appears instantly and the agent adds to it.
 4. **Render:** a responsive match centre with an interactive SVG pitch, sequence replay, recaps, lineups and player maps.
 5. **Personalize:** Casual Viewer, Football Fan or Advanced Analysis wording over the same verified facts, plus favorite team and player.
 
@@ -39,9 +39,9 @@ The agent is free to decide what to investigate and how to phrase the answer. It
 
 1. Open the live app. It starts at 63:24 with Harbor leading 1–0.
 2. Read the story card: Harbor have taken 4 shots after none in the equal spell before.
-3. Under **Ask the analyst**, try a suggested question or type your own, for example "Is Riverside doing anything about it?" Watch the agent's steps, then select a cited moment to replay it on the pitch.
+3. Under **Ask the analyst**, tap a starter question: the checked answer appears at once, then the agent adds to it. Or type your own, for example "Is Riverside doing anything about it?" Watch the agent's steps, then select a cited moment to replay it on the pitch.
 4. Ask something the events can't answer, such as "Is the manager angry?", and see it decline.
-5. Switch the explanation level and drag the timeline to see the story change.
+5. Open **Details** to switch the explanation level, then drag the timeline to see the story change.
 
 ## Honest limits
 

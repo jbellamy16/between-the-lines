@@ -37,7 +37,7 @@ export async function askAnalyst(
       cutoff,
       question,
       "offline",
-      "The live analyst is off in this build. The questions under Look closer are answered from the recorded events.",
+      "The live analyst is off in this build. The starter questions are answered from the recorded events.",
     );
   if (!usageStoreReady() || match.kind !== "synthetic")
     return offlineAnalyst(

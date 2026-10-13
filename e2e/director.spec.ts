@@ -1,6 +1,7 @@
 import { presentStory } from "../src/lib/explanation";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openStoryDetails } from "./story-details";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
 import { createInvestigation } from "../src/lib/ai/director/tools";
 import { packageStory } from "../src/lib/ai/director/story";
@@ -48,6 +49,7 @@ test("story evidence presents the comparison and keeps technical details seconda
     }),
   );
   await page.goto("/");
+  await openStoryDetails(page);
   await page
     .locator(".director-story")
     .getByText("More from this match", { exact: true })
@@ -120,6 +122,7 @@ test("computed story connects evidence, broadcast JSON, and rewind-safe visibili
   await page.goto("/");
   const story = page.locator(".director-story");
   await expect(story).toBeVisible();
+  await openStoryDetails(page);
   await expect(story).toContainText("Checked from recorded events");
   await story
     .getByRole("button", { name: "Replay story evidence", exact: true })
@@ -185,6 +188,7 @@ test("an investigation response cannot survive a rewind", async ({ page }) => {
     await route.fulfill({ json: result }).catch(() => {});
   });
   await page.goto("/");
+  await openStoryDetails(page);
   const request = page.waitForRequest((r) => r.url().endsWith("/api/director"));
   await page
     .getByRole("button", { name: "Investigate with OpenAI", exact: true })
@@ -205,6 +209,7 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
   await expect(story.locator(".story-qualification")).toContainText(
     "More shots need not mean better chances",
   );
+  await openStoryDetails(page);
   await expect(story.locator(".story-significance > p")).toBeVisible();
   const slider = page.getByRole("slider", { name: "Match timeline" });
   await slider.fill("3900");

@@ -4115,11 +4115,6 @@ main {
   line-height: 1.4;
   text-align: center;
 }
-.director-actions .text-button:first-child {
-  background: var(--sl-selected);
-  color: var(--text);
-  font-weight: 600;
-}
 .director-story .provenance {
   margin-top: 0.75rem;
 }
@@ -4818,5 +4813,171 @@ main {
   }
   .analyst-step-pending .analyst-step-mark {
     animation-duration: 3s;
+  }
+}
+
+/* Story card: headline, what changed, why, evidence chips; the rest is behind Details. */
+.story-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.85rem 0 0;
+}
+.story-chip {
+  min-height: 36px;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--sl-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sl-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.story-chip:hover:not(:disabled) {
+  background: var(--sl-hover);
+  border-color: var(--sl-control-border);
+}
+.story-chip:focus-visible {
+  outline: 3px solid var(--btl-focus);
+  outline-offset: 2px;
+}
+.story-chip:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.story-chip-replay {
+  border-color: color-mix(in srgb, var(--btl-action) 55%, var(--sl-border));
+  background: var(--sl-selected);
+  font-weight: 600;
+}
+.story-details {
+  border-top: 1px solid var(--sl-border);
+}
+.story-details > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.story-details[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+/* Checked answers to the story's own questions, shown before the agent adds. */
+.analyst-chip[aria-pressed="true"] {
+  border-color: var(--btl-action);
+  background: color-mix(in srgb, var(--btl-action) 14%, transparent);
+}
+.analyst-checked {
+  padding: 0.9rem 1rem;
+  border-radius: var(--sl-radius-control);
+  background: var(--sl-navy);
+  border: 1px solid var(--sl-border);
+  border-left: 3px solid var(--sl-success-text);
+}
+.analyst-checked-answer {
+  margin: 0.45rem 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.analyst-checked-answer strong {
+  font-weight: 600;
+}
+.analyst-checked-detail {
+  margin-top: 0.4rem;
+  font-size: 0.8125rem;
+}
+.analyst-checked-detail > summary {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  color: var(--sl-muted);
+}
+.analyst-checked-detail p {
+  margin: 0.4rem 0;
+  line-height: 1.5;
+}
+.analyst-checked-detail .text-button {
+  min-height: 36px;
+  margin-right: 0.75rem;
+}
+.analyst-checked-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--sl-muted);
+}
+
+/* One line for a cold visitor. */
+.welcome-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 12px;
+  padding: 10px 8px 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--btl-action) 40%, var(--sl-border));
+  border-radius: var(--sl-radius-control);
+  background: color-mix(in srgb, var(--btl-action) 7%, transparent);
+  color: var(--sl-text);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.welcome-line strong {
+  font-weight: 650;
+}
+.welcome-dismiss {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sl-muted);
+  cursor: pointer;
+}
+.welcome-dismiss:hover {
+  background: var(--sl-hover);
+  color: var(--sl-text);
+}
+.welcome-dismiss:focus-visible {
+  outline: 3px solid var(--btl-focus);
+  outline-offset: 2px;
+}
+.analyst-checked-measure {
+  margin: 0.4rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--sl-muted);
+}
+.analyst-heading {
+  flex-wrap: wrap;
+  row-gap: 0.25rem;
+}
+.analyst-heading h3 {
+  white-space: nowrap;
+}
+.welcome-short {
+  display: none;
+}
+@media (max-width: 600px) {
+  /* On phones the welcome replaces the badge row, so the story keeps its place. */
+  .welcome-line {
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 4px 4px 4px 12px;
+    font-size: 0.8125rem;
+  }
+  .welcome-full {
+    display: none;
+  }
+  .welcome-short {
+    display: inline;
+  }
+  .welcome-line + .fixture-selector .synthetic-badge {
+    display: none;
   }
 }

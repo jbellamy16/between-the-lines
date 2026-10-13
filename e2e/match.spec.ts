@@ -173,11 +173,13 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
   await page.clock.install();
   await page.goto("/");
   await page.locator(".secondary-observations > summary").click();
+  // On phones the welcome line carries the synthetic label in place of the badge.
   await expect(
     page
-      .locator(".fixture-selector")
-      .getByText("Synthetic demo", { exact: true }),
-  ).toBeVisible();
+      .locator(".fixture-selector .synthetic-badge, .welcome-short")
+      .filter({ visible: true })
+      .first(),
+  ).toContainText("Synthetic demo");
   await expect(page.locator(".demo-controls")).toHaveCount(0);
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await page.getByLabel("Generator profile").selectOption("balanced");

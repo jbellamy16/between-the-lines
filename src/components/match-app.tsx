@@ -27,6 +27,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppearance } from "./appearance";
 import { EvidenceReplay } from "./evidence-replay";
 import { ArrowUpRight, Play, RotateCcw } from "./icons";
+import { Welcome } from "./welcome";
 import { InsightNotice } from "./insight-notice";
 import { ModalHeader } from "./modal-header";
 import { MatchPeople } from "./match-people";
@@ -621,6 +622,7 @@ export function MatchApp({
         </dialog>
       }
     >
+      <Welcome />
       <div className="fixture-selector">
         {sourceSelector}
         <select

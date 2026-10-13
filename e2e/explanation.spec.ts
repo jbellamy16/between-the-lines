@@ -1,12 +1,15 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { openStoryDetails } from "./story-details";
 
 const styleKey = "between-the-lines-explanation-style";
+// The level selector and story actions live behind the story's Details toggle.
 const ready = async (page: Page) => {
   await page.goto("/");
   await expect(
     page.locator(".app-shell").filter({ visible: true }),
   ).toHaveAttribute("aria-busy", "false");
+  await openStoryDetails(page);
 };
 const story = (page: Page) =>
   page.locator(".director-story").filter({ visible: true });

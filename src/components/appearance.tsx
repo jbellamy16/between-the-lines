@@ -8,13 +8,15 @@ const storageKey = "second-look-appearance";
 function readAppearance(): Appearance {
   try {
     const value = localStorage.getItem(storageKey);
-    if (value === "light" || value === "dark") return value;
+    if (value === "light" || value === "dark" || value === "system")
+      return value;
   } catch {}
-  return "system";
+  // Dark is the default; "System" is an explicit choice.
+  return "dark";
 }
 
 export function useAppearance() {
-  const [appearance, setAppearance] = useState<Appearance>("system");
+  const [appearance, setAppearance] = useState<Appearance>("dark");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {

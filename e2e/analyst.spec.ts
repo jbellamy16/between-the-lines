@@ -54,7 +54,7 @@ async function mockAnalyst(page: Page, status: "answered" | "declined") {
     const result = {
       version: "analyst-1.0.0",
       status,
-      matchId: "pressure",
+      matchId: body.scenario,
       cutoff: body.time,
       question: body.question,
       answer:
@@ -126,15 +126,29 @@ test("a question shows the agent's steps and a verified answer with replayable e
   expect(results.violations).toEqual([]);
 });
 
-test("suggested questions ask immediately, and declines are labelled", async ({
-  page,
-}) => {
+test("free-text declines are labelled and cite nothing", async ({ page }) => {
   await mockAnalyst(page, "declined");
   await ready(page);
   const ask = panel(page);
+  await ask.getByRole("textbox").fill("How nervous is the Riverside keeper?");
+  await ask.getByRole("button", { name: "Ask", exact: true }).click();
+  await expect(ask.getByText("The events can't tell us that")).toBeVisible();
+  await expect(ask.getByRole("button", { name: /· shot/ })).toHaveCount(0);
+});
+
+test("without a story, generic starter questions ask immediately", async ({
+  page,
+}) => {
+  const asked = await mockAnalyst(page, "answered");
+  await ready(page);
+  await page.getByLabel("Fixture", { exact: true }).selectOption("quiet");
+  const ask = panel(page);
+  await expect(page.locator(".quiet-story")).toContainText("No new headline");
   await ask
     .getByRole("button", { name: "Is the other team doing anything about it?" })
     .click();
-  await expect(ask.getByText("The events can't tell us that")).toBeVisible();
-  await expect(ask.getByRole("button", { name: /· shot/ })).toHaveCount(0);
+  await expect(ask.getByText("Verified · 2 lookups")).toBeVisible();
+  expect(asked.at(-1)).toMatchObject({
+    question: "Is the other team doing anything about it?",
+  });
 });

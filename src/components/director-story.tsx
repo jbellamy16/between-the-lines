@@ -23,7 +23,6 @@ import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
 import { AnalystPanel } from "./analyst-panel";
-import { GuidedInvestigation } from "./guided-investigation";
 import { StorylineHistory } from "./storyline-history";
 import { InvestigationSource } from "./investigation-source";
 import { InvestigationEvidence } from "./investigation-evidence";
@@ -493,6 +492,12 @@ export function DirectorStory({
   const events = match.events.filter(
     (e) => e.time <= time && story.evidenceEventIds.includes(e.id),
   );
+  const supportIds = new Set(
+    story.hypothesis.supportingEvidence.flatMap((e) => e.eventIds),
+  );
+  const chips = match.events
+    .filter((e) => e.time <= story.cutoff && supportIds.has(e.id))
+    .slice(-3);
   return (
     <>
       <Reveal change={story.storyId} className="director-story panel">
@@ -503,41 +508,11 @@ export function DirectorStory({
         <h2>{wording!.headline}</h2>
         <h3 className="investigation-heading">What changed</h3>
         <p>{wording!.explanation}</p>
-        <ExplanationSelector />
         <h3 className="investigation-heading">Why it matters</h3>
         <p className="story-qualification">{wording!.why}</p>
-        <AnalystPanel
-          match={match}
-          time={time}
-          provider={provider}
-          onExplore={() => {
-            director.cancelInvestigation();
-            onExplore();
-          }}
-          onEvent={onEvent}
-        />
-        <InvestigationEvidence
-          story={story}
-          match={match}
-          wording={wording!}
-          style={style}
-          onEvent={onEvent}
-        />
-        <section className="story-significance" aria-label="What to watch next">
-          <h3>What to watch next</h3>
-          <p>{wording!.watch}</p>
-        </section>
-        <InvestigationSource
-          source={story.provider}
-          cached={validAnswer?.metrics.cached}
-        />
-        <small>
-          Through {matchClock(match, story.cutoff)} ·{" "}
-          {story.highlightedEventIds.length} highlighted actions
-        </small>
-        <div className="director-actions">
+        <div className="story-chips" role="group" aria-label="Story evidence">
           <button
-            className="text-button"
+            className="story-chip story-chip-replay"
             disabled={!events.length}
             onClick={() => {
               onExplore();
@@ -553,18 +528,19 @@ export function DirectorStory({
           >
             {replay ? "Close story replay" : "Replay story evidence"}
           </button>
-          <button
-            className="text-button"
-            onClick={() => {
-              onExplore();
-              setEvidenceOpen(true);
-            }}
-          >
-            Explore evidence
-          </button>
+          {chips.map((event) => (
+            <button
+              className="story-chip"
+              key={event.id}
+              onClick={() => onEvent(event.id)}
+              aria-label={`Replay supporting ${event.type.replaceAll("_", " ")} at ${eventClock(match, event)}`}
+            >
+              {eventClock(match, event)} · {event.type.replaceAll("_", " ")}
+            </button>
+          ))}
           {selectionActive && (
             <button
-              className="text-button"
+              className="story-chip"
               onClick={() => {
                 clearSelection();
                 onReplay();
@@ -573,49 +549,86 @@ export function DirectorStory({
               Back to main story
             </button>
           )}
-          {provider !== "offline" && !isMatchState(story) && (
-            <button
-              className="text-button"
-              disabled={busy}
-              onClick={() => {
-                onExplore();
-                onReplay();
-                void investigate();
-              }}
-            >
-              {busy
-                ? "Investigating recorded events…"
-                : `${provider === "foundry" ? "Review story" : "Investigate"} with ${providerLabel(provider)}`}
-            </button>
-          )}
         </div>
         {(busy || notice) && (
           <p className="notice" role="status">
             {busy ? "Checking the passage and its supporting events…" : notice}
           </p>
         )}
-        <GuidedInvestigation
+        <AnalystPanel
           match={match}
-          story={story}
           time={time}
           provider={provider}
+          story={story}
           onExplore={() => {
             director.cancelInvestigation();
             onExplore();
           }}
           onEvent={onEvent}
         />
-        <StoryEvidence
-          story={story}
-          match={match}
-          events={events}
-          answer={validAnswer}
-          onEvent={onEvent}
-          open={evidenceOpen}
-          onToggle={setEvidenceOpen}
-        />
-        {more}
-        <BroadcastPreview story={story} match={match} />
+        <AnimatedDetails className="director-disclosure story-details">
+          <summary>Details</summary>
+          <ExplanationSelector />
+          <InvestigationEvidence
+            story={story}
+            match={match}
+            wording={wording!}
+            style={style}
+            onEvent={onEvent}
+          />
+          <section
+            className="story-significance"
+            aria-label="What to watch next"
+          >
+            <h3>What to watch next</h3>
+            <p>{wording!.watch}</p>
+          </section>
+          <InvestigationSource
+            source={story.provider}
+            cached={validAnswer?.metrics.cached}
+          />
+          <small>
+            Through {matchClock(match, story.cutoff)} ·{" "}
+            {story.highlightedEventIds.length} highlighted actions
+          </small>
+          <div className="director-actions">
+            <button
+              className="text-button"
+              onClick={() => {
+                onExplore();
+                setEvidenceOpen(true);
+              }}
+            >
+              Explore evidence
+            </button>
+            {provider !== "offline" && !isMatchState(story) && (
+              <button
+                className="text-button"
+                disabled={busy}
+                onClick={() => {
+                  onExplore();
+                  onReplay();
+                  void investigate();
+                }}
+              >
+                {busy
+                  ? "Investigating recorded events…"
+                  : `${provider === "foundry" ? "Review story" : "Investigate"} with ${providerLabel(provider)}`}
+              </button>
+            )}
+          </div>
+          <StoryEvidence
+            story={story}
+            match={match}
+            events={events}
+            answer={validAnswer}
+            onEvent={onEvent}
+            open={evidenceOpen}
+            onToggle={setEvidenceOpen}
+          />
+          {more}
+          <BroadcastPreview story={story} match={match} />
+        </AnimatedDetails>
       </Reveal>
       <StorylineHistory match={match} time={time} storylines={storylines} />
     </>

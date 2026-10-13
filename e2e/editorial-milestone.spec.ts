@@ -5,6 +5,7 @@ import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
 import { observe } from "../src/lib/ai/director/observer";
 import { selectLeadCandidate } from "../src/lib/ai/director/editorial";
 import { packageStory } from "../src/lib/ai/director/story";
+import { openStoryDetails } from "./story-details";
 
 const match = new SyntheticMatchSource().read("pressure");
 const lead = selectLeadCandidate(observe(match, 3804, "analyst"))!;
@@ -54,6 +55,7 @@ test("one story controls the initial pitch, secondary selection and replay; offl
     story.getByRole("region", { name: "Ask the analyst", exact: true }),
   ).toHaveCount(1);
   const explanation = await story.locator(":scope > p").first().innerText();
+  await openStoryDetails(page);
   await story
     .getByRole("button", { name: "Explore evidence", exact: true })
     .click();
@@ -192,6 +194,7 @@ test("investigation reports loading and failure while keeping the selected evide
   );
   const story = page.locator(".director-story");
   const heading = await story.getByRole("heading", { level: 2 }).innerText();
+  await openStoryDetails(page);
   await story
     .getByRole("button", { name: "Investigate with OpenAI", exact: true })
     .click();
@@ -223,6 +226,7 @@ test("recorded full time leads with the result, while substitution evidence reta
   await expect(story.getByRole("heading", { level: 2 })).toContainText(
     "Full time: Arsenal 4–3 Leicester",
   );
+  await openStoryDetails(page);
   await story.getByText("More from this match", { exact: true }).click();
   await story
     .getByRole("button", {
@@ -258,4 +262,20 @@ test("recorded full time leads with the result, while substitution evidence reta
   });
   await timeline.fill("0");
   await expect(shell(page).locator(".director-story")).toHaveCount(0);
+});
+
+test("a cold visitor gets one welcome line, and dismissing it sticks", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const welcome = page.locator(".welcome-line");
+  await expect(welcome).toBeVisible();
+  await expect(welcome).toContainText(/Press play/);
+  await welcome.getByRole("button", { name: "Dismiss welcome" }).click();
+  await expect(welcome).toHaveCount(0);
+  await page.reload();
+  await expect(
+    page.locator(".app-shell").filter({ visible: true }),
+  ).toHaveAttribute("aria-busy", "false");
+  await expect(page.locator(".welcome-line")).toHaveCount(0);
 });

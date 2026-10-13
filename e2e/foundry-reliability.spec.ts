@@ -1,3 +1,4 @@
+import { openStoryDetails } from "./story-details";
 import { test, expect } from "@playwright/test";
 
 // All provider states are browser fixtures. The actual application stays AI-off.
@@ -68,6 +69,7 @@ test("a temporary investigation fallback keeps the story visible and allows a sa
   );
   const story = page.locator(".director-story");
   const heading = await story.getByRole("heading", { level: 2 }).innerText();
+  await openStoryDetails(page);
   const action = story.getByRole("button", {
     name: "Review story with Microsoft Foundry",
     exact: true,
@@ -159,6 +161,7 @@ test("a failed episode is eligible again after the existing proactive cooldown",
     "false",
   );
   const story = page.locator(".director-story");
+  await openStoryDetails(page);
   await story
     .getByRole("button", {
       name: "Review story with Microsoft Foundry",

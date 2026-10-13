@@ -18,11 +18,8 @@ const display = localFont({
 });
 export { brandMetadata as metadata } from "@/lib/brand";
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0f14" },
-  ],
-  colorScheme: "light dark",
+  themeColor: "#0b0f14",
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
 };
@@ -42,11 +39,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
           (() => {
-            let appearance = 'system';
+            let appearance = null;
             try { appearance = localStorage.getItem('second-look-appearance'); } catch {}
             document.documentElement.dataset.theme =
-              appearance === 'light' || appearance === 'dark' ? appearance :
-              matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              appearance === 'light' ? 'light' :
+              appearance === 'system' && !matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
           })();
         `,
           }}
