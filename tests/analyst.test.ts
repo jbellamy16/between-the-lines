@@ -260,6 +260,56 @@ describe("analyst agent", () => {
     expect(result.answer).toBeNull();
   });
 
+  it("asks the agent to fix a malformed reply instead of failing", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(reply([surge]))
+        .mockResolvedValueOnce(
+          reply([
+            {
+              type: "message",
+              content: [{ type: "output_text", text: "Harbor took 4 shots." }],
+            },
+          ]),
+        )
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 4 shots from 54:12 to 63:24.",
+              citations: ["e1", "e1", "e2", "e3", "e4", "e5", "e6", "e7"],
+            }),
+          ]),
+        ),
+    );
+    const result = await runAnalyst(match, CUTOFF, "Shots?", "fan", "foundry");
+    expect(result.status).toBe("answered");
+    expect(result.citedEventIds).toHaveLength(6);
+    expect(result.steps.map((s) => s.kind)).toContain("revise");
+  });
+
+  it("gives the agent the goals so far", async () => {
+    const fetch = vi.fn().mockResolvedValueOnce(
+      reply([
+        answer({
+          status: "cannot_answer",
+          answer: "Nothing to add.",
+          citations: [],
+        }),
+      ]),
+    );
+    vi.stubGlobal("fetch", fetch);
+    await runAnalyst(match, CUTOFF, "Who scored?", "fan", "foundry");
+    const first = JSON.parse(
+      JSON.parse(fetch.mock.calls[0][1].body).input[0].content,
+    );
+    expect(first.context.now.goals).toEqual([
+      { clock: "01:00", team: "Harbor", scorer: "Arlo Hayes" },
+    ]);
+  });
+
   it("rejects citations that no tool returned", async () => {
     vi.stubGlobal(
       "fetch",

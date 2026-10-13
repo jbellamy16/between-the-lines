@@ -54,7 +54,8 @@ const INSTRUCTIONS = (style: AnalystStyle) =>
 How to work: decide which tools can answer the question, call them (in parallel when independent), then answer. Tool times are seconds from kickoff; use the period boundaries in the context. Windows must end at or before cutoffSeconds and span at most 1800 seconds. compare_time_windows compares [start,end] with the equal window just before it, inside one half. Windows never cross half-time. For "recently" or "lately", start from context.now.latestEqualWindows, which already fit inside the current half. Use null for filters you do not need. You have at most ${ANALYST_LIMITS.tools} tool calls.
 
 Answer rules:
-- 1 to 3 sentences. ${styleGuide[style]}
+- 1 to 3 sentences, under 600 characters. ${styleGuide[style]}
+- context.currentHeadlines are already shown to the viewer. Stay consistent with them. If you use a different window and get a different picture, name your window and say how it differs; never flatly contradict a headline.
 - Every number, match time and player name you write must appear in a tool result or the context. Write match times exactly as the tools show them (for example 59:09). Write counts as digits.
 - Do not calculate new statistics such as sums, averages, differences or percentages unless a tool result shows them.
 - No predictions. No claims about intent, tactics, instructions, fatigue, emotions or causes: recorded events show what happened, not why.
@@ -66,10 +67,11 @@ Answer rules:
 const answerSchema = z
   .object({
     status: z.enum(["answered", "cannot_answer"]),
-    answer: z.string().min(1).max(700),
-    citations: z.array(z.string().regex(/^e\d{1,4}$/)).max(6),
+    answer: z.string().trim().min(1),
+    citations: z.array(z.string()),
   })
   .strict();
+const MAX_ANSWER = 900;
 const answerFormat = {
   type: "json_schema",
   name: "analyst_answer",
@@ -365,8 +367,17 @@ export async function runAnalyst(
           },
         }
       : null;
+  const goals = visible
+    .filter((e) => e.scoringTeam && e.period !== "PS")
+    .map((e) => ({
+      clock: matchClock(match, e.time),
+      team: match.teams[e.scoringTeam!].short,
+      scorer: playerName(e.actorId),
+      ...(e.ownGoal ? { ownGoal: true } : {}),
+    }));
   const groundedContext = {
     now: {
+      goals,
       cutoffSeconds: cutoff,
       clock: matchClock(match, cutoff),
       period: period.id,
@@ -556,17 +567,22 @@ export async function runAnalyst(
       .map((c) => c.text ?? "")
       .join("")
       .trim();
-    const parsed = answerSchema.safeParse(
-      (() => {
-        try {
-          return JSON.parse(texts);
-        } catch {
-          return null;
+    let parsedJson: unknown = null;
+    try {
+      parsedJson = JSON.parse(texts);
+    } catch {
+      /* reported below as a format problem the agent can fix */
+    }
+    const parsed = answerSchema.safeParse(parsedJson);
+    const plan = parsed.success
+      ? {
+          ...parsed.data,
+          // Keep the first six distinct citations; extra ones are not an error.
+          citations: [
+            ...new Set(parsed.data.citations.map((c) => c.trim())),
+          ].slice(0, 6),
         }
-      })(),
-    );
-    if (!parsed.success) throw new Error("Invalid analyst output");
-    const plan = parsed.data;
+      : { status: "cannot_answer" as const, answer: "", citations: [] };
     const unknownRefs = plan.citations.filter((r) => !canonical.has(r));
     const grounding = verifyGrounding(
       plan.answer,
@@ -574,16 +590,27 @@ export async function runAnalyst(
       match.players,
       question,
     );
-    const issues = [
-      ...grounding.issues,
-      ...unknownRefs.map((r) => `Citation "${r}" was not returned by a tool.`),
-      ...(plan.status === "answered" && plan.citations.length === 0
-        ? ["An answer needs at least one cited event."]
-        : []),
-      ...(plan.status === "answered" && telemetry.toolCalls === 0
-        ? ["An answer needs at least one evidence lookup."]
-        : []),
-    ];
+    const issues = parsed.success
+      ? [
+          ...grounding.issues,
+          ...unknownRefs.map(
+            (r) => `Citation "${r}" was not returned by a tool.`,
+          ),
+          ...(plan.answer.length > MAX_ANSWER
+            ? [
+                `The answer is ${plan.answer.length} characters; keep it under 600.`,
+              ]
+            : []),
+          ...(plan.status === "answered" && plan.citations.length === 0
+            ? ["An answer needs at least one cited event."]
+            : []),
+          ...(plan.status === "answered" && telemetry.toolCalls === 0
+            ? ["An answer needs at least one evidence lookup."]
+            : []),
+        ]
+      : [
+          "The reply was not valid JSON with exactly status, answer and citations.",
+        ];
     if (!issues.length) {
       const { numbers, clocks, names } = grounding.checked;
       const checkedCount = numbers + clocks + names;
