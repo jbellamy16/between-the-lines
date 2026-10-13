@@ -201,6 +201,21 @@ function comparisonWording(
   };
 }
 
+/**
+ * The highlighted action a story's pitch replay opens on. A goal story
+ * highlights every goal so far for the score, but it is about the latest
+ * one, so its replay starts there; other stories start at their first action.
+ */
+export function replayStartEventId(story: BroadcastStory, match: MatchData) {
+  if (story.category !== "score-change") return undefined;
+  return match.events.findLast(
+    (e) =>
+      e.time <= story.cutoff &&
+      e.type === "goal" &&
+      story.highlightedEventIds.includes(e.id),
+  )?.id;
+}
+
 /** Pure presentation over a verified story. Never participates in selection, cache identity or transport. */
 export function presentStory(
   story: BroadcastStory,

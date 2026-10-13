@@ -18,6 +18,16 @@ You join a match at 63 minutes. The score says 1–0. It doesn't say that one te
 - **Speaks your language.** Choose Casual Viewer, Football Fan or Advanced Analysis. The same verified facts are rewritten for each level, and the agent's answers follow suit. Follow a team or player to reorder the stories.
 - **Catches you up.** Quick or Full recaps for the moment you join, with no spoilers past your position in the match.
 
+## Plug it into any agent
+
+The analyst's evidence tools are also a read-only [MCP](https://modelcontextprotocol.io) server at `/api/mcp` (Streamable HTTP, no login). A broadcaster's own assistant, a production team's Copilot or a club's data desk can connect and work the match without rebuilding any of it. The connection pins a match time (`?t=77:00`, or full time if omitted). Every tool is bounded by that time, so an agent can't see or spoil anything later; out-of-range queries are refused with the same reasons the analyst gets. Results are deterministic, with no model calls and no spend on our side, and each client is rate limited.
+
+```text
+https://between-the-lines-jb-f5539b65.azurewebsites.net/api/mcp?t=77:00
+```
+
+In VS Code, add it as an HTTP server (**MCP: Add Server**), then ask Copilot in agent mode: "Catch me up on this match."
+
 ## How it fits the challenge
 
 | Challenge stage | In Between the Lines                                                                                      |
@@ -76,7 +86,7 @@ npm run eval:analyst                             # live agent eval (spends a few
 | `src/lib/ai/director/` | Story detection, evidence tools, hypothesis checks, guided questions |
 | `src/lib/ai/analyst/`  | Ask the Analyst agent loop, grounding check, types                   |
 | `src/lib/ai/`          | Provider adapters, spend ledger, shared usage controls               |
-| `src/app/api/`         | `ask` (streaming agent), `director`, `insights`, `recap`             |
+| `src/app/api/`         | `ask` (streaming agent), `mcp` (MCP server), `director`, `recap`     |
 | `src/components/`      | Match centre, pitch, story card, analyst panel, recaps               |
 | `tests/`, `e2e/`       | Unit tests and Playwright journeys with axe accessibility checks     |
 

@@ -18,6 +18,7 @@ export function EvidenceReplay({
   describe,
   formatEventTime,
   generated = true,
+  startEventId,
 }: {
   events: ReplayEvent[];
   suspended: boolean;
@@ -26,17 +27,20 @@ export function EvidenceReplay({
   formatEventTime?: (event: ReplayEvent) => string;
   describe?: (event: ReplayEvent) => string;
   generated?: boolean;
+  /** Open on this action instead of the first; Restart still goes to the first. */
+  startEventId?: string;
 }) {
   const timelineId = useId();
   const start = events[0].time,
     end = events.at(-1)!.time;
-  const [time, setTime] = useState(start);
+  const opening = events.find((e) => e.id === startEventId)?.time ?? start;
+  const [time, setTime] = useState(opening);
   const [stepIndex, setStepIndex] = useState<number | null>(null);
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(8);
   const visiblePage = usePageVisibility();
   const sample = useRef<PlaybackSample>({
-    time: start,
+    time: opening,
     sampledAt: 0,
     speed: 8,
     playing: false,

@@ -133,6 +133,21 @@ test.describe("moments", () => {
     );
   });
 
+  test("a goal moment replays the goal tapped", async ({ page }) => {
+    await ready(page);
+    await slider(page).fill("4700");
+    await page.getByRole("button", { name: "Moments", exact: true }).click();
+    await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
+    await expect(page.getByText("Story evidence replay")).toBeVisible();
+    const inspector = page
+      .locator(".event-inspector")
+      .filter({ visible: true });
+    await expect(inspector.locator("p")).toContainText("77:33 Theo March");
+    await expect(
+      page.locator(".replay-caption").filter({ visible: true }),
+    ).toContainText("Event 3 of 3");
+  });
+
   test("the Moments tab lists only what has happened", async ({ page }) => {
     await ready(page);
     await slider(page).fill("0");

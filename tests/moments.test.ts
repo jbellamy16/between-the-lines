@@ -6,7 +6,7 @@ import {
   MOMENT_REPEAT_SECONDS,
   momentsThrough,
 } from "@/lib/moments";
-import { presentStory } from "@/lib/explanation";
+import { presentStory, replayStartEventId } from "@/lib/explanation";
 import { ANALYSIS_MODE } from "@/lib/intelligence";
 import { observe } from "@/lib/ai/director/observer";
 import { selectLeadCandidate } from "@/lib/ai/director/editorial";
@@ -25,6 +25,21 @@ describe("match moments", () => {
     expect(full.map((m) => m.time)).toEqual(
       [...full.map((m) => m.time)].sort((a, b) => a - b),
     );
+  });
+
+  it("opens a goal's replay on the goal tapped, not the first goal", () => {
+    const start = (m: (typeof full)[number]) =>
+      pressure.events.find(
+        (e) => e.id === replayStartEventId(m.story, pressure),
+      )?.time;
+    const goals = full.filter((m) => m.kind === "goal");
+    // 77:33 is the third goal its story highlights; 74:35 the second.
+    expect(goals.map((m) => m.story.highlightedEventIds.length)).toEqual([
+      1, 2, 3,
+    ]);
+    expect(goals.map(start)).toEqual([60, 4475, 4653]);
+    // Full time replays every goal from the first.
+    expect(replayStartEventId(full.at(-1)!.story, pressure)).toBeUndefined();
   });
 
   it("never holds a moment, or evidence, from after the position", () => {

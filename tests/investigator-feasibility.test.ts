@@ -171,8 +171,9 @@ describe("frozen feasibility preparation", () => {
       expect(digest(readFileSync(path, "utf8"))).toBe(
         frozen.sourceHashes[path],
       );
-    // Later script entries (editorial renderer, analyst eval, spend status) are
-    // removed so the rest of package.json is still compared byte for byte.
+    // Later entries (editorial renderer, analyst eval, spend status scripts and
+    // the MCP SDK dependency) are removed so the rest of package.json is still
+    // compared byte for byte.
     const restoredPackage = readFileSync("package.json", "utf8")
       .split("\n")
       .filter(
@@ -181,6 +182,7 @@ describe("frozen feasibility preparation", () => {
             '"eval:investigator:editorial"',
             '"eval:analyst"',
             '"ai:spend"',
+            '"@modelcontextprotocol/sdk"',
           ].some((key) => line.includes(key)),
       )
       .map((line) =>

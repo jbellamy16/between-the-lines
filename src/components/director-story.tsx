@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { explanationLabels, presentStory } from "@/lib/explanation";
+import {
+  explanationLabels,
+  presentStory,
+  replayStartEventId,
+} from "@/lib/explanation";
 import {
   ExplanationSelector,
   useExplanationStyle,
@@ -669,6 +673,7 @@ export function DirectorReplay({
     <EvidenceReplay
       key={`${story.storyId}:${story.cutoff}`}
       events={events}
+      startEventId={replayStartEventId(story, match)}
       suspended={suspended}
       generated={false}
       identities={{
