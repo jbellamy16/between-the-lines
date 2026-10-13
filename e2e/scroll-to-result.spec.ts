@@ -131,8 +131,12 @@ test("with reduced motion the jump is instant", async ({ page }, info) => {
   await clearScrolls(page);
   await event.click();
   await expect
-    .poll(async () => (await box(page, `${shell} .pitch-panel`)).top)
-    .toBeLessThan(40);
+    .poll(async () => {
+      const { top } = await box(page, `${shell} .pitch-panel`);
+      // A negative top is still off-screen, before revealSoon's two frames.
+      return top >= 0 && top < 40;
+    })
+    .toBe(true);
   const calls = await scrolls(page);
   expect(calls.length).toBeGreaterThan(0);
   expect(calls.every((c) => c.behavior === "instant")).toBe(true);
