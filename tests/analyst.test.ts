@@ -95,6 +95,14 @@ describe("grounding check", () => {
       verifyGrounding("Harbor took 9 shots.", headline, roster).passed,
     ).toBe(false);
   });
+  it("lets a decline name what it can't judge", () => {
+    const decline =
+      "Recorded events can't say who will win or whether anyone is angry.";
+    expect(verifyGrounding(decline, facts, roster).passed).toBe(false);
+    expect(
+      verifyGrounding(decline, facts, roster, "", { declining: true }).passed,
+    ).toBe(true);
+  });
   it("rejects an invented number word", () => {
     expect(
       verifyGrounding("Harbor had nine shots.", facts, roster).passed,
@@ -308,6 +316,51 @@ describe("analyst agent", () => {
     expect(first.context.now.goals).toEqual([
       { clock: "01:00", team: "Harbor", scorer: "Arlo Hayes" },
     ]);
+  });
+
+  it("declines gracefully even when the decline cites nothing real", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValueOnce(
+        reply([
+          answer({
+            status: "cannot_answer",
+            answer: "Recorded events can't say who will win.",
+            citations: ["e1"],
+          }),
+        ]),
+      ),
+    );
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "Who is going to win?",
+      "fan",
+      "foundry",
+    );
+    expect(result.status).toBe("declined");
+    expect(result.citedEventIds).toEqual([]);
+  });
+
+  it("retries once when the model times out", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockRejectedValueOnce(new Error("socket hang up"))
+        .mockResolvedValueOnce(reply([surge]))
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 4 shots from 54:12 to 63:24.",
+              citations: ["e1"],
+            }),
+          ]),
+        ),
+    );
+    const result = await runAnalyst(match, CUTOFF, "Shots?", "fan", "foundry");
+    expect(result.status).toBe("answered");
   });
 
   it("rejects citations that no tool returned", async () => {

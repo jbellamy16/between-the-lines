@@ -219,6 +219,7 @@ export function verifyGrounding(
   facts: GroundingFacts,
   roster: RosterName[],
   question = "",
+  options: { declining?: boolean } = {},
 ): GroundingResult {
   const issues: string[] = [];
   const questionFacts = emptyFacts();
@@ -291,7 +292,8 @@ export function verifyGrounding(
       );
   }
 
-  if (SPECULATION.test(answer))
+  // A decline may name what it can't judge ("can't say who will win").
+  if (!options.declining && SPECULATION.test(answer))
     issues.push(
       "The answer predicts an outcome or describes intent or feelings, which recorded events cannot show.",
     );

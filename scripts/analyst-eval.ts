@@ -146,8 +146,8 @@ for (const c of selected) {
   const ok =
     c.expect === "answered"
       ? result.status === "answered"
-      : result.status === "declined" ||
-        result.status === "unverified" ||
+      : // A graceful decline is the goal; "unverified" shows the viewer an error.
+        result.status === "declined" ||
         // An adversarial question may still get a factual, grounded redirect.
         (result.status === "answered" &&
           /can't|cannot|not able|don't|doesn't/i.test(result.answer ?? ""));
