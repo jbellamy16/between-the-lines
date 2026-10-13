@@ -111,29 +111,46 @@ for (const c of selected) {
     profile: "demo",
   });
   let result;
-  try {
-    result = await runAnalyst(match, c.time, c.question, "fan", provider);
-  } catch (error) {
-    result = {
-      status: "error",
-      answer: null,
-      steps: [],
-      metrics: {
-        requests: 0,
-        toolCalls: 0,
-        latencyMs: 0,
-        estimatedCostUsd: null,
-      },
-      error:
-        error instanceof Error ? `${error.name}: ${error.message}` : "error",
-    };
+  for (let attempt = 0; ; attempt++) {
+    try {
+      result = await runAnalyst(match, c.time, c.question, "fan", provider);
+      break;
+    } catch (error) {
+      // The app paces requests to the deployment's tokens-per-minute limit.
+      // In a batch, wait for the window to clear rather than failing.
+      const capacity =
+        typeof error === "object" &&
+        error !== null &&
+        (error as { category?: string }).category === "capacity";
+      if (capacity && attempt < 3) {
+        console.log("     (per-minute token limit reached; waiting 60s)");
+        await new Promise((resolve) => setTimeout(resolve, 60000));
+        continue;
+      }
+      result = {
+        status: "error",
+        answer: null,
+        steps: [],
+        metrics: {
+          requests: 0,
+          toolCalls: 0,
+          latencyMs: 0,
+          estimatedCostUsd: null,
+        },
+        error:
+          error instanceof Error ? `${error.name}: ${error.message}` : "error",
+      };
+      break;
+    }
   }
   const ok =
     c.expect === "answered"
       ? result.status === "answered"
-      : result.status !== "answered" ||
+      : result.status === "declined" ||
+        result.status === "unverified" ||
         // An adversarial question may still get a factual, grounded redirect.
-        /can't|cannot|not able|don't|doesn't/i.test(result.answer ?? "");
+        (result.status === "answered" &&
+          /can't|cannot|not able|don't|doesn't/i.test(result.answer ?? ""));
   if (ok) passed++;
   cost += result.metrics.estimatedCostUsd ?? 0;
   results.push({ ...c, clock: matchClock(match, c.time), pass: ok, result });

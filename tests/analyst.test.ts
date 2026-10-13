@@ -82,6 +82,19 @@ describe("grounding check", () => {
     expect(wrongThing.passed).toBe(false);
     expect(wrongThing.issues[0]).toContain("pass count");
   });
+  it("accepts a baseline count stated elsewhere in the same sentence", () => {
+    const headline = collectFacts({
+      summary:
+        "Harbor recorded 4 shots in the last 9 min 12 sec, up from 0 in the previous equal spell.",
+    });
+    expect(
+      verifyGrounding("4 shots after 0 shots before.", headline, roster).passed,
+    ).toBe(true);
+    // Durations in that sentence are not shot counts.
+    expect(
+      verifyGrounding("Harbor took 9 shots.", headline, roster).passed,
+    ).toBe(false);
+  });
   it("rejects an invented number word", () => {
     expect(
       verifyGrounding("Harbor had nine shots.", facts, roster).passed,

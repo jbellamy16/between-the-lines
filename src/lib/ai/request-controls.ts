@@ -12,11 +12,12 @@ export class UsageFailure extends Error {
   }
 }
 
-// Matches the owner-authorized Foundry allocation verified on 2026-10-11.
-// Limits may be lowered; hourly/daily/total allowances remain independent.
+// Defaults match the 30k TPM Foundry allocation. Raise both settings only after
+// raising the deployment's own rate limit; the dollar ledger (spend-ledger.ts),
+// not throughput, is the spending stop. Hourly/daily/total allowances still apply.
 export const requestLimits = () => ({
-  rpm: limit("AI_REQUEST_MINUTE_LIMIT", 30, 30),
-  tpm: limit("AI_TOKEN_MINUTE_LIMIT", 30000, 30000),
+  rpm: limit("AI_REQUEST_MINUTE_LIMIT", 30, 300),
+  tpm: limit("AI_TOKEN_MINUTE_LIMIT", 30000, 300000),
 });
 
 // Same Redis cluster slot and durable budget as workflow reservations. Each

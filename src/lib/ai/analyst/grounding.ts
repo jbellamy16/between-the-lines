@@ -172,6 +172,29 @@ export function addText(facts: GroundingFacts, text: string) {
     const kind = noun(m[2]);
     if (kind) addCount(facts, kind, countValue(m[1]));
   }
+  // "4 shots ... up from 0 in the previous spell": every number in a sentence
+  // that names a counted thing is a possible count of that thing.
+  for (const sentence of text.split(/(?<=[.;!?])\s+/)) {
+    const kinds = new Set<string>();
+    for (const word of sentence.toLowerCase().match(/[a-z]+(?: [a-z]+)?/g) ??
+      []) {
+      for (const part of [word, ...word.split(" ")]) {
+        const kind = noun(part);
+        if (kind) kinds.add(kind);
+      }
+    }
+    if (!kinds.size) continue;
+    // Durations, percentages and xG values are not counts.
+    const values = [
+      ...sentence
+        .replace(CLOCK, " ")
+        .matchAll(
+          /(?<![\w.:])(\d+)(?![\d.]|\s*(?:min|sec|minute|second|%|xg|m\b|s\b))/gi,
+        ),
+    ].map((m) => Number(m[1]));
+    for (const kind of kinds)
+      for (const value of values) addCount(facts, kind, value);
+  }
   facts.names.add(text);
 }
 

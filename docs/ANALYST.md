@@ -79,9 +79,11 @@ Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROV
 | `AI_HOURLY_LIMIT`         | `100`                                                             |
 | `AI_DAILY_LIMIT`          | `500`                                                             |
 | `AI_TOTAL_LIMIT`          | `5000`                                                            |
+| `AI_TOKEN_MINUTE_LIMIT`   | Match the deployment's tokens-per-minute limit (see below)        |
+| `AI_REQUEST_MINUTE_LIMIT` | Match the deployment's requests-per-minute limit                  |
 | `AI_PROACTIVE_ENABLED`    | `false`                                                           |
 | `AI_INVESTIGATOR_ENABLED` | `false`. If this is `true`, it forces every other AI path offline |
 
-Keep the Foundry deployment at its current 30k TPM. One question can use about 15k tokens within a minute. The dollar ledger, not throughput, is the spending stop. Also set an Azure budget alert. It only sends email, but it's a useful second signal.
+**Raise the deployment's rate limit.** At 30k tokens per minute the app can answer only about one question a minute in total, because each question uses roughly 15–30k estimated tokens. Pay-as-you-go deployments bill per token, not per unit of capacity, so a higher limit costs nothing by itself. In the Foundry portal, edit the deployment's tokens-per-minute limit to 150k (if your quota allows), then set `AI_TOKEN_MINUTE_LIMIT=150000` and `AI_REQUEST_MINUTE_LIMIT=150`. The code allows up to 300k and 300. The dollar ledger, not throughput, is what stops spending. Also set an Azure budget alert; it only sends email, but it's a useful second signal.
 
 Verify after deploy: `GET /api/ask` returns `{"enabled": true}`. Then ask one question signed out on desktop and on a phone.

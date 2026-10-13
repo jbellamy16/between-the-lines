@@ -53,8 +53,11 @@ describe("per-attempt controls with mocked transport and real local accounting",
     vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", undefined);
     expect(api.requestLimits()).toEqual({ rpm: 30, tpm: 30000 });
     vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", "100");
+    vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "100000");
+    expect(api.requestLimits()).toEqual({ rpm: 100, tpm: 100000 });
+    vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", "1000");
     vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "1000000");
-    expect(api.requestLimits()).toEqual({ rpm: 30, tpm: 30000 });
+    expect(api.requestLimits()).toEqual({ rpm: 300, tpm: 300000 });
     vi.stubEnv("AI_REQUEST_MINUTE_LIMIT", "10");
     vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "10000");
     expect(api.requestLimits()).toEqual({ rpm: 10, tpm: 10000 });
