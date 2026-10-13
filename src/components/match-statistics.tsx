@@ -28,7 +28,7 @@ export function MatchStatistics({
   ] as const;
   return (
     <section
-      className="panel section-panel section-enter"
+      className="panel section-panel section-enter match-statistics"
       id="historical-statistics"
     >
       <div className="panel-header">
