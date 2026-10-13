@@ -1525,9 +1525,9 @@
   width: min(780px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
   padding: 24px 30px;
-  color: #f3f4f6;
-  background: #17191d;
-  border: 1px solid #383d45;
+  color: var(--sl-text);
+  background: var(--sl-navy);
+  border: 1px solid var(--sl-border);
   border-radius: 12px;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -1538,12 +1538,12 @@
 .data-first .recap-modal .modal-header h2 {
   font-size: 21px;
   font-weight: 600;
-  color: #f3f4f6;
+  color: var(--sl-text);
 }
 .data-first .recap-modal .modal-header .icon-button {
-  color: #c2c8d0;
+  color: var(--sl-muted);
   background: transparent;
-  border-color: #383d45;
+  border-color: var(--sl-border);
 }
 @media (max-width: 540px) {
   .data-first .modal.recap-modal {
@@ -1660,9 +1660,9 @@
   text-align: left;
 }
 .recap-modal .explanation-control select {
-  background: #20242b;
-  border-color: #4b5260;
-  color: #f3f4f6;
+  background: var(--sl-midnight);
+  border-color: var(--sl-control-border);
+  color: var(--sl-text);
 }
 
 @media (min-width: 821px) {

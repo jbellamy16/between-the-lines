@@ -1,7 +1,8 @@
 .briefing {
-  --recap-muted: #b0b6be;
-  --recap-border: #30343a;
-  color: #f3f4f6;
+  /* Theme tokens, so the briefing follows light and dark like the app. */
+  --recap-muted: var(--sl-muted);
+  --recap-border: var(--sl-border);
+  color: var(--sl-text);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -23,7 +24,7 @@
   padding: 3px;
   border: 1px solid var(--recap-border);
   border-radius: 7px;
-  background: #121417;
+  background: var(--sl-midnight);
   gap: 2px;
 }
 .tabs button {
@@ -37,8 +38,8 @@
   min-height: 36px;
 }
 .tabs button[aria-selected="true"] {
-  background: #30343a;
-  color: #fff;
+  background: var(--sl-surface);
+  color: var(--sl-text);
 }
 .welcome {
   order: 3;
@@ -92,7 +93,7 @@
   font-variant-numeric: tabular-nums;
 }
 .score span {
-  color: #828994;
+  color: var(--sl-muted);
   margin: 0 9px;
   font-weight: 400;
 }
@@ -123,7 +124,7 @@
   display: inline-block;
   width: 5px;
   height: 5px;
-  background: #ee5858;
+  background: var(--sl-danger);
   margin-right: 8px;
   vertical-align: 2px;
 }
@@ -141,18 +142,18 @@
   padding: 0;
   border: 0;
   background: none;
-  color: #d7dae0;
+  color: var(--sl-text);
   font-size: 14px;
   line-height: 1.75;
 }
 .qualification {
-  color: #d1c3af;
+  color: color-mix(in srgb, var(--sl-warning) 55%, var(--sl-text));
   font-size: 12px;
   line-height: 1.6;
   margin: 9px 0 0;
 }
 .expanded {
-  color: #d7dae0;
+  color: var(--sl-text);
   margin: 12px 0 0;
   font-size: 13px;
 }
@@ -183,7 +184,7 @@
   padding: 6px 0;
 }
 .metric + .metric {
-  border-top: 1px solid #272b30;
+  border-top: 1px solid var(--sl-border);
 }
 .metricTitle strong {
   display: block;
@@ -239,7 +240,7 @@
   border: 0;
   background: transparent;
   text-align: left;
-  color: #e0e3e8;
+  color: var(--sl-text);
   font-size: 12px;
   min-height: 42px;
 }
@@ -266,17 +267,17 @@
   padding: 5px 0;
   background: none;
   border: 0;
-  color: #c0c6cf;
+  color: var(--sl-muted);
   font-size: 11px;
   line-height: 1.5;
   min-height: 32px;
 }
 .briefing button:hover:not(:disabled) {
-  color: #fff;
+  color: var(--sl-text);
 }
 .briefing button:focus-visible,
 .panel:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--btl-focus);
   outline-offset: 4px;
 }
 .textButton:disabled {
@@ -288,8 +289,8 @@
   font-size: 12px;
 }
 .watch {
-  border-left: 2px solid #c74343;
-  background: #1c1f23;
+  border-left: 2px solid var(--sl-danger);
+  background: var(--sl-surface);
   padding: 14px 18px;
   margin: 0 0 20px;
 }
@@ -303,7 +304,7 @@
   margin: 0 0 6px;
 }
 .watch > p:not(.eyebrow) {
-  color: #c3c9d1;
+  color: var(--sl-muted);
   font-size: 12px;
   line-height: 1.7;
   margin: 0 0 6px;
@@ -314,12 +315,12 @@
   border: 0;
   border-block: 1px solid var(--recap-border);
   border-radius: 0;
-  color: #d7dae0;
+  color: var(--sl-text);
 }
 .method > summary {
   padding: 15px 0;
   font-size: 12px;
-  color: #e4e6eb;
+  color: var(--sl-text);
 }
 .methodBody {
   font-size: 12px;
@@ -334,17 +335,9 @@
   padding-left: 18px;
 }
 .methodBody h4 {
-  color: #f3f4f6;
+  color: var(--sl-text);
   font-size: 13px;
   margin-top: 18px;
-}
-.methodBody :global(.director-disclosure) {
-  --sl-text: #e4e6eb;
-  --sl-muted: #b0b6be;
-  --sl-border: #30343a;
-  --sl-surface: #20242a;
-  --text: #e4e6eb;
-  color: #e4e6eb;
 }
 .timeline {
   border-top: 1px solid var(--recap-border);
@@ -369,7 +362,7 @@
   padding: 10px 0;
   width: 100%;
   text-align: left;
-  color: #d7dae0;
+  color: var(--sl-text);
   font-size: 12px;
 }
 .timeline time {
@@ -395,9 +388,9 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  color: #fff;
-  background: #30343a;
-  border: 1px solid #4c515a;
+  color: var(--sl-text);
+  background: var(--sl-surface);
+  border: 1px solid var(--sl-control-border);
   border-radius: 5px;
   padding: 10px 14px;
   min-height: 40px;

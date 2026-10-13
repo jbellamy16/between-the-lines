@@ -88,3 +88,29 @@ test("dark screens retain accessible contrast and a single visible brand", async
   await expect(page.locator(".theme-dark-logo:visible")).toHaveCount(1);
   await expect(page.locator(".theme-light-logo:visible")).toHaveCount(0);
 });
+
+test("Catch me up uses the same surface as the app in light and dark", async ({
+  page,
+}) => {
+  for (const theme of ["light", "dark"] as const) {
+    await page.addInitScript(
+      (t) => localStorage.setItem("second-look-appearance", t),
+      theme,
+    );
+    await page.goto("/");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const panel = await page
+      .locator(".app-shell:not([hidden]) .panel")
+      .first()
+      .evaluate((e) => getComputedStyle(e).backgroundColor);
+    await page
+      .getByRole("button", { name: "Catch me up", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Catch me up" });
+    await expect(dialog).toBeVisible();
+    expect(
+      await dialog.evaluate((e) => getComputedStyle(e).backgroundColor),
+    ).toBe(panel);
+    await page.keyboard.press("Escape");
+  }
+});
