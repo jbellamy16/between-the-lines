@@ -315,6 +315,7 @@ test("recorded approximate times, full-time score, and rewind stay consistent ac
   const shell = page.locator(".historical-shell");
   const timeline = shell.getByRole("slider", { name: "Match timeline" });
   await timeline.fill((await timeline.getAttribute("max"))!);
+  await openStoryDetails(page);
   await story(page).getByText("More from this match", { exact: true }).click();
   await story(page)
     .getByRole("button", {

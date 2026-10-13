@@ -37,6 +37,9 @@ test("both sources share the layout and evidence flow at the same viewport", asy
       inference.push(r.url());
   });
   await page.goto("/");
+  // The welcome is specific to the demo; compare the shared match layout
+  // after dismissing it, as a returning viewer would see it.
+  await page.getByRole("button", { name: "Dismiss welcome" }).click();
   const geometry: Record<string, number[]> = {};
   for (const source of ["Synthetic", "Recorded"] as const) {
     await selectSource(page, source);
@@ -87,14 +90,22 @@ test("both sources share the layout and evidence flow at the same viewport", asy
     ).toBe(true);
     for (const [state, nav] of [
       ["match", "Match centre"],
-      ["insights", "Insights"],
+      ["insights", source === "Synthetic" ? "Moments" : "Insights"],
       ["statistics", "Match stats"],
     ]) {
       await page
         .getByRole("navigation")
         .getByRole("button", { name: nav, exact: true })
         .click();
-      if (state === "insights") {
+      if (state === "insights" && source === "Synthetic") {
+        await expect(
+          shell(page).locator(".moment-timeline button").first(),
+        ).toBeVisible();
+        await expect(
+          shell(page).getByRole("heading", { name: "Moments so far" }),
+        ).toBeVisible();
+      }
+      if (state === "insights" && source === "Recorded") {
         await expect(
           shell(page).locator(".lead-observation .window-row"),
         ).toHaveCount(2);
@@ -121,9 +132,18 @@ test("both sources share the layout and evidence flow at the same viewport", asy
     }
     await page
       .getByRole("navigation")
-      .getByRole("button", { name: "Insights", exact: true })
+      .getByRole("button", {
+        name: source === "Synthetic" ? "Match centre" : "Insights",
+        exact: true,
+      })
       .click();
-    await shell(page).locator(".lead-observation").click();
+    if (source === "Recorded") {
+      await shell(page).locator(".lead-observation").click();
+    } else {
+      const details = shell(page).locator(".secondary-observations");
+      if (!(await details.evaluate((el) => (el as HTMLDetailsElement).open)))
+        await details.locator(":scope > summary").click();
+    }
     await expect(
       page.getByRole("button", { name: "Pattern evidence", exact: true }),
     ).toHaveAttribute("aria-pressed", "true");

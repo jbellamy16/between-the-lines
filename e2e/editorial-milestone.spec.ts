@@ -114,6 +114,7 @@ test("one story controls the initial pitch, secondary selection and replay; offl
 test("the main explanation fits the first mobile screen and stays accessible at desktop and tablet sizes", async ({
   page,
 }, info) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.locator(".app-shell")).toHaveAttribute(
     "aria-busy",
@@ -121,9 +122,12 @@ test("the main explanation fits the first mobile screen and stays accessible at 
   );
   const story = page.locator(".director-story");
   await expect(story).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
   if (info.project.name === "mobile") {
     const explanation = await story.locator(":scope > p").first().boundingBox();
-    expect(explanation!.y + explanation!.height).toBeLessThan(760);
+    const navigation = await page.locator(".sidebar").boundingBox();
+    // The entire explanation must fit above the fixed bottom navigation.
+    expect(explanation!.y + explanation!.height).toBeLessThan(navigation!.y);
   }
   await page.screenshot({
     path: `artifacts/editorial-milestone/${info.project.name}-first-screen.png`,
