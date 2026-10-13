@@ -175,32 +175,32 @@ export function Shot(props: IconProps) {
   return (
     <FootballGlyph {...props}>
       <path d="M14 9V4h7v16h-7v-5m4-11v16m0-11h3m-3 6h3" />
-      <circle cx="4" cy="12" r="2" />
-      <path d="M9 12h6m-3-3 3 3-3 3" />
+      <circle cx="5" cy="12" r="2" />
+      <path d="M10 12h5m-3-3 3 3-3 3" />
     </FootballGlyph>
   );
 }
 export function Pass(props: IconProps) {
   return (
     <FootballGlyph {...props}>
-      <circle cx="4" cy="12" r="2" />
-      <path d="M9 12h8m-3-3 3 3-3 3M21 8v8" />
+      <circle cx="5" cy="12" r="2" />
+      <path d="M10 12h7m-3-3 3 3-3 3M21 8v8" />
     </FootballGlyph>
   );
 }
 export function Tackle(props: IconProps) {
   return (
     <FootballGlyph {...props}>
-      <circle cx="19" cy="16" r="3" />
-      <path d="M4 3v9l-1 5a2 2 0 0 0 2 2h7a2 2 0 0 0 0-4H9l2-12M4 11h5" />
+      <circle cx="18" cy="17" r="3" />
+      <path d="M4 4v9l-1 5a2 2 0 0 0 2 2h7a2 2 0 0 0 0-4H9l2-12M4 12h5" />
     </FootballGlyph>
   );
 }
 export function Interception(props: IconProps) {
   return (
     <FootballGlyph {...props}>
-      <circle cx="4" cy="12" r="2" />
-      <path d="M9 12h6m-3-3 3 3-3 3M20 5v14m-3 0h6" />
+      <circle cx="5" cy="12" r="2" />
+      <path d="M10 12h5m-3-3 3 3-3 3M19 5v14m-2 0h4" />
     </FootballGlyph>
   );
 }
@@ -208,7 +208,7 @@ export function Recovery(props: IconProps) {
   return (
     <FootballGlyph {...props}>
       <circle cx="9" cy="10" r="6" />
-      <path d="m9 7 3 2-1 3H7L6 9Zm0 0V4m3 5 3-1M6 9 3 8m9 11 3 3 6-7" />
+      <path d="m9 7 3 2-1 3H7L6 9Zm0 0V4m3 5 3-1M6 9 3 8m10 9 3 3 5-6" />
     </FootballGlyph>
   );
 }

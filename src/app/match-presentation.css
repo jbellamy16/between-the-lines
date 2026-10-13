@@ -360,7 +360,8 @@
   color: var(--sl-muted);
   flex-shrink: 0;
 }
-.data-first .evidence-list button svg {
+/* Only the trailing play arrow; the event glyph stays centred in its tile. */
+.data-first .evidence-list button > svg {
   flex-shrink: 0;
   margin-left: auto;
 }
