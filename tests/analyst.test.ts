@@ -279,6 +279,56 @@ describe("analyst agent", () => {
     expect(result.status).toBe("answered");
   });
 
+  it("traces a build-up named by its match time, even in the first turn", async () => {
+    const fetch = vi
+      .fn()
+      // Parallel calls, before any refs exist: the agent can only name times.
+      .mockResolvedValueOnce(
+        reply([
+          toolCall(
+            "get_recorded_sequence",
+            { start: 3252, end: 3804, team: "harbor", eventId: "62:50" },
+            "a",
+          ),
+          toolCall(
+            "get_recorded_sequence",
+            { start: 3252, end: 3804, team: null, eventId: "70:00" },
+            "b",
+          ),
+        ]),
+      )
+      .mockResolvedValueOnce(
+        reply([
+          answer({
+            status: "answered",
+            answer: "Theo March shot at 62:50.",
+            citations: ["e1"],
+          }),
+        ]),
+      );
+    vi.stubGlobal("fetch", fetch);
+    const steps: { kind: string; label: string }[] = [];
+    await runAnalyst(
+      match,
+      CUTOFF,
+      "How did the 62:50 shot come about?",
+      "fan",
+      "foundry",
+      {
+        onStep: (s) => steps.push(s),
+      },
+    );
+    expect(steps.map((s) => s.label)).toContain(
+      "Traced the build-up to the 62:50 shot",
+    );
+    // 70:00 is after the 63:24 cutoff: nothing there yet, so still refused.
+    const outputs = JSON.parse(fetch.mock.calls[1][1].body)
+      .input.filter((i: { type?: string }) => i.type === "function_call_output")
+      .map((i: { output: string }) => JSON.parse(i.output));
+    expect(outputs[0].totalEvents).toBeGreaterThan(1);
+    expect(outputs[1]).toEqual({ error: "Unknown or future event" });
+  });
+
   it("revises once when the verifier finds an invented number", async () => {
     vi.stubGlobal(
       "fetch",

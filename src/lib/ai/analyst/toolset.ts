@@ -52,6 +52,8 @@ function windowCounts(events: NormalizedEvent[]) {
   };
 }
 
+const CLOCK_ARG = /^\d{1,3}(?:\+\d{1,2})?:\d{2}$/;
+
 type Execution = ReturnType<ReturnType<typeof createInvestigation>["execute"]>;
 
 /**
@@ -243,18 +245,33 @@ export function analystToolset(
   }
 
   /** Run one tool. Throws on a refused or invalid query; see refusalMessage. */
+  // An event the agent names by its match time ("59:09"): the action
+  // recorded at that clock, preferring a goal or shot. Visible events only,
+  // so a future time finds nothing and is refused as before.
+  function eventAtClock(clock: string) {
+    const at = visible.filter(
+      (e) => e.type !== "possession" && matchClock(match, e.time) === clock,
+    );
+    return (
+      at.findLast((e) => e.type === "goal" || e.type === "shot") ?? at.at(-1)
+    )?.id;
+  }
   function run(name: string, args: unknown) {
-    // The analyst only ever sees refs ("e4"); the tools take event IDs. An
-    // unknown ref passes through unchanged and is refused as before.
+    // The analyst sees refs ("e4") and match times, never event IDs. Map a
+    // known ref, or a time with a recorded action, to its ID; anything else
+    // passes through unchanged and is refused as before.
     const a = args as Record<string, unknown> | null;
     if (
       options.eventKey === "ref" &&
       a &&
       typeof a === "object" &&
-      typeof a.eventId === "string" &&
-      canonical.has(a.eventId)
-    )
-      args = { ...a, eventId: canonical.get(a.eventId) };
+      typeof a.eventId === "string"
+    ) {
+      const id =
+        canonical.get(a.eventId) ??
+        (CLOCK_ARG.test(a.eventId) ? eventAtClock(a.eventId) : undefined);
+      if (id) args = { ...a, eventId: id };
+    }
     const executed = session.execute(name, args);
     const tool = name as ToolName;
     const query = session.trace.at(-1)!.query;
