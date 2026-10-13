@@ -90,6 +90,14 @@ export async function investigateExplicitly(
         ? "Same focal selection as B2. Additional value has not been established."
         : "Different focal selection from B2. This does not establish a better answer."
       : "Showing the deterministic B2 answer. No verified model conclusion was published.",
+    decisionAttribution: {
+      model:
+        "Evidence option and focal development; final interpretations, emphasis and proposed stop.",
+      deterministic:
+        "Canonical index and tool purpose bindings; retrieval, calculations and rendering.",
+      verification:
+        "Independent canonical replay of every selected tool and final plan.",
+    },
     initialEvidence: prepared.initial.map((bundle) => ({
       optionId: bundle.option.id,
       label: bundle.option.label,

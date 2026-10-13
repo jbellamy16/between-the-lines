@@ -158,3 +158,142 @@ it("explicit route connects to the bounded runner and publishes only a verified 
     budget.mockRestore();
   }
 });
+
+it("explicit model-selected retrieval binds metadata deterministically and still verifies the final plan (mock transport)", async () => {
+  vi.resetModules();
+  const { runBoundedInvestigator: run } =
+    await import("../src/lib/ai/director/investigator");
+  const { buildCase, cases } =
+    await import("../eval/editorial-baselines/cases");
+  const { decodeInvestigationWire, scriptedPlan } =
+    await import("../eval/investigator/scripted");
+  const fixture = buildCase(cases[0]);
+  vi.stubEnv("AI_INVESTIGATOR_ENABLED", "true");
+  vi.stubEnv("FOUNDRY_ENDPOINT", "https://test.openai.azure.com");
+  vi.stubEnv("FOUNDRY_API_KEY", "test-only");
+  vi.stubEnv("FOUNDRY_DEPLOYMENT", "between-the-lines-gpt-6-luna-1");
+  vi.stubEnv("AI_USAGE_STORE", "memory");
+  let turn = 0,
+    target = "";
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url: string, init: RequestInit) => {
+      const body = JSON.parse(init.body as string);
+      expect(body.reasoning).toEqual({ effort: "low" });
+      const packet = decodeInvestigationWire(JSON.parse(body.input[0].content));
+      if (turn++ === 0) {
+        expect(body.tools[0].parameters.required).toEqual([
+          "optionId",
+          "focalId",
+        ]);
+        const development = packet.index.developments.find(
+          (d) =>
+            d.editorial.canLead &&
+            !d.questions.length &&
+            !packet.baselineIds.includes(d.id),
+        )!;
+        target = development.id;
+        const option = packet.index.options.find(
+          (o) =>
+            o.developmentId === target && o.purpose === "inspect-challenge",
+        )!;
+        return Response.json({
+          status: "completed",
+          output: [
+            {
+              type: "function_call",
+              name: "select_evidence_option",
+              call_id: "test-read",
+              arguments: JSON.stringify({
+                optionId: option.id,
+                focalId: target,
+              }),
+            },
+          ],
+          usage: { input_tokens: 100, output_tokens: 50 },
+        });
+      }
+      return Response.json({
+        status: "completed",
+        output: [
+          {
+            type: "message",
+            content: [
+              {
+                type: "output_text",
+                text: JSON.stringify(scriptedPlan(packet, target)),
+              },
+            ],
+          },
+        ],
+        usage: { input_tokens: 100, output_tokens: 50 },
+      });
+    }),
+  );
+  const result = await run(fixture.match, fixture.cutoff, fixture.context, {
+    mode: "explicit",
+    maxHttpAttempts: 2,
+    beforeAttempt: async () => {},
+  });
+  expect(result.receipt.verification).toBe("passed");
+  expect(result.receipt.finalIds).toEqual([target]);
+  expect(result.receipt.trace).toHaveLength(1);
+  expect(result.receipt.trace[0].action).toMatchObject({
+    indexId: result.receipt.indexId,
+    purpose: "inspect-challenge",
+    interpretationIds: [],
+  });
+  expect(result.receipt.stop.origin).toBe("application");
+  expect(fetch).toHaveBeenCalledTimes(2);
+});
+
+it.each(["foreign option", "extra purpose"])(
+  "explicit reads reject %s rather than repairing model selections",
+  async (attack) => {
+    vi.resetModules();
+    const { runBoundedInvestigator: run } =
+      await import("../src/lib/ai/director/investigator");
+    vi.stubEnv("AI_INVESTIGATOR_ENABLED", "true");
+    vi.stubEnv("FOUNDRY_ENDPOINT", "https://test.openai.azure.com");
+    vi.stubEnv("FOUNDRY_API_KEY", "test-only");
+    vi.stubEnv("FOUNDRY_DEPLOYMENT", "between-the-lines-gpt-6-luna-1");
+    vi.stubEnv("AI_USAGE_STORE", "memory");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        Response.json({
+          status: "completed",
+          output: [
+            {
+              type: "function_call",
+              name: "select_evidence_option",
+              call_id: "test-read",
+              arguments: JSON.stringify({
+                optionId:
+                  attack === "foreign option"
+                    ? "unknown"
+                    : "option:2f8936b7276ebd6e0c6041f5ad8ff0e0",
+                focalId:
+                  "pressure:activity-change:harbor:attacking-third actions:pressure-202632-387",
+                ...(attack === "extra purpose"
+                  ? { purpose: "resolve-priority" }
+                  : {}),
+              }),
+            },
+          ],
+          usage: { input_tokens: 100, output_tokens: 50 },
+        }),
+      ),
+    );
+    const result = await run(
+      new SyntheticMatchSource().read("pressure", { profile: "demo" }),
+      3600,
+      {},
+      { mode: "explicit", maxHttpAttempts: 2, beforeAttempt: async () => {} },
+    );
+    expect(result.receipt.verification).toBe("rejected");
+    expect(result.receipt.trace).toEqual([]);
+    expect(result.receipt.toolInvocations).toBe(1);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  },
+);
