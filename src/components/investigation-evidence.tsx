@@ -1,6 +1,7 @@
 import type { BroadcastStory } from "@/lib/ai/director/story";
 import type { ExplanationStyle, StoryWording } from "@/lib/explanation";
 import { eventClock, type MatchData } from "@/lib/sources/model";
+import { singularCounts } from "@/lib/plural";
 
 export function InvestigationEvidence({
   story,
@@ -63,7 +64,7 @@ export function InvestigationEvidence({
             );
             return (
               <div key={q.code}>
-                <p>{q.text}</p>
+                <p>{singularCounts(q.text)}</p>
                 {event && (
                   <button
                     className="text-button"
@@ -84,7 +85,7 @@ export function InvestigationEvidence({
         {limits.map((q) => (
           <p key={q.code}>
             <strong>Missing context: </strong>
-            {q.text}
+            {singularCounts(q.text)}
           </p>
         ))}
         {!limits.length && assessment.missingInformation.length > 0 && (

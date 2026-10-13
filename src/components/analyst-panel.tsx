@@ -23,6 +23,7 @@ import {
   questionEvidence,
   type QuestionIntent,
 } from "@/lib/ai/director/questions";
+import { singularCounts } from "@/lib/plural";
 import { useExplanationStyle } from "./explanation-preference";
 import { providerLabel } from "./provenance";
 import { AnimatedDetails } from "./motion";
@@ -280,12 +281,12 @@ export function AnalystPanel({
                 Checked from recorded events
               </span>
               <p className="analyst-checked-answer">
-                <strong>{checked.answer}</strong>
+                <strong>{singularCounts(checked.answer)}</strong>
               </p>
               {evidence.availability === "available" &&
                 !evidence.comparison && (
                   <p className="analyst-checked-measure">
-                    {checked.measurement}
+                    {singularCounts(checked.measurement)}
                   </p>
                 )}
               {evidence.availability === "available" && (
@@ -301,19 +302,31 @@ export function AnalystPanel({
                   <p className="metric-note">{checked.windows}</p>
                   {checked.qualifications.map((q) => (
                     <p className="story-qualification" key={q}>
-                      {q}
+                      {singularCounts(q)}
                     </p>
                   ))}
-                  {checkedEvents.slice(-6).map((e) => (
-                    <button
-                      className="text-button"
-                      key={e.id}
-                      onClick={() => onEvent(e.id)}
+                  {checkedEvents.length > 0 && (
+                    <div
+                      className="analyst-replay"
+                      role="group"
+                      aria-label="Replay a moment"
                     >
-                      {eventClock(match, e)} · {e.type.replaceAll("_", " ")} ·
-                      Replay
-                    </button>
-                  ))}
+                      <span aria-hidden="true">Replay a moment</span>
+                      <div className="story-chips">
+                        {checkedEvents.slice(-6).map((e) => (
+                          <button
+                            className="story-chip"
+                            key={e.id}
+                            onClick={() => onEvent(e.id)}
+                            aria-label={`Replay ${e.type.replaceAll("_", " ")} at ${eventClock(match, e)}`}
+                          >
+                            {eventClock(match, e)} ·{" "}
+                            {e.type.replaceAll("_", " ")}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </AnimatedDetails>
               )}
               {!live && (

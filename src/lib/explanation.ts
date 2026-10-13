@@ -501,8 +501,8 @@ export function presentInsight(
                   code: "latest-rate-not-sustained",
                   text:
                     style === "analysis"
-                      ? `The rate declined within the current window: ${late} pass attempts in its second half versus ${early} in its first. The increase may be fading.`
-                      : `The increase has eased: ${late} attempted passes in the later half of this spell, after ${early} in the first half.`,
+                      ? `The rate declined within the current window: ${late} pass ${late === 1 ? "attempt" : "attempts"} in its second half versus ${early} in its first. The increase may be fading.`
+                      : `The increase has eased: ${late} attempted ${late === 1 ? "pass" : "passes"} in the later half of this spell, after ${early} in the first half.`,
                 },
               ]
             : [],

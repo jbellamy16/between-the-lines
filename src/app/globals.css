@@ -4906,9 +4906,16 @@ main {
   margin: 0.4rem 0;
   line-height: 1.5;
 }
-.analyst-checked-detail .text-button {
-  min-height: 36px;
-  margin-right: 0.75rem;
+.analyst-replay {
+  margin-top: 0.75rem;
+}
+.analyst-replay > span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--sl-muted);
+}
+.analyst-replay .story-chips {
+  margin-top: 0.35rem;
 }
 .analyst-checked-note {
   margin: 0.5rem 0 0;

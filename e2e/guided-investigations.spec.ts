@@ -130,7 +130,7 @@ test("offline checked questions are keyboard accessible, preserve the story and 
     .getByText("How this was checked", { exact: true })
     .click();
   const replay = checked(page)
-    .getByRole("button", { name: /Replay$/ })
+    .getByRole("button", { name: /^Replay .+ at \d/ })
     .first();
   await expect(replay).toBeVisible();
   await replay.click();
@@ -384,7 +384,7 @@ test("the shot surge comparison is deterministic in both styles", async ({
       .last(),
   ).toHaveText("1");
   await checked(page)
-    .getByRole("button", { name: /Replay$/ })
+    .getByRole("button", { name: /^Replay .+ at \d/ })
     .first()
     .click();
   await expect(page.getByTestId("clock")).toContainText("70:00");
