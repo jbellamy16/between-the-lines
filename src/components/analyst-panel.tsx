@@ -514,7 +514,7 @@ export function AnalystPanel({
                     <button
                       key={e.id}
                       type="button"
-                      className="text-button"
+                      className="story-chip"
                       onClick={() => onEvent(e.id)}
                     >
                       {eventClock(match, e)} · {e.type.replaceAll("_", " ")}

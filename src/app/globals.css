@@ -4790,19 +4790,18 @@ main {
 .is-declined .analyst-badge {
   color: var(--sl-warning);
 }
+/* Same compact pills as the story card's evidence chips. */
 .analyst-cited {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.25rem 0.75rem;
+  gap: 0.4rem;
   margin-top: 0.65rem;
   font-size: 0.8125rem;
 }
 .analyst-cited > span {
+  flex-basis: 100%;
   color: var(--sl-muted);
-}
-.analyst-cited .text-button {
-  min-height: 36px;
 }
 @keyframes analyst-step-in {
   from {
