@@ -1,7 +1,12 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import type { MatchData } from "../../sources/model";
-import { investigationBudget } from "../investigation-budget";
+import {
+  investigationBudget,
+  configuredInvestigationRateCard,
+  LUNA_RATE_CARD,
+} from "../investigation-budget";
+import { limit } from "../controls";
 import { UsageFailure } from "../request-controls";
 import { runBoundedInvestigator } from "./investigator";
 import { prepareInvestigation } from "./investigator-contract";
@@ -35,6 +40,7 @@ export async function investigateExplicitly(
           mode: "explicit",
           signal,
           beforeAttempt: budget.reserve,
+          maxHttpAttempts: limit("AI_INVESTIGATOR_MAX_HTTP_ATTEMPTS", 3, 3),
         },
       );
     } catch (error) {
@@ -51,6 +57,7 @@ export async function investigateExplicitly(
   }
   signal?.throwIfAborted();
   const model = result.receipt.disposition === "model-selection";
+  const rateCard = configuredInvestigationRateCard();
   return {
     ...result,
     matchId: match.id,
@@ -60,13 +67,18 @@ export async function investigateExplicitly(
     // A reservation is a ceiling, not an invoice. Missing/retried usage stays unknown.
     spending: {
       reservedUsd,
-      estimatedUsd: result.receipt.usage.complete
-        ? (result.receipt.usage.inputTokens * 0.75 +
-            result.receipt.usage.outputTokens * 4.5) /
-          1_000_000
-        : null,
+      rateCard: rateCard?.id ?? null,
+      deployment: rateCard?.deployment ?? null,
+      estimatedUsd:
+        result.receipt.usage.complete && rateCard
+          ? (result.receipt.usage.inputTokens * rateCard.input +
+              result.receipt.usage.outputTokens * rateCard.output) /
+            1_000_000
+          : null,
       estimateBasis:
-        "Uncached retail token estimate; not an invoice. Cache discounts omitted.",
+        rateCard?.id === LUNA_RATE_CARD
+          ? "Conservative retail estimate using long-context cache-write input and output rates; not an invoice."
+          : "Uncached retail token estimate; not an invoice. Cache discounts omitted.",
     },
     baseline: {
       stories: prepared.baseline.stories,

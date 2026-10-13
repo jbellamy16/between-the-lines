@@ -263,6 +263,10 @@ export async function runBoundedInvestigator(
             decisions: receipt.trace.map((t) => t.action),
           });
           const finalBody = {
+            ...(options.mode === "explicit" &&
+            modelFor("foundry") === "between-the-lines-gpt-6-luna-1"
+              ? { reasoning: { effort: "low" } }
+              : {}),
             instructions:
               maxAttempts === 3
                 ? instructions
