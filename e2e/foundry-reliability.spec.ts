@@ -149,6 +149,8 @@ test("a failed episode is eligible again after the existing proactive cooldown",
   page,
 }) => {
   await page.clock.install({ time: new Date("2026-10-11T12:00:00Z") });
+  // Model a slow setup so the cooldown cannot be measured from clock install.
+  await page.clock.fastForward(5000);
   const { fallback, success } = await fixtures(page, true);
   const requests: { time: number; preferences: unknown }[] = [];
   await page.route("**/api/director", (route) => {
@@ -171,9 +173,10 @@ test("a failed episode is eligible again after the existing proactive cooldown",
   await expect(story.getByRole("status")).toContainText(
     "temporarily rate-limited",
   );
-  // Advance the cooldown, then hold playback at the fixture's evidence cutoff.
-  // A running clock can tick before the proactive effect on a busy CI runner.
-  await page.clock.pauseAt(new Date("2026-10-11T12:01:01Z"));
+  // Advance a full cooldown after the attempt, independent of page-load time,
+  // then hold playback at the fixture's evidence cutoff while the retry runs.
+  const afterCooldown = await page.evaluate(() => Date.now() + 61000);
+  await page.clock.pauseAt(new Date(afterCooldown));
   await page.getByRole("button", { name: "Play match", exact: true }).click();
   await expect(story.getByRole("status")).toContainText(
     "Investigation complete",
