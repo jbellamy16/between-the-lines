@@ -163,11 +163,13 @@ it("explicit model-selected retrieval binds metadata deterministically and still
   vi.resetModules();
   const { runBoundedInvestigator: run } =
     await import("../src/lib/ai/director/investigator");
-  const { buildCase, cases } =
-    await import("../eval/editorial-baselines/cases");
   const { decodeInvestigationWire, scriptedPlan } =
     await import("../eval/investigator/scripted");
-  const fixture = buildCase(cases[0]);
+  const fixture = {
+    match: new SyntheticMatchSource().read("pressure", { profile: "demo" }),
+    cutoff: 3600,
+    context: {},
+  };
   vi.stubEnv("AI_INVESTIGATOR_ENABLED", "true");
   vi.stubEnv("FOUNDRY_ENDPOINT", "https://test.openai.azure.com");
   vi.stubEnv("FOUNDRY_API_KEY", "test-only");
@@ -182,20 +184,36 @@ it("explicit model-selected retrieval binds metadata deterministically and still
       expect(body.reasoning).toEqual({ effort: "low" });
       const packet = decodeInvestigationWire(JSON.parse(body.input[0].content));
       if (turn++ === 0) {
-        expect(body.tools[0].parameters.required).toEqual([
-          "optionId",
-          "focalId",
-        ]);
-        const development = packet.index.developments.find(
-          (d) =>
-            d.editorial.canLead &&
-            !d.questions.length &&
-            !packet.baselineIds.includes(d.id),
+        expect(body.tools[0].parameters.required).toEqual(["selectionId"]);
+        const menu = JSON.parse(body.input[0].content);
+        const reads = body.tools[0].parameters.properties.selectionId
+          .enum as string[];
+        expect(
+          reads.every(
+            (id) =>
+              !packet.bundles.some((b) =>
+                id.startsWith(
+                  `read-${packet.index.options.findIndex((o) => o.id === b.option.id)}-`,
+                ),
+              ),
+          ),
+        ).toBe(true);
+        for (const id of reads) {
+          const [, oi, fi] = id.split("-").map(Number);
+          expect(menu.readOptions[oi]).toEqual({
+            label: packet.index.options[oi].label,
+            tool: packet.index.options[oi].tool,
+          });
+          expect(menu.readFocuses[fi]).toBe(
+            packet.index.developments[fi].headline,
+          );
+        }
+        const development = packet.index.developments.find((d) =>
+          packet.baselineIds.includes(d.id),
         )!;
         target = development.id;
         const option = packet.index.options.find(
-          (o) =>
-            o.developmentId === target && o.purpose === "inspect-challenge",
+          (o) => o.tool === "get_match_context",
         )!;
         return Response.json({
           status: "completed",
@@ -205,8 +223,11 @@ it("explicit model-selected retrieval binds metadata deterministically and still
               name: "select_evidence_option",
               call_id: "test-read",
               arguments: JSON.stringify({
-                optionId: option.id,
-                focalId: target,
+                selectionId: reads.find(
+                  (id) =>
+                    id ===
+                    `read-${packet.index.options.indexOf(option)}-${packet.index.developments.indexOf(development)}`,
+                )!,
               }),
             },
           ],
@@ -240,14 +261,14 @@ it("explicit model-selected retrieval binds metadata deterministically and still
   expect(result.receipt.trace).toHaveLength(1);
   expect(result.receipt.trace[0].action).toMatchObject({
     indexId: result.receipt.indexId,
-    purpose: "inspect-challenge",
+    purpose: "resolve-priority",
     interpretationIds: [],
   });
   expect(result.receipt.stop.origin).toBe("application");
   expect(fetch).toHaveBeenCalledTimes(2);
 });
 
-it.each(["foreign option", "extra purpose"])(
+it.each(["foreign option", "extra purpose", "already supplied option"])(
   "explicit reads reject %s rather than repairing model selections",
   async (attack) => {
     vi.resetModules();
@@ -260,8 +281,16 @@ it.each(["foreign option", "extra purpose"])(
     vi.stubEnv("AI_USAGE_STORE", "memory");
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () =>
-        Response.json({
+      vi.fn(async (_url: string, init: RequestInit) => {
+        const body = JSON.parse(init.body as string);
+        const { decodeInvestigationWire } =
+          await import("../eval/investigator/scripted");
+        const packet = decodeInvestigationWire(
+          JSON.parse(body.input[0].content),
+        );
+        const duplicate = `read-${packet.index.options.findIndex((o) => o.id === packet.bundles[0].option.id)}-${packet.index.developments.findIndex((d) => d.id === packet.baselineIds[0])}`;
+        const valid = body.tools[0].parameters.properties.selectionId.enum[0];
+        return Response.json({
           status: "completed",
           output: [
             {
@@ -269,12 +298,12 @@ it.each(["foreign option", "extra purpose"])(
               name: "select_evidence_option",
               call_id: "test-read",
               arguments: JSON.stringify({
-                optionId:
+                selectionId:
                   attack === "foreign option"
                     ? "unknown"
-                    : "option:2f8936b7276ebd6e0c6041f5ad8ff0e0",
-                focalId:
-                  "pressure:activity-change:harbor:attacking-third actions:pressure-202632-387",
+                    : attack === "already supplied option"
+                      ? duplicate
+                      : valid,
                 ...(attack === "extra purpose"
                   ? { purpose: "resolve-priority" }
                   : {}),
@@ -282,8 +311,8 @@ it.each(["foreign option", "extra purpose"])(
             },
           ],
           usage: { input_tokens: 100, output_tokens: 50 },
-        }),
-      ),
+        });
+      }),
     );
     const result = await run(
       new SyntheticMatchSource().read("pressure", { profile: "demo" }),
