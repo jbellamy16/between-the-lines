@@ -7,7 +7,15 @@ import {
   type MatchData,
   type NormalizedEvent,
 } from "../../sources/model";
-import { visibleEvents, observe } from "../director/observer";
+import { visibleEvents, observe, claimEmphasis } from "../director/observer";
+import { selectLeadCandidate } from "../director/editorial";
+import { packageStory } from "../director/story";
+import {
+  guidedQuestions,
+  presentQuestion,
+  questionEvidence,
+} from "../director/questions";
+import { presentStory } from "../../explanation";
 import {
   createInvestigation,
   EvidenceQueryError,
@@ -55,7 +63,7 @@ How to work: decide which tools can answer the question, call them (in parallel 
 
 Answer rules:
 - 1 to 3 sentences, under 600 characters. ${styleGuide[style]}
-- context.currentHeadlines are already shown to the viewer. Stay consistent with them. If you use a different window and get a different picture, name your window and say how it differs; never flatly contradict a headline.
+- context.storyCard is what the viewer is looking at, including checked answers to common questions. When the question matches one of those (for example whether an increase has faded), build on that answer and its windows. Stay consistent with the story card. If a different window gives a different picture, name both windows and explain the difference; never flatly contradict it.
 - Every number, match time and player name you write must appear in a tool result or the context. Write match times exactly as the tools show them (for example 59:09). Write counts as digits.
 - Do not calculate new statistics such as sums, averages, differences or percentages unless a tool result shows them.
 - No predictions. No claims about intent, tactics, instructions, fatigue, emotions or causes: recorded events show what happened, not why.
@@ -375,7 +383,50 @@ export async function runAnalyst(
       scorer: playerName(e.actorId),
       ...(e.ownGoal ? { ownGoal: true } : {}),
     }));
+  // The story card and its checked answers, exactly as the viewer sees them.
+  let storyCard: Record<string, unknown> | null = null;
+  try {
+    const lead = selectLeadCandidate(observe(match, cutoff, "fan"));
+    if (lead) {
+      const story = packageStory(
+        lead,
+        match,
+        cutoff,
+        "fan",
+        "offline",
+        "brief",
+        claimEmphasis[lead.category],
+      );
+      const wording = presentStory(story, match, style);
+      storyCard = {
+        headline: wording.headline,
+        whatChanged: wording.explanation,
+        whyItMatters: wording.why,
+        checkedAnswers: guidedQuestions(match, cutoff, lead.id)
+          .filter((q) => !q.unavailable)
+          .flatMap((q) => {
+            const evidence = questionEvidence(match, cutoff, {
+              intent: q.intent,
+              storyId: lead.id,
+            });
+            if (!evidence) return [];
+            const shown = presentQuestion(evidence, match, style);
+            return [
+              {
+                question: q.label,
+                answer: shown.answer,
+                measurement: shown.measurement,
+                windows: shown.windows,
+              },
+            ];
+          }),
+      };
+    }
+  } catch {
+    storyCard = null; // Context only; the agent can still investigate.
+  }
   const groundedContext = {
+    storyCard,
     now: {
       goals,
       cutoffSeconds: cutoff,
