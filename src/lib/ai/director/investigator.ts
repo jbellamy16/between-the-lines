@@ -86,16 +86,14 @@ export type InvestigationReceipt = {
   maxPayloadBytes: number;
 };
 
-/** Server-only opt-in evaluation entry, deliberately not imported by public routes.
- * Normal operation always returns the strong deterministic answer. An explicit
- * evaluation request still needs existing Foundry and durable-control gates.
- * Ordinary tests intercept fetch; this function never supplies authorization. */
+/** Bounded selection shared by evaluation and the separately gated explicit UI action. */
 export async function runBoundedInvestigator(
   match: MatchData,
   cutoff: number,
   context: DiscoveryContext = {},
   options: {
-    mode?: "normal" | "evaluation";
+    mode?: "normal" | "evaluation" | "explicit";
+    beforeAttempt?: () => Promise<void>;
     signal?: AbortSignal;
     maxHttpAttempts?: number;
   } = {},
@@ -172,17 +170,26 @@ export async function runBoundedInvestigator(
     };
   };
   if (options.signal?.aborted) return fallback("cancelled");
-  if (options.mode !== "evaluation")
+  if (options.mode !== "evaluation" && options.mode !== "explicit")
     return fallback(baseline.decision.stop.reason);
   if (match.provenance.redistribution === "restricted")
     return fallback("capability");
   if (maxAttempts === 0) return fallback("budget");
-  if (configuredProvider() !== "foundry") return fallback("disabled");
+  if (options.mode === "explicit") {
+    if (
+      process.env.AI_INVESTIGATOR_ENABLED !== "true" ||
+      !options.beforeAttempt ||
+      !process.env.FOUNDRY_ENDPOINT ||
+      !process.env.FOUNDRY_API_KEY ||
+      !process.env.FOUNDRY_DEPLOYMENT
+    )
+      return fallback("disabled");
+  } else if (configuredProvider() !== "foundry") return fallback("disabled");
   if (!usageStoreReady()) return fallback("controls");
-  // No public/proactive eligibility is introduced. Evaluation may intentionally
-  // exercise already-solved states, unlike the normal no-inference path above.
+  // Only explicit/evaluation callers can investigate already-solved states.
   const identity = {
     workflow: INVESTIGATOR_VERSION,
+    channel: options.mode,
     maxAttempts,
     prompt: INVESTIGATOR_PROMPT_VERSION,
     catalogue: DISCOVERY_VERSION,
@@ -303,6 +310,7 @@ export async function runBoundedInvestigator(
           const response = await untilAborted(
             providerResponse("foundry", body, signal, {
               deadline,
+              beforeAttempt: options.beforeAttempt,
               maxAttempts: Math.min(2, maxAttempts - receipt.attempts),
               onAttempt: () => {
                 receipt.attempts++;

@@ -116,7 +116,12 @@ describe("new frozen editorial candidate", () => {
     expect({ proposal: f.proposal, cases: f.cases }).toEqual(
       JSON.parse(JSON.stringify(frozenContent())),
     );
-    expect(() => verifyFreeze(f)).not.toThrow();
+    // The historical candidate is immutable; application integration requires
+    // its old live runner to fail closed, not a regenerated authorization.
+    expect(digest(readFileSync(`${DIRECTORY}/frozen.json`, "utf8"))).toBe(
+      "329bb25c9b51b7fb27b6d66c4158fcbccb0d2d70249512f0c2028c1f0f85e139",
+    );
+    expect(() => verifyFreeze(f)).toThrow(/source inventory drift/);
     expect(f.proposal.presentation.version).toBe("offline-editorial-1");
     expect(f.cases[0].baseline.stories[0].headline).toBe("Harbor: more shots");
     expect(f.cases[0].presentations).toHaveLength(6);
@@ -143,7 +148,7 @@ describe("new frozen editorial candidate", () => {
     expect(() => verifyFreeze(f)).toThrow(/drift/);
     const h = frozen();
     h.sourceHashes["eval/investigator-editorial/render.ts"] = "0".repeat(64);
-    expect(() => verifyFreeze(h)).toThrow(/source drift/);
+    expect(() => verifyFreeze(h)).toThrow(/source (inventory )?drift/);
     const m = frozen();
     delete m.sourceHashes["eval/frozen-editorial/run.ts"];
     expect(() => verifyFreeze(m)).toThrow(/inventory drift/);

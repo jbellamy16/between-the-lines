@@ -22,6 +22,7 @@ import { EvidenceReplay } from "./evidence-replay";
 import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
+import { FoundryInvestigation } from "./foundry-investigation";
 import { GuidedInvestigation } from "./guided-investigation";
 import { StorylineHistory } from "./storyline-history";
 import { InvestigationSource } from "./investigation-source";
@@ -567,7 +568,7 @@ export function DirectorStory({
             >
               {busy
                 ? "Investigating recorded events…"
-                : `Investigate with ${providerLabel(provider)}`}
+                : `${provider === "foundry" ? "Review story" : "Investigate"} with ${providerLabel(provider)}`}
             </button>
           )}
         </div>
@@ -576,6 +577,16 @@ export function DirectorStory({
             {busy ? "Checking the passage and its supporting events…" : notice}
           </p>
         )}
+        <FoundryInvestigation
+          key={`${match.id}:${time}`}
+          match={match}
+          time={time}
+          onExplore={() => {
+            director.cancelInvestigation();
+            onExplore();
+          }}
+          onEvent={onEvent}
+        />
         <GuidedInvestigation
           match={match}
           story={story}

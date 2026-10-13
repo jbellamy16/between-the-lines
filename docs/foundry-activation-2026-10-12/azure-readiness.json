@@ -1,0 +1,123 @@
+{
+  "observedAt": "2026-10-13T00:09:32.903665+00:00",
+  "settingsDigest": "bd0b05a7a5537fcb3d79007c1db59edc926544bff7850b7532a1fbd71585db9e",
+  "settings": {
+    "AI_ENABLED": "false",
+    "FOUNDRY_ENABLED": "false",
+    "AI_PROACTIVE_ENABLED": "false",
+    "AI_MINUTE_LIMIT": "0",
+    "AI_HOURLY_LIMIT": "0",
+    "AI_DAILY_LIMIT": "0",
+    "AI_TOTAL_LIMIT": "0",
+    "FOUNDRY_DEPLOYMENT": "between-the-lines-gpt54-mini",
+    "HISTORICAL_MATCHES_ENABLED": "false",
+    "RECORDED_MATCHES_VISIBLE": "false"
+  },
+  "secretPresence": {
+    "FOUNDRY_API_KEY": true,
+    "FOUNDRY_ENDPOINT": true,
+    "AI_REDIS_URL": false
+  },
+  "app": {
+    "name": "between-the-lines-jb-f5539b65",
+    "state": "Running",
+    "location": "West US 3",
+    "httpsOnly": true,
+    "defaultHostName": "between-the-lines-jb-f5539b65.azurewebsites.net"
+  },
+  "runtime": {
+    "linuxFxVersion": "NODE|24-lts",
+    "alwaysOn": false,
+    "minTlsVersion": "1.2",
+    "appCommandLine": "node server.js"
+  },
+  "plans": [
+    {
+      "name": "asp-between-the-lines-free",
+      "sku": {
+        "capabilities": null,
+        "capacity": 1,
+        "family": "F",
+        "locations": null,
+        "name": "F1",
+        "size": "F1",
+        "skuCapacity": null,
+        "tier": "Free"
+      }
+    }
+  ],
+  "resources": [
+    {
+      "location": "westus3",
+      "name": "josh-5098-resource",
+      "type": "Microsoft.CognitiveServices/accounts"
+    },
+    {
+      "location": "westus3",
+      "name": "josh-5098-resource/josh-5098",
+      "type": "Microsoft.CognitiveServices/accounts/projects"
+    },
+    {
+      "location": "westus3",
+      "name": "asp-between-the-lines-free",
+      "type": "Microsoft.Web/serverFarms"
+    },
+    {
+      "location": "westus3",
+      "name": "between-the-lines-jb-f5539b65",
+      "type": "Microsoft.Web/sites"
+    }
+  ],
+  "foundry": [
+    {
+      "model": {
+        "callRateLimit": null,
+        "format": "OpenAI",
+        "name": "gpt-5.4-mini",
+        "publisher": null,
+        "source": null,
+        "sourceAccount": null,
+        "version": "2026-03-17"
+      },
+      "name": "between-the-lines-gpt54-mini",
+      "rateLimits": [
+        {
+          "count": 30.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "request",
+          "matchPatterns": null,
+          "minCount": null,
+          "renewalPeriod": 60.0
+        },
+        {
+          "count": 30000.0,
+          "dynamicThrottlingEnabled": null,
+          "key": "token",
+          "matchPatterns": null,
+          "minCount": null,
+          "renewalPeriod": 60.0
+        }
+      ],
+      "sku": {
+        "capacity": 30,
+        "family": null,
+        "name": "GlobalStandard",
+        "size": null,
+        "tier": null
+      }
+    }
+  ],
+  "release.json": {
+    "product": "Between the Lines",
+    "commit": "10cd0aa68c4f1fab07aef2b244992c46879f44c7",
+    "builtAt": "2026-10-12T21:45:12.872848+00:00",
+    "buildId": "dU8AxOcHi3KhXUbI-NhT3"
+  },
+  "api/insights": {
+    "directorContext": "6204c263175dd81809a0e42052d8af5b3e233dde9d232897a1886f55f8d053ed",
+    "mode": "offline",
+    "configured": "offline",
+    "proactive": false,
+    "usageControls": false
+  }
+}

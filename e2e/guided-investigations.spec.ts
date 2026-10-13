@@ -337,7 +337,7 @@ test("choosing a question cancels an older generic investigation before it can r
   const heading = await page.locator(".director-story h2").innerText();
   await page
     .getByRole("button", {
-      name: "Investigate with Microsoft Foundry",
+      name: "Review story with Microsoft Foundry",
       exact: true,
     })
     .click();
@@ -351,7 +351,7 @@ test("choosing a question cancels an older generic investigation before it can r
   release();
   await expect(
     page.getByRole("button", {
-      name: "Investigate with Microsoft Foundry",
+      name: "Review story with Microsoft Foundry",
       exact: true,
     }),
   ).toBeEnabled();
