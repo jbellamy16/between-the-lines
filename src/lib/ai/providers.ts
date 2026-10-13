@@ -4,6 +4,9 @@ import { providerCooldown, reserveProviderAttempt } from "./request-controls";
 export type Provider = "openai" | "foundry";
 export type ProviderMode = Provider | "offline";
 export function configuredProvider(): ProviderMode {
+  // The explicit investigator owns its separate gate. It never enables legacy
+  // narration, automatic playback investigation, or guided-question inference.
+  if (process.env.AI_INVESTIGATOR_ENABLED === "true") return "offline";
   const selected =
     process.env.AI_PROVIDER ??
     (process.env.FOUNDRY_ENABLED === "true" ? "foundry" : "offline");
@@ -140,6 +143,7 @@ export async function providerResponse(
     deadline?: number;
     maxAttempts?: number;
     onAttempt?: () => void;
+    beforeAttempt?: () => Promise<void>;
   } = {},
 ) {
   const payload = providerPayload(provider, body);
@@ -168,6 +172,8 @@ export async function providerResponse(
       wholeSignal,
       transportAllowance,
     );
+    wholeSignal.throwIfAborted();
+    await options.beforeAttempt?.();
     wholeSignal.throwIfAborted();
     let res: Response;
     const transportSignal = AbortSignal.any([

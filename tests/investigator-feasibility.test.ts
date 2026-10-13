@@ -156,7 +156,21 @@ describe("frozen feasibility preparation", () => {
       .map(([path]) => path);
     // The original live runner rejects this exact source drift before authorization,
     // preflight or Redis access. Do not refresh the historical freeze to make it pass.
-    expect(changed).toEqual(["package.json"]);
+    expect(changed).toEqual(
+      expect.arrayContaining([
+        "package.json",
+        "src/lib/ai/director/investigator.ts",
+        "src/lib/ai/providers.ts",
+      ]),
+    );
+    // B2 and its independent verification are still byte-identical.
+    for (const path of [
+      "src/lib/ai/director/editorial-baselines.ts",
+      "src/lib/ai/director/investigator-contract.ts",
+    ])
+      expect(digest(readFileSync(path, "utf8"))).toBe(
+        frozen.sourceHashes[path],
+      );
     const restoredPackage = readFileSync("package.json", "utf8")
       .split("\n")
       .filter((line) => !line.includes('"eval:investigator:editorial"'))

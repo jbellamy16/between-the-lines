@@ -69,7 +69,7 @@ test("a temporary investigation fallback keeps the story visible and allows a sa
   const story = page.locator(".director-story");
   const heading = await story.getByRole("heading", { level: 2 }).innerText();
   const action = story.getByRole("button", {
-    name: "Investigate with Microsoft Foundry",
+    name: "Review story with Microsoft Foundry",
     exact: true,
   });
   await action.click();
@@ -161,7 +161,7 @@ test("a failed episode is eligible again after the existing proactive cooldown",
   const story = page.locator(".director-story");
   await story
     .getByRole("button", {
-      name: "Investigate with Microsoft Foundry",
+      name: "Review story with Microsoft Foundry",
       exact: true,
     })
     .click();

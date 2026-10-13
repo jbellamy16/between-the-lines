@@ -1,0 +1,70 @@
+{
+  "kind": "real-foundry-application-investigation",
+  "candidateCommit": "d42e6a8",
+  "deployment": "between-the-lines-gpt-6-luna-1",
+  "model": "gpt-6-luna",
+  "modelVersion": "2026-09-22",
+  "reasoningEffort": "low",
+  "scenario": "pressure",
+  "profile": "demo",
+  "cutoffSeconds": 3600,
+  "authenticatedHttpRequests": 1,
+  "providerHttpStatus": 200,
+  "providerStatus": "completed",
+  "providerLatencyMs": 2102,
+  "applicationLatencyMs": 2268,
+  "reportedUsage": {
+    "inputTokens": 7072,
+    "cacheWriteTokens": 7069,
+    "cachedInputTokens": 0,
+    "outputTokens": 122,
+    "reasoningTokens": 0
+  },
+  "meterDerivedCostUsd": 0.000944925,
+  "meterCalculation": "(3 * 0.10 + 7069 * 0.125 + 122 * 0.50) / 1000000",
+  "applicationConservativeEstimateUsd": 0.0018595,
+  "settledInvoiceCostUsd": null,
+  "cumulativeMeterDerivedCostUsd": 0.011098425,
+  "reservedThisRequestUsd": 0.31,
+  "cumulativeReservedUsd": 0.62,
+  "unchangedCeilingUsd": 1,
+  "priorCountersPreserved": true,
+  "ledgerSurvivedRestart": true,
+  "attemptedTool": "inspect_counter_evidence",
+  "attemptedFocal": "Harbor: more attacking-third actions",
+  "rejection": "Valid option/focal pair, but purpose was resolve-priority instead of inspect-challenge; repeated-route interpretation is not registered for this focal development.",
+  "validModelSelectedRetrievals": 0,
+  "modelStoppingDecision": false,
+  "verifiedModelPublication": false,
+  "publishedAnswer": "deterministic B2 fallback: Harbor recovery to shot",
+  "additionalValueOverB2": "not established",
+  "comparisonWithMini": "Not controlled: timestamps, request contract and reasoning settings differ. No model quality ranking supported.",
+  "publicActivation": false,
+  "localInferenceStopped": true,
+  "newCloudInfrastructureByAgent": false,
+  "sourceFilesSha256": {
+    "request-1.json": "6383419d577d392ee202b28f2503abdbccd622516c57d389fd38791705b0850d",
+    "response-1.json": "41a1d2e6f5481ec22ecf81ee6e394e5be83cb469b2113ef58cdf349432b7d9e1",
+    "application-receipt.json": "fc4ed1c0044231d7cc438c8780ac9ec44b3c58f5644c505b90a948fca8ba0339"
+  },
+  "followUpCorrection": {
+    "promptVersion": "investigator-selection-1.0.2",
+    "modelReadFields": [
+      "optionId",
+      "focalId"
+    ],
+    "canonicalBindings": [
+      "indexId",
+      "purpose",
+      "empty retrieval interpretationIds"
+    ],
+    "realCalls": 0,
+    "unitTestsPassed": 866,
+    "unitTestsSkipped": 13,
+    "focusedTestsPassed": 65,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "priorMoneyGateTests": "868 passed, 8 optional skips including live disposable Redis checks before protocol-only change",
+    "independentVerifierChanged": false
+  }
+}

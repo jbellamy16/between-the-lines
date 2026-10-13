@@ -1,0 +1,10 @@
+{
+  "approval": "Approve one Luna investigation within $1 total",
+  "capturedAt": "2026-10-13T00:41:38.910338+00:00",
+  "maxInvestigations": 1,
+  "maxHttpAttempts": 2,
+  "cumulativeCeilingUsd": 1,
+  "priorReservedUsd": 0.31,
+  "deployment": "between-the-lines-gpt-6-luna-1",
+  "newCloudInfrastructureByAgent": false
+}

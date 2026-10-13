@@ -1,0 +1,67 @@
+{
+  "recordedAt": "2026-10-13T00:16:04.423478+00:00",
+  "pr45": {
+    "reviewedHead": "699e9663f219965c2fe138987abc569d67032013",
+    "githubChecksPassed": 4,
+    "blockingFindings": 0,
+    "merge": "1a021b110153cfd83988d6dbdc4526f06760966e"
+  },
+  "productionBrowser": {
+    "passed": 210,
+    "skippedHistoricalAccess": 42,
+    "projects": ["desktop", "android-360px", "mobile-390px"],
+    "newActionRequests": "unmocked local production endpoint; AI disabled",
+    "newActionVerified": [
+      "no automatic POST",
+      "selected cutoff",
+      "deterministic fallback",
+      "truthful no-model evidence disclosure",
+      "receipt download",
+      "no horizontal overflow"
+    ]
+  },
+  "cloudflare": {
+    "build": "passed",
+    "deploymentDryRun": "passed",
+    "focusedBrowserPassed": 3,
+    "deployed": false
+  },
+  "realRedis": {
+    "version": "7.4",
+    "location": "isolated local container",
+    "validated": [
+      "atomic parallel reservations",
+      "one-workflow lease",
+      "non-expiring ceiling",
+      "32 reservations total 9.92 USD",
+      "missing/expired/corrupt ledger fails closed",
+      "new connection preserves ceiling"
+    ],
+    "productionProvisioned": false
+  },
+  "model": {
+    "realRequests": 0,
+    "realModelInvestigations": 0,
+    "actualCostUsd": 0,
+    "latency": null,
+    "addedValue": "not established"
+  },
+  "preservation": {
+    "originalCheckoutHead": "106e7aaa531012cc9decec9680c591993b2c7de0",
+    "originalChanges": ["next-env.d.ts", ".DS_Store"],
+    "historicalEvaluationDiff": "none",
+    "b2ImplementationDiff": "none",
+    "independentVerifierDiff": "none",
+    "publicRelease": "10cd0aa68c4f1fab07aef2b244992c46879f44c7",
+    "infrastructureChanges": false
+  },
+  "unit": {
+    "passed": 865,
+    "skipped": 8,
+    "files": 49,
+    "realRedisTests": "included",
+    "realModelCalls": 0
+  },
+  "typecheck": "passed",
+  "productionBuild": "passed"
+}

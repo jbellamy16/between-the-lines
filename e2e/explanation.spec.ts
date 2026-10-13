@@ -212,7 +212,7 @@ test("an in-flight investigation survives a style change and its verified result
   });
   await ready(page);
   await story(page)
-    .getByRole("button", { name: "Investigate with Microsoft Foundry" })
+    .getByRole("button", { name: "Review story with Microsoft Foundry" })
     .click();
   await expect(story(page).getByRole("status")).toContainText(
     "Checking the passage",

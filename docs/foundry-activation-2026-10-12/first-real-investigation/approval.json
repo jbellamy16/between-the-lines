@@ -1,0 +1,9 @@
+{
+  "approval": "User: Approve $1 first investigation",
+  "capturedAt": "2026-10-13T00:21:31.675141+00:00",
+  "maxModelUsd": 1,
+  "maxInvestigations": 1,
+  "maxHttpAttempts": 3,
+  "newCloudInfrastructure": false,
+  "historicalAllowanceReuse": false
+}

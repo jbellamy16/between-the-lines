@@ -51,8 +51,11 @@ test("one story controls the initial pitch, secondary selection and replay; offl
     ),
   ).toBe(true);
   await expect(
-    page.getByRole("button", { name: /Investigate with/ }),
-  ).toHaveCount(0);
+    page.getByRole("button", {
+      name: "Investigate with Microsoft Foundry",
+      exact: true,
+    }),
+  ).toHaveCount(1);
   const explanation = await story.locator(":scope > p").first().innerText();
   await story
     .getByRole("button", { name: "Explore evidence", exact: true })
