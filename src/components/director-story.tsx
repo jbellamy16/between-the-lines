@@ -23,6 +23,7 @@ import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
 import { AnalystPanel } from "./analyst-panel";
+import { pitchPanel, revealSoon } from "./reveal";
 import { StorylineHistory } from "./storyline-history";
 import { InvestigationSource } from "./investigation-source";
 import { InvestigationEvidence } from "./investigation-evidence";
@@ -420,6 +421,17 @@ export function DirectorStory({
     clearSelection,
   } = director;
   const observations = candidates.filter((c) => c.id !== story?.storyId);
+  // A newly selected observation replaces the story card: bring its headline up.
+  const revealStory = () =>
+    revealSoon(
+      () =>
+        document.querySelector(".app-shell:not([hidden]) .director-story > h2"),
+      () => ({
+        anchor: document.querySelector(
+          ".app-shell:not([hidden]) .director-story",
+        ),
+      }),
+    );
   const more = observations.length > 0 && (
     <AnimatedDetails className="director-disclosure director-observations">
       <summary>More from this match</summary>
@@ -432,6 +444,7 @@ export function DirectorStory({
               onExplore();
               onReplay();
               selectCandidate(candidate.id);
+              revealStory();
             }}
           >
             {candidate.headline}
@@ -521,12 +534,7 @@ export function DirectorStory({
               onExplore();
               onReplay();
               setReplay((v) => !v);
-              if (!replay)
-                requestAnimationFrame(() =>
-                  document
-                    .querySelector(".app-shell:not([hidden]) .pitch-panel")
-                    ?.scrollIntoView({ block: "start", behavior: "instant" }),
-                );
+              if (!replay) revealSoon(pitchPanel);
             }}
           >
             {replay ? "Close story replay" : "Replay story evidence"}
@@ -547,6 +555,7 @@ export function DirectorStory({
               onClick={() => {
                 clearSelection();
                 onReplay();
+                revealStory();
               }}
             >
               Back to main story

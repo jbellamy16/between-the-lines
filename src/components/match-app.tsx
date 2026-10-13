@@ -52,7 +52,8 @@ import {
   type SectionProps,
 } from "./match-shell";
 import { MatchStatistics } from "./match-statistics";
-import { usePageVisibility, useReducedMotion } from "./motion";
+import { usePageVisibility } from "./motion";
+import { pitchPanel, revealPitchReplay, revealSoon } from "./reveal";
 import { ProvenanceDetails, providerLabel } from "./provenance";
 import { useMatchPlayback } from "./use-match-playback";
 // In the synthetic demo the Insights section is the timeline of moments.
@@ -128,7 +129,6 @@ export function MatchApp({
     ANALYSIS_MODE,
     momentPreferences,
   );
-  const reducedMotion = useReducedMotion();
   const [momentAsk, setMomentAsk] = useState<{
     id: string;
     storyId: string;
@@ -339,14 +339,7 @@ export function MatchApp({
       storyId: moment.story.storyId,
       cutoff: moment.time,
     });
-    requestAnimationFrame(() =>
-      document
-        .querySelector(".app-shell:not([hidden]) .match-grid")
-        ?.scrollIntoView({
-          block: "start",
-          behavior: reducedMotion ? "instant" : "smooth",
-        }),
-    );
+    revealPitchReplay();
   }
   function selectInsight(i: Insight) {
     director.setReplay(false);
@@ -369,13 +362,10 @@ export function MatchApp({
     setTab("visual");
     setSection("match");
     // Land on the selected story and its pitch evidence, not the scoreboard.
-    requestAnimationFrame(() =>
-      document
-        .querySelector(".app-shell:not([hidden]) .match-grid")
-        ?.scrollIntoView({ block: "start" }),
-    );
+    revealPitchReplay();
   }
-  function selectEvent(e: MatchEvent) {
+  /** Replay an action's passage; `reveal` brings the pitch into view. */
+  function selectEvent(e: MatchEvent, reveal = true) {
     director.setReplay(false);
     setPitchView("passage");
     if (e.type === "substitution") {
@@ -392,6 +382,7 @@ export function MatchApp({
       )
       .map((v) => v.id);
     setReplay(ids.length ? { ids, version: performance.now() } : null);
+    if (reveal && e.type !== "substitution") revealSoon(pitchPanel);
   }
   function changeScenario(s: Scenario) {
     setScenario(s);
@@ -401,7 +392,7 @@ export function MatchApp({
     setSelectedKey(null);
     setPitchView("pattern");
   }
-  function replayEvidence() {
+  function replayEvidence(reveal = true) {
     setPitchView("passage");
     const anchor = event ?? evidence.at(-1) ?? latest;
     if (!anchor) return;
@@ -416,12 +407,7 @@ export function MatchApp({
     setPlaying(false);
     setSelectedEvent(ids.at(-1) ?? anchor.id);
     setReplay({ ids, version: performance.now() });
-    document.querySelector(".pitch-panel")?.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-      block: "center",
-    });
+    if (reveal) revealSoon(pitchPanel);
   }
   async function explain() {
     if (!insight || loading) return;
@@ -772,7 +758,8 @@ export function MatchApp({
               selected={activePitchEvent?.id}
               onSelect={(id) => {
                 const e = visible.find((e) => e.id === id);
-                if (e) selectEvent(e);
+                // Tapped on the pitch itself: it's already in view.
+                if (e) selectEvent(e, false);
               }}
               view={
                 director.replay || replay || event
@@ -790,7 +777,7 @@ export function MatchApp({
                 setSelectedEvent(null);
                 setReplay(null);
                 setPitchView(view);
-                if (view === "passage") replayEvidence();
+                if (view === "passage") replayEvidence(false);
               }}
               onClear={() => {
                 director.setReplay(false);
@@ -839,7 +826,7 @@ export function MatchApp({
               const e = visible.find((e) => e.id === id);
               if (e) selectEvent(e);
             }}
-            onReplay={replayEvidence}
+            onReplay={() => replayEvidence()}
             tab={tab}
             onTab={setTab}
             empty={context}

@@ -30,6 +30,7 @@ import { providerLabel } from "./provenance";
 import { AnimatedDetails } from "./motion";
 import { InvestigationComparison } from "./investigation-comparison";
 import { Check, X } from "./icons";
+import { revealSoon } from "./reveal";
 
 type Asked = {
   question: string;
@@ -83,6 +84,12 @@ export function AnalystPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const request = useRef<AbortController | null>(null);
+  const responseRef = useRef<HTMLDivElement>(null);
+  /**
+   * A tapped question follows its answer: when it arrives, bring it into view
+   * unless the viewer has scrolled in the meantime.
+   */
+  const follow = useRef<{ id: number; stop: () => void } | null>(null);
   const live = provider === "foundry" || provider === "openai";
   const storyId = story?.storyId ?? null;
   const storyCutoff = story?.cutoff ?? null;
@@ -113,7 +120,26 @@ export function AnalystPanel({
       if (time !== asked.cutoff || storyId !== anchored.storyId) reset();
     if (time < asked.cutoff || time - asked.cutoff > 600) reset();
   }, [time, asked, storyId]);
-  useEffect(() => () => request.current?.abort(), []);
+  useEffect(
+    () => () => {
+      request.current?.abort();
+      follow.current?.stop();
+    },
+    [],
+  );
+  useEffect(() => {
+    const current = follow.current;
+    if (!result || !current) return;
+    current.stop();
+    follow.current = null;
+    revealSoon(
+      () =>
+        responseRef.current?.querySelector(
+          ".analyst-answer, :scope > .notice",
+        ) ?? null,
+      { align: "nearest" },
+    );
+  }, [result]);
   const autoAsked = useRef<string | null>(null);
   // Declared after the reset effects so a moment's question survives the jump.
   useEffect(() => {
@@ -135,21 +161,48 @@ export function AnalystPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoAsk, story, time, starters]);
 
+  /** Watch for the viewer scrolling until this question's answer arrives. */
+  function followAnswer() {
+    follow.current?.stop();
+    const id = performance.now();
+    const events = ["wheel", "touchmove", "keydown"] as const;
+    const interrupted = () => {
+      if (follow.current?.id === id) {
+        follow.current.stop();
+        follow.current = null;
+      }
+    };
+    const stop = () =>
+      events.forEach((e) => window.removeEventListener(e, interrupted));
+    events.forEach((e) =>
+      window.addEventListener(e, interrupted, { passive: true }),
+    );
+    follow.current = { id, stop };
+  }
+
   async function ask(
     text: string,
     checked?: Asked["checked"],
     moment?: Asked["moment"],
+    /** A tap in this panel: bring the response into view, then the answer. */
+    reveal = false,
   ) {
     const q = text.trim();
     if (q.length < 3 || match.kind !== "synthetic") return;
     onExplore();
     request.current?.abort();
     request.current = null;
+    follow.current?.stop();
+    follow.current = null;
     const cutoff = Math.floor(time);
     setAsked({ question: q, cutoff, checked, moment });
     setSteps([]);
     setResult(null);
     setError("");
+    if (reveal) {
+      revealSoon(() => responseRef.current);
+      if (live) followAnswer();
+    }
     if (!live) {
       setBusy(false);
       return;
@@ -212,7 +265,7 @@ export function AnalystPanel({
 
   function submit(event: FormEvent) {
     event.preventDefault();
-    void ask(question);
+    void ask(question, undefined, undefined, true);
   }
 
   if (match.kind !== "synthetic") return null;
@@ -292,7 +345,12 @@ export function AnalystPanel({
                   aria-pressed={asked?.checked?.intent === s.intent}
                   onClick={() => {
                     setQuestion("");
-                    void ask(s.label, { intent: s.intent, storyId: storyId! });
+                    void ask(
+                      s.label,
+                      { intent: s.intent, storyId: storyId! },
+                      undefined,
+                      true,
+                    );
                   }}
                 >
                   {s.label}
@@ -306,7 +364,7 @@ export function AnalystPanel({
                   disabled={busy}
                   onClick={() => {
                     setQuestion(s);
-                    void ask(s);
+                    void ask(s, undefined, undefined, true);
                   }}
                 >
                   {s}
@@ -316,9 +374,13 @@ export function AnalystPanel({
       )}
 
       {asked && (
-        <div className="analyst-response" aria-live="polite">
+        <div className="analyst-response" aria-live="polite" ref={responseRef}>
           <p className="analyst-question">
-            <span>You asked at {matchClock(match, asked.cutoff)}</span>
+            <span>
+              {asked.cutoff >= match.duration
+                ? "Full time"
+                : `You asked at ${matchClock(match, asked.cutoff)}`}
+            </span>
             {asked.question}
           </p>
           {evidence && checked && (

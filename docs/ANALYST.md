@@ -76,7 +76,7 @@ Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROV
 | `AI_SPEND_LEDGER`         | `production`                                                      |
 | `AI_SPEND_CEILING_USD`    | `15`                                                              |
 | `AI_MINUTE_LIMIT`         | `10`                                                              |
-| `AI_HOURLY_LIMIT`         | `100`                                                             |
+| `AI_HOURLY_LIMIT`         | `300` (the code allows up to 1000)                                |
 | `AI_DAILY_LIMIT`          | `500`                                                             |
 | `AI_TOTAL_LIMIT`          | `5000`                                                            |
 | `AI_TOKEN_MINUTE_LIMIT`   | Match the deployment's tokens-per-minute limit (see below)        |

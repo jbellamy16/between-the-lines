@@ -64,7 +64,7 @@ const styleGuide: Record<AnalystStyle, string> = {
 const INSTRUCTIONS = (style: AnalystStyle) =>
   `You are the match analyst inside Between the Lines, a second-screen football app. Answer the viewer's question about this match using only facts returned by your tools, as of the current match clock. The match is synthetic; never use outside knowledge about real clubs or players.
 
-How to work: decide which tools can answer the question, call them (in parallel when independent), then answer. Tool times are seconds from kickoff; use the period boundaries in the context. Windows must end at or before cutoffSeconds and span at most 1800 seconds. compare_time_windows compares [start,end] with the equal window just before it, inside one half. Windows never cross half-time. For "recently" or "lately", start from context.now.latestEqualWindows, which already fit inside the current half. Use null for filters you do not need. You have at most ${ANALYST_LIMITS.tools} tool calls.
+How to work: decide which tools can answer the question, call them (in parallel when independent), then answer. Tool times are seconds from kickoff; use the period boundaries in the context. Windows must end at or before cutoffSeconds. For the whole match or a whole half (for example "how was this match decided?"), use one window covering it: event lists always include every goal in the window. compare_time_windows and compare_shot_routes compare [start,end] with the equal window just before it, inside one half; comparison windows never cross half-time, and compare_shot_routes windows span at most 1800 seconds. For "recently" or "lately", start from context.now.latestEqualWindows, which already fit inside the current half. Use null for filters you do not need. You have at most ${ANALYST_LIMITS.tools} tool calls.
 
 Answer rules:
 - 1 to 3 sentences, under 600 characters. ${styleGuide[style]}
@@ -173,6 +173,20 @@ export function describeToolCall(
   }
 }
 
+/**
+ * Trace label when a query is refused and handed back to the agent. Refusals
+ * are the bounds working, not failures, so the viewer sees a neutral step.
+ */
+export function refiningLabel(error: unknown) {
+  const reason = error instanceof EvidenceQueryError ? error.message : "";
+  if (/comparison/i.test(reason)) return "Refining the comparison";
+  if (/window|boundary/i.test(reason)) return "Refining the time window";
+  if (/sequence|event/i.test(reason))
+    return "Choosing a different moment to trace";
+  if (/player/i.test(reason)) return "Refining the player filter";
+  return "Refining the query";
+}
+
 type Execution = ReturnType<ReturnType<typeof createInvestigation>["execute"]>;
 
 export async function runAnalyst(
@@ -208,6 +222,9 @@ export async function runAnalyst(
     {},
     {
       maxTools: ANALYST_LIMITS.tools,
+      // Any window from kickoff: "how was this match decided?" at full time
+      // needs the whole match, and "the second half" is longer than 30 minutes.
+      maxSpan: cutoff,
     },
   );
 
@@ -237,12 +254,40 @@ export async function runAnalyst(
     ...(e.xg === undefined ? {} : { xg: round2(e.xg) }),
   });
 
+  // Window tools list events from the whole window, not just the tool's
+  // latest-40 sample, so goals early in a long window stay citable.
+  const inWindow = (query: ToolQuery, a: number, b: number) =>
+    visible.filter(
+      (e) =>
+        e.time > a &&
+        e.time <= b &&
+        (!query.team || e.team === query.team) &&
+        (!query.playerId || e.actorId === query.playerId),
+    );
+  const windowTools: ToolName[] = [
+    "get_match_events",
+    "get_team_statistics",
+    "get_player_involvement",
+    "get_shot_locations",
+    "get_match_context",
+  ];
+
   function project(tool: ToolName, query: ToolQuery, output: Execution) {
-    const ids = output.events.map((e) => e.id);
+    const pool =
+      tool === "compare_time_windows"
+        ? inWindow(query, 2 * query.start - query.end, query.end)
+        : windowTools.includes(tool)
+          ? inWindow(query, query.start, query.end).filter(
+              (e) => tool !== "get_shot_locations" || e.type === "shot",
+            )
+          : output.events
+              .map((e) => byId.get(e.id))
+              .filter((e): e is NormalizedEvent => !!e);
     // Possession markers are bookkeeping, not actions a viewer would recognise.
-    const events = ids
-      .map((id) => byId.get(id))
-      .filter((e): e is NormalizedEvent => !!e && e.type !== "possession");
+    const events = pool.filter((e) => e.type !== "possession");
+    // The latest 16 actions, plus every goal in the window wherever it falls.
+    const latest = new Set(events.slice(-16));
+    const shown = events.filter((e) => latest.has(e) || e.scoringTeam);
     const span = {
       from: matchClock(match, query.start),
       to: matchClock(match, query.end),
@@ -252,22 +297,14 @@ export async function runAnalyst(
     if (tool === "compare_time_windows") {
       const width = query.end - query.start;
       // Counts use the full windows, not the truncated event list.
-      const inWindow = (a: number, b: number) =>
-        visible.filter(
-          (e) =>
-            e.time > a &&
-            e.time <= b &&
-            (!query.team || e.team === query.team) &&
-            (!query.playerId || e.actorId === query.playerId),
-        );
       summary.previousWindow = {
         from: matchClock(match, query.start - width),
         to: span.from,
-        ...windowCounts(inWindow(query.start - width, query.start)),
+        ...windowCounts(inWindow(query, query.start - width, query.start)),
       };
       summary.currentWindow = {
         ...span,
-        ...windowCounts(inWindow(query.start, query.end)),
+        ...windowCounts(inWindow(query, query.start, query.end)),
       };
       summary.windowLength = `${Math.floor(width / 60)} min ${Math.round(width % 60)} sec`;
     } else if (
@@ -277,13 +314,7 @@ export async function runAnalyst(
       tool === "get_shot_locations"
     ) {
       // Counts use the full retrieved window, not the truncated event list.
-      const all = visible.filter(
-        (e) =>
-          e.time > query.start &&
-          e.time <= query.end &&
-          (!query.team || e.team === query.team) &&
-          (!query.playerId || e.actorId === query.playerId),
-      );
+      const all = inWindow(query, query.start, query.end);
       summary.window = span;
       summary.counts = windowCounts(
         tool === "get_shot_locations"
@@ -346,8 +377,10 @@ export async function runAnalyst(
       tool,
       ...summary,
       totalEvents: output.totalEvents,
-      events: events.slice(-16).map(projectEvent),
-      ...(events.length > 16 ? { eventsOmitted: events.length - 16 } : {}),
+      events: shown.map(projectEvent),
+      ...(events.length > shown.length
+        ? { eventsOmitted: events.length - shown.length }
+        : {}),
       verifiedObservations: output.claims.slice(0, 4).map((c) => ({
         headline: c.headline,
         summary: c.brief,
@@ -503,7 +536,10 @@ export async function runAnalyst(
   let transientRetries = 0;
   emit({
     kind: "plan",
-    label: `Reading the match at ${matchClock(match, cutoff)}`,
+    label:
+      cutoff >= match.duration
+        ? "Reading the match at full time"
+        : `Reading the match at ${matchClock(match, cutoff)}`,
   });
 
   const finish = (
@@ -622,13 +658,7 @@ export async function runAnalyst(
             output = projected;
           } catch (error) {
             // Any tool failure goes back to the agent as data; it can adjust or answer.
-            emit({
-              kind: "rejected-query",
-              label:
-                error instanceof EvidenceQueryError
-                  ? `Query rejected (${error.message.toLowerCase()}); adjusting`
-                  : "Query rejected (invalid arguments); adjusting",
-            });
+            emit({ kind: "rejected-query", label: refiningLabel(error) });
             output = {
               error:
                 error instanceof EvidenceQueryError

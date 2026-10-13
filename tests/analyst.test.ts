@@ -15,6 +15,7 @@ import {
   resetLocalSpendLedger,
 } from "../src/lib/ai/spend-ledger";
 import { UsageFailure } from "../src/lib/ai/request-controls";
+import { createInvestigation } from "../src/lib/ai/director/tools";
 
 const match = new SyntheticMatchSource().read("pressure", { profile: "demo" });
 const CUTOFF = 3804; // 63:24
@@ -428,7 +429,76 @@ describe("analyst agent", () => {
     const result = await runAnalyst(match, CUTOFF, "Shots?", "fan", "foundry");
     expect(result.status).toBe("answered");
     expect(result.steps.map((s) => s.kind)).toContain("rejected-query");
+    // A refused query reads as the agent refining, not as an error.
+    const refused = result.steps.find((s) => s.kind === "rejected-query")!;
+    expect(refused.label).toBe("Refining the time window");
   });
+
+  it.each([
+    [
+      "at full time, over the whole match",
+      5400,
+      0,
+      ["01:00", "74:35", "77:33"],
+    ],
+    ["at 80:00, over the second half so far", 4800, 2700, ["74:35", "77:33"]],
+  ])(
+    "answers %s from one long window, with every goal citable",
+    async (_, cutoff, start, goalClocks) => {
+      const fetch = vi
+        .fn()
+        .mockResolvedValueOnce(
+          reply([toolCall("get_match_events", { start, end: cutoff })]),
+        )
+        .mockImplementationOnce(async (_url, init: RequestInit) => {
+          // Cite whatever goals the tool returned, the way the model would.
+          const body = JSON.parse(init.body as string);
+          const evidence = JSON.parse(body.input.at(-1).output);
+          const goals = evidence.events.filter(
+            (e: { goal?: boolean }) => e.goal,
+          );
+          return reply([
+            answer({
+              status: "answered",
+              answer: `Goals at ${goals.map((g: { clock: string }) => g.clock).join(", ")}.`,
+              citations: goals.map((g: { ref: string }) => g.ref),
+            }),
+          ]);
+        });
+      vi.stubGlobal("fetch", fetch);
+      const result = await runAnalyst(
+        match,
+        cutoff,
+        "How was this match decided?",
+        "fan",
+        "foundry",
+      );
+      expect(result.steps.map((s) => s.kind)).toEqual([
+        "plan",
+        "tool",
+        "verify",
+      ]);
+      expect(result.steps[0].label).toBe(
+        cutoff === match.duration
+          ? "Reading the match at full time"
+          : "Reading the match at 80:00",
+      );
+      expect(result.status).toBe("answered");
+      expect(result.answer).toBe(`Goals at ${goalClocks.join(", ")}.`);
+      expect(result.citedEventIds).toHaveLength(goalClocks.length);
+      // The Director's own investigations keep their 30-minute bound.
+      expect(() =>
+        createInvestigation(match, cutoff, "fan").execute("get_match_events", {
+          matchId: match.id,
+          start,
+          end: cutoff,
+          team: null,
+          playerId: null,
+          eventId: null,
+        }),
+      ).toThrow("Invalid evidence window");
+    },
+  );
 
   it("labels tool calls in plain words", () => {
     expect(

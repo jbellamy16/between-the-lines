@@ -4736,7 +4736,8 @@ main {
   background: var(--sl-border);
 }
 .analyst-step-tool .analyst-step-mark,
-.analyst-step-plan .analyst-step-mark {
+.analyst-step-plan .analyst-step-mark,
+.analyst-step-rejected-query .analyst-step-mark {
   width: 8px;
   height: 8px;
   margin: 0.4rem 4px 0;
@@ -4750,8 +4751,7 @@ main {
   color: var(--sl-text);
   font-weight: 600;
 }
-.analyst-step-revise,
-.analyst-step-rejected-query {
+.analyst-step-revise {
   color: var(--sl-warning);
 }
 .analyst-step-pending .analyst-step-mark {

@@ -153,9 +153,12 @@ export function createInvestigation(
   cutoff: number,
   mode: Mode,
   preferences: StoryPreferences = {},
-  options: { unranked?: boolean; maxTools?: number } = {},
+  options: { unranked?: boolean; maxTools?: number; maxSpan?: number } = {},
 ) {
   const toolBudget = Math.max(1, Math.min(8, options.maxTools ?? 4));
+  // The Director's investigations keep their 30-minute bound; the analyst can
+  // widen it so whole-half and whole-match questions have a legal window.
+  const maxSpan = options.maxSpan ?? 1800;
   const visible = visibleEvents(match, cutoff),
     allowed = new Set(visible.map((e) => e.id));
   const candidates = observe(match, cutoff, mode, preferences, {
@@ -189,7 +192,7 @@ export function createInvestigation(
       query.matchId !== match.id ||
       query.end > cutoff ||
       query.start > query.end ||
-      query.end - query.start > 1800
+      query.end - query.start > maxSpan
     )
       throw new EvidenceQueryError("Invalid evidence window");
     if (

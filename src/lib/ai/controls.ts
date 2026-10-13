@@ -29,10 +29,11 @@ export function limit(name: string, fallback: number, ceiling: number) {
 export function limits() {
   return [
     limit("AI_MINUTE_LIMIT", 4, 10),
+    // Up to 1000 so judging-week bursts fit; the dollar ledger is the stop.
     limit(
       "AI_HOURLY_LIMIT",
       Number(process.env.FOUNDRY_HOURLY_LIMIT ?? 30),
-      100,
+      1000,
     ),
     limit("AI_DAILY_LIMIT", 60, 500),
     limit("AI_TOTAL_LIMIT", 100, 5000),

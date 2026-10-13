@@ -55,3 +55,10 @@ it("zero and invalid quotas fail closed; lifetime budget survives rolling window
     "limit",
   );
 });
+it("lets the hourly cap reach judging-week levels, up to 1000", async () => {
+  const { limits } = await fresh();
+  vi.stubEnv("AI_HOURLY_LIMIT", "300");
+  expect(limits()[1]).toBe(300);
+  vi.stubEnv("AI_HOURLY_LIMIT", "5000");
+  expect(limits()[1]).toBe(1000);
+});
