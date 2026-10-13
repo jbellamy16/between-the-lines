@@ -14,6 +14,7 @@ import {
   type PlaybackSample,
 } from "@/lib/playback";
 import { useReducedMotion } from "./motion";
+import { revealSoon } from "./reveal";
 import { pitchGroups } from "@/lib/sources/replay-view";
 import { MatchEvent, player, clock, TEAMS } from "@/lib/match";
 export function Pitch({
@@ -48,6 +49,7 @@ export function Pitch({
   };
 }) {
   const [openedGroup, setOpenedGroup] = useState<string | null>(null);
+  const choices = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [hitRadius, setHitRadius] = useState(30);
   useLayoutEffect(() => {
@@ -212,9 +214,13 @@ export function Pitch({
               ? `${group.events.length} actions ${density ? "in this area" : "at this location"}. Choose an action`
               : `${formatTime(e.time)} ${eventLabel(e.type)} by ${lookupPlayer(e.playerId).name}`;
           const choose = () => {
-            if (group.events.length > 1)
-              setOpenedGroup(openedGroup === group.id ? null : group.id);
-            else onSelect?.(e);
+            if (group.events.length > 1) {
+              const opening = openedGroup !== group.id;
+              setOpenedGroup(opening ? group.id : null);
+              // The list renders under the pitch, often below the fold.
+              if (opening)
+                revealSoon(() => choices.current, { align: "nearest" });
+            } else onSelect?.(e);
           };
           if (density)
             return (
@@ -386,6 +392,7 @@ export function Pitch({
       )}
       {expanded && onSelect && (
         <div
+          ref={choices}
           className="pitch-event-choices"
           aria-label="Actions at selected location"
         >

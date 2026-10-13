@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { actionPoint, playbackTime, replayFrame } from "../src/lib/playback";
+import {
+  actionPoint,
+  playbackTime,
+  replayFrame,
+  spreadMarkers,
+} from "../src/lib/playback";
 import { eventsAt, generateMatch, type MatchEvent } from "../src/lib/match";
 
 const action: MatchEvent = {
@@ -64,5 +69,21 @@ describe("authoritative replay time", () => {
         }
       }
     }
+  });
+});
+
+describe("timeline markers", () => {
+  it("spreads markers that would overlap, and leaves spaced ones alone", () => {
+    // 74:35 and 77:33 on a 230 px phone timeline: 7.6 px apart.
+    const phone = [60, 4475, 4653].map((t) => (t / 5400) * 230);
+    const x = spreadMarkers(phone, 230, 28);
+    expect(x[2] - x[1]).toBeGreaterThanOrEqual(28);
+    expect(x[2]).toBeLessThanOrEqual(230);
+    expect(x[0]).toBeCloseTo(phone[0]);
+    // The same goals on a desktop timeline are far enough apart already.
+    const desktop = [60, 4475, 4653].map((t) => (t / 5400) * 1100);
+    expect(spreadMarkers(desktop, 1100, 28)).toEqual(desktop);
+    // Crowded at the very end: markers back off from the edge, keeping order.
+    expect(spreadMarkers([228, 229, 230], 230, 28)).toEqual([174, 202, 230]);
   });
 });

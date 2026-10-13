@@ -8,6 +8,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { revealResult } from "./reveal";
 
 const query = "(prefers-reduced-motion: reduce)";
 function subscribe(callback: () => void) {
@@ -33,6 +34,26 @@ export function motionTiming(element: Element, token = "standard") {
 }
 
 /** Native keyboard/summary behavior, with reversible opening and closing motion. */
+/**
+ * A disclosure opened near the bottom of the screen used to expand out of
+ * sight, so only its chevron changed. Bring what it opened into view: on the
+ * page via revealResult (tab bar, reduced motion, tall content), or inside a
+ * scrolling dialog with the browser's own nearest scroll.
+ */
+function revealOpened(el: HTMLDetailsElement) {
+  const dialog = el.closest("dialog");
+  if (!dialog) return revealResult(el, { align: "nearest" });
+  const box = dialog.getBoundingClientRect(),
+    rect = el.getBoundingClientRect();
+  if (rect.top >= box.top && rect.bottom <= box.bottom) return;
+  el.scrollIntoView({
+    block: rect.height > box.height ? "start" : "nearest",
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "instant"
+      : "smooth",
+  });
+}
+
 export function AnimatedDetails({
   children,
   ...props
@@ -83,7 +104,10 @@ export function AnimatedDetails({
         transition.current = null;
         el.open = expanded;
         el.style.overflow = overflow;
-        if (reduced) return;
+        if (reduced) {
+          if (expanded) revealOpened(el);
+          return;
+        }
         const end = el.getBoundingClientRect().height;
         // Keep the content rendered until a closing transition has finished.
         el.open = true;
@@ -101,6 +125,7 @@ export function AnimatedDetails({
           el.removeAttribute("data-expanded");
           summary.removeAttribute("aria-expanded");
           transition.current = null;
+          if (expanded) revealOpened(el);
         };
       }}
     >

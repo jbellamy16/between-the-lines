@@ -25,7 +25,14 @@ import {
   type MatchData,
   type NormalizedEvent,
 } from "@/lib/sources/model";
-import type { CSSProperties, ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import { spreadMarkers } from "@/lib/playback";
 import {
   EventIcon,
   Goal,
@@ -58,6 +65,9 @@ const identitiesFor = (match: MatchData) => ({
     },
 });
 
+/** Marker width plus a little air: 24 px buttons. */
+const MARKER_GAP = 28;
+
 export function MatchHeader({
   match,
   time,
@@ -67,6 +77,7 @@ export function MatchHeader({
   onSeek,
   onSpeed,
   onRecap,
+  onGoal,
 }: {
   match: MatchData;
   time: number;
@@ -76,8 +87,30 @@ export function MatchHeader({
   onSeek: (time: number) => void;
   onSpeed: (speed: number) => void;
   onRecap: () => void;
+  onGoal?: (event: NormalizedEvent) => void;
 }) {
   const visible = match.events.filter((e) => e.time <= time);
+  // Goals minutes apart sit on top of each other on a phone; spread them
+  // just far enough that each marker can be tapped.
+  const lane = useRef<HTMLDivElement>(null);
+  const [laneWidth, setLaneWidth] = useState(0);
+  useEffect(() => {
+    const el = lane.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) =>
+      setLaneWidth(entry.contentRect.width),
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const markers = visible.filter(
+    (e) => e.scoringTeam || e.type === "substitution",
+  );
+  const markerLeft = spreadMarkers(
+    markers.map((e) => (e.time / match.duration) * laneWidth),
+    laneWidth,
+    MARKER_GAP,
+  );
   const score = recordedScore(visible);
   const goals = visible.filter((e) => e.scoringTeam && e.period !== "PS");
   const highlights = playerHighlights(match, time);
@@ -231,21 +264,17 @@ export function MatchHeader({
             {playing ? <Pause size={20} /> : <Play size={20} />}
           </button>
           <div className="timeline">
-            <div className="timeline-events">
-              {match.events
-                .filter(
-                  (e) =>
-                    e.time <= time &&
-                    (e.scoringTeam || e.type === "substitution"),
-                )
-                .map((e) => (
-                  <TimelineEvent
-                    key={e.id}
-                    match={match}
-                    event={e}
-                    onSeek={onSeek}
-                  />
-                ))}
+            <div className="timeline-events" ref={lane}>
+              {markers.map((e, i) => (
+                <TimelineEvent
+                  key={e.id}
+                  match={match}
+                  event={e}
+                  onSeek={onSeek}
+                  onGoal={onGoal}
+                  left={laneWidth ? `${markerLeft[i]}px` : undefined}
+                />
+              ))}
             </div>
             <input
               type="range"
@@ -828,20 +857,14 @@ export function MatchPitch({
               </select>
             )}
           </div>
+          {/* Step through the actions on the pitch, opening each one's
+              passage like a tap on its marker; the match clock stays put. */}
           <div className="event-steps">
             <button
               className="text-button"
-              disabled={
-                !match.events.some(
-                  (e) => e.time < time && e.type !== "possession",
-                )
-              }
+              disabled={!active || actions.indexOf(active) <= 0}
               onClick={() =>
-                onSeek(
-                  match.events.findLast(
-                    (e) => e.time < time && e.type !== "possession",
-                  )?.time ?? 0,
-                )
+                active && onSelect(actions[actions.indexOf(active) - 1].id)
               }
             >
               Previous action
@@ -849,16 +872,10 @@ export function MatchPitch({
             <button
               className="text-button"
               disabled={
-                !match.events.some(
-                  (e) => e.time > time && e.type !== "possession",
-                )
+                !active || actions.indexOf(active) >= actions.length - 1
               }
               onClick={() =>
-                onSeek(
-                  match.events.find(
-                    (e) => e.time > time && e.type !== "possession",
-                  )?.time ?? match.duration,
-                )
+                active && onSelect(actions[actions.indexOf(active) + 1].id)
               }
             >
               Next action

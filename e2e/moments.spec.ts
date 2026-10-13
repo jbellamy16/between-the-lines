@@ -133,19 +133,67 @@ test.describe("moments", () => {
     );
   });
 
-  test("a goal moment replays the goal tapped", async ({ page }) => {
+  test("a goal moment plays the build-up to the goal tapped", async ({
+    page,
+  }) => {
     await ready(page);
     await slider(page).fill("4700");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
     await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
-    await expect(page.getByText("Story evidence replay")).toBeVisible();
-    const inspector = page
-      .locator(".event-inspector")
-      .filter({ visible: true });
-    await expect(inspector.locator("p")).toContainText("77:33 Theo March");
     await expect(
-      page.locator(".replay-caption").filter({ visible: true }),
-    ).toContainText("Event 3 of 3");
+      page
+        .getByRole("heading", { name: "Passage replay" })
+        .filter({ visible: true }),
+    ).toBeVisible();
+    const pitch = page.locator(".pitch-panel").filter({ visible: true });
+    // The passage ends on the 77:33 goal, not the 01:00 one.
+    await expect(
+      pitch.locator(".event-inspector select option").last(),
+    ).toContainText("77:33");
+    await expect(pitch.locator(".event-inspector p")).toContainText(
+      "77:33 Theo March: Goal",
+      { timeout: 15000 },
+    );
+    await expect(pitch.getByText("REPLAY COMPLETE")).toBeVisible();
+  });
+
+  test("a story moment steps through its evidence and ends on the action that made it", async ({
+    page,
+  }) => {
+    await ready(page);
+    await slider(page).fill("4130");
+    await page.getByRole("button", { name: "Moments", exact: true }).click();
+    await page.locator(".moment-timeline button", { hasText: "61:20" }).click();
+    const pitch = page.locator(".pitch-panel").filter({ visible: true });
+    await expect(pitch.locator(".replay-caption")).toContainText(
+      "Event 1 of 3",
+    );
+    await expect(pitch.locator(".event-inspector p")).toContainText("55:42");
+    // One action at a time, about 1.4 s each: done within a few seconds,
+    // not after the minutes between the shots.
+    await expect(pitch.locator(".replay-caption")).toContainText(
+      "Event 3 of 3",
+      { timeout: 6000 },
+    );
+    await expect(pitch.locator(".event-inspector p")).toContainText(
+      "61:19 Theo March",
+    );
+    await expect(pitch.getByText("REPLAY COMPLETE")).toBeVisible();
+    await expect(slider(page)).toHaveValue("3680");
+  });
+
+  test("an eased story's replay says when its actions stopped", async ({
+    page,
+  }) => {
+    await ready(page);
+    await slider(page).fill("2400");
+    await page.getByRole("button", { name: "Moments", exact: true }).click();
+    await page.locator(".moment-timeline button", { hasText: "36:20" }).click();
+    const pitch = page.locator(".pitch-panel").filter({ visible: true });
+    await expect(pitch.locator(".replay-note")).toHaveText(
+      "No more Harbor shots since 30:43.",
+      { timeout: 8000 },
+    );
   });
 
   test("the Moments tab lists only what has happened", async ({ page }) => {

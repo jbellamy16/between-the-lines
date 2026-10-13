@@ -30,6 +30,7 @@ import { Activity, ArrowUpRight, Play, RotateCcw } from "./icons";
 import { Welcome } from "./welcome";
 import { MomentCard, MomentTimeline, useMatchMoments } from "./match-moments";
 import type { MatchMoment } from "@/lib/moments";
+import { storyGoalId } from "@/lib/explanation";
 import { ModalHeader } from "./modal-header";
 import { MatchPeople } from "./match-people";
 import {
@@ -333,13 +334,28 @@ export function MatchApp({
     setSelectedKey(null);
     setTab("visual");
     setSection("match");
-    setPendingReplay({ storyId: moment.story.storyId, cutoff: moment.time });
+    // A goal replays its own build-up; any other moment steps through the
+    // story's evidence once the story at that minute is on screen.
+    const goalId =
+      moment.kind === "goal"
+        ? storyGoalId(moment.story, canonicalMatch)
+        : undefined;
+    const goal = goalId && visible.find((e) => e.id === goalId);
+    if (goal) selectEvent(goal, false);
+    else
+      setPendingReplay({ storyId: moment.story.storyId, cutoff: moment.time });
     setMomentAsk({
       id: `${moment.id}:${performance.now()}`,
       storyId: moment.story.storyId,
       cutoff: moment.time,
     });
     revealPitchReplay();
+  }
+  /** Jump to a goal and replay the passage that led to it. */
+  function replayGoal(id: string, at: number) {
+    seek(at);
+    const goal = visible.find((e) => e.id === id);
+    if (goal) selectEvent(goal);
   }
   function selectInsight(i: Insight) {
     director.setReplay(false);
@@ -705,6 +721,7 @@ export function MatchApp({
         speed={speed}
         onSpeed={setSpeed}
         onSeek={seek}
+        onGoal={(e) => replayGoal(e.id, e.time)}
         onPlay={() => {
           director.setReplay(false);
           if (time === DURATION) seek(0);

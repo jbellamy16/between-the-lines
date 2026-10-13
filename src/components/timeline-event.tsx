@@ -13,11 +13,18 @@ export function TimelineEvent({
   match,
   event,
   onSeek,
+  onGoal,
+  left,
 }: {
   match: MatchData;
   event: NormalizedEvent;
   onSeek: (time: number) => void;
+  /** Position on the lane; defaults to the event's share of the match. */
+  left?: string;
+  /** When set, a goal replays its build-up instead of only seeking. */
+  onGoal?: (event: NormalizedEvent) => void;
 }) {
+  const replaysGoal = !!(onGoal && event.scoringTeam);
   const id = useId();
   const button = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -86,8 +93,12 @@ export function TimelineEvent({
       <button
         ref={button}
         className={event.scoringTeam ? "goal-tick" : "sub-tick"}
-        style={{ left: `${(event.time / match.duration) * 100}%` }}
-        aria-label={`Seek to ${eventClock(match, event)} ${event.scoringTeam ? "goal" : "substitution"}`}
+        style={{ left: left ?? `${(event.time / match.duration) * 100}%` }}
+        aria-label={
+          replaysGoal
+            ? `Replay the ${eventClock(match, event)} goal`
+            : `Seek to ${eventClock(match, event)} ${event.scoringTeam ? "goal" : "substitution"}`
+        }
         aria-describedby={position ? id : undefined}
         onMouseEnter={show}
         onMouseLeave={scheduleClose}
@@ -95,7 +106,8 @@ export function TimelineEvent({
         onBlur={close}
         onClick={() => {
           close();
-          onSeek(event.time);
+          if (replaysGoal) onGoal!(event);
+          else onSeek(event.time);
         }}
       >
         {event.scoringTeam ? <Goal size={16} /> : <Substitution size={16} />}
@@ -125,7 +137,11 @@ export function TimelineEvent({
             </strong>
             <span>{eventDescription(match, event)}</span>
             {assister && <span>Assist: {assister}</span>}
-            <small>Select to jump to this moment</small>
+            <small>
+              {replaysGoal
+                ? "Select to replay the build-up"
+                : "Select to jump to this moment"}
+            </small>
           </div>,
           document.body,
         )}

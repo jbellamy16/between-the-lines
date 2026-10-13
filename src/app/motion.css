@@ -349,6 +349,14 @@ select:not(:disabled) {
   color: var(--sl-muted);
   font-size: 12px;
 }
+/* An eased story's replay ends by saying when its actions stopped. */
+.replay-note {
+  margin: 0;
+  padding: 10px 20px 0;
+  color: var(--sl-text);
+  font-size: 13px;
+  font-weight: 600;
+}
 .replay-controls {
   flex-wrap: wrap;
   gap: 4px 12px;
@@ -365,7 +373,8 @@ select:not(:disabled) {
     padding-inline: 12px;
     gap: 6px;
   }
-  .replay-caption {
+  .replay-caption,
+  .replay-note {
     padding-inline: 14px;
   }
   .modal {

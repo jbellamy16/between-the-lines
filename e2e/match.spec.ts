@@ -474,3 +474,92 @@ test("OpenAI UI requests narration only on demand and clears stale results on re
   await expect(page.getByTestId("clock")).toContainText("00:00");
   expect(calls).toBe(1);
 });
+
+test("pattern evidence steps through its own actions without moving the match clock", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page.locator(".app-shell")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  const pitch = page.locator(".pitch-panel");
+  await expect(pitch.locator(".event-inspector p")).toContainText("62:50");
+  await pitch.getByRole("button", { name: "Previous action" }).click();
+  // The previous plotted shot opens as a passage; the match stays at 63:24.
+  await expect(
+    page.getByRole("heading", { name: "Passage replay" }),
+  ).toBeVisible();
+  await expect(
+    pitch.locator(".event-inspector select option").last(),
+  ).toContainText("61:19");
+  await expect(page.getByTestId("clock")).toContainText("63:24");
+});
+
+test("a disclosure opened at the bottom of the screen brings its contents into view", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page.locator(".app-shell")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
+  const summary = page
+    .locator("summary", { hasText: "Recent events" })
+    .filter({ visible: true });
+  await summary.scrollIntoViewIfNeeded();
+  // Park the summary on the last line of the screen, as a viewer would find it.
+  await page.evaluate(() => {
+    const s = [...document.querySelectorAll("summary")].find(
+      (e) =>
+        e.textContent?.includes("Recent events") && e.getClientRects().length,
+    )!;
+    window.scrollBy(0, s.getBoundingClientRect().bottom - innerHeight + 90);
+  });
+  await summary.click();
+  const details = summary.locator("..");
+  await expect
+    .poll(() =>
+      details.evaluate((d) => {
+        const r = d.getBoundingClientRect();
+        return r.top >= 0 && r.top + Math.min(r.height, 300) <= innerHeight;
+      }),
+    )
+    .toBe(true);
+});
+
+test("choosing between stacked actions on the pitch brings the list into view", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(
+    page.locator(".app-shell").filter({ visible: true }),
+  ).toHaveAttribute("aria-busy", "false");
+  await page
+    .getByRole("slider", { name: "Match timeline" })
+    .filter({ visible: true })
+    .fill("5400");
+  const stack = page
+    .getByRole("button", {
+      name: /actions at this location\. Choose an action/,
+    })
+    .filter({ visible: true })
+    .first();
+  await stack.scrollIntoViewIfNeeded();
+  // Park the marker near the bottom of the screen, where the list would open unseen.
+  await stack.evaluate((el) =>
+    window.scrollBy(0, el.getBoundingClientRect().bottom - innerHeight + 90),
+  );
+  await stack.click();
+  const choices = page
+    .locator(".pitch-event-choices")
+    .filter({ visible: true });
+  await expect
+    .poll(() =>
+      choices.evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top >= 0 && r.top + Math.min(r.height, 200) <= innerHeight;
+      }),
+    )
+    .toBe(true);
+});

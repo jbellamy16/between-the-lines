@@ -48,3 +48,16 @@ export function actionPoint(
     y: start.y + (end.y - start.y) * progress,
   };
 }
+
+/**
+ * Pixel positions for timeline markers, each at least `gap` apart so every
+ * one stays tappable on a narrow screen. Markers keep their order and move
+ * as little as needed; on a wide timeline nothing moves.
+ */
+export function spreadMarkers(ideal: number[], width: number, gap: number) {
+  const x = ideal.map((v) => Math.max(0, Math.min(width, v)));
+  for (let i = 1; i < x.length; i++) x[i] = Math.max(x[i], x[i - 1] + gap);
+  for (let i = x.length - 1; i >= 0; i--)
+    x[i] = Math.min(x[i], i === x.length - 1 ? width : x[i + 1] - gap);
+  return x.map((v) => Math.max(0, v));
+}

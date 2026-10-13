@@ -48,6 +48,17 @@ export function RecapBriefing({
   const request = useRef<AbortController | null>(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState("");
+  // The review's result sits under the footer, below the dialog's fold.
+  const noticeRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (!notice) return;
+    noticeRef.current?.scrollIntoView({
+      block: "nearest",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }, [notice]);
   const [timeline, setTimeline] = useState(false);
   const [eventLimit, setEventLimit] = useState(40);
   const mounted = useRef(true);
@@ -452,7 +463,7 @@ export function RecapBriefing({
         </button>
       </footer>
       {notice && (
-        <p className={styles.notice} role="status">
+        <p ref={noticeRef} className={styles.notice} role="status">
           {notice}
         </p>
       )}

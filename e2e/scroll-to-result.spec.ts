@@ -176,7 +176,12 @@ test("a moment tap lands on the pitch on a phone", async ({ page }, info) => {
   await page.getByRole("slider", { name: "Match timeline" }).fill("4700");
   await page.getByRole("button", { name: "Moments", exact: true }).click();
   await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
-  await expect(page.getByText("Story evidence replay")).toBeVisible();
+  // A goal moment replays the goal's build-up.
+  await expect(
+    page
+      .getByRole("heading", { name: "Passage replay" })
+      .filter({ visible: true }),
+  ).toBeVisible();
   // The story card sits above the pitch on a phone; the pitch is the result.
   await expect
     .poll(async () => (await box(page, `${shell} .pitch-panel`)).top, {

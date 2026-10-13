@@ -6,7 +6,7 @@ import {
   MOMENT_REPEAT_SECONDS,
   momentsThrough,
 } from "@/lib/moments";
-import { presentStory, replayStartEventId } from "@/lib/explanation";
+import { presentStory, quietSince, storyGoalId } from "@/lib/explanation";
 import { ANALYSIS_MODE } from "@/lib/intelligence";
 import { observe } from "@/lib/ai/director/observer";
 import { selectLeadCandidate } from "@/lib/ai/director/editorial";
@@ -27,19 +27,37 @@ describe("match moments", () => {
     );
   });
 
-  it("opens a goal's replay on the goal tapped, not the first goal", () => {
-    const start = (m: (typeof full)[number]) =>
-      pressure.events.find(
-        (e) => e.id === replayStartEventId(m.story, pressure),
-      )?.time;
+  it("finds the goal each goal moment is about, not the first goal", () => {
+    const at = (m: (typeof full)[number]) =>
+      pressure.events.find((e) => e.id === storyGoalId(m.story, pressure))
+        ?.time;
     const goals = full.filter((m) => m.kind === "goal");
-    // 77:33 is the third goal its story highlights; 74:35 the second.
+    // A goal story highlights every goal so far; 77:33 is the third.
     expect(goals.map((m) => m.story.highlightedEventIds.length)).toEqual([
       1, 2, 3,
     ]);
-    expect(goals.map(start)).toEqual([60, 4475, 4653]);
-    // Full time replays every goal from the first.
-    expect(replayStartEventId(full.at(-1)!.story, pressure)).toBeUndefined();
+    expect(goals.map(at)).toEqual([60, 4475, 4653]);
+    expect(storyGoalId(full.at(-1)!.story, pressure)).toBeUndefined();
+  });
+
+  it("says when an eased story's actions stopped, only when that is true", () => {
+    const note = (time: number) => {
+      const m = full.find((m) => m.time === time)!;
+      return quietSince(
+        m.story,
+        pressure,
+        pressure.events.filter((e) =>
+          m.story.highlightedEventIds.includes(e.id),
+        ),
+      );
+    };
+    // 36:20: Harbor's increase in shots has eased; last shot 30:43.
+    expect(note(2180)).toBe("No more Harbor shots since 30:43.");
+    // 68:50 has eased too, but Harbor shot at 68:36: nothing to add.
+    expect(note(4130)).toBeNull();
+    // 73:20 is a live increase, quiet since 71:25 but not eased: no note.
+    expect(note(4400)).toBeNull();
+    expect(note(3680)).toBeNull();
   });
 
   it("never holds a moment, or evidence, from after the position", () => {

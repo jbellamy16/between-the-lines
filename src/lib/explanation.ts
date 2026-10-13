@@ -201,12 +201,8 @@ function comparisonWording(
   };
 }
 
-/**
- * The highlighted action a story's pitch replay opens on. A goal story
- * highlights every goal so far for the score, but it is about the latest
- * one, so its replay starts there; other stories start at their first action.
- */
-export function replayStartEventId(story: BroadcastStory, match: MatchData) {
+/** The goal a goal story is about: the latest goal it highlights. */
+export function storyGoalId(story: BroadcastStory, match: MatchData) {
   if (story.category !== "score-change") return undefined;
   return match.events.findLast(
     (e) =>
@@ -214,6 +210,58 @@ export function replayStartEventId(story: BroadcastStory, match: MatchData) {
       e.type === "goal" &&
       story.highlightedEventIds.includes(e.id),
   )?.id;
+}
+
+const QUIET_NOUNS: Partial<Record<string, string>> = {
+  shot: "shots",
+  recovery: "ball wins",
+  pass: "passes",
+  interception: "interceptions",
+  tackle: "tackles",
+  corner: "corners",
+};
+
+/** A story whose headline says its increase has eased (see presentStory). */
+export function storyEased(story: BroadcastStory) {
+  return (
+    story.hypothesis.contradictoryEvidence.some(
+      (e) => e.code === "latest-rate-not-sustained",
+    ) ||
+    (!!story.storyline &&
+      ["activity-change", "window-comparison"].includes(story.category) &&
+      ["weakening", "resolved"].includes(story.storyline.state))
+  );
+}
+
+/**
+ * When an eased story's evidence ends well before the story itself, say so:
+ * "No more Harbor shots since 30:43." Only when every highlighted action is
+ * the same type and team, and the match really has none of that type for
+ * that team since. Otherwise null.
+ */
+export function quietSince(
+  story: BroadcastStory,
+  match: MatchData,
+  highlighted: { time: number; type: string; team: string }[],
+) {
+  if (!storyEased(story)) return null;
+  const cutoff = story.cutoff;
+  const last = highlighted.at(-1);
+  if (!last || cutoff - last.time < 60) return null;
+  if (highlighted.some((e) => e.type !== last.type || e.team !== last.team))
+    return null;
+  const noun = QUIET_NOUNS[last.type];
+  if (!noun) return null;
+  const since = match.events.some(
+    (e) =>
+      e.team === last.team &&
+      e.type === last.type &&
+      e.time > last.time &&
+      e.time <= cutoff,
+  );
+  if (since) return null;
+  const team = match.teams[last.team as keyof MatchData["teams"]].short;
+  return `No more ${team} ${noun} since ${matchClock(match, last.time)}.`;
 }
 
 /** Pure presentation over a verified story. Never participates in selection, cache identity or transport. */

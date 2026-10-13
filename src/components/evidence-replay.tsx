@@ -7,6 +7,9 @@ import { Pitch } from "./pitch";
 import { Pause, Play, RotateCcw } from "./icons";
 import { usePageVisibility } from "./motion";
 
+/** How long a stepped replay holds each action at the default 8× speed. */
+const STEP_MS = 1400;
+
 type ReplayEvent = Omit<MatchEvent, "position"> & {
   position: MatchEvent["position"] | null;
 };
@@ -18,7 +21,8 @@ export function EvidenceReplay({
   describe,
   formatEventTime,
   generated = true,
-  startEventId,
+  stepped = false,
+  completeNote,
 }: {
   events: ReplayEvent[];
   suspended: boolean;
@@ -27,20 +31,25 @@ export function EvidenceReplay({
   formatEventTime?: (event: ReplayEvent) => string;
   describe?: (event: ReplayEvent) => string;
   generated?: boolean;
-  /** Open on this action instead of the first; Restart still goes to the first. */
-  startEventId?: string;
+  /**
+   * Step from one recorded action to the next instead of running the match
+   * clock between them. Story evidence can be minutes apart; a clock-time
+   * replay would sit on one action for most of a minute.
+   */
+  stepped?: boolean;
+  /** Shown once the replay has reached its last action. */
+  completeNote?: string;
 }) {
   const timelineId = useId();
   const start = events[0].time,
     end = events.at(-1)!.time;
-  const opening = events.find((e) => e.id === startEventId)?.time ?? start;
-  const [time, setTime] = useState(opening);
+  const [time, setTime] = useState(start);
   const [stepIndex, setStepIndex] = useState<number | null>(null);
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(8);
   const visiblePage = usePageVisibility();
   const sample = useRef<PlaybackSample>({
-    time: opening,
+    time: start,
     sampledAt: 0,
     speed: 8,
     playing: false,
@@ -49,8 +58,30 @@ export function EvidenceReplay({
   useEffect(() => {
     if (suspended) setPlaying(false);
   }, [suspended]);
+  // Stepped: hold each action for STEP_MS at 8×, then move to the next.
+  // Times are read through a ref so a parent re-render doesn't restart the hold.
+  const times = useRef(events.map((e) => e.time));
+  times.current = events.map((e) => e.time);
+  useEffect(() => {
+    if (!stepped || !running) return;
+    const next = times.current.find((t) => t > time);
+    if (next === undefined) {
+      setPlaying(false);
+      return;
+    }
+    const timer = window.setTimeout(
+      () => {
+        setStepIndex(null);
+        setTime(next);
+      },
+      // 1× would hold for 11 s; cap it so the slowest speed still moves.
+      Math.min(3000, (STEP_MS * 8) / speed),
+    );
+    return () => clearTimeout(timer);
+  }, [stepped, running, speed, time]);
   // Re-anchor before changing speed/pause so fractional progress is preserved.
   useLayoutEffect(() => {
+    if (stepped) return;
     const previous = sample.current;
     const current = playbackTime(previous, performance.now(), end);
     sample.current = {
@@ -75,7 +106,7 @@ export function EvidenceReplay({
         playing: false,
       };
     };
-  }, [running, speed, end]);
+  }, [running, speed, end, stepped]);
   function seek(next: number, resume = false) {
     setStepIndex(null);
     const bounded = Math.max(start, Math.min(end, next));
@@ -174,6 +205,9 @@ export function EvidenceReplay({
           ))}
         </select>
       </div>
+      {completeNote && time >= end && (
+        <p className="replay-note">{completeNote}</p>
+      )}
       {!active.position && (
         <p className="limitations">
           This action has no recorded pitch location.
@@ -203,7 +237,9 @@ export function EvidenceReplay({
             time >= end
               ? seek(start, true)
               : seek(
-                  playbackTime(sample.current, performance.now(), end),
+                  stepped
+                    ? time
+                    : playbackTime(sample.current, performance.now(), end),
                   !playing,
                 )
           }
