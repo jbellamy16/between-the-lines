@@ -4,19 +4,35 @@
  *   npm run eval:analyst              # golden + adversarial sets
  *   npm run eval:analyst -- golden    # one set
  *
- * Spends real money through the configured provider. Every attempt reserves
- * against AI_SPEND_LEDGER (default "test") under AI_SPEND_CEILING_USD
- * (default $15). Reads AI settings from .env.local; shell values win.
+ * Spends real money, deliberately. Credentials come from .env.local; the app's
+ * local on/off flags and tiny request caps there are overridden for this run
+ * (Foundry is used whenever FOUNDRY_* is set). Every attempt still reserves
+ * against an in-process "test" ledger capped at AI_SPEND_CEILING_USD (default
+ * $15). Any value set in the shell wins over these defaults.
  * Writes artifacts/analyst-eval/<timestamp>.json and prints a summary.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { localAiConfig } from "./ai-local-config.mjs";
 
+const shell = { ...process.env };
 Object.assign(process.env, localAiConfig(process.cwd()));
-process.env.AI_SPEND_LEDGER ??= "test";
-process.env.AI_SPEND_CEILING_USD ??= "15";
-process.env.AI_USAGE_STORE ??= "memory";
-process.env.AI_ENABLED ??= "true";
+const runDefaults: Record<string, string> = {
+  AI_ENABLED: "true",
+  AI_PROVIDER: process.env.FOUNDRY_API_KEY
+    ? "foundry"
+    : (process.env.AI_PROVIDER ?? "offline"),
+  AI_USAGE_STORE: "memory",
+  AI_REDIS_URL: "",
+  AI_MINUTE_LIMIT: "10",
+  AI_HOURLY_LIMIT: "100",
+  AI_DAILY_LIMIT: "500",
+  AI_TOTAL_LIMIT: "5000",
+  AI_INVESTIGATOR_ENABLED: "false",
+  AI_SPEND_LEDGER: "test",
+  AI_SPEND_CEILING_USD: "15",
+};
+for (const [name, value] of Object.entries(runDefaults))
+  process.env[name] = shell[name] ?? value;
 
 const { SyntheticMatchSource } = await import("../src/lib/sources/synthetic");
 const { runAnalyst } = await import("../src/lib/ai/analyst/agent");

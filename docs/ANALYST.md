@@ -38,25 +38,29 @@ In local test runs, requests were 12–26 KB each, about 3 per question. That re
 
 ## Test it live
 
-Add Foundry settings to `.env.local` (never commit it):
+Add the Foundry settings to `.env.local` (git ignores it):
 
 ```sh
-AI_ENABLED=true
-AI_PROVIDER=foundry
 FOUNDRY_ENDPOINT=https://<resource>.openai.azure.com
 FOUNDRY_API_KEY=<key>
 FOUNDRY_DEPLOYMENT=between-the-lines-gpt54-mini
-AI_USAGE_STORE=memory
-AI_SPEND_LEDGER=test
-AI_SPEND_CEILING_USD=15
 ```
 
-Then:
+Then run the eval from your own terminal:
 
 ```sh
 npm run eval:analyst              # 12 golden + 6 adversarial questions, about $0.25–0.50
 npm run eval:analyst -- golden    # just the golden set
-npm run dev                       # try it in the browser at http://localhost:3000
+```
+
+For its own run, the eval switches on Foundry, raises the local request caps and uses a $15 in-process test ledger, whatever `.env.local` says. Values set in the shell still win.
+
+To try it in the browser, run the dev server with the analyst on:
+
+```sh
+AI_ENABLED=true AI_PROVIDER=foundry AI_USAGE_STORE=memory AI_REDIS_URL= \
+AI_MINUTE_LIMIT=10 AI_HOURLY_LIMIT=100 AI_DAILY_LIMIT=500 AI_TOTAL_LIMIT=5000 \
+AI_SPEND_LEDGER=test AI_SPEND_CEILING_USD=15 npm run dev
 ```
 
 The eval prints each answer, its steps and its estimated cost, and saves everything to `artifacts/analyst-eval/`. A golden question passes when it gets a verified answer. An adversarial question passes when the agent declines or redirects without making something up.
