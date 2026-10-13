@@ -370,6 +370,35 @@ describe("bounded investigator, scripted transport and real local controls", () 
     });
     expect((await run()).receipt.stop.reason).toBe("invalid-plan");
   });
+  it("binds both response schemas to the canonical index and rejects a version-prefixed ID before retrieval", async () => {
+    const mock = transport((p, _turn, body) => {
+      const input = body.input as { content: string }[];
+      expect(JSON.parse(input[0].content).indexId).toBe(p.index.id);
+      const text = body.text as {
+        format: { schema: { properties: { indexId: { enum: string[] } } } };
+      };
+      const tools = body.tools as {
+        parameters: { properties: { indexId: { enum: string[] } } };
+      }[];
+      expect(text.format.schema.properties.indexId.enum).toEqual([p.index.id]);
+      expect(tools[0].parameters.properties.indexId.enum).toEqual([p.index.id]);
+      const option = p.index.options.find(
+        (o) => o.purpose === "resolve-priority",
+      )!;
+      // Replays the malformed-ID pattern observed in the first real call.
+      // This regression transport is mocked; it is not another AI evaluation.
+      return call({
+        ...action(p, option),
+        indexId: `evidence-discovery-1.1.0 ${p.index.id}`.slice(0, 64),
+      });
+    });
+    const result = await run();
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(result.receipt.stop.reason).toBe("invalid-plan");
+    expect(result.receipt.trace).toEqual([]);
+    expect(result.receipt.toolInvocations).toBe(1); // Initial deterministic packet only.
+    expect(result.receipt.adaptiveRounds).toBe(0);
+  });
   it.each([
     "unknown",
     "duplicate",

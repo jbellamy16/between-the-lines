@@ -1,0 +1,4829 @@
+{
+  "status": 200,
+  "result": {
+    "stories": [
+      {
+        "schemaVersion": "1.1.0",
+        "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435",
+        "matchId": "pressure",
+        "cutoff": 4200,
+        "timestamp": 4116,
+        "headline": "Harbor: more shots",
+        "explanation": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+        "whatChanged": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+        "whyItMatters": "Harbor's recorded shot activity has increased. This identifies more attempts; shot danger requires separate evidence. The extra attempts have not produced a recorded goal in this window. 1 recent shots followed attacking-third recoveries in the same possession within 30 recorded seconds: a route to watch, without establishing pressing or causation. Activity slowed in the latest half of the current window, so the increase may be fading.",
+        "watchNext": "Harbor: record at least 4 shots in the next equal 12m 30s window to sustain the measured count.",
+        "hypothesis": {
+          "hypothesis": {
+            "id": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+            "description": "Harbor's recorded shots increased in the measured equal windows."
+          },
+          "timestamp": 4116,
+          "verificationStatus": "confirmed-observation",
+          "supportingEvidence": [
+            {
+              "code": "recorded-observation",
+              "description": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "current-shot-outcomes",
+              "description": "The extra attempts have not produced a recorded goal in this window.",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "attacking-third-recovery-shot-links",
+              "description": "1 of the 4 recent shots followed recorded attacking-third recoveries in the same possession within 30 recorded seconds. This identifies a recorded attacking route, without proving pressing or causation.",
+              "eventIds": [
+                "pressure-202632-501",
+                "pressure-202632-506"
+              ]
+            }
+          ],
+          "limitingEvidence": [
+            {
+              "code": "tracking-unavailable",
+              "description": "Recorded events do not establish off-ball positioning, pressing intensity, intent or physical attacking direction.",
+              "eventIds": []
+            }
+          ],
+          "contradictoryEvidence": [
+            {
+              "code": "latest-rate-not-sustained",
+              "description": "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            }
+          ],
+          "measurements": [
+            {
+              "key": "current-count",
+              "label": "shots",
+              "value": 4,
+              "unit": "events",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "previous-count",
+              "label": "Previous shots",
+              "value": 1,
+              "unit": "events",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "window": "previous"
+            },
+            {
+              "key": "count-change",
+              "label": "Change in shots",
+              "value": 3,
+              "unit": "events",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "key": "current-first-half-count",
+              "label": "First half of current window: shots",
+              "value": 3,
+              "unit": "events",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "current-second-half-count",
+              "label": "Second half of current window: shots",
+              "value": 1,
+              "unit": "events",
+              "eventIds": [
+                "pressure-202632-506"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "current-shot-goal-outcomes",
+              "label": "Goal outcomes among current shots",
+              "value": 0,
+              "unit": "shot events",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "high-recovery-linked-shots",
+              "label": "Shots after recorded attacking-third recoveries",
+              "value": 1,
+              "unit": "shot events",
+              "eventIds": [
+                "pressure-202632-501",
+                "pressure-202632-506"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "current-xg",
+              "label": "Source-supplied xG total",
+              "value": 0.54,
+              "unit": "source xG",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "window": "current"
+            },
+            {
+              "key": "previous-xg",
+              "label": "Previous source-supplied xG total",
+              "value": 0.12,
+              "unit": "source xG",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "window": "previous"
+            },
+            {
+              "key": "opponent-current-shots",
+              "label": "Opponent shots in the current window",
+              "value": 0,
+              "unit": "events",
+              "eventIds": [],
+              "window": "current"
+            }
+          ],
+          "windows": [
+            {
+              "id": "previous",
+              "start": 2700,
+              "end": 3450,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "current",
+              "start": 3450,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            }
+          ],
+          "sourceCapabilities": {
+            "recoveries": true,
+            "shotOutcomes": true,
+            "comparisonScope": "continuous",
+            "tracking": false,
+            "xg": true,
+            "ballRecoveries": true,
+            "possession": "generated",
+            "lineups": true,
+            "substitutions": true,
+            "passRecipients": true,
+            "assists": true,
+            "goalkeeperSaves": true,
+            "physicalDirection": false
+          },
+          "missingInformation": [
+            "Off-ball tracking, defensive pressure and player intentions."
+          ],
+          "verificationChecks": [
+            {
+              "code": "cutoff-boundary",
+              "passed": true,
+              "detail": "Cutoff is finite and inside the recorded match duration.",
+              "eventIds": []
+            },
+            {
+              "code": "evidence-completeness",
+              "passed": true,
+              "detail": "Every cited event is unique, present in this match, and visible by the cutoff.",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "event-identities",
+              "passed": true,
+              "detail": "Cited event, team, player, provider and period identities agree.",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "candidate-timestamp",
+              "passed": true,
+              "detail": "The claim timestamp equals its latest recorded evidence.",
+              "eventIds": [
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "canonical-claim",
+              "passed": true,
+              "detail": "Description, statistics, evidence, category and limitations match the deterministic claim reconstruction.",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "recomputed-window-counts",
+              "passed": true,
+              "detail": "Counts and all cited events were recomputed in complete equal windows inside one period.",
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "code": "assessment-event-identities",
+              "passed": true,
+              "detail": "Every assessment measurement and counter-evidence reference is a visible event with valid identities.",
+              "eventIds": []
+            }
+          ],
+          "whyItMatters": "Harbor's recorded shot activity has increased. This identifies more attempts; shot danger requires separate evidence. The extra attempts have not produced a recorded goal in this window. 1 recent shots followed attacking-third recoveries in the same possession within 30 recorded seconds: a route to watch, without establishing pressing or causation. Activity slowed in the latest half of the current window, so the increase may be fading.",
+          "watchNext": {
+            "description": "Harbor: record at least 4 shots in the next equal 12m 30s window to sustain the measured count.",
+            "metric": "shots",
+            "team": "harbor",
+            "windowSeconds": 750,
+            "startsAt": 4200,
+            "endsAt": 4950,
+            "period": "2H",
+            "baseline": 4,
+            "target": 4,
+            "direction": "at-least",
+            "eventTypes": [
+              "shot"
+            ]
+          }
+        },
+        "storyline": null,
+        "intelligenceGraph": {
+          "schemaVersion": "1.0.0",
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "root": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+          "nodes": [
+            {
+              "id": "match:pressure",
+              "kind": "match",
+              "reference": "pressure"
+            },
+            {
+              "id": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+              "kind": "insight",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+              "timestamp": 4200
+            },
+            {
+              "id": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "kind": "hypothesis",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "timestamp": 4200
+            },
+            {
+              "id": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "kind": "observation",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435",
+              "timestamp": 4116
+            },
+            {
+              "id": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "kind": "window",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "timestamp": 3450
+            },
+            {
+              "id": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "kind": "window",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+              "timestamp": 4200
+            },
+            {
+              "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+              "kind": "measurement",
+              "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+              "timestamp": 4200
+            },
+            {
+              "id": "event:pressure-202632-410",
+              "kind": "event",
+              "reference": "pressure-202632-410",
+              "timestamp": 3342
+            },
+            {
+              "id": "team:pressure:harbor",
+              "kind": "team",
+              "reference": "pressure:harbor"
+            },
+            {
+              "id": "player:pressure:harbor-11",
+              "kind": "player",
+              "reference": "pressure:harbor-11"
+            },
+            {
+              "id": "possession:pressure:2H:harbor:69",
+              "kind": "possession",
+              "reference": "pressure:2H:harbor:69"
+            },
+            {
+              "id": "event:pressure-202632-435",
+              "kind": "event",
+              "reference": "pressure-202632-435",
+              "timestamp": 3549
+            },
+            {
+              "id": "player:pressure:harbor-6",
+              "kind": "player",
+              "reference": "pressure:harbor-6"
+            },
+            {
+              "id": "possession:pressure:2H:harbor:75",
+              "kind": "possession",
+              "reference": "pressure:2H:harbor:75"
+            },
+            {
+              "id": "event:pressure-202632-451",
+              "kind": "event",
+              "reference": "pressure-202632-451",
+              "timestamp": 3679
+            },
+            {
+              "id": "player:pressure:harbor-7",
+              "kind": "player",
+              "reference": "pressure:harbor-7"
+            },
+            {
+              "id": "possession:pressure:2H:harbor:77",
+              "kind": "possession",
+              "reference": "pressure:2H:harbor:77"
+            },
+            {
+              "id": "event:pressure-202632-463",
+              "kind": "event",
+              "reference": "pressure-202632-463",
+              "timestamp": 3770
+            },
+            {
+              "id": "possession:pressure:2H:harbor:79",
+              "kind": "possession",
+              "reference": "pressure:2H:harbor:79"
+            },
+            {
+              "id": "event:pressure-202632-506",
+              "kind": "event",
+              "reference": "pressure-202632-506",
+              "timestamp": 4116
+            },
+            {
+              "id": "player:pressure:harbor-12",
+              "kind": "player",
+              "reference": "pressure:harbor-12"
+            },
+            {
+              "id": "possession:pressure:2H:harbor:87",
+              "kind": "possession",
+              "reference": "pressure:2H:harbor:87"
+            },
+            {
+              "id": "event:pressure-202632-501",
+              "kind": "event",
+              "reference": "pressure-202632-501",
+              "timestamp": 4089
+            },
+            {
+              "id": "player:pressure:harbor-10",
+              "kind": "player",
+              "reference": "pressure:harbor-10"
+            }
+          ],
+          "edges": [
+            {
+              "from": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+              "to": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "relationship": "assesses"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "match:pressure",
+              "relationship": "in-match"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+              "relationship": "measured-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+              "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "relationship": "bounded-by"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "event:pressure-202632-410",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-410",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+              "to": "event:pressure-202632-410",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "to": "event:pressure-202632-410",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+              "to": "event:pressure-202632-410",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-410",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "team:pressure:harbor",
+              "to": "match:pressure",
+              "relationship": "in-match"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+              "to": "event:pressure-202632-410",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-410",
+              "to": "player:pressure:harbor-11",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "player:pressure:harbor-11",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "event:pressure-202632-410",
+              "to": "possession:pressure:2H:harbor:69",
+              "relationship": "in-possession"
+            },
+            {
+              "from": "possession:pressure:2H:harbor:69",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-435",
+              "relationship": "contradicted-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "to": "event:pressure-202632-435",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-435",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "to": "event:pressure-202632-435",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-435",
+              "to": "player:pressure:harbor-6",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "player:pressure:harbor-6",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "event:pressure-202632-435",
+              "to": "possession:pressure:2H:harbor:75",
+              "relationship": "in-possession"
+            },
+            {
+              "from": "possession:pressure:2H:harbor:75",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-451",
+              "relationship": "contradicted-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "to": "event:pressure-202632-451",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-451",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "to": "event:pressure-202632-451",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-451",
+              "to": "player:pressure:harbor-7",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "player:pressure:harbor-7",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "event:pressure-202632-451",
+              "to": "possession:pressure:2H:harbor:77",
+              "relationship": "in-possession"
+            },
+            {
+              "from": "possession:pressure:2H:harbor:77",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-463",
+              "relationship": "contradicted-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "to": "event:pressure-202632-463",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-463",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "to": "event:pressure-202632-463",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-463",
+              "to": "player:pressure:harbor-7",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "event:pressure-202632-463",
+              "to": "possession:pressure:2H:harbor:79",
+              "relationship": "in-possession"
+            },
+            {
+              "from": "possession:pressure:2H:harbor:79",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-506",
+              "relationship": "contradicted-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+              "to": "event:pressure-202632-506",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-506",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "to": "event:pressure-202632-506",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-506",
+              "to": "player:pressure:harbor-12",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "player:pressure:harbor-12",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "event:pressure-202632-506",
+              "to": "possession:pressure:2H:harbor:87",
+              "relationship": "in-possession"
+            },
+            {
+              "from": "possession:pressure:2H:harbor:87",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "to": "event:pressure-202632-501",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+              "to": "event:pressure-202632-501",
+              "relationship": "supported-by"
+            },
+            {
+              "from": "event:pressure-202632-501",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+              "to": "event:pressure-202632-501",
+              "relationship": "contains"
+            },
+            {
+              "from": "event:pressure-202632-501",
+              "to": "player:pressure:harbor-10",
+              "relationship": "performed-by"
+            },
+            {
+              "from": "player:pressure:harbor-10",
+              "to": "team:pressure:harbor",
+              "relationship": "for-team"
+            },
+            {
+              "from": "event:pressure-202632-501",
+              "to": "possession:pressure:2H:harbor:87",
+              "relationship": "in-possession"
+            }
+          ]
+        },
+        "category": "activity-change",
+        "claimIds": [
+          "pressure:activity-change:harbor:shots:pressure-202632-435"
+        ],
+        "statistics": [
+          {
+            "label": "shots",
+            "value": 4,
+            "unit": "events / 750 seconds"
+          },
+          {
+            "label": "Previous shots",
+            "value": 1,
+            "unit": "events / 750 seconds"
+          }
+        ],
+        "evidenceEventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506",
+          "pressure-202632-501"
+        ],
+        "highlightedEventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506"
+        ],
+        "coordinates": [
+          {
+            "eventId": "pressure-202632-410",
+            "x": 79.93602393097242,
+            "y": 35.000547907082364,
+            "type": "shot"
+          },
+          {
+            "eventId": "pressure-202632-435",
+            "x": 68.57502455767242,
+            "y": 12.963033014908433,
+            "type": "shot"
+          },
+          {
+            "eventId": "pressure-202632-451",
+            "x": 95,
+            "y": 20.69970223121345,
+            "type": "shot"
+          },
+          {
+            "eventId": "pressure-202632-463",
+            "x": 95,
+            "y": 38.362827767618,
+            "type": "shot"
+          },
+          {
+            "eventId": "pressure-202632-506",
+            "x": 95,
+            "y": 8,
+            "type": "shot"
+          },
+          {
+            "eventId": "pressure-202632-501",
+            "x": 78.26777472160757,
+            "y": 67.21160786226392,
+            "type": "recovery"
+          }
+        ],
+        "audience": "fan",
+        "visualization": "comparison",
+        "presentation": {
+          "earliest": 4200,
+          "expires": 4380,
+          "durationSeconds": 8
+        },
+        "limitations": [
+          "Synthetic match, players and event-model xG. No continuous tracking.",
+          "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+          "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+          "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+          "Possessions are generated synthetic sequences, not observed tracking.",
+          "Recorded events do not establish off-ball positioning, pressing intensity, intent or physical attacking direction."
+        ],
+        "provider": "offline",
+        "validation": "verified",
+        "evidenceQuality": "recorded-events",
+        "source": {
+          "provider": "synthetic",
+          "revision": "202632-demo",
+          "attribution": "Between the Lines · reproducible synthetic data"
+        },
+        "promptVersion": "director-1.4.2"
+      }
+    ],
+    "answers": [
+      {
+        "version": "guided-1.1.2",
+        "question": {
+          "intent": "shot-surge-explanations",
+          "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+        },
+        "matchId": "pressure",
+        "cutoff": 4200,
+        "storyHeadline": "Harbor: more shots",
+        "team": "harbor",
+        "metric": "shots",
+        "availability": "available",
+        "reason": null,
+        "verdict": "unknown",
+        "windows": [
+          {
+            "id": "previous",
+            "start": 2700,
+            "end": 3450,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "current",
+            "start": 3450,
+            "end": 4200,
+            "period": "2H",
+            "boundary": "(start,end]"
+          }
+        ],
+        "measurements": [
+          {
+            "id": "own-previous",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "own-current",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          },
+          {
+            "id": "opponent-previous",
+            "team": "riverside",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [],
+            "value": 0
+          },
+          {
+            "id": "opponent-current",
+            "team": "riverside",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [],
+            "value": 0
+          },
+          {
+            "id": "previous:shots",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous"
+          },
+          {
+            "id": "previous:linkedShots",
+            "value": 0,
+            "eventIds": [],
+            "team": "harbor",
+            "metric": "shots following qualifying recoveries",
+            "window": "previous"
+          },
+          {
+            "id": "previous:shotPossessions",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "team": "harbor",
+            "metric": "distinct possessions with shots",
+            "window": "previous"
+          },
+          {
+            "id": "previous:linkedPossessions",
+            "value": 0,
+            "eventIds": [],
+            "team": "harbor",
+            "metric": "distinct recovery-linked possessions",
+            "window": "previous"
+          },
+          {
+            "id": "previous:largestPossession",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "team": "harbor",
+            "metric": "shots in the largest possession group",
+            "window": "previous"
+          },
+          {
+            "id": "previous:early",
+            "value": 0,
+            "eventIds": [],
+            "team": "harbor",
+            "metric": "shots in the first half of the window",
+            "window": "previous"
+          },
+          {
+            "id": "previous:late",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "team": "harbor",
+            "metric": "shots in the second half of the window",
+            "window": "previous"
+          },
+          {
+            "id": "current:shots",
+            "value": 4,
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current"
+          },
+          {
+            "id": "current:linkedShots",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-501",
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "shots following qualifying recoveries",
+            "window": "current"
+          },
+          {
+            "id": "current:shotPossessions",
+            "value": 4,
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "distinct possessions with shots",
+            "window": "current"
+          },
+          {
+            "id": "current:linkedPossessions",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-501",
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "distinct recovery-linked possessions",
+            "window": "current"
+          },
+          {
+            "id": "current:largestPossession",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "shots in the largest possession group",
+            "window": "current"
+          },
+          {
+            "id": "current:early",
+            "value": 3,
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463"
+            ],
+            "team": "harbor",
+            "metric": "shots in the first half of the window",
+            "window": "current"
+          },
+          {
+            "id": "current:late",
+            "value": 1,
+            "eventIds": [
+              "pressure-202632-506"
+            ],
+            "team": "harbor",
+            "metric": "shots in the second half of the window",
+            "window": "current"
+          }
+        ],
+        "qualifications": [
+          "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking.",
+          "This compares recorded activity, not overall performance or control of the match.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking.",
+          "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking.",
+          "Several shots after one recovery count as one linked possession. A missing link does not identify another attacking route.",
+          "These descriptions can coexist. Recorded repetition does not prove pressing, causation, dominance or future continuation.",
+          "Possession groups are synthetic, not recorded real-world possessions.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking."
+        ],
+        "eventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506",
+          "pressure-202632-501",
+          "pressure-202632-337",
+          "pressure-202632-347",
+          "pressure-202632-359",
+          "pressure-202632-383",
+          "pressure-202632-402",
+          "pressure-202632-422",
+          "pressure-202632-430",
+          "pressure-202632-456",
+          "pressure-202632-469",
+          "pressure-202632-475",
+          "pressure-202632-485",
+          "pressure-202632-514"
+        ],
+        "comparison": {
+          "routes": {
+            "matchId": "pressure",
+            "team": "harbor",
+            "possessionKind": "generated",
+            "previous": {
+              "window": {
+                "id": "previous",
+                "start": 2700,
+                "end": 3450,
+                "period": "2H",
+                "boundary": "(start,end]"
+              },
+              "shots": 1,
+              "linkedShots": 0,
+              "shotPossessions": 1,
+              "linkedPossessions": 0,
+              "largestPossession": 1,
+              "early": 0,
+              "late": 1,
+              "complete": true,
+              "unavailable": []
+            },
+            "current": {
+              "window": {
+                "id": "current",
+                "start": 3450,
+                "end": 4200,
+                "period": "2H",
+                "boundary": "(start,end]"
+              },
+              "shots": 4,
+              "linkedShots": 1,
+              "shotPossessions": 4,
+              "linkedPossessions": 1,
+              "largestPossession": 1,
+              "early": 3,
+              "late": 1,
+              "complete": true,
+              "unavailable": []
+            },
+            "facts": [
+              {
+                "id": "previous:shots",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-410"
+                ]
+              },
+              {
+                "id": "previous:linkedShots",
+                "value": 0,
+                "eventIds": []
+              },
+              {
+                "id": "previous:shotPossessions",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-410"
+                ]
+              },
+              {
+                "id": "previous:linkedPossessions",
+                "value": 0,
+                "eventIds": []
+              },
+              {
+                "id": "previous:largestPossession",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-410"
+                ]
+              },
+              {
+                "id": "previous:early",
+                "value": 0,
+                "eventIds": []
+              },
+              {
+                "id": "previous:late",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-410"
+                ]
+              },
+              {
+                "id": "current:shots",
+                "value": 4,
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "id": "current:linkedShots",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-501",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "id": "current:shotPossessions",
+                "value": 4,
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "id": "current:linkedPossessions",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-501",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "id": "current:largestPossession",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "id": "current:early",
+                "value": 3,
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463"
+                ]
+              },
+              {
+                "id": "current:late",
+                "value": 1,
+                "eventIds": [
+                  "pressure-202632-506"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "id": "link:pressure-202632-506",
+                "window": "current",
+                "eventIds": [
+                  "pressure-202632-501",
+                  "pressure-202632-506"
+                ],
+                "possessionId": 87
+              }
+            ],
+            "eventIds": [
+              "pressure-202632-337",
+              "pressure-202632-347",
+              "pressure-202632-359",
+              "pressure-202632-383",
+              "pressure-202632-402",
+              "pressure-202632-410",
+              "pressure-202632-422",
+              "pressure-202632-430",
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-456",
+              "pressure-202632-463",
+              "pressure-202632-469",
+              "pressure-202632-475",
+              "pressure-202632-485",
+              "pressure-202632-501",
+              "pressure-202632-506",
+              "pressure-202632-514"
+            ],
+            "referenceCoverage": {
+              "eligible": 18,
+              "returned": 18,
+              "omitted": 0
+            },
+            "contextBounds": {
+              "start": 2700,
+              "end": 4200
+            },
+            "complete": true,
+            "suppressed": false
+          },
+          "interpretations": [
+            {
+              "id": "repeated-route",
+              "status": "limited",
+              "supportIds": [
+                "previous:linkedPossessions",
+                "current:linkedPossessions"
+              ],
+              "challengeIds": [
+                "previous:linkedShots",
+                "current:linkedShots",
+                "previous:early",
+                "current:early",
+                "previous:late",
+                "current:late"
+              ],
+              "text": "The evidence does not establish an increase in repeated recovery-to-shot possessions."
+            },
+            {
+              "id": "concentrated-attempts",
+              "status": "limited",
+              "supportIds": [
+                "previous:largestPossession",
+                "current:largestPossession",
+                "previous:shots",
+                "current:shots",
+                "previous:early",
+                "current:early",
+                "previous:late",
+                "current:late"
+              ],
+              "challengeIds": [
+                "previous:linkedPossessions",
+                "current:linkedPossessions"
+              ],
+              "text": "The evidence does not establish a brief concentration of attempts."
+            },
+            {
+              "id": "both-teams",
+              "status": "limited",
+              "supportIds": [
+                "own-previous",
+                "own-current",
+                "opponent-previous",
+                "opponent-current"
+              ],
+              "challengeIds": [],
+              "text": "The shot increase is not shared by both teams across these windows."
+            }
+          ],
+          "baseline": [
+            {
+              "version": "guided-1.1.2",
+              "question": {
+                "intent": "chance-quality",
+                "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+              },
+              "matchId": "pressure",
+              "cutoff": 4200,
+              "storyHeadline": "Harbor: more shots",
+              "team": "harbor",
+              "metric": "shots",
+              "availability": "available",
+              "reason": null,
+              "verdict": "higher",
+              "windows": [
+                {
+                  "id": "previous",
+                  "start": 2700,
+                  "end": 3450,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                {
+                  "id": "current",
+                  "start": 3450,
+                  "end": 4200,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                }
+              ],
+              "measurements": [
+                {
+                  "id": "own-previous",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 1
+                },
+                {
+                  "id": "own-current",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 4
+                },
+                {
+                  "id": "previous-shots",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 1
+                },
+                {
+                  "id": "previous-xg",
+                  "team": "harbor",
+                  "metric": "source xG total",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 0.12
+                },
+                {
+                  "id": "previous-mean-xg",
+                  "team": "harbor",
+                  "metric": "source xG per shot",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 0.12
+                },
+                {
+                  "id": "previous-rated-shots",
+                  "team": "harbor",
+                  "metric": "shots with source xG",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 1
+                },
+                {
+                  "id": "current-shots",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 4
+                },
+                {
+                  "id": "current-xg",
+                  "team": "harbor",
+                  "metric": "source xG total",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 0.54
+                },
+                {
+                  "id": "current-mean-xg",
+                  "team": "harbor",
+                  "metric": "source xG per shot",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 0.135
+                },
+                {
+                  "id": "current-rated-shots",
+                  "team": "harbor",
+                  "metric": "shots with source xG",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 4
+                }
+              ],
+              "qualifications": [
+                "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+                "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                "Synthetic match, players and event-model xG. No continuous tracking."
+              ],
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "version": "guided-1.1.2",
+              "question": {
+                "intent": "opponent-improvement",
+                "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+              },
+              "matchId": "pressure",
+              "cutoff": 4200,
+              "storyHeadline": "Harbor: more shots",
+              "team": "harbor",
+              "metric": "shots",
+              "availability": "available",
+              "reason": null,
+              "verdict": "level",
+              "windows": [
+                {
+                  "id": "previous",
+                  "start": 2700,
+                  "end": 3450,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                {
+                  "id": "current",
+                  "start": 3450,
+                  "end": 4200,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                }
+              ],
+              "measurements": [
+                {
+                  "id": "own-previous",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 1
+                },
+                {
+                  "id": "own-current",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 4
+                },
+                {
+                  "id": "opponent-previous",
+                  "team": "riverside",
+                  "metric": "shots",
+                  "window": "previous",
+                  "eventIds": [],
+                  "value": 0
+                },
+                {
+                  "id": "opponent-current",
+                  "team": "riverside",
+                  "metric": "shots",
+                  "window": "current",
+                  "eventIds": [],
+                  "value": 0
+                }
+              ],
+              "qualifications": [
+                "This compares recorded activity, not overall performance or control of the match.",
+                "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                "Synthetic match, players and event-model xG. No continuous tracking."
+              ],
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            },
+            {
+              "version": "guided-1.1.2",
+              "question": {
+                "intent": "fading-activity",
+                "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+              },
+              "matchId": "pressure",
+              "cutoff": 4200,
+              "storyHeadline": "Harbor: more shots",
+              "team": "harbor",
+              "metric": "shots",
+              "availability": "available",
+              "reason": null,
+              "verdict": "lower",
+              "windows": [
+                {
+                  "id": "previous",
+                  "start": 2700,
+                  "end": 3450,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                {
+                  "id": "current",
+                  "start": 3450,
+                  "end": 4200,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                {
+                  "id": "early",
+                  "start": 3450,
+                  "end": 3825,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                {
+                  "id": "late",
+                  "start": 3825,
+                  "end": 4200,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                }
+              ],
+              "measurements": [
+                {
+                  "id": "own-previous",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "previous",
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ],
+                  "value": 1
+                },
+                {
+                  "id": "own-current",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ],
+                  "value": 4
+                },
+                {
+                  "id": "early-count",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "early",
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463"
+                  ],
+                  "value": 3
+                },
+                {
+                  "id": "late-count",
+                  "team": "harbor",
+                  "metric": "shots",
+                  "window": "late",
+                  "eventIds": [
+                    "pressure-202632-506"
+                  ],
+                  "value": 1
+                }
+              ],
+              "qualifications": [
+                "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+                "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                "Synthetic match, players and event-model xG. No continuous tracking."
+              ],
+              "eventIds": [
+                "pressure-202632-410",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ]
+            }
+          ],
+          "eligible": false,
+          "noCallReason": "Fewer than two qualifying recovery links cannot establish a repeated route. The recorded comparison is sufficient.",
+          "decision": "publish-comparison"
+        }
+      },
+      {
+        "version": "guided-1.1.2",
+        "question": {
+          "intent": "chance-quality",
+          "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+        },
+        "matchId": "pressure",
+        "cutoff": 4200,
+        "storyHeadline": "Harbor: more shots",
+        "team": "harbor",
+        "metric": "shots",
+        "availability": "available",
+        "reason": null,
+        "verdict": "higher",
+        "windows": [
+          {
+            "id": "previous",
+            "start": 2700,
+            "end": 3450,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "current",
+            "start": 3450,
+            "end": 4200,
+            "period": "2H",
+            "boundary": "(start,end]"
+          }
+        ],
+        "measurements": [
+          {
+            "id": "own-previous",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "own-current",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          },
+          {
+            "id": "previous-shots",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "previous-xg",
+            "team": "harbor",
+            "metric": "source xG total",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 0.12
+          },
+          {
+            "id": "previous-mean-xg",
+            "team": "harbor",
+            "metric": "source xG per shot",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 0.12
+          },
+          {
+            "id": "previous-rated-shots",
+            "team": "harbor",
+            "metric": "shots with source xG",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "current-shots",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          },
+          {
+            "id": "current-xg",
+            "team": "harbor",
+            "metric": "source xG total",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 0.54
+          },
+          {
+            "id": "current-mean-xg",
+            "team": "harbor",
+            "metric": "source xG per shot",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 0.135
+          },
+          {
+            "id": "current-rated-shots",
+            "team": "harbor",
+            "metric": "shots with source xG",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          }
+        ],
+        "qualifications": [
+          "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking."
+        ],
+        "eventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506"
+        ]
+      },
+      {
+        "version": "guided-1.1.2",
+        "question": {
+          "intent": "opponent-improvement",
+          "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+        },
+        "matchId": "pressure",
+        "cutoff": 4200,
+        "storyHeadline": "Harbor: more shots",
+        "team": "harbor",
+        "metric": "shots",
+        "availability": "available",
+        "reason": null,
+        "verdict": "level",
+        "windows": [
+          {
+            "id": "previous",
+            "start": 2700,
+            "end": 3450,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "current",
+            "start": 3450,
+            "end": 4200,
+            "period": "2H",
+            "boundary": "(start,end]"
+          }
+        ],
+        "measurements": [
+          {
+            "id": "own-previous",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "own-current",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          },
+          {
+            "id": "opponent-previous",
+            "team": "riverside",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [],
+            "value": 0
+          },
+          {
+            "id": "opponent-current",
+            "team": "riverside",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [],
+            "value": 0
+          }
+        ],
+        "qualifications": [
+          "This compares recorded activity, not overall performance or control of the match.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking."
+        ],
+        "eventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506"
+        ]
+      },
+      {
+        "version": "guided-1.1.2",
+        "question": {
+          "intent": "fading-activity",
+          "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+        },
+        "matchId": "pressure",
+        "cutoff": 4200,
+        "storyHeadline": "Harbor: more shots",
+        "team": "harbor",
+        "metric": "shots",
+        "availability": "available",
+        "reason": null,
+        "verdict": "lower",
+        "windows": [
+          {
+            "id": "previous",
+            "start": 2700,
+            "end": 3450,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "current",
+            "start": 3450,
+            "end": 4200,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "early",
+            "start": 3450,
+            "end": 3825,
+            "period": "2H",
+            "boundary": "(start,end]"
+          },
+          {
+            "id": "late",
+            "start": 3825,
+            "end": 4200,
+            "period": "2H",
+            "boundary": "(start,end]"
+          }
+        ],
+        "measurements": [
+          {
+            "id": "own-previous",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "previous",
+            "eventIds": [
+              "pressure-202632-410"
+            ],
+            "value": 1
+          },
+          {
+            "id": "own-current",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "current",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463",
+              "pressure-202632-506"
+            ],
+            "value": 4
+          },
+          {
+            "id": "early-count",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "early",
+            "eventIds": [
+              "pressure-202632-435",
+              "pressure-202632-451",
+              "pressure-202632-463"
+            ],
+            "value": 3
+          },
+          {
+            "id": "late-count",
+            "team": "harbor",
+            "metric": "shots",
+            "window": "late",
+            "eventIds": [
+              "pressure-202632-506"
+            ],
+            "value": 1
+          }
+        ],
+        "qualifications": [
+          "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+          "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+          "Synthetic match, players and event-model xG. No continuous tracking."
+        ],
+        "eventIds": [
+          "pressure-202632-410",
+          "pressure-202632-435",
+          "pressure-202632-451",
+          "pressure-202632-463",
+          "pressure-202632-506"
+        ]
+      }
+    ],
+    "score": {
+      "harbor": 1,
+      "riverside": 0
+    },
+    "receipt": {
+      "version": "bounded-investigator-1.0.0",
+      "promptVersion": "investigator-selection-1.0.0",
+      "catalogueVersion": "evidence-discovery-1.1.0",
+      "baselineVersion": "deterministic-editorial-1.0.0",
+      "indexId": "677c153a90c088676df580d16455d9972807b50e38f39965b01e357df6afbb14",
+      "prefixDigest": "849499276bc315ff17ad8f9e0993a955e44fe7e8cb454fc021eef310dc61d476",
+      "cutoff": 4200,
+      "initialDigest": "40c89076456f6fde9ee5fea5aa5afc64ed024e21c957d5582aebbcd6d9b8ef93",
+      "fallbackIndexId": "677c153a90c088676df580d16455d9972807b50e38f39965b01e357df6afbb14",
+      "initialOptionIds": [
+        "option:f39ad1e055fc1a5e16103639cc7bc4af",
+        "option:87e14e720f7aa1d4d64379ebb45c8815"
+      ],
+      "baselineIds": [
+        "pressure:activity-change:harbor:shots:pressure-202632-435"
+      ],
+      "finalIds": [
+        "pressure:activity-change:harbor:shots:pressure-202632-435"
+      ],
+      "trace": [],
+      "plan": null,
+      "stop": {
+        "origin": "application",
+        "reason": "invalid-plan",
+        "voluntary": false,
+        "scope": "available-bounded-catalogue"
+      },
+      "verification": "rejected",
+      "disposition": "fallback",
+      "attempts": 1,
+      "toolInvocations": 2,
+      "adaptiveRounds": 0,
+      "usage": {
+        "inputTokens": 12842,
+        "outputTokens": 116,
+        "complete": true
+      },
+      "cached": false,
+      "maxPayloadBytes": 41471
+    },
+    "matchId": "pressure",
+    "receiptId": "da6b9e71-a2a2-498a-8f0b-3019165058d6",
+    "createdAt": "2026-10-13T00:25:06.207Z",
+    "latencyMs": 2450,
+    "spending": {
+      "reservedUsd": 0.31,
+      "estimatedUsd": 0.0101535,
+      "estimateBasis": "Uncached retail token estimate; not an invoice. Cache discounts omitted."
+    },
+    "baseline": {
+      "stories": [
+        {
+          "schemaVersion": "1.1.0",
+          "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435",
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "timestamp": 4116,
+          "headline": "Harbor: more shots",
+          "explanation": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+          "whatChanged": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+          "whyItMatters": "Harbor's recorded shot activity has increased. This identifies more attempts; shot danger requires separate evidence. The extra attempts have not produced a recorded goal in this window. 1 recent shots followed attacking-third recoveries in the same possession within 30 recorded seconds: a route to watch, without establishing pressing or causation. Activity slowed in the latest half of the current window, so the increase may be fading.",
+          "watchNext": "Harbor: record at least 4 shots in the next equal 12m 30s window to sustain the measured count.",
+          "hypothesis": {
+            "hypothesis": {
+              "id": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+              "description": "Harbor's recorded shots increased in the measured equal windows."
+            },
+            "timestamp": 4116,
+            "verificationStatus": "confirmed-observation",
+            "supportingEvidence": [
+              {
+                "code": "recorded-observation",
+                "description": "Harbor took 4 shots in the last 12 min 30 sec, up from 1 in the previous 12 min 30 sec.",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "current-shot-outcomes",
+                "description": "The extra attempts have not produced a recorded goal in this window.",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "attacking-third-recovery-shot-links",
+                "description": "1 of the 4 recent shots followed recorded attacking-third recoveries in the same possession within 30 recorded seconds. This identifies a recorded attacking route, without proving pressing or causation.",
+                "eventIds": [
+                  "pressure-202632-501",
+                  "pressure-202632-506"
+                ]
+              }
+            ],
+            "limitingEvidence": [
+              {
+                "code": "tracking-unavailable",
+                "description": "Recorded events do not establish off-ball positioning, pressing intensity, intent or physical attacking direction.",
+                "eventIds": []
+              }
+            ],
+            "contradictoryEvidence": [
+              {
+                "code": "latest-rate-not-sustained",
+                "description": "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              }
+            ],
+            "measurements": [
+              {
+                "key": "current-count",
+                "label": "shots",
+                "value": 4,
+                "unit": "events",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "previous-count",
+                "label": "Previous shots",
+                "value": 1,
+                "unit": "events",
+                "eventIds": [
+                  "pressure-202632-410"
+                ],
+                "window": "previous"
+              },
+              {
+                "key": "count-change",
+                "label": "Change in shots",
+                "value": 3,
+                "unit": "events",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "key": "current-first-half-count",
+                "label": "First half of current window: shots",
+                "value": 3,
+                "unit": "events",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "current-second-half-count",
+                "label": "Second half of current window: shots",
+                "value": 1,
+                "unit": "events",
+                "eventIds": [
+                  "pressure-202632-506"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "current-shot-goal-outcomes",
+                "label": "Goal outcomes among current shots",
+                "value": 0,
+                "unit": "shot events",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "high-recovery-linked-shots",
+                "label": "Shots after recorded attacking-third recoveries",
+                "value": 1,
+                "unit": "shot events",
+                "eventIds": [
+                  "pressure-202632-501",
+                  "pressure-202632-506"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "current-xg",
+                "label": "Source-supplied xG total",
+                "value": 0.54,
+                "unit": "source xG",
+                "eventIds": [
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ],
+                "window": "current"
+              },
+              {
+                "key": "previous-xg",
+                "label": "Previous source-supplied xG total",
+                "value": 0.12,
+                "unit": "source xG",
+                "eventIds": [
+                  "pressure-202632-410"
+                ],
+                "window": "previous"
+              },
+              {
+                "key": "opponent-current-shots",
+                "label": "Opponent shots in the current window",
+                "value": 0,
+                "unit": "events",
+                "eventIds": [],
+                "window": "current"
+              }
+            ],
+            "windows": [
+              {
+                "id": "previous",
+                "start": 2700,
+                "end": 3450,
+                "period": "2H",
+                "boundary": "(start,end]"
+              },
+              {
+                "id": "current",
+                "start": 3450,
+                "end": 4200,
+                "period": "2H",
+                "boundary": "(start,end]"
+              }
+            ],
+            "sourceCapabilities": {
+              "recoveries": true,
+              "shotOutcomes": true,
+              "comparisonScope": "continuous",
+              "tracking": false,
+              "xg": true,
+              "ballRecoveries": true,
+              "possession": "generated",
+              "lineups": true,
+              "substitutions": true,
+              "passRecipients": true,
+              "assists": true,
+              "goalkeeperSaves": true,
+              "physicalDirection": false
+            },
+            "missingInformation": [
+              "Off-ball tracking, defensive pressure and player intentions."
+            ],
+            "verificationChecks": [
+              {
+                "code": "cutoff-boundary",
+                "passed": true,
+                "detail": "Cutoff is finite and inside the recorded match duration.",
+                "eventIds": []
+              },
+              {
+                "code": "evidence-completeness",
+                "passed": true,
+                "detail": "Every cited event is unique, present in this match, and visible by the cutoff.",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "event-identities",
+                "passed": true,
+                "detail": "Cited event, team, player, provider and period identities agree.",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "candidate-timestamp",
+                "passed": true,
+                "detail": "The claim timestamp equals its latest recorded evidence.",
+                "eventIds": [
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "canonical-claim",
+                "passed": true,
+                "detail": "Description, statistics, evidence, category and limitations match the deterministic claim reconstruction.",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "recomputed-window-counts",
+                "passed": true,
+                "detail": "Counts and all cited events were recomputed in complete equal windows inside one period.",
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "code": "assessment-event-identities",
+                "passed": true,
+                "detail": "Every assessment measurement and counter-evidence reference is a visible event with valid identities.",
+                "eventIds": []
+              }
+            ],
+            "whyItMatters": "Harbor's recorded shot activity has increased. This identifies more attempts; shot danger requires separate evidence. The extra attempts have not produced a recorded goal in this window. 1 recent shots followed attacking-third recoveries in the same possession within 30 recorded seconds: a route to watch, without establishing pressing or causation. Activity slowed in the latest half of the current window, so the increase may be fading.",
+            "watchNext": {
+              "description": "Harbor: record at least 4 shots in the next equal 12m 30s window to sustain the measured count.",
+              "metric": "shots",
+              "team": "harbor",
+              "windowSeconds": 750,
+              "startsAt": 4200,
+              "endsAt": 4950,
+              "period": "2H",
+              "baseline": 4,
+              "target": 4,
+              "direction": "at-least",
+              "eventTypes": [
+                "shot"
+              ]
+            }
+          },
+          "storyline": null,
+          "intelligenceGraph": {
+            "schemaVersion": "1.0.0",
+            "matchId": "pressure",
+            "cutoff": 4200,
+            "root": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+            "nodes": [
+              {
+                "id": "match:pressure",
+                "kind": "match",
+                "reference": "pressure"
+              },
+              {
+                "id": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+                "kind": "insight",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+                "timestamp": 4200
+              },
+              {
+                "id": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "kind": "hypothesis",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "timestamp": 4200
+              },
+              {
+                "id": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "kind": "observation",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435",
+                "timestamp": 4116
+              },
+              {
+                "id": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "kind": "window",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "timestamp": 3450
+              },
+              {
+                "id": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "kind": "window",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+                "timestamp": 4200
+              },
+              {
+                "id": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+                "kind": "measurement",
+                "reference": "pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+                "timestamp": 4200
+              },
+              {
+                "id": "event:pressure-202632-410",
+                "kind": "event",
+                "reference": "pressure-202632-410",
+                "timestamp": 3342
+              },
+              {
+                "id": "team:pressure:harbor",
+                "kind": "team",
+                "reference": "pressure:harbor"
+              },
+              {
+                "id": "player:pressure:harbor-11",
+                "kind": "player",
+                "reference": "pressure:harbor-11"
+              },
+              {
+                "id": "possession:pressure:2H:harbor:69",
+                "kind": "possession",
+                "reference": "pressure:2H:harbor:69"
+              },
+              {
+                "id": "event:pressure-202632-435",
+                "kind": "event",
+                "reference": "pressure-202632-435",
+                "timestamp": 3549
+              },
+              {
+                "id": "player:pressure:harbor-6",
+                "kind": "player",
+                "reference": "pressure:harbor-6"
+              },
+              {
+                "id": "possession:pressure:2H:harbor:75",
+                "kind": "possession",
+                "reference": "pressure:2H:harbor:75"
+              },
+              {
+                "id": "event:pressure-202632-451",
+                "kind": "event",
+                "reference": "pressure-202632-451",
+                "timestamp": 3679
+              },
+              {
+                "id": "player:pressure:harbor-7",
+                "kind": "player",
+                "reference": "pressure:harbor-7"
+              },
+              {
+                "id": "possession:pressure:2H:harbor:77",
+                "kind": "possession",
+                "reference": "pressure:2H:harbor:77"
+              },
+              {
+                "id": "event:pressure-202632-463",
+                "kind": "event",
+                "reference": "pressure-202632-463",
+                "timestamp": 3770
+              },
+              {
+                "id": "possession:pressure:2H:harbor:79",
+                "kind": "possession",
+                "reference": "pressure:2H:harbor:79"
+              },
+              {
+                "id": "event:pressure-202632-506",
+                "kind": "event",
+                "reference": "pressure-202632-506",
+                "timestamp": 4116
+              },
+              {
+                "id": "player:pressure:harbor-12",
+                "kind": "player",
+                "reference": "pressure:harbor-12"
+              },
+              {
+                "id": "possession:pressure:2H:harbor:87",
+                "kind": "possession",
+                "reference": "pressure:2H:harbor:87"
+              },
+              {
+                "id": "event:pressure-202632-501",
+                "kind": "event",
+                "reference": "pressure-202632-501",
+                "timestamp": 4089
+              },
+              {
+                "id": "player:pressure:harbor-10",
+                "kind": "player",
+                "reference": "pressure:harbor-10"
+              }
+            ],
+            "edges": [
+              {
+                "from": "insight:pressure:activity-change:harbor:shots:pressure-202632-435:4200",
+                "to": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "relationship": "assesses"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "match:pressure",
+                "relationship": "in-match"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+                "relationship": "measured-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:opponent-current-shots",
+                "to": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "relationship": "bounded-by"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "event:pressure-202632-410",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-410",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-count",
+                "to": "event:pressure-202632-410",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "to": "event:pressure-202632-410",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:previous-xg",
+                "to": "event:pressure-202632-410",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-410",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "team:pressure:harbor",
+                "to": "match:pressure",
+                "relationship": "in-match"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:previous:2700:3450",
+                "to": "event:pressure-202632-410",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-410",
+                "to": "player:pressure:harbor-11",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "player:pressure:harbor-11",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "event:pressure-202632-410",
+                "to": "possession:pressure:2H:harbor:69",
+                "relationship": "in-possession"
+              },
+              {
+                "from": "possession:pressure:2H:harbor:69",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-435",
+                "relationship": "contradicted-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "to": "event:pressure-202632-435",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-435",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "to": "event:pressure-202632-435",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-435",
+                "to": "player:pressure:harbor-6",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "player:pressure:harbor-6",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "event:pressure-202632-435",
+                "to": "possession:pressure:2H:harbor:75",
+                "relationship": "in-possession"
+              },
+              {
+                "from": "possession:pressure:2H:harbor:75",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-451",
+                "relationship": "contradicted-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "to": "event:pressure-202632-451",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-451",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "to": "event:pressure-202632-451",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-451",
+                "to": "player:pressure:harbor-7",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "player:pressure:harbor-7",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "event:pressure-202632-451",
+                "to": "possession:pressure:2H:harbor:77",
+                "relationship": "in-possession"
+              },
+              {
+                "from": "possession:pressure:2H:harbor:77",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-463",
+                "relationship": "contradicted-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-first-half-count",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "to": "event:pressure-202632-463",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-463",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "to": "event:pressure-202632-463",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-463",
+                "to": "player:pressure:harbor-7",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "event:pressure-202632-463",
+                "to": "possession:pressure:2H:harbor:79",
+                "relationship": "in-possession"
+              },
+              {
+                "from": "possession:pressure:2H:harbor:79",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "observation:pressure:activity-change:harbor:shots:pressure-202632-435",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-506",
+                "relationship": "contradicted-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-count",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:count-change",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-second-half-count",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-shot-goal-outcomes",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:current-xg",
+                "to": "event:pressure-202632-506",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-506",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "to": "event:pressure-202632-506",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-506",
+                "to": "player:pressure:harbor-12",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "player:pressure:harbor-12",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "event:pressure-202632-506",
+                "to": "possession:pressure:2H:harbor:87",
+                "relationship": "in-possession"
+              },
+              {
+                "from": "possession:pressure:2H:harbor:87",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "hypothesis:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis",
+                "to": "event:pressure-202632-501",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "measurement:pressure:activity-change:harbor:shots:pressure-202632-435:hypothesis:high-recovery-linked-shots",
+                "to": "event:pressure-202632-501",
+                "relationship": "supported-by"
+              },
+              {
+                "from": "event:pressure-202632-501",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "window:pressure:activity-change:harbor:shots:pressure-202632-435:current:3450:4200",
+                "to": "event:pressure-202632-501",
+                "relationship": "contains"
+              },
+              {
+                "from": "event:pressure-202632-501",
+                "to": "player:pressure:harbor-10",
+                "relationship": "performed-by"
+              },
+              {
+                "from": "player:pressure:harbor-10",
+                "to": "team:pressure:harbor",
+                "relationship": "for-team"
+              },
+              {
+                "from": "event:pressure-202632-501",
+                "to": "possession:pressure:2H:harbor:87",
+                "relationship": "in-possession"
+              }
+            ]
+          },
+          "category": "activity-change",
+          "claimIds": [
+            "pressure:activity-change:harbor:shots:pressure-202632-435"
+          ],
+          "statistics": [
+            {
+              "label": "shots",
+              "value": 4,
+              "unit": "events / 750 seconds"
+            },
+            {
+              "label": "Previous shots",
+              "value": 1,
+              "unit": "events / 750 seconds"
+            }
+          ],
+          "evidenceEventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506",
+            "pressure-202632-501"
+          ],
+          "highlightedEventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ],
+          "coordinates": [
+            {
+              "eventId": "pressure-202632-410",
+              "x": 79.93602393097242,
+              "y": 35.000547907082364,
+              "type": "shot"
+            },
+            {
+              "eventId": "pressure-202632-435",
+              "x": 68.57502455767242,
+              "y": 12.963033014908433,
+              "type": "shot"
+            },
+            {
+              "eventId": "pressure-202632-451",
+              "x": 95,
+              "y": 20.69970223121345,
+              "type": "shot"
+            },
+            {
+              "eventId": "pressure-202632-463",
+              "x": 95,
+              "y": 38.362827767618,
+              "type": "shot"
+            },
+            {
+              "eventId": "pressure-202632-506",
+              "x": 95,
+              "y": 8,
+              "type": "shot"
+            },
+            {
+              "eventId": "pressure-202632-501",
+              "x": 78.26777472160757,
+              "y": 67.21160786226392,
+              "type": "recovery"
+            }
+          ],
+          "audience": "fan",
+          "visualization": "comparison",
+          "presentation": {
+            "earliest": 4200,
+            "expires": 4380,
+            "durationSeconds": 8
+          },
+          "limitations": [
+            "Synthetic match, players and event-model xG. No continuous tracking.",
+            "Recorded actions only; no off-ball positions, intentions, formations or physical attacking direction.",
+            "Relationships and equal-window comparisons are descriptive, not causal or statistically significant.",
+            "Coordinates are normalized to the team performing the action; increasing x is toward its attacking goal.",
+            "Possessions are generated synthetic sequences, not observed tracking.",
+            "Recorded events do not establish off-ball positioning, pressing intensity, intent or physical attacking direction."
+          ],
+          "provider": "offline",
+          "validation": "verified",
+          "evidenceQuality": "recorded-events",
+          "source": {
+            "provider": "synthetic",
+            "revision": "202632-demo",
+            "attribution": "Between the Lines · reproducible synthetic data"
+          },
+          "promptVersion": "director-1.4.2"
+        }
+      ],
+      "answers": [
+        {
+          "version": "guided-1.1.2",
+          "question": {
+            "intent": "shot-surge-explanations",
+            "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+          },
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "storyHeadline": "Harbor: more shots",
+          "team": "harbor",
+          "metric": "shots",
+          "availability": "available",
+          "reason": null,
+          "verdict": "unknown",
+          "windows": [
+            {
+              "id": "previous",
+              "start": 2700,
+              "end": 3450,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "current",
+              "start": 3450,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            }
+          ],
+          "measurements": [
+            {
+              "id": "own-previous",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "own-current",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            },
+            {
+              "id": "opponent-previous",
+              "team": "riverside",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [],
+              "value": 0
+            },
+            {
+              "id": "opponent-current",
+              "team": "riverside",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [],
+              "value": 0
+            },
+            {
+              "id": "previous:shots",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous"
+            },
+            {
+              "id": "previous:linkedShots",
+              "value": 0,
+              "eventIds": [],
+              "team": "harbor",
+              "metric": "shots following qualifying recoveries",
+              "window": "previous"
+            },
+            {
+              "id": "previous:shotPossessions",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "team": "harbor",
+              "metric": "distinct possessions with shots",
+              "window": "previous"
+            },
+            {
+              "id": "previous:linkedPossessions",
+              "value": 0,
+              "eventIds": [],
+              "team": "harbor",
+              "metric": "distinct recovery-linked possessions",
+              "window": "previous"
+            },
+            {
+              "id": "previous:largestPossession",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "team": "harbor",
+              "metric": "shots in the largest possession group",
+              "window": "previous"
+            },
+            {
+              "id": "previous:early",
+              "value": 0,
+              "eventIds": [],
+              "team": "harbor",
+              "metric": "shots in the first half of the window",
+              "window": "previous"
+            },
+            {
+              "id": "previous:late",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "team": "harbor",
+              "metric": "shots in the second half of the window",
+              "window": "previous"
+            },
+            {
+              "id": "current:shots",
+              "value": 4,
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current"
+            },
+            {
+              "id": "current:linkedShots",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-501",
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "shots following qualifying recoveries",
+              "window": "current"
+            },
+            {
+              "id": "current:shotPossessions",
+              "value": 4,
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "distinct possessions with shots",
+              "window": "current"
+            },
+            {
+              "id": "current:linkedPossessions",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-501",
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "distinct recovery-linked possessions",
+              "window": "current"
+            },
+            {
+              "id": "current:largestPossession",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "shots in the largest possession group",
+              "window": "current"
+            },
+            {
+              "id": "current:early",
+              "value": 3,
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463"
+              ],
+              "team": "harbor",
+              "metric": "shots in the first half of the window",
+              "window": "current"
+            },
+            {
+              "id": "current:late",
+              "value": 1,
+              "eventIds": [
+                "pressure-202632-506"
+              ],
+              "team": "harbor",
+              "metric": "shots in the second half of the window",
+              "window": "current"
+            }
+          ],
+          "qualifications": [
+            "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking.",
+            "This compares recorded activity, not overall performance or control of the match.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking.",
+            "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking.",
+            "Several shots after one recovery count as one linked possession. A missing link does not identify another attacking route.",
+            "These descriptions can coexist. Recorded repetition does not prove pressing, causation, dominance or future continuation.",
+            "Possession groups are synthetic, not recorded real-world possessions.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking."
+          ],
+          "eventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506",
+            "pressure-202632-501",
+            "pressure-202632-337",
+            "pressure-202632-347",
+            "pressure-202632-359",
+            "pressure-202632-383",
+            "pressure-202632-402",
+            "pressure-202632-422",
+            "pressure-202632-430",
+            "pressure-202632-456",
+            "pressure-202632-469",
+            "pressure-202632-475",
+            "pressure-202632-485",
+            "pressure-202632-514"
+          ],
+          "comparison": {
+            "routes": {
+              "matchId": "pressure",
+              "team": "harbor",
+              "possessionKind": "generated",
+              "previous": {
+                "window": {
+                  "id": "previous",
+                  "start": 2700,
+                  "end": 3450,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                "shots": 1,
+                "linkedShots": 0,
+                "shotPossessions": 1,
+                "linkedPossessions": 0,
+                "largestPossession": 1,
+                "early": 0,
+                "late": 1,
+                "complete": true,
+                "unavailable": []
+              },
+              "current": {
+                "window": {
+                  "id": "current",
+                  "start": 3450,
+                  "end": 4200,
+                  "period": "2H",
+                  "boundary": "(start,end]"
+                },
+                "shots": 4,
+                "linkedShots": 1,
+                "shotPossessions": 4,
+                "linkedPossessions": 1,
+                "largestPossession": 1,
+                "early": 3,
+                "late": 1,
+                "complete": true,
+                "unavailable": []
+              },
+              "facts": [
+                {
+                  "id": "previous:shots",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ]
+                },
+                {
+                  "id": "previous:linkedShots",
+                  "value": 0,
+                  "eventIds": []
+                },
+                {
+                  "id": "previous:shotPossessions",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ]
+                },
+                {
+                  "id": "previous:linkedPossessions",
+                  "value": 0,
+                  "eventIds": []
+                },
+                {
+                  "id": "previous:largestPossession",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ]
+                },
+                {
+                  "id": "previous:early",
+                  "value": 0,
+                  "eventIds": []
+                },
+                {
+                  "id": "previous:late",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-410"
+                  ]
+                },
+                {
+                  "id": "current:shots",
+                  "value": 4,
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ]
+                },
+                {
+                  "id": "current:linkedShots",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-501",
+                    "pressure-202632-506"
+                  ]
+                },
+                {
+                  "id": "current:shotPossessions",
+                  "value": 4,
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ]
+                },
+                {
+                  "id": "current:linkedPossessions",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-501",
+                    "pressure-202632-506"
+                  ]
+                },
+                {
+                  "id": "current:largestPossession",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463",
+                    "pressure-202632-506"
+                  ]
+                },
+                {
+                  "id": "current:early",
+                  "value": 3,
+                  "eventIds": [
+                    "pressure-202632-435",
+                    "pressure-202632-451",
+                    "pressure-202632-463"
+                  ]
+                },
+                {
+                  "id": "current:late",
+                  "value": 1,
+                  "eventIds": [
+                    "pressure-202632-506"
+                  ]
+                }
+              ],
+              "relations": [
+                {
+                  "id": "link:pressure-202632-506",
+                  "window": "current",
+                  "eventIds": [
+                    "pressure-202632-501",
+                    "pressure-202632-506"
+                  ],
+                  "possessionId": 87
+                }
+              ],
+              "eventIds": [
+                "pressure-202632-337",
+                "pressure-202632-347",
+                "pressure-202632-359",
+                "pressure-202632-383",
+                "pressure-202632-402",
+                "pressure-202632-410",
+                "pressure-202632-422",
+                "pressure-202632-430",
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-456",
+                "pressure-202632-463",
+                "pressure-202632-469",
+                "pressure-202632-475",
+                "pressure-202632-485",
+                "pressure-202632-501",
+                "pressure-202632-506",
+                "pressure-202632-514"
+              ],
+              "referenceCoverage": {
+                "eligible": 18,
+                "returned": 18,
+                "omitted": 0
+              },
+              "contextBounds": {
+                "start": 2700,
+                "end": 4200
+              },
+              "complete": true,
+              "suppressed": false
+            },
+            "interpretations": [
+              {
+                "id": "repeated-route",
+                "status": "limited",
+                "supportIds": [
+                  "previous:linkedPossessions",
+                  "current:linkedPossessions"
+                ],
+                "challengeIds": [
+                  "previous:linkedShots",
+                  "current:linkedShots",
+                  "previous:early",
+                  "current:early",
+                  "previous:late",
+                  "current:late"
+                ],
+                "text": "The evidence does not establish an increase in repeated recovery-to-shot possessions."
+              },
+              {
+                "id": "concentrated-attempts",
+                "status": "limited",
+                "supportIds": [
+                  "previous:largestPossession",
+                  "current:largestPossession",
+                  "previous:shots",
+                  "current:shots",
+                  "previous:early",
+                  "current:early",
+                  "previous:late",
+                  "current:late"
+                ],
+                "challengeIds": [
+                  "previous:linkedPossessions",
+                  "current:linkedPossessions"
+                ],
+                "text": "The evidence does not establish a brief concentration of attempts."
+              },
+              {
+                "id": "both-teams",
+                "status": "limited",
+                "supportIds": [
+                  "own-previous",
+                  "own-current",
+                  "opponent-previous",
+                  "opponent-current"
+                ],
+                "challengeIds": [],
+                "text": "The shot increase is not shared by both teams across these windows."
+              }
+            ],
+            "baseline": [
+              {
+                "version": "guided-1.1.2",
+                "question": {
+                  "intent": "chance-quality",
+                  "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+                },
+                "matchId": "pressure",
+                "cutoff": 4200,
+                "storyHeadline": "Harbor: more shots",
+                "team": "harbor",
+                "metric": "shots",
+                "availability": "available",
+                "reason": null,
+                "verdict": "higher",
+                "windows": [
+                  {
+                    "id": "previous",
+                    "start": 2700,
+                    "end": 3450,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  },
+                  {
+                    "id": "current",
+                    "start": 3450,
+                    "end": 4200,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  }
+                ],
+                "measurements": [
+                  {
+                    "id": "own-previous",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 1
+                  },
+                  {
+                    "id": "own-current",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 4
+                  },
+                  {
+                    "id": "previous-shots",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 1
+                  },
+                  {
+                    "id": "previous-xg",
+                    "team": "harbor",
+                    "metric": "source xG total",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 0.12
+                  },
+                  {
+                    "id": "previous-mean-xg",
+                    "team": "harbor",
+                    "metric": "source xG per shot",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 0.12
+                  },
+                  {
+                    "id": "previous-rated-shots",
+                    "team": "harbor",
+                    "metric": "shots with source xG",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 1
+                  },
+                  {
+                    "id": "current-shots",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 4
+                  },
+                  {
+                    "id": "current-xg",
+                    "team": "harbor",
+                    "metric": "source xG total",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 0.54
+                  },
+                  {
+                    "id": "current-mean-xg",
+                    "team": "harbor",
+                    "metric": "source xG per shot",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 0.135
+                  },
+                  {
+                    "id": "current-rated-shots",
+                    "team": "harbor",
+                    "metric": "shots with source xG",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 4
+                  }
+                ],
+                "qualifications": [
+                  "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+                  "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                  "Synthetic match, players and event-model xG. No continuous tracking."
+                ],
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "version": "guided-1.1.2",
+                "question": {
+                  "intent": "opponent-improvement",
+                  "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+                },
+                "matchId": "pressure",
+                "cutoff": 4200,
+                "storyHeadline": "Harbor: more shots",
+                "team": "harbor",
+                "metric": "shots",
+                "availability": "available",
+                "reason": null,
+                "verdict": "level",
+                "windows": [
+                  {
+                    "id": "previous",
+                    "start": 2700,
+                    "end": 3450,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  },
+                  {
+                    "id": "current",
+                    "start": 3450,
+                    "end": 4200,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  }
+                ],
+                "measurements": [
+                  {
+                    "id": "own-previous",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 1
+                  },
+                  {
+                    "id": "own-current",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 4
+                  },
+                  {
+                    "id": "opponent-previous",
+                    "team": "riverside",
+                    "metric": "shots",
+                    "window": "previous",
+                    "eventIds": [],
+                    "value": 0
+                  },
+                  {
+                    "id": "opponent-current",
+                    "team": "riverside",
+                    "metric": "shots",
+                    "window": "current",
+                    "eventIds": [],
+                    "value": 0
+                  }
+                ],
+                "qualifications": [
+                  "This compares recorded activity, not overall performance or control of the match.",
+                  "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                  "Synthetic match, players and event-model xG. No continuous tracking."
+                ],
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              },
+              {
+                "version": "guided-1.1.2",
+                "question": {
+                  "intent": "fading-activity",
+                  "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+                },
+                "matchId": "pressure",
+                "cutoff": 4200,
+                "storyHeadline": "Harbor: more shots",
+                "team": "harbor",
+                "metric": "shots",
+                "availability": "available",
+                "reason": null,
+                "verdict": "lower",
+                "windows": [
+                  {
+                    "id": "previous",
+                    "start": 2700,
+                    "end": 3450,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  },
+                  {
+                    "id": "current",
+                    "start": 3450,
+                    "end": 4200,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  },
+                  {
+                    "id": "early",
+                    "start": 3450,
+                    "end": 3825,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  },
+                  {
+                    "id": "late",
+                    "start": 3825,
+                    "end": 4200,
+                    "period": "2H",
+                    "boundary": "(start,end]"
+                  }
+                ],
+                "measurements": [
+                  {
+                    "id": "own-previous",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "previous",
+                    "eventIds": [
+                      "pressure-202632-410"
+                    ],
+                    "value": 1
+                  },
+                  {
+                    "id": "own-current",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "current",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463",
+                      "pressure-202632-506"
+                    ],
+                    "value": 4
+                  },
+                  {
+                    "id": "early-count",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "early",
+                    "eventIds": [
+                      "pressure-202632-435",
+                      "pressure-202632-451",
+                      "pressure-202632-463"
+                    ],
+                    "value": 3
+                  },
+                  {
+                    "id": "late-count",
+                    "team": "harbor",
+                    "metric": "shots",
+                    "window": "late",
+                    "eventIds": [
+                      "pressure-202632-506"
+                    ],
+                    "value": 1
+                  }
+                ],
+                "qualifications": [
+                  "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+                  "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+                  "Synthetic match, players and event-model xG. No continuous tracking."
+                ],
+                "eventIds": [
+                  "pressure-202632-410",
+                  "pressure-202632-435",
+                  "pressure-202632-451",
+                  "pressure-202632-463",
+                  "pressure-202632-506"
+                ]
+              }
+            ],
+            "eligible": false,
+            "noCallReason": "Fewer than two qualifying recovery links cannot establish a repeated route. The recorded comparison is sufficient.",
+            "decision": "publish-comparison"
+          }
+        },
+        {
+          "version": "guided-1.1.2",
+          "question": {
+            "intent": "chance-quality",
+            "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+          },
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "storyHeadline": "Harbor: more shots",
+          "team": "harbor",
+          "metric": "shots",
+          "availability": "available",
+          "reason": null,
+          "verdict": "higher",
+          "windows": [
+            {
+              "id": "previous",
+              "start": 2700,
+              "end": 3450,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "current",
+              "start": 3450,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            }
+          ],
+          "measurements": [
+            {
+              "id": "own-previous",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "own-current",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            },
+            {
+              "id": "previous-shots",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "previous-xg",
+              "team": "harbor",
+              "metric": "source xG total",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 0.12
+            },
+            {
+              "id": "previous-mean-xg",
+              "team": "harbor",
+              "metric": "source xG per shot",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 0.12
+            },
+            {
+              "id": "previous-rated-shots",
+              "team": "harbor",
+              "metric": "shots with source xG",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "current-shots",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            },
+            {
+              "id": "current-xg",
+              "team": "harbor",
+              "metric": "source xG total",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 0.54
+            },
+            {
+              "id": "current-mean-xg",
+              "team": "harbor",
+              "metric": "source xG per shot",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 0.135
+            },
+            {
+              "id": "current-rated-shots",
+              "team": "harbor",
+              "metric": "shots with source xG",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            }
+          ],
+          "qualifications": [
+            "Source-model xG estimates scoring likelihood; it is not a guarantee or proof of a tactical change.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking."
+          ],
+          "eventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "version": "guided-1.1.2",
+          "question": {
+            "intent": "opponent-improvement",
+            "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+          },
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "storyHeadline": "Harbor: more shots",
+          "team": "harbor",
+          "metric": "shots",
+          "availability": "available",
+          "reason": null,
+          "verdict": "level",
+          "windows": [
+            {
+              "id": "previous",
+              "start": 2700,
+              "end": 3450,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "current",
+              "start": 3450,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            }
+          ],
+          "measurements": [
+            {
+              "id": "own-previous",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "own-current",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            },
+            {
+              "id": "opponent-previous",
+              "team": "riverside",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [],
+              "value": 0
+            },
+            {
+              "id": "opponent-current",
+              "team": "riverside",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [],
+              "value": 0
+            }
+          ],
+          "qualifications": [
+            "This compares recorded activity, not overall performance or control of the match.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking."
+          ],
+          "eventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ]
+        },
+        {
+          "version": "guided-1.1.2",
+          "question": {
+            "intent": "fading-activity",
+            "storyId": "pressure:activity-change:harbor:shots:pressure-202632-435"
+          },
+          "matchId": "pressure",
+          "cutoff": 4200,
+          "storyHeadline": "Harbor: more shots",
+          "team": "harbor",
+          "metric": "shots",
+          "availability": "available",
+          "reason": null,
+          "verdict": "lower",
+          "windows": [
+            {
+              "id": "previous",
+              "start": 2700,
+              "end": 3450,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "current",
+              "start": 3450,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "early",
+              "start": 3450,
+              "end": 3825,
+              "period": "2H",
+              "boundary": "(start,end]"
+            },
+            {
+              "id": "late",
+              "start": 3825,
+              "end": 4200,
+              "period": "2H",
+              "boundary": "(start,end]"
+            }
+          ],
+          "measurements": [
+            {
+              "id": "own-previous",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "previous",
+              "eventIds": [
+                "pressure-202632-410"
+              ],
+              "value": 1
+            },
+            {
+              "id": "own-current",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "current",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463",
+                "pressure-202632-506"
+              ],
+              "value": 4
+            },
+            {
+              "id": "early-count",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "early",
+              "eventIds": [
+                "pressure-202632-435",
+                "pressure-202632-451",
+                "pressure-202632-463"
+              ],
+              "value": 3
+            },
+            {
+              "id": "late-count",
+              "team": "harbor",
+              "metric": "shots",
+              "window": "late",
+              "eventIds": [
+                "pressure-202632-506"
+              ],
+              "value": 1
+            }
+          ],
+          "qualifications": [
+            "The two recent halves sit inside the wider current window. A slowdown does not erase its increase or predict what happens next.",
+            "The current-window increase is not sustained at the same rate in its latest half: 1 shots, after 3 in the first half. This limits an inference that the increase is continuing.",
+            "Synthetic match, players and event-model xG. No continuous tracking."
+          ],
+          "eventIds": [
+            "pressure-202632-410",
+            "pressure-202632-435",
+            "pressure-202632-451",
+            "pressure-202632-463",
+            "pressure-202632-506"
+          ]
+        }
+      ]
+    },
+    "comparison": "Showing the deterministic B2 answer. No verified model conclusion was published.",
+    "initialEvidence": [
+      {
+        "optionId": "option:f39ad1e055fc1a5e16103639cc7bc4af",
+        "label": "Complete support and challenges for this development",
+        "purpose": "inspect-challenge",
+        "coverage": {
+          "bundle": "complete",
+          "routeReferences": null,
+          "eventDetails": {
+            "status": "partial",
+            "eligible": 182,
+            "returned": 40,
+            "omitted": 142
+          },
+          "source": {
+            "scope": "recorded-events-only",
+            "providerCompleteness": "unknown",
+            "eventCount": 182,
+            "actors": {
+              "status": "complete",
+              "eligible": 182,
+              "known": 182,
+              "missing": 0
+            },
+            "shotOutcomes": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "actionLocations": {
+              "status": "complete",
+              "eligible": 120,
+              "known": 120,
+              "missing": 0
+            },
+            "xg": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "possession": {
+              "status": "complete",
+              "eligible": 182,
+              "known": 182,
+              "missing": 0
+            },
+            "secondLevelTiming": {
+              "status": "complete",
+              "eligible": 182,
+              "known": 182,
+              "missing": 0
+            },
+            "shotLocations": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "recoveryLocations": {
+              "status": "complete",
+              "eligible": 21,
+              "known": 21,
+              "missing": 0
+            },
+            "passOutcomes": {
+              "status": "complete",
+              "eligible": 110,
+              "known": 110,
+              "missing": 0
+            },
+            "passRecipients": {
+              "status": "complete",
+              "eligible": 110,
+              "known": 110,
+              "missing": 0
+            },
+            "passCoordinates": {
+              "status": "complete",
+              "eligible": 110,
+              "known": 110,
+              "missing": 0
+            }
+          },
+          "missingInformation": [
+            "Off-ball tracking, defensive pressure and player intentions."
+          ]
+        }
+      },
+      {
+        "optionId": "option:87e14e720f7aa1d4d64379ebb45c8815",
+        "label": "What best describes this shot surge?",
+        "purpose": "distinguish-concentration",
+        "coverage": {
+          "bundle": "complete",
+          "routeReferences": {
+            "eligible": 18,
+            "returned": 18,
+            "omitted": 0
+          },
+          "eventDetails": {
+            "status": "complete",
+            "eligible": 18,
+            "returned": 18,
+            "omitted": 0
+          },
+          "source": {
+            "scope": "recorded-events-only",
+            "providerCompleteness": "unknown",
+            "eventCount": 18,
+            "actors": {
+              "status": "complete",
+              "eligible": 18,
+              "known": 18,
+              "missing": 0
+            },
+            "shotOutcomes": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "actionLocations": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "xg": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "possession": {
+              "status": "complete",
+              "eligible": 18,
+              "known": 18,
+              "missing": 0
+            },
+            "secondLevelTiming": {
+              "status": "complete",
+              "eligible": 18,
+              "known": 18,
+              "missing": 0
+            },
+            "shotLocations": {
+              "status": "complete",
+              "eligible": 5,
+              "known": 5,
+              "missing": 0
+            },
+            "recoveryLocations": {
+              "status": "complete",
+              "eligible": 13,
+              "known": 13,
+              "missing": 0
+            },
+            "passOutcomes": {
+              "status": "complete",
+              "eligible": 0,
+              "known": 0,
+              "missing": 0
+            },
+            "passRecipients": {
+              "status": "complete",
+              "eligible": 0,
+              "known": 0,
+              "missing": 0
+            },
+            "passCoordinates": {
+              "status": "complete",
+              "eligible": 0,
+              "known": 0,
+              "missing": 0
+            }
+          },
+          "missingInformation": []
+        }
+      }
+    ],
+    "investigatedEvidence": []
+  }
+}
