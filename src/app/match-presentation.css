@@ -1599,11 +1599,15 @@
 
 .director-observations > div {
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 .director-observations button {
+  justify-content: flex-start;
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.35;
   text-align: left;
-  padding: 10px 0;
 }
 
 .pitch-story-label {
