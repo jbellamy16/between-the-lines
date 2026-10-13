@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { providerCooldown, reserveProviderAttempt } from "./request-controls";
+import { reserveSpend } from "./spend-ledger";
 export type Provider = "openai" | "foundry";
 export type ProviderMode = Provider | "offline";
 export function configuredProvider(): ProviderMode {
@@ -174,6 +175,9 @@ export async function providerResponse(
     );
     wholeSignal.throwIfAborted();
     await options.beforeAttempt?.();
+    wholeSignal.throwIfAborted();
+    // Dollar ceiling: worst-case cost is reserved before every dispatch.
+    await reserveSpend(Buffer.byteLength(payload, "utf8"), OUTPUT_ALLOWANCE);
     wholeSignal.throwIfAborted();
     let res: Response;
     const transportSignal = AbortSignal.any([

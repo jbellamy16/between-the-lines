@@ -1,0 +1,59 @@
+import { z } from "zod";
+
+export const ANALYST_VERSION = "analyst-1.0.0";
+export const QUESTION_MAX_LENGTH = 240;
+
+export const analystStyleSchema = z.enum(["plain", "fan", "analysis"]);
+export type AnalystStyle = z.infer<typeof analystStyleSchema>;
+
+export const analystRequestSchema = z
+  .object({
+    scenario: z.enum(["pressure", "substitution", "quiet"]),
+    profile: z.enum(["demo", "balanced"]).default("demo"),
+    time: z.number().finite().min(0).max(7200),
+    question: z.string().trim().min(3).max(QUESTION_MAX_LENGTH),
+    style: analystStyleSchema.default("plain"),
+  })
+  .strict();
+export type AnalystRequest = z.infer<typeof analystRequestSchema>;
+
+export type AnalystStep =
+  | { kind: "plan"; label: string }
+  | { kind: "tool"; tool: string; label: string; events: number }
+  | { kind: "rejected-query"; label: string }
+  | { kind: "verify"; passed: boolean; label: string; issues: string[] }
+  | { kind: "revise"; label: string };
+
+export type AnalystResult = {
+  version: string;
+  status: "answered" | "declined" | "unverified" | "offline" | "unavailable";
+  matchId: string;
+  cutoff: number;
+  question: string;
+  answer: string | null;
+  citedEventIds: string[];
+  steps: AnalystStep[];
+  source: "offline" | "openai" | "foundry";
+  model: string | null;
+  cached: boolean;
+  metrics: {
+    requests: number;
+    toolCalls: number;
+    latencyMs: number;
+    estimatedCostUsd: number | null;
+  };
+  notice: string;
+};
+
+/** One NDJSON line from /api/ask. */
+export type AnalystStreamLine =
+  | { type: "step"; step: AnalystStep }
+  | { type: "result"; result: AnalystResult };
+
+/** Starter prompts shown under the question box. */
+export const suggestedQuestions = [
+  "What changed in the last ten minutes?",
+  "Is the other team doing anything about it?",
+  "Who has been most involved for Harbor?",
+  "Are these chances actually any good?",
+] as const;

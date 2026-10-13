@@ -153,11 +153,14 @@ export function createInvestigation(
   cutoff: number,
   mode: Mode,
   preferences: StoryPreferences = {},
-  options: { unranked?: boolean } = {},
+  options: { unranked?: boolean; maxTools?: number } = {},
 ) {
+  const toolBudget = Math.max(1, Math.min(8, options.maxTools ?? 4));
   const visible = visibleEvents(match, cutoff),
     allowed = new Set(visible.map((e) => e.id));
-  const candidates = observe(match, cutoff, mode, preferences, options);
+  const candidates = observe(match, cutoff, mode, preferences, {
+    unranked: options.unranked,
+  });
   const claims = new Map<string, Claim>();
   const trace: {
     tool: ToolName;
@@ -170,7 +173,7 @@ export function createInvestigation(
   function execute(name: string, raw: unknown) {
     if (!(toolNames as readonly string[]).includes(name))
       throw new EvidenceQueryError("Unknown evidence tool");
-    if (trace.length >= 4) throw new Error("Tool budget exhausted");
+    if (trace.length >= toolBudget) throw new Error("Tool budget exhausted");
     const query = querySchema.parse(raw);
     if (
       query.claimId &&

@@ -171,9 +171,23 @@ describe("frozen feasibility preparation", () => {
       expect(digest(readFileSync(path, "utf8"))).toBe(
         frozen.sourceHashes[path],
       );
+    // Later script entries (editorial renderer, analyst eval, spend status) are
+    // removed so the rest of package.json is still compared byte for byte.
     const restoredPackage = readFileSync("package.json", "utf8")
       .split("\n")
-      .filter((line) => !line.includes('"eval:investigator:editorial"'))
+      .filter(
+        (line) =>
+          ![
+            '"eval:investigator:editorial"',
+            '"eval:analyst"',
+            '"ai:spend"',
+          ].some((key) => line.includes(key)),
+      )
+      .map((line) =>
+        line.includes('"eval:investigator:prepare"')
+          ? line.replace(/,$/, "")
+          : line,
+      )
       .join("\n");
     expect(digest(restoredPackage)).toBe(frozen.sourceHashes["package.json"]);
   });

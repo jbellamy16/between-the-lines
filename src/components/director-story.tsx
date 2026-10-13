@@ -22,7 +22,7 @@ import { EvidenceReplay } from "./evidence-replay";
 import { providerLabel } from "./provenance";
 import { StoryEvidence } from "./story-evidence";
 import { reconstructStorylines } from "@/lib/ai/director/storylines";
-import { FoundryInvestigation } from "./foundry-investigation";
+import { AnalystPanel } from "./analyst-panel";
 import { GuidedInvestigation } from "./guided-investigation";
 import { StorylineHistory } from "./storyline-history";
 import { InvestigationSource } from "./investigation-source";
@@ -454,6 +454,13 @@ export function DirectorStory({
             {notice}
           </p>
         )}
+        <AnalystPanel
+          match={match}
+          time={time}
+          provider={provider}
+          onExplore={onExplore}
+          onEvent={onEvent}
+        />
         <AnimatedDetails className="director-disclosure quiet-evidence">
           <summary>Explore evidence</summary>
           <p>
@@ -497,12 +504,18 @@ export function DirectorStory({
         <h3 className="investigation-heading">What changed</h3>
         <p>{wording!.explanation}</p>
         <ExplanationSelector />
-        <InvestigationSource
-          source={story.provider}
-          cached={validAnswer?.metrics.cached}
-        />
         <h3 className="investigation-heading">Why it matters</h3>
         <p className="story-qualification">{wording!.why}</p>
+        <AnalystPanel
+          match={match}
+          time={time}
+          provider={provider}
+          onExplore={() => {
+            director.cancelInvestigation();
+            onExplore();
+          }}
+          onEvent={onEvent}
+        />
         <InvestigationEvidence
           story={story}
           match={match}
@@ -514,6 +527,10 @@ export function DirectorStory({
           <h3>What to watch next</h3>
           <p>{wording!.watch}</p>
         </section>
+        <InvestigationSource
+          source={story.provider}
+          cached={validAnswer?.metrics.cached}
+        />
         <small>
           Through {matchClock(match, story.cutoff)} ·{" "}
           {story.highlightedEventIds.length} highlighted actions
@@ -577,16 +594,6 @@ export function DirectorStory({
             {busy ? "Checking the passage and its supporting events…" : notice}
           </p>
         )}
-        <FoundryInvestigation
-          key={`${match.id}:${time}`}
-          match={match}
-          time={time}
-          onExplore={() => {
-            director.cancelInvestigation();
-            onExplore();
-          }}
-          onEvent={onEvent}
-        />
         <GuidedInvestigation
           match={match}
           story={story}

@@ -33,7 +33,9 @@
     "eval:editorial": "vitest run tests/editorial-baselines.test.ts",
     "eval:investigator": "vitest run tests/bounded-investigator.test.ts",
     "eval:investigator:editorial": "node --conditions=react-server --import tsx scripts/evaluate-investigator-editorial.ts",
-    "eval:investigator:prepare": "node --conditions=react-server --import tsx scripts/prepare-investigator-feasibility.ts"
+    "eval:investigator:prepare": "node --conditions=react-server --import tsx scripts/prepare-investigator-feasibility.ts",
+    "eval:analyst": "node --conditions=react-server --import tsx scripts/analyst-eval.ts",
+    "ai:spend": "node scripts/spend-status.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

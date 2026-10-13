@@ -1,0 +1,397 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { configure } from "./ai-helpers";
+import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
+import {
+  addText,
+  collectFacts,
+  emptyFacts,
+  verifyGrounding,
+} from "../src/lib/ai/analyst/grounding";
+import { runAnalyst, describeToolCall } from "../src/lib/ai/analyst/agent";
+import { askAnalyst, clientAllowed } from "../src/lib/ai/analyst/service";
+import {
+  attemptMicros,
+  reserveSpend,
+  resetLocalSpendLedger,
+} from "../src/lib/ai/spend-ledger";
+import { UsageFailure } from "../src/lib/ai/request-controls";
+
+const match = new SyntheticMatchSource().read("pressure", { profile: "demo" });
+const CUTOFF = 3804; // 63:24
+const roster = match.players;
+
+function reply(output: unknown[]) {
+  return Response.json({
+    status: "completed",
+    usage: { input_tokens: 1000, output_tokens: 100 },
+    output,
+  });
+}
+const toolCall = (name: string, args: Record<string, unknown>, id = name) => ({
+  type: "function_call",
+  name,
+  call_id: id,
+  arguments: JSON.stringify({
+    matchId: match.id,
+    team: null,
+    playerId: null,
+    eventId: null,
+    ...args,
+  }),
+});
+const answer = (value: unknown) => ({
+  type: "message",
+  content: [{ type: "output_text", text: JSON.stringify(value) }],
+});
+const surge = toolCall("compare_time_windows", {
+  start: 3252,
+  end: 3804,
+  team: "harbor",
+});
+
+describe("grounding check", () => {
+  const facts = collectFacts({
+    window: { from: "54:12", to: "63:24" },
+    counts: { shots: 4, previous: 0, xg: 0.12, passCompletionPct: 81 },
+    events: [{ clock: "59:09", player: "Theo March", type: "shot" }],
+  });
+  it("accepts numbers, times and names that appear in evidence", () => {
+    const result = verifyGrounding(
+      "Harbor had 4 shots from 54:12 to 63:24 after 0 before; Theo March shot at 59:09 (0.12 xG, 81% passing).",
+      facts,
+      roster,
+    );
+    expect(result.issues).toEqual([]);
+    expect(result.passed).toBe(true);
+  });
+  it("accepts football minute phrasing for a recorded time", () => {
+    expect(
+      verifyGrounding("A shot in the 60th minute.", facts, roster).passed,
+    ).toBe(true);
+  });
+  it("rejects an invented count", () => {
+    const result = verifyGrounding("Harbor had 7 shots.", facts, roster);
+    expect(result.passed).toBe(false);
+    expect(result.issues[0]).toContain('"7"');
+  });
+  it("ties counts to what was counted", () => {
+    expect(
+      verifyGrounding("Harbor had four shots.", facts, roster).passed,
+    ).toBe(true);
+    const wrongThing = verifyGrounding("Harbor made 4 passes.", facts, roster);
+    expect(wrongThing.passed).toBe(false);
+    expect(wrongThing.issues[0]).toContain("pass count");
+  });
+  it("rejects an invented number word", () => {
+    expect(
+      verifyGrounding("Harbor had nine shots.", facts, roster).passed,
+    ).toBe(false);
+  });
+  it("rejects an invented time", () => {
+    expect(verifyGrounding("They scored at 61:02.", facts, roster).passed).toBe(
+      false,
+    );
+  });
+  it("rejects a player who is not in the evidence", () => {
+    const other = roster.find((p) => p.name !== "Theo March")!;
+    const result = verifyGrounding(
+      `${other.name} drove the surge.`,
+      facts,
+      roster,
+    );
+    expect(result.passed).toBe(false);
+    expect(result.issues.join(" ")).toContain(other.name);
+  });
+  it("allows values the viewer supplied in the question", () => {
+    expect(
+      verifyGrounding(
+        "Over the last ten minutes the evidence shows 4 shots.",
+        facts,
+        roster,
+        "What changed in the last ten minutes?",
+      ).passed,
+    ).toBe(true);
+  });
+  it("rejects predictions and claims about feelings", () => {
+    expect(
+      verifyGrounding("Harbor will score soon.", facts, roster).passed,
+    ).toBe(false);
+    expect(verifyGrounding("Riverside look tired.", facts, roster).passed).toBe(
+      false,
+    );
+  });
+  it("collects clocks from free text", () => {
+    const f = emptyFacts();
+    addText(f, "Shot at 45+2:10");
+    expect(f.clocks.has("45+2:10")).toBe(true);
+  });
+});
+
+describe("analyst agent", () => {
+  beforeEach(() => {
+    configure("foundry");
+    resetLocalSpendLedger();
+  });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  });
+
+  it("uses tools, then publishes a grounded answer with its trace", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(reply([surge]))
+      .mockResolvedValueOnce(
+        reply([
+          answer({
+            status: "answered",
+            answer:
+              "Harbor took 4 shots between 54:12 and 63:24, after 0 in the equal spell before.",
+            citations: ["e1"],
+          }),
+        ]),
+      );
+    vi.stubGlobal("fetch", fetch);
+    const steps: string[] = [];
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "What changed recently?",
+      "fan",
+      "foundry",
+      { onStep: (s) => steps.push(s.kind) },
+    );
+    expect(result.status).toBe("answered");
+    expect(result.citedEventIds).toHaveLength(1);
+    expect(match.events.some((e) => e.id === result.citedEventIds[0])).toBe(
+      true,
+    );
+    expect(steps).toEqual(["plan", "tool", "verify"]);
+    expect(result.metrics.requests).toBe(2);
+    expect(result.metrics.toolCalls).toBe(1);
+    expect(result.metrics.estimatedCostUsd).toBeGreaterThan(0);
+    // The tool call was replayed statelessly, with the projected evidence.
+    const second = JSON.parse(fetch.mock.calls[1][1].body);
+    expect(second.input[1]).toMatchObject({
+      type: "function_call",
+      call_id: "compare_time_windows",
+    });
+    const evidence = JSON.parse(second.input[2].output);
+    expect(evidence.currentWindow.shots).toBe(4);
+    expect(evidence.previousWindow.shots).toBe(0);
+  });
+
+  it("revises once when the verifier finds an invented number", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(reply([surge]))
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 17 shots.",
+              citations: ["e1"],
+            }),
+          ]),
+        )
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 4 shots from 54:12 to 63:24.",
+              citations: ["e1"],
+            }),
+          ]),
+        ),
+    );
+    const kinds: string[] = [];
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "How many shots?",
+      "plain",
+      "foundry",
+      { onStep: (s) => kinds.push(s.kind) },
+    );
+    expect(result.status).toBe("answered");
+    expect(kinds).toEqual(["plan", "tool", "verify", "revise", "verify"]);
+    expect(result.steps[2]).toMatchObject({ passed: false });
+  });
+
+  it("never shows an answer that fails verification twice", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(reply([surge]))
+        .mockImplementation(async () =>
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 17 shots.",
+              citations: ["e1"],
+            }),
+          ]),
+        ),
+    );
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "How many shots?",
+      "plain",
+      "foundry",
+    );
+    expect(result.status).toBe("unverified");
+    expect(result.answer).toBeNull();
+  });
+
+  it("rejects citations that no tool returned", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(reply([surge]))
+        .mockImplementation(async () =>
+          reply([
+            answer({
+              status: "answered",
+              answer: "Harbor took 4 shots.",
+              citations: ["e999"],
+            }),
+          ]),
+        ),
+    );
+    const result = await runAnalyst(match, CUTOFF, "Shots?", "fan", "foundry");
+    expect(result.status).toBe("unverified");
+  });
+
+  it("declines questions the events can't answer", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValueOnce(
+        reply([
+          answer({
+            status: "cannot_answer",
+            answer:
+              "Recorded events can't show how the manager feels. They can show where Harbor's shots came from.",
+            citations: [],
+          }),
+        ]),
+      ),
+    );
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "Is the manager angry?",
+      "plain",
+      "foundry",
+    );
+    expect(result.status).toBe("declined");
+    expect(result.answer).toContain("can't");
+  });
+
+  it("feeds invalid queries back to the agent instead of failing", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(
+        reply([toolCall("get_team_statistics", { start: 0, end: 9999 })]),
+      )
+      .mockResolvedValueOnce(reply([surge]))
+      .mockResolvedValueOnce(
+        reply([
+          answer({
+            status: "answered",
+            answer: "Harbor took 4 shots from 54:12 to 63:24.",
+            citations: ["e1"],
+          }),
+        ]),
+      );
+    vi.stubGlobal("fetch", fetch);
+    const result = await runAnalyst(match, CUTOFF, "Shots?", "fan", "foundry");
+    expect(result.status).toBe("answered");
+    expect(result.steps.map((s) => s.kind)).toContain("rejected-query");
+  });
+
+  it("labels tool calls in plain words", () => {
+    expect(
+      describeToolCall(match, "compare_time_windows", {
+        matchId: match.id,
+        start: 3252,
+        end: 3804,
+        team: "harbor",
+        playerId: null,
+        eventId: null,
+      }),
+    ).toBe("Compared Harbor 45:00–54:12 with 54:12–63:24");
+  });
+
+  it("stays offline without spending when AI is disabled", async () => {
+    vi.stubEnv("AI_ENABLED", "false");
+    const fetch = vi.fn();
+    vi.stubGlobal("fetch", fetch);
+    const result = await askAnalyst(match, CUTOFF, "Shots?", "plain");
+    expect(result.status).toBe("offline");
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("falls back without an answer when the dollar ceiling is reached", async () => {
+    vi.stubEnv("AI_SPEND_CEILING_USD", "0.000001");
+    const fetch = vi.fn();
+    vi.stubGlobal("fetch", fetch);
+    const result = await askAnalyst(
+      match,
+      CUTOFF,
+      "Any shots lately?",
+      "plain",
+    );
+    expect(result.status).toBe("unavailable");
+    expect(result.answer).toBeNull();
+    expect(result.notice).toContain("usage limit");
+    expect(fetch).not.toHaveBeenCalled();
+  });
+});
+
+describe("spend ledger", () => {
+  beforeEach(() => resetLocalSpendLedger());
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("prices the worst case at one token per byte plus full output", () => {
+    // (20,000 + 256) bytes x $0.75/M + 1,800 x $4.50/M = $0.023292
+    expect(attemptMicros(20000, 1800)).toBe(23292);
+  });
+  it("stops reserving at the ceiling and never refunds", async () => {
+    vi.stubEnv("AI_SPEND_CEILING_USD", "0.05");
+    vi.stubEnv("AI_SPEND_LEDGER", "test");
+    await reserveSpend(20000, 1800);
+    await reserveSpend(20000, 1800);
+    await expect(reserveSpend(20000, 1800)).rejects.toBeInstanceOf(
+      UsageFailure,
+    );
+  });
+  it("keeps ledgers separate", async () => {
+    vi.stubEnv("AI_SPEND_CEILING_USD", "0.03");
+    vi.stubEnv("AI_SPEND_LEDGER", "test");
+    await reserveSpend(20000, 1800);
+    vi.stubEnv("AI_SPEND_LEDGER", "production");
+    await expect(reserveSpend(20000, 1800)).resolves.toBeTruthy();
+  });
+  it("fails closed in production without a ceiling", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    await expect(reserveSpend(100, 10)).rejects.toBeInstanceOf(UsageFailure);
+  });
+  it("is a no-op in development without a ceiling", async () => {
+    await expect(reserveSpend(100, 10)).resolves.toBeNull();
+  });
+});
+
+describe("per-client courtesy limit", () => {
+  it("allows a burst, then pauses that client only", () => {
+    const now = 1_000_000;
+    for (let i = 0; i < 3; i++) expect(clientAllowed("a", now, 3)).toBe(true);
+    expect(clientAllowed("a", now, 3)).toBe(false);
+    expect(clientAllowed("b", now, 3)).toBe(true);
+    expect(clientAllowed("a", now + 11 * 60 * 1000, 3)).toBe(true);
+  });
+});

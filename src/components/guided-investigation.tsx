@@ -206,13 +206,17 @@ function QuestionPanel({
           )}
           <p className="metric-note">{wording.windows}</p>
           {wording.qualifications.length > 0 && (
-            <h5 className="investigation-heading">What limits this reading</h5>
+            <AnimatedDetails className="director-disclosure question-limits">
+              <summary>
+                What limits this reading ({wording.qualifications.length})
+              </summary>
+              {wording.qualifications.map((q) => (
+                <p className="story-qualification" key={q}>
+                  {q}
+                </p>
+              ))}
+            </AnimatedDetails>
           )}
-          {wording.qualifications.map((q) => (
-            <p className="story-qualification" key={q}>
-              {q}
-            </p>
-          ))}
           {result.supplements.length > 0 && (
             <div className="question-followup">
               <h5 className="investigation-heading">Follow-up evidence</h5>

@@ -1,0 +1,293 @@
+"use client";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import type { MatchData } from "@/lib/sources/model";
+import { eventClock, matchClock } from "@/lib/sources/model";
+import {
+  QUESTION_MAX_LENGTH,
+  suggestedQuestions,
+  type AnalystResult,
+  type AnalystStep,
+  type AnalystStreamLine,
+} from "@/lib/ai/analyst/types";
+import { useExplanationStyle } from "./explanation-preference";
+import { providerLabel } from "./provenance";
+import { Check, X } from "./icons";
+
+/**
+ * Ask the Analyst: a free-text question answered by a tool-using agent.
+ * Steps stream in as the agent works; only answers that pass the grounding
+ * check are shown.
+ */
+export function AnalystPanel({
+  match,
+  time,
+  provider,
+  onExplore,
+  onEvent,
+}: {
+  match: MatchData;
+  time: number;
+  provider: string;
+  onExplore: () => void;
+  onEvent: (id: string) => void;
+}) {
+  const style = useExplanationStyle();
+  const inputId = useId();
+  const [question, setQuestion] = useState("");
+  const [asked, setAsked] = useState<{
+    question: string;
+    cutoff: number;
+  } | null>(null);
+  const [steps, setSteps] = useState<AnalystStep[]>([]);
+  const [result, setResult] = useState<AnalystResult | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const request = useRef<AbortController | null>(null);
+  const live = provider === "foundry" || provider === "openai";
+
+  const reset = () => {
+    request.current?.abort();
+    request.current = null;
+    setBusy(false);
+    setSteps([]);
+    setResult(null);
+    setAsked(null);
+    setError("");
+  };
+  // Never show an answer from a different match, or from after the viewer's position.
+  useEffect(reset, [match]);
+  useEffect(() => {
+    if (asked && (time < asked.cutoff || time - asked.cutoff > 600)) reset();
+  }, [time, asked]);
+  useEffect(() => () => request.current?.abort(), []);
+
+  async function ask(text: string) {
+    const q = text.trim();
+    if (q.length < 3 || match.kind !== "synthetic") return;
+    onExplore();
+    request.current?.abort();
+    const controller = new AbortController();
+    request.current = controller;
+    const cutoff = Math.floor(time);
+    setAsked({ question: q, cutoff });
+    setSteps([]);
+    setResult(null);
+    setError("");
+    setBusy(true);
+    try {
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: AbortSignal.any([
+          controller.signal,
+          AbortSignal.timeout(60000),
+        ]),
+        body: JSON.stringify({
+          scenario: match.provenance.raw.scenario,
+          profile: match.provenance.raw.profile,
+          time: cutoff,
+          question: q,
+          style,
+        }),
+      });
+      if (!response.ok || !response.body) throw new Error("Unavailable");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let newline: number;
+        while ((newline = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, newline).trim();
+          buffer = buffer.slice(newline + 1);
+          if (!line || request.current !== controller) continue;
+          const message = JSON.parse(line) as AnalystStreamLine;
+          if (message.type === "step") setSteps((s) => [...s, message.step]);
+          else if (
+            message.result.matchId === match.id &&
+            message.result.cutoff === cutoff
+          )
+            setResult(message.result);
+        }
+      }
+    } catch {
+      if (request.current === controller && !controller.signal.aborted)
+        setError(
+          "The analyst couldn't be reached. The story above is still checked from the recorded events.",
+        );
+    } finally {
+      if (request.current === controller) {
+        request.current = null;
+        setBusy(false);
+      }
+    }
+  }
+
+  function submit(event: FormEvent) {
+    event.preventDefault();
+    void ask(question);
+  }
+
+  if (match.kind !== "synthetic") return null;
+  const cited = result
+    ? match.events.filter((e) => result.citedEventIds.includes(e.id))
+    : [];
+  const verified = result?.status === "answered";
+  const declined = result?.status === "declined";
+  const lookups = steps.filter((s) => s.kind === "tool").length;
+
+  return (
+    <section className="analyst-panel" aria-label="Ask the analyst">
+      <div className="analyst-heading">
+        <h3>Ask the analyst</h3>
+        {live && (
+          <span className="analyst-engine">
+            {providerLabel(provider)} agent
+          </span>
+        )}
+      </div>
+      {live ? (
+        <>
+          <form className="analyst-form" onSubmit={submit}>
+            <label htmlFor={inputId} className="visually-hidden">
+              Your question about this match
+            </label>
+            <input
+              id={inputId}
+              type="text"
+              value={question}
+              maxLength={QUESTION_MAX_LENGTH}
+              placeholder="Ask about the match so far"
+              onChange={(e) => setQuestion(e.target.value)}
+              autoComplete="off"
+              enterKeyHint="send"
+            />
+            <button
+              type="submit"
+              className="analyst-submit"
+              disabled={busy || question.trim().length < 3}
+            >
+              {busy ? "Working…" : "Ask"}
+            </button>
+          </form>
+          <div className="analyst-suggestions" aria-label="Suggested questions">
+            {suggestedQuestions.map((s) => (
+              <button
+                key={s}
+                type="button"
+                className="analyst-chip"
+                disabled={busy}
+                onClick={() => {
+                  setQuestion(s);
+                  void ask(s);
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </>
+      ) : (
+        <p className="analyst-offline">
+          The live analyst is off in this build. Try the questions under Look
+          closer; they're answered from the recorded events.
+        </p>
+      )}
+
+      {asked && (
+        <div className="analyst-response" aria-live="polite">
+          <p className="analyst-question">
+            <span>You asked at {matchClock(match, asked.cutoff)}</span>
+            {asked.question}
+          </p>
+          {(steps.length > 0 || busy) && (
+            <ol className="analyst-trace" aria-label="What the analyst did">
+              {steps.map((step, i) => (
+                <li
+                  key={i}
+                  className={`analyst-step analyst-step-${step.kind}`}
+                >
+                  <span className="analyst-step-mark" aria-hidden="true">
+                    {step.kind === "verify" && !step.passed ? (
+                      <X size={16} />
+                    ) : step.kind === "verify" ? (
+                      <Check size={16} />
+                    ) : null}
+                  </span>
+                  <span>
+                    {step.label}
+                    {step.kind === "tool" && (
+                      <small> · {step.events} events</small>
+                    )}
+                  </span>
+                </li>
+              ))}
+              {busy && (
+                <li className="analyst-step analyst-step-pending">
+                  <span className="analyst-step-mark" aria-hidden="true" />
+                  <span>
+                    {steps.length <= 1
+                      ? "Choosing which evidence to check…"
+                      : "Checking the evidence…"}
+                  </span>
+                </li>
+              )}
+            </ol>
+          )}
+          {result && result.answer && (verified || declined) && (
+            <div
+              className={`analyst-answer ${verified ? "is-verified" : "is-declined"}`}
+            >
+              <span className="analyst-badge">
+                {verified
+                  ? `Verified · ${lookups} ${lookups === 1 ? "lookup" : "lookups"}${result.cached ? " · reused" : ""}`
+                  : "The events can't tell us that"}
+              </span>
+              <p>{result.answer}</p>
+              {cited.length > 0 && (
+                <div className="analyst-cited">
+                  <span>Replay the evidence</span>
+                  {cited.map((e) => (
+                    <button
+                      key={e.id}
+                      type="button"
+                      className="text-button"
+                      onClick={() => onEvent(e.id)}
+                    >
+                      {eventClock(match, e)} · {e.type.replaceAll("_", " ")}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {result && !result.answer && (
+            <p className="notice" role="status">
+              {result.notice}
+            </p>
+          )}
+          {error && (
+            <p className="notice" role="status">
+              {error}
+            </p>
+          )}
+          {busy && (
+            <button
+              type="button"
+              className="text-button"
+              onClick={() => {
+                request.current?.abort();
+                request.current = null;
+                setBusy(false);
+              }}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
