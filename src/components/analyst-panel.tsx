@@ -202,7 +202,10 @@ export function AnalystPanel({
     if (reveal) {
       revealSoon(() => responseRef.current);
       if (live) followAnswer();
-    }
+    } else if (moment || checked)
+      // A tapped moment opens the analyst: in the desktop frame's story
+      // panel, bring the question into view. The page itself stays put.
+      revealSoon(() => responseRef.current, { panelOnly: true });
     if (!live) {
       setBusy(false);
       return;

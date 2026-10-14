@@ -35,19 +35,30 @@ const clearScrolls = (page: Page) =>
   page.evaluate(() => {
     (window as unknown as { __scrolls: Scroll[] }).__scrolls.length = 0;
   });
-/** Viewport box of an element, and the top of the phone tab bar (or the viewport bottom). */
+/**
+ * Viewport box of an element, the bottom of a fixed header (or 0), and the top
+ * of whatever is fixed along the bottom edge: the phone tab bar, the pinned
+ * playback controls or the desktop playback bar (or the viewport bottom).
+ */
 const box = (page: Page, selector: string) =>
   page.evaluate((selector) => {
     const r = document.querySelector(selector)!.getBoundingClientRect();
-    const bar = document.querySelector(".app-shell:not([hidden]) .sidebar");
-    const fixedBar =
-      bar &&
-      getComputedStyle(bar).position === "fixed" &&
-      bar.getBoundingClientRect().top > innerHeight / 2;
+    const fixed = (s: string) => {
+      const el = document.querySelector(`.app-shell:not([hidden]) ${s}`);
+      if (!el || getComputedStyle(el).position !== "fixed") return null;
+      const rect = el.getBoundingClientRect();
+      return rect.height ? rect : null;
+    };
+    const header = fixed(".topbar");
+    const floors = [".sidebar", ".match-header", ".match-controls"]
+      .map(fixed)
+      .filter((rect) => rect && rect.top > innerHeight / 2)
+      .map((rect) => rect!.top);
     return {
       top: r.top,
       bottom: r.bottom,
-      floor: fixedBar ? bar.getBoundingClientRect().top : innerHeight,
+      ceiling: header ? header.bottom : 0,
+      floor: Math.min(innerHeight, ...floors),
     };
   }, selector);
 const phoneOnly = (info: TestInfo) =>
@@ -210,9 +221,12 @@ test("no scroll when the result is already fully visible", async ({
   );
   await page.waitForTimeout(1500);
   const pitch = await box(page, `${shell} .pitch-panel`);
-  await page.evaluate((y) => window.scrollBy(0, y), pitch.top - 20);
+  await page.evaluate(
+    (y) => window.scrollBy(0, y),
+    pitch.top - pitch.ceiling - 20,
+  );
   const fitted = await box(page, `${shell} .pitch-panel`);
-  expect(fitted.top).toBeGreaterThanOrEqual(0);
+  expect(fitted.top).toBeGreaterThanOrEqual(fitted.ceiling);
   expect(fitted.bottom).toBeLessThanOrEqual(fitted.floor);
   // A second chip beside it replays on the visible pitch: nothing moves.
   await expect(chips.nth(1)).toBeInViewport();

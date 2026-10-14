@@ -66,16 +66,24 @@ export function MomentCard({
   moments,
   time,
   playing,
+  opened,
   onOpen,
 }: {
   match: MatchData;
   moments: MatchMoment[];
   time: number;
   playing: boolean;
+  /** Changes whenever a moment is opened from anywhere; the card steps aside. */
+  opened?: string;
   onOpen: (moment: MatchMoment) => void;
 }) {
   const [shown, setShown] = useState<MatchMoment | null>(null);
   const [held, setHeld] = useState(false);
+  useEffect(() => {
+    if (!opened) return;
+    setShown(null);
+    setHeld(false);
+  }, [opened]);
   const previous = useRef(time);
   useEffect(() => {
     const from = previous.current;
@@ -227,6 +235,65 @@ function MomentRow({
           <span className="moment-card-line">{wording.explanation}</span>
         </span>
         <ArrowRight size={16} />
+      </button>
+    </li>
+  );
+}
+
+/** The desktop frame's left panel: every moment so far, newest first. */
+export function MomentRail({
+  match,
+  moments,
+  onOpen,
+}: {
+  match: MatchData;
+  moments: MatchMoment[];
+  onOpen: (moment: MatchMoment) => void;
+}) {
+  return (
+    <section className="moment-rail" aria-labelledby="moment-rail-title">
+      <h2 id="moment-rail-title">
+        Moments <span>{moments.length}</span>
+      </h2>
+      {moments.length ? (
+        <ol>
+          {moments
+            .slice()
+            .reverse()
+            .map((moment, i) => (
+              <MomentRailRow
+                key={moment.id}
+                match={match}
+                moment={moment}
+                latest={i === 0}
+                onOpen={() => onOpen(moment)}
+              />
+            ))}
+        </ol>
+      ) : (
+        <p>Moments appear here as the match story starts or changes.</p>
+      )}
+    </section>
+  );
+}
+
+function MomentRailRow({
+  match,
+  moment,
+  latest,
+  onOpen,
+}: {
+  match: MatchData;
+  moment: MatchMoment;
+  latest: boolean;
+  onOpen: () => void;
+}) {
+  const wording = useMomentWording(match, moment);
+  return (
+    <li className={`moment-${moment.kind}${latest ? " latest" : ""}`}>
+      <button onClick={onOpen}>
+        <time>{momentClock(match, moment)}</time>
+        <span>{wording.headline}</span>
       </button>
     </li>
   );

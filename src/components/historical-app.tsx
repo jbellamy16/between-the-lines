@@ -98,6 +98,7 @@ export function HistoricalApp({
   return (
     <MatchShell
       historical
+      frame
       section={section}
       setSection={setSection}
       onSettings={() => setSettings(true)}

@@ -1,0 +1,308 @@
+/*
+ * Desktop app frame: a fixed header and a fixed playback bar, with three
+ * panels between them. Left: navigation and the moments so far. Centre: the
+ * section (scrolls with the page). Right: the story and the analyst (scrolls
+ * on its own). Phones and tablets keep the stacked layout.
+ */
+.sidebar-library {
+  display: none;
+}
+
+@media (min-width: 1021px) {
+  .app-shell.frame {
+    --frame-gap: 8px;
+    --frame-header: 64px;
+    --frame-footer: 92px;
+    --frame-left: 76px;
+    --frame-right: clamp(340px, 28vw, 420px);
+    --frame-radius: 12px;
+  }
+  html:has(.app-shell.frame:not([hidden])) {
+    scroll-padding-top: calc(64px + 16px);
+    scroll-padding-bottom: calc(92px + 16px);
+  }
+
+  /* Header: brand, fixture picker, settings. */
+  .app-shell.frame .topbar {
+    display: flex;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 25;
+    height: var(--frame-header);
+    min-height: var(--frame-header);
+    padding: 0 16px 0 20px;
+    border-bottom: 0;
+    background: var(--sl-midnight);
+  }
+  .app-shell.frame .mobile-brand {
+    display: flex;
+    align-items: center;
+  }
+  .app-shell.frame .mobile-brand img {
+    width: 128px;
+    height: auto;
+  }
+  .app-shell.frame .breadcrumb,
+  .app-shell.frame .sidebar .brand,
+  .app-shell.frame .sidebar-bottom {
+    display: none;
+  }
+  .app-shell.frame .topbar .mobile-settings {
+    display: inline-flex !important;
+  }
+  .app-shell.frame .fixture-selector {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 26;
+    width: min(640px, calc(100vw - 400px));
+    height: var(--frame-header);
+    padding: 0;
+    justify-content: center;
+    transform: translateX(-50%);
+  }
+  .app-shell.frame .fixture-selector select {
+    max-width: none;
+    height: 44px;
+    border-radius: 999px;
+    padding-inline: 20px 14px;
+  }
+
+  /* Left panel: navigation, then the moments so far. */
+  .app-shell.frame .sidebar {
+    top: var(--frame-header);
+    bottom: var(--frame-footer);
+    left: var(--frame-gap);
+    width: var(--frame-left);
+    padding: 12px 8px;
+    border: 0;
+    border-radius: var(--frame-radius);
+    background: var(--sl-navy);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .app-shell.frame .sidebar nav {
+    margin-top: 0;
+  }
+  .app-shell.frame .nav-item {
+    justify-content: center;
+    padding: 13px 0;
+    font-size: 0;
+  }
+  .app-shell.frame .nav-item > span {
+    display: none;
+  }
+
+  /* Centre panel: the page scrolls between the header and the playback bar. */
+  .app-shell.frame .workspace {
+    margin: 0;
+    padding: var(--frame-header) calc(var(--frame-right) + var(--frame-gap) * 2)
+      var(--frame-footer) calc(var(--frame-left) + var(--frame-gap) * 2);
+  }
+  .app-shell.frame:not([data-section="match"]) .workspace {
+    padding-right: calc(var(--frame-gap) * 2);
+  }
+  .app-shell.frame main {
+    max-width: none;
+    padding: 0 2px 24px;
+  }
+  .app-shell.frame .match-grid:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+    animation: none;
+  }
+  .app-shell.frame .match-left,
+  .app-shell.frame .detail-panel {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* Right panel: the story card and Ask the analyst. */
+  .app-shell.frame .main-story {
+    position: fixed;
+    top: var(--frame-header);
+    right: var(--frame-gap);
+    bottom: var(--frame-footer);
+    z-index: 20;
+    width: var(--frame-right);
+    border-radius: var(--frame-radius);
+    background: var(--sl-navy);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  .app-shell.frame .main-story > * {
+    margin: 0;
+    border: 0;
+    border-radius: var(--frame-radius);
+    min-height: 100%;
+  }
+
+  /* Playback bar: the score, the controls, Catch me up. Always reachable. */
+  .app-shell.frame .match-header {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 25;
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    height: var(--frame-footer);
+    padding: 0 20px;
+    background: var(--sl-midnight);
+  }
+  .app-shell.frame .match-header .scoreboard {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    justify-content: flex-start;
+  }
+  .app-shell.frame .match-controls {
+    min-width: 0;
+  }
+  .app-shell.frame .match-controls .playback {
+    padding: 0;
+    gap: 12px;
+  }
+  .app-shell.frame .match-controls .timeline-labels {
+    font-size: 10px;
+  }
+  .app-shell.frame .match-header .view-toolbar {
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+  }
+  /* An arriving moment slides in over the centre, never over the analyst. */
+  .app-shell.frame .moment-card {
+    right: calc(var(--frame-right) + var(--frame-gap) * 3);
+    bottom: calc(var(--frame-footer) + var(--frame-gap) * 2);
+  }
+  .app-shell.frame:not([data-section="match"]) .moment-card {
+    right: calc(var(--frame-gap) * 3);
+  }
+}
+
+/* Phones and tablets: the playback controls stay pinned to the bottom. */
+@media (max-width: 1020px) {
+  .app-shell.frame .match-controls {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 76px;
+    z-index: 19;
+    padding: 14px 14px calc(8px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--sl-border);
+    background: var(--sl-midnight);
+  }
+  .app-shell.frame .match-controls .playback {
+    padding: 0;
+    gap: 10px;
+  }
+  .app-shell.frame .match-controls .timeline-labels {
+    display: none;
+  }
+  .app-shell.frame .workspace {
+    padding-bottom: 88px;
+  }
+  .app-shell.frame .moment-card {
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 600px) {
+  .app-shell.frame .match-controls {
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    left: 0;
+    padding: 14px 12px 8px;
+  }
+  .app-shell.frame .workspace {
+    padding-bottom: calc(164px + env(safe-area-inset-bottom));
+  }
+  .app-shell.frame .moment-card {
+    bottom: calc(160px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Wide enough for labels and the moments list in the left panel. */
+@media (min-width: 1280px) {
+  .app-shell.frame {
+    --frame-left: 240px;
+  }
+  .app-shell.frame .sidebar {
+    padding: 12px;
+  }
+  .app-shell.frame .nav-item {
+    justify-content: flex-start;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .app-shell.frame .nav-item > span {
+    display: inline;
+  }
+  .app-shell.frame .sidebar-library {
+    display: block;
+  }
+}
+
+.moment-rail {
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--sl-border);
+}
+.moment-rail h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 8px 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.moment-rail h2 span,
+.moment-rail p {
+  color: var(--sl-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+.moment-rail p {
+  padding: 0 8px;
+  line-height: 1.45;
+}
+.moment-rail ol {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.moment-rail button {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--sl-radius-control);
+  color: var(--sl-text);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+}
+.moment-rail button:hover {
+  background: var(--sl-hover);
+  filter: none;
+}
+.moment-rail li.latest button {
+  background: var(--sl-selected);
+}
+.moment-rail time {
+  color: var(--sl-green);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.moment-rail button span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

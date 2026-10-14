@@ -192,3 +192,66 @@
     text-align: center;
   }
 }
+
+/* Desktop app frame: the scoreboard sits at the left of the playback bar. */
+@media (min-width: 1021px) {
+  :global(.app-shell.frame) .summary {
+    --score-width: auto;
+    --column-gap: 12px;
+    width: 100%;
+  }
+
+  :global(.app-shell.frame) .competition,
+  :global(.app-shell.frame) .summary .details {
+    display: none;
+  }
+
+  :global(.app-shell.frame) .matchup {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  :global(.app-shell.frame) .team > span:not(.monogram) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.app-shell.frame) .team {
+    min-height: 0;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  :global(.app-shell.frame) .summary .matchup .team img,
+  :global(.app-shell.frame) .monogram {
+    width: 30px;
+    height: 30px;
+  }
+
+  :global(.app-shell.frame) .score {
+    min-height: 0;
+    gap: 8px;
+    font-size: 26px;
+  }
+
+  :global(.app-shell.frame) .separator {
+    height: 20px;
+  }
+
+  :global(.app-shell.frame) .clock {
+    gap: 2px;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  :global(.app-shell.frame) .clock time {
+    font-size: 13px;
+  }
+
+  :global(.app-shell.frame) .status {
+    font-size: 10px;
+  }
+}

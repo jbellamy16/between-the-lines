@@ -73,7 +73,13 @@ test("both sources share the layout and evidence flow at the same viewport", asy
             : el.matches(".scoreboard")
               ? b.y - fixture.bottom
               : el.matches(".playback")
-                ? b.y - scoreboard.bottom
+                ? // Pinned controls sit at a fixed place; otherwise they follow the scoreboard.
+                  getComputedStyle(el.closest(".match-controls")!).position ===
+                    "fixed" ||
+                  getComputedStyle(el.closest(".match-header")!).position ===
+                    "fixed"
+                  ? b.y
+                  : b.y - scoreboard.bottom
                 : b.y;
           return [b.x, y, b.width];
         });

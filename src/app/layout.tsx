@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "./motion.css";
 import "./match-presentation.css";
+import "./app-frame.css";
 const inter = localFont({
   src: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
   variable: "--font-inter",

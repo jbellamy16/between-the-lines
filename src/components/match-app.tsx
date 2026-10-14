@@ -28,7 +28,12 @@ import { useAppearance } from "./appearance";
 import { EvidenceReplay } from "./evidence-replay";
 import { Activity, ArrowUpRight, Play, RotateCcw } from "./icons";
 import { Welcome } from "./welcome";
-import { MomentCard, MomentTimeline, useMatchMoments } from "./match-moments";
+import {
+  MomentCard,
+  MomentRail,
+  MomentTimeline,
+  useMatchMoments,
+} from "./match-moments";
 import type { MatchMoment } from "@/lib/moments";
 import { storyGoalId } from "@/lib/explanation";
 import { ModalHeader } from "./modal-header";
@@ -480,6 +485,14 @@ export function MatchApp({
       onSettings={() => setModal("settings")}
       ready={ready}
       nav={DEMO_NAV}
+      frame
+      library={
+        <MomentRail
+          match={canonicalMatch}
+          moments={moments}
+          onOpen={openMoment}
+        />
+      }
       dialog={
         <dialog
           ref={dialogRef}
@@ -712,6 +725,7 @@ export function MatchApp({
         moments={moments}
         time={time}
         playing={playing}
+        opened={momentAsk?.id}
         onOpen={openMoment}
       />
       <MatchHeader

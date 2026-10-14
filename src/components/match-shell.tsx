@@ -32,6 +32,8 @@ export function MatchShell({
   historical = false,
   ready = true,
   nav = MATCH_NAV,
+  frame = false,
+  library,
 }: {
   section: MatchSection;
   setSection: (section: MatchSection) => void;
@@ -46,10 +48,18 @@ export function MatchShell({
     label: string;
     icon: (typeof MATCH_NAV)[number]["icon"];
   }[];
+  /**
+   * Desktop app frame: fixed header and playback bar with three panels
+   * between them (navigation, the section, the story and analyst).
+   */
+  frame?: boolean;
+  /** Shown under the navigation in the desktop frame. */
+  library?: ReactNode;
 }) {
   return (
     <div
-      className={`app-shell data-first ${historical ? "historical-shell" : ""}`}
+      className={`app-shell data-first ${historical ? "historical-shell" : ""} ${frame ? "frame" : ""}`}
+      data-section={section}
       inert={!ready}
       aria-busy={!ready}
     >
@@ -77,6 +87,7 @@ export function MatchShell({
             </button>
           ))}
         </SelectionGroup>
+        {library && <div className="sidebar-library">{library}</div>}
         <div className="sidebar-bottom">
           <button
             className="nav-item"
