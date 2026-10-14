@@ -108,7 +108,9 @@ export function describeToolCall(
     case "get_team_statistics":
       return `Counted ${possessive(team)} actions, ${span}`;
     case "get_player_involvement":
-      return `Looked at ${possessive(player ?? "the player")} actions, ${span}`;
+      return player
+        ? `Looked at ${possessive(player)} actions, ${span}`
+        : `Ranked ${possessive(team)} players by involvement, ${span}`;
     case "compare_time_windows": {
       const width = query.end - query.start;
       return `Compared ${player ?? team} ${clock(query.start - width)}–${clock(query.start)} with ${span}`;

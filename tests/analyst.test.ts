@@ -680,6 +680,50 @@ describe("analyst agent", () => {
     ).toBe(true);
   });
 
+  it("ranks the most involved players when no player is named", () => {
+    const tools = analystToolset(match, CUTOFF, {
+      maxTools: 5,
+      eventKey: "ref",
+    });
+    expect(
+      tools.definitions.find((d) => d.name === "get_player_involvement")!
+        .description,
+    ).toContain("with playerId null, rank");
+    const { tool, query, output } = tools.run("get_player_involvement", {
+      matchId: match.id,
+      start: 3252,
+      end: CUTOFF,
+      team: "harbor",
+      playerId: null,
+      eventId: null,
+    }) as unknown as {
+      tool: "get_player_involvement";
+      query: Parameters<typeof describeToolCall>[2];
+      output: {
+        mostInvolved: { player: string; team: string; actions: number }[];
+      };
+    };
+    const ranked = output.mostInvolved;
+    expect(ranked).toHaveLength(5);
+    expect(ranked.every((p) => p.team === "Harbor")).toBe(true);
+    expect(ranked.map((p) => p.actions)).toEqual(
+      ranked.map((p) => p.actions).toSorted((a, b) => b - a),
+    );
+    expect(describeToolCall(match, tool, query)).toBe(
+      "Ranked Harbor's players by involvement, 54:12–63:24",
+    );
+    // A named player is still looked at on its own.
+    const named = tools.run("get_player_involvement", {
+      matchId: match.id,
+      start: 3252,
+      end: CUTOFF,
+      team: "harbor",
+      playerId: roster.find((p) => p.name === ranked[0].player)!.id,
+      eventId: null,
+    }).output as Record<string, unknown>;
+    expect(named).not.toHaveProperty("mostInvolved");
+  });
+
   it("labels tool calls in plain words", () => {
     expect(
       describeToolCall(match, "compare_time_windows", {

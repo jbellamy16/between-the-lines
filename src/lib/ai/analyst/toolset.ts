@@ -133,6 +133,31 @@ export function analystToolset(
     "get_match_context",
   ];
 
+  // Players by recorded actions in the window, most first.
+  const rankPlayers = (events: NormalizedEvent[]) =>
+    [
+      ...Map.groupBy(
+        events.filter((e) => e.actorId && e.type !== "possession"),
+        (e) => e.actorId!,
+      ),
+    ]
+      .map(([id, own]) => {
+        const c = windowCounts(own);
+        return {
+          player: playerName(id),
+          team: match.teams[own[0].team].short,
+          actions: c.actions,
+          passes: c.passes,
+          shots: c.shots,
+          goals: c.goals,
+          recoveries: c.recoveries,
+          tackles: c.tackles,
+          interceptions: c.interceptions,
+        };
+      })
+      .sort((a, b) => b.actions - a.actions)
+      .slice(0, 5);
+
   function project(tool: ToolName, query: ToolQuery, output: Execution) {
     const pool =
       tool === "compare_time_windows"
@@ -183,6 +208,9 @@ export function analystToolset(
       );
       summary.window = span;
       summary.counts = windowCounts(all);
+      // "Who has been most involved?": no player named, so rank them.
+      if (tool === "get_player_involvement" && !query.playerId)
+        summary.mostInvolved = rankPlayers(all);
       if (!query.team && !query.playerId)
         summary.byTeam = {
           [match.teams.harbor.short]: windowCounts(
@@ -278,7 +306,18 @@ export function analystToolset(
         (CLOCK_ARG.test(a.eventId) ? eventAtClock(a.eventId) : undefined);
       if (id) args = { ...a, eventId: id };
     }
-    const executed = session.execute(name, args);
+    // Player involvement with no player named ("who has been most
+    // involved?") ranks the players instead of being refused: the same
+    // bounded window, counted like get_team_statistics.
+    const ranking =
+      name === "get_player_involvement" &&
+      a &&
+      typeof a === "object" &&
+      a.playerId === null;
+    const executed = session.execute(
+      ranking ? "get_team_statistics" : name,
+      args,
+    );
     const tool = name as ToolName;
     const query = session.trace.at(-1)!.query;
     return {
@@ -289,7 +328,15 @@ export function analystToolset(
     };
   }
   return {
-    definitions: toolDefinitions(match.id, cutoff),
+    definitions: toolDefinitions(match.id, cutoff).map((d) =>
+      d.name === "get_player_involvement"
+        ? {
+            ...d,
+            description:
+              "Investigate a named player's contributions; with playerId null, rank the most involved players by recorded actions.",
+          }
+        : d,
+    ),
     run,
     /** Per-question ref ("e4") to canonical event ID. */
     canonical,
