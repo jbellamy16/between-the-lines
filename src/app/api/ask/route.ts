@@ -10,6 +10,7 @@ import {
   type AnalystStreamLine,
 } from "@/lib/ai/analyst/types";
 import { offlineAnalyst } from "@/lib/ai/analyst/agent";
+import { clientKey } from "@/lib/client-key";
 export const runtime = "nodejs";
 
 export async function GET() {
@@ -44,10 +45,7 @@ export async function POST(req: Request) {
   if (input.time > match.duration)
     return json({ error: "Invalid cutoff" }, 400);
   const cutoff = Math.floor(input.time);
-  const client =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-client-ip") ||
-    "local";
+  const client = clientKey(req);
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({

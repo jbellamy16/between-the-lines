@@ -6,6 +6,7 @@ import {
   type CallToolResult,
 } from "@modelcontextprotocol/sdk/types.js";
 import { limit } from "./ai/controls";
+export { clientKey } from "./client-key";
 import { SyntheticMatchSource } from "./sources/synthetic";
 import { matchClock, type MatchData } from "./sources/model";
 import {
@@ -19,22 +20,6 @@ export const BRIEFING_TOOL = "get_match_briefing";
 
 /** Requests per client per 10 minutes; a three-question agent demo uses ~25. */
 export const mcpClientLimit = () => limit("MCP_PER_CLIENT_LIMIT", 120, 1000);
-
-/**
- * The client as the platform saw it. App Service appends the caller's
- * address, with its port, as the last X-Forwarded-For entry; earlier
- * entries are whatever the caller sent, so they are ignored.
- */
-export function clientKey(req: Request) {
-  const last = req.headers.get("x-forwarded-for")?.split(",").at(-1)?.trim();
-  const bracketed = last && /^\[(.+)\](?::\d+)?$/.exec(last);
-  const address = bracketed
-    ? bracketed[1]
-    : last && /^[\d.]+:\d+$/.test(last)
-      ? last.slice(0, last.lastIndexOf(":"))
-      : last;
-  return address || req.headers.get("x-client-ip") || "local";
-}
 
 /** The synthetic demo match, the only match the endpoint serves. */
 export const demoMatch = () =>
