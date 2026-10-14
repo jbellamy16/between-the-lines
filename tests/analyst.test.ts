@@ -160,6 +160,55 @@ describe("grounding check", () => {
       ).passed,
     ).toBe(true);
   });
+  it("lets a time that hasn't been played yet appear only in a decline", () => {
+    const check = (
+      answer: string,
+      question: string,
+      now = "63:24",
+      declining = false,
+    ) => verifyGrounding(answer, facts, roster, question, { declining, now });
+    const ahead =
+      "Nothing happens in the 80th minute because the match is only at 63:24.";
+    const result = check(ahead, "What happens in the 80th minute?");
+    expect(result.passed).toBe(false);
+    expect(result.issues.join(" ")).toContain(
+      '"80th" is after the current clock (63:24)',
+    );
+    expect(
+      check(ahead, "What happens in the 80th minute?", "63:24", true),
+    ).toMatchObject({ passed: true });
+    expect(
+      check("At 80:00 nothing yet.", "Does anyone score after 80:00?").passed,
+    ).toBe(false);
+    expect(
+      check("Minute 80 is still to come.", "Goals in minute 80?").passed,
+    ).toBe(false);
+    // A minute already played, or one in progress, is fine.
+    expect(
+      check(
+        "In the 60th minute Theo March shot at 59:09.",
+        "What happened in the 60th minute?",
+      ).passed,
+    ).toBe(true);
+    expect(
+      check(
+        "At 63:24 Harbor had 4 shots.",
+        "What's happening in the 64th minute?",
+      ).passed,
+    ).toBe(true);
+    // Stoppage time: the current clock itself is not in the future.
+    const stoppage = emptyFacts();
+    addText(stoppage, "45+1:30");
+    expect(
+      verifyGrounding(
+        "At 45+1:30 Harbor were still pressing.",
+        stoppage,
+        roster,
+        "Anything before 45+3:00?",
+        { now: "45+1:30" },
+      ).passed,
+    ).toBe(true);
+  });
   it("collects clocks from free text", () => {
     const f = emptyFacts();
     addText(f, "Shot at 45+2:10");
@@ -367,6 +416,50 @@ describe("analyst agent", () => {
     expect(result.status).toBe("answered");
     expect(kinds).toEqual(["plan", "tool", "verify", "revise", "verify"]);
     expect(result.steps[2]).toMatchObject({ passed: false });
+  });
+
+  it("sends an answer about a time not yet played back for a decline", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(reply([surge]))
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "answered",
+              answer:
+                "Nothing happens in the 80th minute because the match is only at 63:24.",
+              citations: ["e1"],
+            }),
+          ]),
+        )
+        .mockResolvedValueOnce(
+          reply([
+            answer({
+              status: "cannot_answer",
+              answer:
+                "The 80th minute hasn't been played yet; the match is at 63:24.",
+              citations: [],
+            }),
+          ]),
+        ),
+    );
+    const result = await runAnalyst(
+      match,
+      CUTOFF,
+      "What happens in the 80th minute?",
+      "plain",
+      "foundry",
+    );
+    expect(result.status).toBe("declined");
+    expect(result.steps.map((s) => s.kind)).toEqual([
+      "plan",
+      "tool",
+      "verify",
+      "revise",
+      "verify",
+    ]);
   });
 
   it("never shows an answer that fails verification twice", async () => {

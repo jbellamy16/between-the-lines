@@ -208,6 +208,37 @@ function nameAllowed(facts: GroundingFacts, name: string) {
   return false;
 }
 
+/** Seconds on a match clock ("63:24", "45+2:10"); stoppage adds its minutes. */
+function clockSeconds(m: RegExpMatchArray) {
+  return (Number(m[1]) + Number(m[2] ?? 0)) * 60 + Number(m[3]);
+}
+
+/**
+ * Times the question names that haven't been played yet at `now`, as
+ * patterns for the ways an answer might mention them: a match time after it
+ * ("80:00"), or a minute that starts after it ("the 80th minute", "minute
+ * 80", "80'").
+ */
+function futureTimes(question: string, now: string) {
+  const at = /^(\d{1,3})(?:\+(\d{1,2}))?:(\d{2})$/.exec(now);
+  if (!at) return [];
+  const nowSeconds = clockSeconds(at);
+  const patterns = new Set<string>();
+  for (const m of question.matchAll(CLOCK))
+    if (clockSeconds(m) > nowSeconds)
+      patterns.add(`(?<![\\d+])${m[0].replace("+", "\\+")}\\b`);
+  for (const m of question.matchAll(
+    /\b(\d{1,3})(?:st|nd|rd|th)\s+minute\b|\bminute\s+(\d{1,3})\b/gi,
+  )) {
+    const minute = Number(m[1] ?? m[2]);
+    if ((minute - 1) * 60 > nowSeconds)
+      patterns.add(
+        `\\b(?:${minute}(?:st|nd|rd|th)\\b|minute\\s+${minute}\\b|${minute}['’])`,
+      );
+  }
+  return [...patterns].map((p) => new RegExp(p, "i"));
+}
+
 const SPECULATION =
   /\b(will|going to|is set to|are set to)\s+(score|win|lose|equali[sz]e|concede|break through)\b|\b(tired|fatigued|frustrated|angry|nervous|instructed|ordered|tactical switch|game plan)\b/i;
 
@@ -220,7 +251,7 @@ export function verifyGrounding(
   facts: GroundingFacts,
   roster: RosterName[],
   question = "",
-  options: { declining?: boolean } = {},
+  options: { declining?: boolean; now?: string } = {},
 ): GroundingResult {
   const issues: string[] = [];
   const questionFacts = emptyFacts();
@@ -292,6 +323,17 @@ export function verifyGrounding(
         `"${m[0].trim()}" does not match any ${kind} count in the retrieved evidence.`,
       );
   }
+
+  // A time the viewer asked about that hasn't been played yet may only
+  // appear in a decline: an answer about it is about the future.
+  if (!options.declining && options.now)
+    for (const pattern of futureTimes(question, options.now)) {
+      const mention = pattern.exec(answer);
+      if (mention)
+        issues.push(
+          `"${mention[0]}" is after the current clock (${options.now}); it hasn't been played yet. Use cannot_answer.`,
+        );
+    }
 
   // A decline may name what it can't judge ("can't say who will win").
   if (!options.declining && SPECULATION.test(answer))

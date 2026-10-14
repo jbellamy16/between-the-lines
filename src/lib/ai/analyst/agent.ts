@@ -372,7 +372,7 @@ export async function runAnalyst(
       facts,
       match.players,
       question,
-      { declining },
+      { declining, now: matchClock(match, cutoff) },
     );
     const issues = parsed.success
       ? [
