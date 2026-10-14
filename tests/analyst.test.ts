@@ -54,7 +54,7 @@ const surge = toolCall("compare_time_windows", {
 describe("grounding check", () => {
   const facts = collectFacts({
     window: { from: "54:12", to: "63:24" },
-    counts: { shots: 4, previous: 0, xg: 0.12, passCompletionPct: 81 },
+    counts: { shots: 4, previous: 0, xg: 0.12, passCompletion: "81%" },
     events: [{ clock: "59:09", player: "Theo March", type: "shot" }],
   });
   it("accepts numbers, times and names that appear in evidence", () => {
@@ -657,6 +657,27 @@ describe("analyst agent", () => {
     expect(
       output.events.filter((e) => e.outcome === "goal").map((e) => e.clock),
     ).toEqual(["01:00", "74:35", "77:33"]);
+  });
+
+  it("reports pass completion with its unit", () => {
+    const end = match.events.at(-1)!.time;
+    const { output } = analystToolset(match, end, {
+      maxTools: 5,
+      eventKey: "ref",
+    }).run("get_team_statistics", {
+      matchId: match.id,
+      start: 0,
+      end,
+      team: "harbor",
+      playerId: null,
+      eventId: null,
+    }) as unknown as { output: { counts: { passCompletion: string } } };
+    expect(output.counts.passCompletion).toBe("90%");
+    const facts = collectFacts(output);
+    expect(
+      verifyGrounding("Harbor completed 90% of their passes.", facts, roster)
+        .passed,
+    ).toBe(true);
   });
 
   it("labels tool calls in plain words", () => {

@@ -41,8 +41,9 @@ function windowCounts(events: NormalizedEvent[]) {
     shotXg: round2(shots.reduce((s, e) => s + (e.xg ?? 0), 0)),
     passes: passes.length,
     completedPasses: completed,
-    passCompletionPct: known.length
-      ? Math.round((completed / known.length) * 100)
+    // With its unit, so an answer says "91%", not a bare "91".
+    passCompletion: known.length
+      ? `${Math.round((completed / known.length) * 100)}%`
       : null,
     recoveries: tally("recovery"),
     tackles: tally("tackle"),
