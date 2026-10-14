@@ -16,6 +16,7 @@ import {
 } from "../src/lib/ai/spend-ledger";
 import { UsageFailure } from "../src/lib/ai/request-controls";
 import { createInvestigation } from "../src/lib/ai/director/tools";
+import { analystToolset } from "../src/lib/ai/analyst/toolset";
 
 const match = new SyntheticMatchSource().read("pressure", { profile: "demo" });
 const CUTOFF = 3804; // 63:24
@@ -625,6 +626,38 @@ describe("analyst agent", () => {
       ).toThrow("Invalid evidence window");
     },
   );
+
+  it("counts goals among the shots, and lists every scoring shot", () => {
+    const end = match.events.at(-1)!.time;
+    const { output } = analystToolset(match, end, {
+      maxTools: 5,
+      eventKey: "ref",
+    }).run("get_shot_locations", {
+      matchId: match.id,
+      start: 0,
+      end,
+      team: null,
+      playerId: null,
+      eventId: null,
+    }) as unknown as {
+      output: {
+        counts: { shots: number; goals: number };
+        byTeam: Record<
+          string,
+          { shots: number; goals: number; passes: number }
+        >;
+        events: { clock: string; type: string; outcome?: string }[];
+      };
+    };
+    expect(output.counts).toMatchObject({ shots: 18, goals: 3 });
+    expect(output.byTeam).toMatchObject({
+      Harbor: { shots: 15, goals: 2, passes: 0 },
+      Riverside: { shots: 3, goals: 1, passes: 0 },
+    });
+    expect(
+      output.events.filter((e) => e.outcome === "goal").map((e) => e.clock),
+    ).toEqual(["01:00", "74:35", "77:33"]);
+  });
 
   it("labels tool calls in plain words", () => {
     expect(

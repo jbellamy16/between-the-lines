@@ -54,6 +54,10 @@ function windowCounts(events: NormalizedEvent[]) {
 
 const CLOCK_ARG = /^\d{1,3}(?:\+\d{1,2})?:\d{2}$/;
 
+// A goal is a scoring shot plus its own goal event, so the shot tool keeps
+// both: shot counts and xG come from the shots, the goal count from the goals.
+const shotOrGoal = (e: NormalizedEvent) => e.type === "shot" || !!e.scoringTeam;
+
 type Execution = ReturnType<ReturnType<typeof createInvestigation>["execute"]>;
 
 /**
@@ -134,16 +138,19 @@ export function analystToolset(
         ? inWindow(query, 2 * query.start - query.end, query.end)
         : windowTools.includes(tool)
           ? inWindow(query, query.start, query.end).filter(
-              (e) => tool !== "get_shot_locations" || e.type === "shot",
+              (e) => tool !== "get_shot_locations" || shotOrGoal(e),
             )
           : output.events
               .map((e) => byId.get(e.id))
               .filter((e): e is NormalizedEvent => !!e);
     // Possession markers are bookkeeping, not actions a viewer would recognise.
     const events = pool.filter((e) => e.type !== "possession");
-    // The latest 16 actions, plus every goal in the window wherever it falls.
+    // The latest 16 actions, plus every goal (and its shot) in the window
+    // wherever it falls.
     const latest = new Set(events.slice(-16));
-    const shown = events.filter((e) => latest.has(e) || e.scoringTeam);
+    const shown = events.filter(
+      (e) => latest.has(e) || e.scoringTeam || e.outcome === "goal",
+    );
     const span = {
       from: matchClock(match, query.start),
       to: matchClock(match, query.end),
@@ -170,13 +177,11 @@ export function analystToolset(
       tool === "get_shot_locations"
     ) {
       // Counts use the full retrieved window, not the truncated event list.
-      const all = inWindow(query, query.start, query.end);
-      summary.window = span;
-      summary.counts = windowCounts(
-        tool === "get_shot_locations"
-          ? all.filter((e) => e.type === "shot")
-          : all,
+      const all = inWindow(query, query.start, query.end).filter(
+        (e) => tool !== "get_shot_locations" || shotOrGoal(e),
       );
+      summary.window = span;
+      summary.counts = windowCounts(all);
       if (!query.team && !query.playerId)
         summary.byTeam = {
           [match.teams.harbor.short]: windowCounts(
