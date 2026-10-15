@@ -752,6 +752,43 @@ describe("analyst agent", () => {
     ).toEqual(["01:00", "74:35", "77:33"]);
   });
 
+  it("splits both comparison windows by team instead of presenting totals as team counts", () => {
+    const quiet = new SyntheticMatchSource().read("quiet", { profile: "demo" });
+    const tools = analystToolset(quiet, 1800, { maxTools: 5, eventKey: "ref" });
+    const query = {
+      matchId: quiet.id,
+      start: 1200,
+      end: 1800,
+      team: null,
+      playerId: null,
+      eventId: null,
+    };
+    expect(tools.run("compare_time_windows", query).output).toMatchObject({
+      previousWindow: {
+        from: "10:00",
+        to: "20:00",
+        passes: 35,
+        scope: "Both teams combined; use byTeam for each team's counts",
+        byTeam: { Harbor: { passes: 17 }, Riverside: { passes: 18 } },
+      },
+      currentWindow: {
+        from: "20:00",
+        to: "30:00",
+        passes: 37,
+        byTeam: { Harbor: { passes: 24 }, Riverside: { passes: 13 } },
+      },
+    });
+    const filtered = tools.run("compare_time_windows", {
+      ...query,
+      team: "harbor",
+    }).output;
+    expect(filtered).toMatchObject({
+      previousWindow: { passes: 17 },
+      currentWindow: { passes: 24 },
+    });
+    expect(filtered).not.toHaveProperty("currentWindow.byTeam");
+  });
+
   it("reports pass completion with its unit", () => {
     const end = match.events.at(-1)!.time;
     const { output } = analystToolset(match, end, {

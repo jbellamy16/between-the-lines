@@ -185,15 +185,34 @@ export function analystToolset(
     const summary: Record<string, unknown> = {};
     if (tool === "compare_time_windows") {
       const width = query.end - query.start;
+      const counts = (start: number, end: number) => {
+        const all = inWindow(query, start, end);
+        return {
+          ...windowCounts(all),
+          ...(!query.team && !query.playerId
+            ? {
+                scope: "Both teams combined; use byTeam for each team's counts",
+                byTeam: {
+                  [match.teams.harbor.short]: windowCounts(
+                    all.filter((e) => e.team === "harbor"),
+                  ),
+                  [match.teams.riverside.short]: windowCounts(
+                    all.filter((e) => e.team === "riverside"),
+                  ),
+                },
+              }
+            : {}),
+        };
+      };
       // Counts use the full windows, not the truncated event list.
       summary.previousWindow = {
         from: matchClock(match, query.start - width),
         to: span.from,
-        ...windowCounts(inWindow(query, query.start - width, query.start)),
+        ...counts(query.start - width, query.start),
       };
       summary.currentWindow = {
         ...span,
-        ...windowCounts(inWindow(query, query.start, query.end)),
+        ...counts(query.start, query.end),
       };
       summary.windowLength = `${Math.floor(width / 60)} min ${Math.round(width % 60)} sec`;
     } else if (
