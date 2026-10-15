@@ -208,6 +208,39 @@ function nameAllowed(facts: GroundingFacts, name: string) {
   return false;
 }
 
+// A capitalised word immediately before a known surname is usually a first
+// name. Exclude ordinary lead-ins so "Then Costa passed" still works.
+const NAME_LEAD_INS = new Set(
+  "A After Also Although An And As At Before Both But By Despite Even Finally For From However If In Instead Later Meanwhile Next Now On Once Only Since The Then Through To Unlike Until When Whereas While With Without".split(
+    " ",
+  ),
+);
+
+function wrongFirstNames(answer: string, roster: RosterName[]) {
+  const issues: string[] = [];
+  const surnames = new Set(roster.map((p) => p.name.split(" ").at(-1)!));
+  for (const surname of surnames) {
+    const escaped = surname.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(
+      `(?<![\\p{L}])([\\p{Lu}][\\p{L}’'\\-]*)\\s+${escaped}(?![\\p{L}])`,
+      "gu",
+    );
+    for (const mention of answer.matchAll(pattern)) {
+      if (NAME_LEAD_INS.has(mention[1])) continue;
+      // Support compound names by matching the final given name + surname.
+      if (
+        !roster.some(
+          (p) => p.name === mention[0] || p.name.endsWith(` ${mention[0]}`),
+        )
+      )
+        issues.push(
+          `Player "${mention[0]}" is not a name on this match's roster. Use the recorded player name.`,
+        );
+    }
+  }
+  return issues;
+}
+
 /** Seconds on a match clock ("63:24", "45+2:10"); stoppage adds its minutes. */
 function clockSeconds(m: RegExpMatchArray) {
   return (Number(m[1]) + Number(m[2] ?? 0)) * 60 + Number(m[3]);
@@ -286,6 +319,7 @@ export function verifyGrounding(
       issues.push(`Number "${word}" is not in the retrieved evidence.`);
   }
 
+  issues.push(...wrongFirstNames(answer, roster));
   const seen = new Set<string>();
   for (const player of roster) {
     const full = player.name;

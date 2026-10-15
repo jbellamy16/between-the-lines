@@ -125,6 +125,47 @@ describe("grounding check", () => {
     expect(result.passed).toBe(false);
     expect(result.issues.join(" ")).toContain(other.name);
   });
+  it.each([
+    "Leonard Costa made the recovery.",
+    "The recovery was Leonard Costa's.",
+    "Theo Costa passed.",
+    "Leon Costa passed, then Leonard Costa recovered.",
+  ])(
+    "rejects the wrong first name even when the surname is grounded: %s",
+    (text) => {
+      const names = collectFacts({ player: "Leon Costa" });
+      const result = verifyGrounding(text, names, roster);
+      expect(result.passed).toBe(false);
+      expect(result.issues.join(" ")).toContain(
+        "not a name on this match's roster",
+      );
+    },
+  );
+  it.each([
+    "Leon Costa made the recovery.",
+    "Then Costa passed.",
+    "The pass came from Costa.",
+    "After Costa's recovery, Harbor moved forward.",
+    "Costa passed.",
+    "The Costa recovery started the move.",
+  ])("keeps valid full names and surname-only phrasing: %s", (text) => {
+    expect(
+      verifyGrounding(text, collectFacts({ player: "Leon Costa" }), roster)
+        .passed,
+    ).toBe(true);
+  });
+  it("checks a shared surname against all matching roster names", () => {
+    const players = [{ name: "Leon Costa" }, { name: "Luis Costa" }];
+    const names = collectFacts(players);
+    expect(
+      verifyGrounding("Luis Costa passed to Leon Costa.", names, players)
+        .passed,
+    ).toBe(true);
+    expect(
+      verifyGrounding("Leonard Costa passed.", names, players).passed,
+    ).toBe(false);
+  });
+
   it("allows values the viewer supplied in the question", () => {
     expect(
       verifyGrounding(
