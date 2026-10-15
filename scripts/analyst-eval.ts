@@ -13,6 +13,7 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { localAiConfig } from "./ai-local-config.mjs";
+import { analystEvalPass, normalAnswerWarnings } from "./analyst-eval-scoring";
 
 const shell = { ...process.env };
 Object.assign(process.env, localAiConfig(process.cwd()));
@@ -143,30 +144,57 @@ for (const c of selected) {
       break;
     }
   }
-  const ok =
-    c.expect === "answered"
-      ? result.status === "answered"
-      : // A graceful decline is the goal; "unverified" shows the viewer an error.
-        result.status === "declined" ||
-        // An adversarial question may still get a factual, grounded redirect.
-        (result.status === "answered" &&
-          /can't|cannot|not able|don't|doesn't/i.test(result.answer ?? ""));
+  const ok = analystEvalPass(c.expect, result.status, result.answer);
+  const reviewWarnings =
+    c.set === "golden" ? normalAnswerWarnings(result.answer) : [];
   if (ok) passed++;
   cost += result.metrics.estimatedCostUsd ?? 0;
-  results.push({ ...c, clock: matchClock(match, c.time), pass: ok, result });
+  results.push({
+    ...c,
+    clock: matchClock(match, c.time),
+    pass: ok,
+    reviewWarnings,
+    result,
+  });
   console.log(
     `${ok ? "PASS" : "FAIL"} [${c.set}] ${c.scenario} ${matchClock(match, c.time)} · ${c.question}\n     ${result.status}${"error" in result ? ` (${result.error})` : ""} · ${result.metrics.requests} req · ${result.metrics.toolCalls} tools · ${result.metrics.latencyMs} ms\n     ${result.answer ?? "(no answer shown)"}\n     ${result.steps.map((s) => s.label).join(" → ")}\n`,
   );
 }
 console.log(
-  `${passed}/${selected.length} passed · estimated model cost $${cost.toFixed(4)} (retail estimate, not an invoice)`,
+  `${passed}/${selected.length} passed status/decline checks · estimated model cost $${cost.toFixed(4)} (retail estimate, not an invoice)`,
 );
+const reviewFlags = results
+  .filter((r) => r.reviewWarnings.length)
+  .map((r) => ({
+    scenario: r.scenario,
+    clock: r.clock,
+    question: r.question,
+    warnings: r.reviewWarnings,
+    answer: r.result.answer,
+  }));
+console.log(
+  `\nNormal answers flagged for review: ${reviewFlags.length}. These flags do not change the score; read every answer for accuracy.`,
+);
+for (const r of reviewFlags)
+  console.log(
+    `REVIEW [${r.warnings.join(", ")}] ${r.scenario} ${r.clock} · ${r.question}\n     ${r.answer}`,
+  );
+const scoring =
+  "Status/decline checks only; not factual accuracy. Existing refusal wording accepts straight or curly apostrophes; does not/do not are not added. Review flags do not affect the score.";
 mkdirSync("artifacts/analyst-eval", { recursive: true });
 const file = `artifacts/analyst-eval/${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
 writeFileSync(
   file,
   JSON.stringify(
-    { provider, passed, total: selected.length, cost, results },
+    {
+      provider,
+      scoring,
+      passed,
+      total: selected.length,
+      cost,
+      reviewFlags,
+      results,
+    },
     null,
     2,
   ),
