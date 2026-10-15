@@ -22,7 +22,14 @@ export type AnalystRequest = z.infer<typeof analystRequestSchema>;
 export type AnalystStep =
   | { kind: "plan"; label: string }
   | { kind: "tool"; tool: string; label: string; events: number }
-  | { kind: "rejected-query"; label: string }
+  | {
+      kind: "rejected-query";
+      label: string;
+      /** The refusal handed back to the agent, and the call it refused. */
+      reason?: string;
+      tool?: string;
+      query?: unknown;
+    }
   | { kind: "verify"; passed: boolean; label: string; issues: string[] }
   | { kind: "revise"; label: string };
 

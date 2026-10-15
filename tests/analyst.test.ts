@@ -729,6 +729,12 @@ describe("analyst agent", () => {
     // A refused query reads as the agent refining, not as an error.
     const refused = result.steps.find((s) => s.kind === "rejected-query")!;
     expect(refused.label).toBe("Refining the time window");
+    // The eval keeps why, and what was asked for, so refusals can be traced.
+    expect(refused).toMatchObject({
+      reason: "Invalid evidence window",
+      tool: "get_team_statistics",
+      query: { start: 0, end: 9999 },
+    });
   });
 
   it.each([

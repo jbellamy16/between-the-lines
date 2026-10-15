@@ -328,8 +328,21 @@ export async function runAnalyst(
             output = projected;
           } catch (error) {
             // Any tool failure goes back to the agent as data; it can adjust or answer.
-            emit({ kind: "rejected-query", label: refiningLabel(error) });
-            output = { error: refusalMessage(error) };
+            const reason = refusalMessage(error);
+            output = { error: reason };
+            let query: unknown = call.arguments;
+            try {
+              query = JSON.parse(call.arguments ?? "{}");
+            } catch {
+              /* keep the raw text */
+            }
+            emit({
+              kind: "rejected-query",
+              label: refiningLabel(error),
+              reason,
+              tool: call.name,
+              query,
+            });
           }
         }
         input.push({
