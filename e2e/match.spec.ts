@@ -56,6 +56,14 @@ test("scenarios, navigation, player preferences and mobile layout work", async (
   await expect(
     page.getByRole("heading", { name: "Match statistics", exact: true }),
   ).toBeVisible();
+  // Synthetic passes all have outcomes, so no "0 … unknown" footnote.
+  const statsPanel = page.locator("section", {
+    has: page.getByRole("heading", { name: "Match statistics", exact: true }),
+  });
+  await expect(statsPanel.locator(".limitations")).toContainText(
+    "Counts do not establish",
+  );
+  await expect(statsPanel.locator(".limitations")).not.toContainText("unknown");
   await page
     .getByRole("navigation")
     .getByRole("button", { name: "Lineups", exact: true })

@@ -11,6 +11,8 @@ export function MatchStatistics({
   time: number;
 }) {
   const stats = matchStatistics(match, time);
+  const unknownPasses =
+    stats.harbor.unknownPassOutcomes + stats.riverside.unknownPassOutcomes;
   const rows = [
     ["goals", "Goals"],
     ["shots", "Shots"],
@@ -93,10 +95,11 @@ export function MatchStatistics({
         {match.kind === "synthetic"
           ? "xG is generated chance probability, not a validated real-world model. "
           : "Unavailable means this source does not support the metric. "}
-        Pass completion uses known outcomes;{" "}
-        {stats.harbor.unknownPassOutcomes + stats.riverside.unknownPassOutcomes}{" "}
-        pass outcomes are unknown. Counts do not establish possession duration,
-        pressing intensity or tracking.
+        {unknownPasses
+          ? `Pass completion uses known outcomes; ${unknownPasses} pass ${unknownPasses === 1 ? "outcome is" : "outcomes are"} unknown. `
+          : ""}
+        Counts do not establish possession duration, pressing intensity or
+        tracking.
       </p>
     </section>
   );
