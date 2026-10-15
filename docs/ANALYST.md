@@ -15,9 +15,9 @@ flowchart LR
   V -- fails twice --> N[Nothing unverified shown]
 ```
 
-- **Tools.** The same nine read-only functions the Director uses (`src/lib/ai/director/tools.ts`). They only see events at or before the viewer's clock, so the agent can't spoil the match.
+- **Tools.** The same nine read-only functions the Director uses (`src/lib/ai/director/tools.ts`), with a compact view for the agent (`src/lib/ai/analyst/toolset.ts`): per-team counts, who received each pass, a ranking when no player is named, and comparison windows fitted inside the half. They only see events at or before the viewer's clock, so the agent can't spoil the match.
 - **Agent loop.** `src/lib/ai/analyst/agent.ts`. At most 4 model requests and 5 tool calls per question, with parallel tool calls and a 45-second deadline. Invalid tool queries go back to the agent as errors it can correct.
-- **Grounding check.** `src/lib/ai/analyst/grounding.ts`. It compares every clock time, number and player name in the answer against what the tools returned. Counts are tied to what was counted: "4 shots" must match a shot count, not just any 4. It also rejects predictions, claims about feelings or intent, and internal event references (such as "e4") left in the text instead of a time and player. It is pure code with no model involved.
+- **Grounding check.** `src/lib/ai/analyst/grounding.ts`. It compares every clock time, number and player name in the answer against what the tools returned. Counts are tied to what was counted: "4 shots" must match a shot count, not just any 4. A player's first name must match the surname it goes with. A time the viewer asks about that hasn't been played yet may only appear in a decline. It also rejects predictions, claims about feelings or intent, question marks in an answer, and internal event references (such as "e4") left in the text instead of a time and player. It is pure code with no model involved. It checks each fact, not how facts relate: it can't tell that a shot listed at 59:09 is outside a window described as 60:00–70:00.
 - **Streaming.** `POST /api/ask` streams NDJSON. Each step (tool call, verification, revision) appears in the UI as it happens, then the result arrives.
 - **Personalization.** The viewer's explanation level (Casual Viewer, Football Fan, Advanced Analysis) sets the agent's tone. The facts and checks stay the same.
 - **Caching.** Identical questions at the same clock reuse the verified answer for an hour at no cost.
@@ -30,9 +30,9 @@ Every provider call in the app goes through one dollar ledger (`src/lib/ai/spend
 - Reservations are never refunded. When the next reservation would cross `AI_SPEND_CEILING_USD`, the app stops calling the model and shows the deterministic story instead.
 - `AI_SPEND_LEDGER` names the ledger, so local testing (`test`) and the public app (`production`) never share an allowance.
 - Production refuses to call a model if no ceiling is set.
-- The existing per-minute, hourly, daily and total request caps and the per-client limit (12 questions per 10 minutes) still apply on top.
+- The existing per-minute, hourly, daily and total request caps and the per-client limit (`AI_ASK_PER_CLIENT_LIMIT` questions per 10 minutes, 12 by default and 30 on the live app) still apply on top. A client is the address App Service appends to `X-Forwarded-For`, so a caller can't reset its limit by sending its own.
 
-In local test runs, requests were 12–26 KB each, about 3 per question. That reserves roughly $0.06 per question, while the expected real cost is about $0.01–0.02. A $15 ledger therefore admits roughly 250 questions before it stops.
+Across three runs of the 18-question eval, a question took 1–2 model requests and cost about $0.006 at retail rates (at most $0.01). The ledger reserves several times that per attempt, so a $15 ledger stops well before $15 of real spend.
 
 `npm run ai:spend` prints how much each ledger has reserved.
 
@@ -49,7 +49,7 @@ FOUNDRY_DEPLOYMENT=between-the-lines-gpt54-mini
 Then run the eval from your own terminal:
 
 ```sh
-npm run eval:analyst              # 12 golden + 6 adversarial questions, about $0.25–0.50
+npm run eval:analyst              # 12 golden + 6 adversarial questions, about $0.11
 npm run eval:analyst -- golden    # just the golden set
 ```
 
@@ -63,7 +63,7 @@ AI_MINUTE_LIMIT=10 AI_HOURLY_LIMIT=100 AI_DAILY_LIMIT=500 AI_TOTAL_LIMIT=5000 \
 AI_SPEND_LEDGER=test AI_SPEND_CEILING_USD=15 npm run dev
 ```
 
-The eval prints each answer, its steps and its estimated cost, and saves everything to `artifacts/analyst-eval/`. A golden question passes when it gets a verified answer. An adversarial question passes when the agent declines or redirects without making something up.
+The eval prints each answer, its steps and its estimated cost, and saves everything to `artifacts/analyst-eval/`, including why any tool query was refused. A golden question passes when it gets a verified answer. An adversarial question passes when the agent declines or redirects without making something up. The score checks status, not accuracy, so the eval also lists answers to review by hand (a question mark or a self-correction); read the answers, not just the score.
 
 ## Turn it on in Azure
 
@@ -79,6 +79,7 @@ Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROV
 | `AI_HOURLY_LIMIT`         | `300` (the code allows up to 1000)                                |
 | `AI_DAILY_LIMIT`          | `500`                                                             |
 | `AI_TOTAL_LIMIT`          | `5000`                                                            |
+| `AI_ASK_PER_CLIENT_LIMIT` | `30` questions per client per 10 minutes                          |
 | `AI_TOKEN_MINUTE_LIMIT`   | Match the deployment's tokens-per-minute limit (see below)        |
 | `AI_REQUEST_MINUTE_LIMIT` | Match the deployment's requests-per-minute limit                  |
 | `AI_PROACTIVE_ENABLED`    | `false`                                                           |

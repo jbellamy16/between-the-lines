@@ -35,6 +35,8 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 
 The agent is free to decide what to investigate and how to phrase the answer. It is not free to invent facts. Application code owns the data, enforces the viewer's match clock (so nothing is spoiled), and runs a deterministic grounding check on every answer. When the events can't answer a question, such as "is the manager angry?", the agent says so instead of guessing. Every model call also reserves its worst-case cost against a dollar ceiling, so the public demo can stay on for judges without runaway spend.
 
+In three runs of the 18-question eval against the Foundry deployment (54 questions), an answer took a median of about 4 seconds from question to checked answer, never more than 6.5, and cost about $0.006 at retail rates.
+
 ## Broadcasters plug this in
 
 Between the Lines is also an engine. Its evidence tools are published as a read-only MCP server, so a broadcaster's or club's own agent, or GitHub Copilot in VS Code, can connect and work the match through the same tools the analyst uses: score and goals, equal-window comparisons, shot maps, build-up traces and counter-evidence. The connection fixes the match time, so nothing later can leak into an in-play segment, and out-of-range queries are refused with a reason the agent can act on. The server runs no model, so calls cost nothing, and each client is rate limited.

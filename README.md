@@ -58,7 +58,7 @@ flowchart LR
 
 One playback timestamp is the source of truth. Every view, tool and answer uses only events at or before it. The server rebuilds the match itself and never trusts statistics or evidence sent by the browser.
 
-**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app. GitHub Actions runs type checks, 890+ unit tests and a Playwright suite across desktop and two mobile viewports on every PR.
+**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app. GitHub Actions runs type checks, 980+ unit tests and a Playwright suite across desktop and two mobile viewports on every PR.
 
 **Spend controls:** every model call reserves its worst-case cost against a shared dollar ledger before dispatch. Request caps apply per minute, hour and day, plus a per-client limit. If any limit is hit, the app falls back to the deterministic story. [Details](docs/ANALYST.md#spending-controls)
 
@@ -103,7 +103,7 @@ The repository also contains an optional historical-replay mode, built during de
 - The event model is simplified: no added time or half-time break, and only recorded on-ball actions. It has not been calibrated against professional event data.
 - "xG" is the generator's shot probability, not a trained expected-goals model.
 - Detectors use descriptive count thresholds, not statistical significance tests.
-- The analyst's grounding check catches invented numbers, times and names, plus obvious speculation. It cannot judge whether an answer is the most useful one; that has not been measured with viewers.
+- The analyst's grounding check catches invented numbers, times and names, plus obvious speculation. It checks each fact, not how facts relate, and it cannot judge whether an answer is the most useful one; that has not been measured with viewers.
 - No accounts, cross-device preferences, audio or multilingual output.
 
 Club names, players and the Between the Lines identity are original to this project. There is no affiliation with real clubs or leagues and no league branding. Fonts and icon libraries keep their own licenses ([brand notes](docs/brand/README.md)).
