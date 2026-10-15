@@ -790,13 +790,13 @@ export function MatchPitch({
     <section className="panel pitch-panel">
       <div className="panel-header">
         <h2>
-          {storyReplay
-            ? "Story evidence replay"
-            : view === "passage"
-              ? "Passage replay"
-              : view === "pattern"
-                ? "Where it happened"
-                : "Recent actions"}
+          {/* Matches the selected pitch view; a story replay is labelled
+              "Evidence for: …" below. */}
+          {view === "passage"
+            ? "Passage replay"
+            : view === "pattern"
+              ? "Where it happened"
+              : "Recent actions"}
         </h2>
         {view === "passage" && (
           <button className="text-button" onClick={onClear}>

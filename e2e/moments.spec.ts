@@ -100,7 +100,12 @@ test.describe("moments", () => {
     await expect(
       page.getByRole("button", { name: "Play match" }),
     ).toBeVisible();
-    await expect(page.getByText("Story evidence replay")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Passage replay" }),
+    ).toBeVisible();
+    await expect(page.locator(".pitch-story-label")).toContainText(
+      "Evidence for:",
+    );
     const panel = analyst(page);
     await expect(panel.locator(".analyst-question")).toContainText(
       "Is the other team improving too?",

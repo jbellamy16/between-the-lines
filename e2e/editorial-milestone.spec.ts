@@ -95,9 +95,16 @@ test("one story controls the initial pitch, secondary selection and replay; offl
   await story
     .getByRole("button", { name: "Replay story evidence", exact: true })
     .click();
+  // The heading matches the selected pitch view; the label names the story.
   await expect(
-    page.getByRole("heading", { name: "Story evidence replay" }),
+    page.getByRole("heading", { name: "Passage replay" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Passage replay", pressed: true }),
+  ).toBeVisible();
+  await expect(page.locator(".pitch-story-label")).toContainText(
+    "Evidence for:",
+  );
   const replayIds = await page
     .locator(".pitch-panel select[aria-label='Recorded event'] option")
     .evaluateAll((options) =>
