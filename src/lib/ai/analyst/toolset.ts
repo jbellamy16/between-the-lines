@@ -259,8 +259,12 @@ export function analystToolset(
         firstHalfOfWindow: w.early,
         secondHalfOfWindow: w.late,
       });
-      summary.previousWindow = pick(routes.previous);
-      summary.currentWindow = pick(routes.current);
+      summary.previousWindow = {
+        from: matchClock(match, 2 * query.start - query.end),
+        to: span.from,
+        ...pick(routes.previous),
+      };
+      summary.currentWindow = { ...span, ...pick(routes.current) };
     } else if (tool === "inspect_counter_evidence" && extra.assessments) {
       summary.assessments = (
         extra.assessments as {
@@ -325,6 +329,33 @@ export function analystToolset(
         (CLOCK_ARG.test(a.eventId) ? eventAtClock(a.eventId) : undefined);
       if (id) args = { ...a, eventId: id };
     }
+    // Keep a valid current window in its half, and fit its earlier partner
+    // by shortening both equally from the requested end. Invalid/future
+    // windows still go through the investigation's normal refusal checks.
+    if (
+      (name === "compare_time_windows" || name === "compare_shot_routes") &&
+      a &&
+      typeof a === "object" &&
+      typeof a.start === "number" &&
+      Number.isFinite(a.start) &&
+      typeof a.end === "number" &&
+      Number.isFinite(a.end) &&
+      a.start >= 0 &&
+      a.end > a.start &&
+      a.end <= cutoff &&
+      (name !== "compare_shot_routes" || a.end - a.start <= 1800)
+    ) {
+      const { start, end } = a;
+      const period = match.periods.find(
+        (p) => start >= p.start && end <= p.end,
+      );
+      if (period && 2 * start - end < period.start) {
+        const width = Math.floor((end - period.start) / 2);
+        // Like the briefing's suggested windows, require a minute per side.
+        if (width >= 60)
+          args = { ...(args as Record<string, unknown>), start: end - width };
+      }
+    }
     // Player involvement with no player named ("who has been most
     // involved?") ranks the players instead of being refused: the same
     // bounded window, counted like get_team_statistics.
@@ -348,13 +379,18 @@ export function analystToolset(
   }
   return {
     definitions: toolDefinitions(match.id, cutoff).map((d) =>
-      d.name === "get_player_involvement"
+      d.name === "compare_time_windows" || d.name === "compare_shot_routes"
         ? {
             ...d,
-            description:
-              "Investigate a named player's contributions; with playerId null, rank the most involved players by recorded actions.",
+            description: `${d.description} If only the preceding window crosses the half boundary, both windows are shortened equally to fit; use the returned times.`,
           }
-        : d,
+        : d.name === "get_player_involvement"
+          ? {
+              ...d,
+              description:
+                "Investigate a named player's contributions; with playerId null, rank the most involved players by recorded actions.",
+            }
+          : d,
     ),
     run,
     /** Per-question ref ("e4") to canonical event ID. */

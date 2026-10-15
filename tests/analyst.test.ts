@@ -789,6 +789,87 @@ describe("analyst agent", () => {
     expect(filtered).not.toHaveProperty("currentWindow.byTeam");
   });
 
+  it.each(["compare_time_windows", "compare_shot_routes"])(
+    "%s fits the earlier window inside the half and reports the actual times",
+    (tool) => {
+      const tools = analystToolset(match, CUTOFF, {
+        maxTools: 5,
+        eventKey: "ref",
+      });
+      const args = {
+        matchId: match.id,
+        start: 3204,
+        end: CUTOFF,
+        team: "harbor",
+        playerId: null,
+        eventId: null,
+      };
+      const result = tools.run(tool, args);
+      expect(result.query).toMatchObject({ start: 3252, end: CUTOFF });
+      expect(result.output).toMatchObject({
+        previousWindow: { from: "45:00", to: "54:12" },
+        currentWindow: { from: "54:12", to: "63:24" },
+      });
+      if (tool === "compare_time_windows") {
+        expect(describeToolCall(match, tool, result.query)).toBe(
+          "Compared Harbor 45:00–54:12 with 54:12–63:24",
+        );
+        expect(result.output).toMatchObject({
+          previousWindow: { shots: 0 },
+          currentWindow: { shots: 4 },
+        });
+      }
+      // Already valid queries keep their requested bounds.
+      expect(tools.run(tool, { ...args, start: 3300 }).query.start).toBe(3300);
+      // The Director's stricter contract stays unchanged.
+      expect(() =>
+        createInvestigation(match, CUTOFF, "fan").execute(tool, args),
+      ).toThrow();
+    },
+  );
+
+  it.each([
+    [2400, 3000], // The current window itself crosses half-time.
+    [3204, 4000], // Future end.
+    [2700, 2750], // Not enough play for two one-minute windows.
+    [3000, 2900], // Reversed window.
+    [-1, 100],
+    [NaN, 3000],
+  ])("still refuses invalid comparison bounds %s–%s", (start, end) => {
+    expect(() =>
+      analystToolset(match, CUTOFF, { maxTools: 5, eventKey: "ref" }).run(
+        "compare_time_windows",
+        {
+          matchId: match.id,
+          start,
+          end,
+          team: "harbor",
+          playerId: null,
+          eventId: null,
+        },
+      ),
+    ).toThrow();
+  });
+
+  it("fits comparisons at kickoff and uses the period containing the requested end", () => {
+    const tools = analystToolset(match, CUTOFF, {
+      maxTools: 5,
+      eventKey: "ref",
+    });
+    const args = {
+      matchId: match.id,
+      start: 60,
+      end: 600,
+      team: null,
+      playerId: null,
+      eventId: null,
+    };
+    expect(tools.run("compare_time_windows", args).output).toMatchObject({
+      previousWindow: { from: "00:00", to: "05:00" },
+      currentWindow: { from: "05:00", to: "10:00" },
+    });
+  });
+
   it("reports pass completion with its unit", () => {
     const end = match.events.at(-1)!.time;
     const { output } = analystToolset(match, end, {
