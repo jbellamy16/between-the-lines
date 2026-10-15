@@ -270,6 +270,22 @@ describe("grounding check", () => {
       ).passed,
     ).toBe(true);
   });
+  it("rejects an answer that asks or corrects itself, but not a decline", () => {
+    const wobble =
+      "Theo March shot at 59:09 after a pass to Leo? Actually, from Theo March.";
+    const result = verifyGrounding(wobble, facts, roster);
+    expect(result.passed).toBe(false);
+    expect(result.issues.join(" ")).toContain("question mark");
+    expect(
+      verifyGrounding(
+        "Who will win? The recorded events can't say.",
+        facts,
+        roster,
+        "",
+        { declining: true },
+      ).passed,
+    ).toBe(true);
+  });
   it("collects clocks from free text", () => {
     const f = emptyFacts();
     addText(f, "Shot at 45+2:10");

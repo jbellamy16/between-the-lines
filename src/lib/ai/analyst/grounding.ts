@@ -395,6 +395,13 @@ export function verifyGrounding(
         );
     }
 
+  // An answer states what happened once. A question mark means it is
+  // guessing aloud or correcting itself ("to Leo? Actually...").
+  if (!options.declining && answer.includes("?"))
+    issues.push(
+      "The answer contains a question mark. State each fact once, without questions or corrections.",
+    );
+
   // A decline may name what it can't judge ("can't say who will win").
   if (!options.declining && SPECULATION.test(answer))
     issues.push(
