@@ -333,6 +333,25 @@ export function analystToolset(
         (CLOCK_ARG.test(a.eventId) ? eventAtClock(a.eventId) : undefined);
       if (id) args = { ...a, eventId: id };
     }
+    // A zero-width comparison ("start" = "end", usually both the clock) means
+    // "lately": run it as the latest equal windows inside the half, as the
+    // briefing's latestEqualWindows suggests (up to 10 minutes each).
+    if (
+      (name === "compare_time_windows" || name === "compare_shot_routes") &&
+      a &&
+      typeof a === "object" &&
+      typeof a.start === "number" &&
+      a.start === a.end &&
+      a.end <= cutoff
+    ) {
+      const end = a.end;
+      const period = match.periods.find((p) => end > p.start && end <= p.end);
+      const width = period
+        ? Math.floor(Math.min(600, (end - period.start) / 2))
+        : 0;
+      if (width >= 60)
+        args = { ...(args as Record<string, unknown>), start: end - width };
+    }
     // Keep a valid current window in its half, and fit its earlier partner
     // by shortening both equally from the requested end. Invalid/future
     // windows still go through the investigation's normal refusal checks.

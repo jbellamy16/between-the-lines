@@ -1043,6 +1043,24 @@ describe("analyst agent", () => {
     ]);
   });
 
+  it("runs a zero-width comparison at the clock as the latest equal windows", () => {
+    for (const tool of ["compare_time_windows", "compare_shot_routes"]) {
+      const { query } = analystToolset(match, CUTOFF, {
+        maxTools: 5,
+        eventKey: "ref",
+      }).run(tool, {
+        matchId: match.id,
+        start: CUTOFF,
+        end: CUTOFF,
+        team: "riverside",
+        playerId: null,
+        eventId: null,
+      });
+      // 63:24 is 18:24 into the half: two equal 9 min 12 sec windows.
+      expect(query, tool).toMatchObject({ start: 3252, end: CUTOFF });
+    }
+  });
+
   it("labels tool calls in plain words", () => {
     expect(
       describeToolCall(match, "compare_time_windows", {
