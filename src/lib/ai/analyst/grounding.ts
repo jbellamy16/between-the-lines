@@ -216,7 +216,20 @@ const NAME_LEAD_INS = new Set(
   ),
 );
 
-function wrongFirstNames(answer: string, roster: RosterName[]) {
+// Football roles that can sit before a surname ("Midfielder Costa").
+const ROLES = new Set(
+  "Captain Centre-back Center-back Defender Forward Full-back Fullback Goalkeeper Keeper Midfielder Playmaker Skipper Striker Sub Substitute Teammate Winger".split(
+    " ",
+  ),
+);
+
+function wrongFirstNames(
+  answer: string,
+  roster: RosterName[],
+  teams: readonly string[],
+) {
+  // Team names may stand before a surname: "Harbor Costa", "Harbor's Costa".
+  const teamWords = new Set(teams.flatMap((t) => t.split(/\s+/)));
   const issues: string[] = [];
   const surnames = new Set(roster.map((p) => p.name.split(" ").at(-1)!));
   for (const surname of surnames) {
@@ -226,7 +239,15 @@ function wrongFirstNames(answer: string, roster: RosterName[]) {
       "gu",
     );
     for (const mention of answer.matchAll(pattern)) {
-      if (NAME_LEAD_INS.has(mention[1])) continue;
+      const word = mention[1];
+      // A possessive is never a first name: "Harbor’s Costa", "March's".
+      if (
+        NAME_LEAD_INS.has(word) ||
+        ROLES.has(word) ||
+        teamWords.has(word) ||
+        /['’]s?$/.test(word)
+      )
+        continue;
       // Support compound names by matching the final given name + surname.
       if (
         !roster.some(
@@ -284,7 +305,12 @@ export function verifyGrounding(
   facts: GroundingFacts,
   roster: RosterName[],
   question = "",
-  options: { declining?: boolean; now?: string } = {},
+  options: {
+    declining?: boolean;
+    now?: string;
+    /** Team names, which may stand before a surname. */
+    teams?: readonly string[];
+  } = {},
 ): GroundingResult {
   const issues: string[] = [];
   const questionFacts = emptyFacts();
@@ -319,7 +345,7 @@ export function verifyGrounding(
       issues.push(`Number "${word}" is not in the retrieved evidence.`);
   }
 
-  issues.push(...wrongFirstNames(answer, roster));
+  issues.push(...wrongFirstNames(answer, roster, options.teams ?? []));
   const seen = new Set<string>();
   for (const player of roster) {
     const full = player.name;

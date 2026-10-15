@@ -154,6 +154,26 @@ describe("grounding check", () => {
         .passed,
     ).toBe(true);
   });
+  it.each([
+    "Harbor’s Costa won it back.",
+    "Harbor's Costa won it back.",
+    "Harbor Costa won it back.",
+    "Harbor Athletic Costa won it back.",
+    "Midfielder Costa recovered it.",
+    "Captain Costa recovered it.",
+  ])(
+    "lets a team name, possessive or role stand before a surname: %s",
+    (text) => {
+      const result = verifyGrounding(
+        text,
+        collectFacts({ player: "Leon Costa", team: "Harbor Athletic" }),
+        roster,
+        "",
+        { teams: ["Harbor Athletic", "Harbor", "Riverside FC", "Riverside"] },
+      );
+      expect(result.issues).toEqual([]);
+    },
+  );
   it("checks a shared surname against all matching roster names", () => {
     const players = [{ name: "Leon Costa" }, { name: "Luis Costa" }];
     const names = collectFacts(players);

@@ -373,7 +373,11 @@ export async function runAnalyst(
       facts,
       match.players,
       question,
-      { declining, now: matchClock(match, cutoff) },
+      {
+        declining,
+        now: matchClock(match, cutoff),
+        teams: Object.values(match.teams).flatMap((t) => [t.name, t.short]),
+      },
     );
     const issues = parsed.success
       ? [
