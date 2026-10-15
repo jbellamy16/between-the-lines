@@ -996,6 +996,31 @@ describe("analyst agent", () => {
     expect(named).not.toHaveProperty("mostInvolved");
   });
 
+  it("names who received each pass in a traced build-up", () => {
+    const tools = analystToolset(match, 4200, {
+      maxTools: 5,
+      eventKey: "ref",
+    });
+    const { output } = tools.run("get_recorded_sequence", {
+      matchId: match.id,
+      start: 3480,
+      end: 3600,
+      team: "harbor",
+      playerId: null,
+      eventId: "59:09",
+    }) as unknown as {
+      output: {
+        events: { clock: string; player: string; type: string; to?: string }[];
+      };
+    };
+    const passes = output.events.filter((e) => e.type === "pass");
+    expect(passes.map((p) => `${p.clock} ${p.player} → ${p.to}`)).toEqual([
+      "58:49 Leon Costa → Milo Serrano",
+      "58:56 Milo Serrano → Theo March",
+      "59:04 Theo March → Milo Serrano",
+    ]);
+  });
+
   it("labels tool calls in plain words", () => {
     expect(
       describeToolCall(match, "compare_time_windows", {

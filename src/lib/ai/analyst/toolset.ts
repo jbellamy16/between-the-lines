@@ -109,6 +109,10 @@ export function analystToolset(
     team: match.teams[e.team].short,
     player: playerName(e.actorId),
     type: e.type,
+    // Who received a pass, so a build-up names passer and receiver correctly.
+    ...(e.type === "pass" && e.recipientId
+      ? { to: playerName(e.recipientId) }
+      : {}),
     ...(e.success === undefined ? {} : { success: e.success }),
     ...(e.outcome ? { outcome: e.outcome } : {}),
     ...(e.scoringTeam ? { goal: true } : {}),
