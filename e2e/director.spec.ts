@@ -248,3 +248,22 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await expect(harbor).toHaveCount(0);
 });
+
+test("observations that share a headline are told apart by their match time", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await openStoryDetails(page);
+  const story = page.locator(".director-story");
+  await story.getByText("More from this match", { exact: true }).click();
+  const names = await story
+    .locator(".director-observations button")
+    .allTextContents();
+  expect(names.length).toBeGreaterThan(1);
+  expect(new Set(names).size).toBe(names.length);
+  const passages = names.filter((n) => n.includes("passing passage ends"));
+  expect(passages.length).toBeGreaterThan(1);
+  for (const name of passages) expect(name).toMatch(/ · \d{2}:\d{2}$/);
+  // A headline that appears once keeps its plain wording.
+  expect(names).toContain("Harbor: more ball wins in the attacking third");
+});

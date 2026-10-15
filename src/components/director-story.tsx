@@ -421,6 +421,10 @@ export function DirectorStory({
     clearSelection,
   } = director;
   const observations = candidates.filter((c) => c.id !== story?.storyId);
+  // Two observations can share a headline (two passages that each end in a
+  // shot); their match times tell them apart.
+  const repeated = (headline: string) =>
+    observations.filter((c) => c.headline === headline).length > 1;
   // A newly selected observation replaces the story card: bring its headline up.
   const revealStory = () =>
     revealSoon(
@@ -447,7 +451,9 @@ export function DirectorStory({
               revealStory();
             }}
           >
-            {candidate.headline}
+            {repeated(candidate.headline)
+              ? `${candidate.headline} · ${matchClock(match, candidate.timestamp)}`
+              : candidate.headline}
           </button>
         ))}
       </div>
