@@ -16,7 +16,7 @@ import {
 } from "../src/lib/ai/spend-ledger";
 import { UsageFailure } from "../src/lib/ai/request-controls";
 import { createInvestigation } from "../src/lib/ai/director/tools";
-import { analystToolset } from "../src/lib/ai/analyst/toolset";
+import { analystBriefing, analystToolset } from "../src/lib/ai/analyst/toolset";
 
 const match = new SyntheticMatchSource().read("pressure", { profile: "demo" });
 const CUTOFF = 3804; // 63:24
@@ -1059,6 +1059,78 @@ describe("analyst agent", () => {
       // 63:24 is 18:24 into the half: two equal 9 min 12 sec windows.
       expect(query, tool).toMatchObject({ start: 3252, end: CUTOFF });
     }
+  });
+
+  describe("counts written next to a window", () => {
+    // The evidence behind an Oct 15 eval answer at 70:00: the story card plus
+    // a Harbor comparison and shot-route comparison of 50:00–60:00 with
+    // 60:00–70:00 (2 then 3 shots; 4 then 6 recoveries).
+    const at70 = () => {
+      const tools = analystToolset(match, 4200, {
+        maxTools: 5,
+        eventKey: "ref",
+      });
+      const facts = collectFacts(analystBriefing(match, 4200, "fan").grounded);
+      for (const tool of ["compare_time_windows", "compare_shot_routes"])
+        collectFacts(
+          tools.run(tool, {
+            matchId: match.id,
+            start: 3600,
+            end: 4200,
+            team: "harbor",
+            playerId: null,
+            eventId: null,
+          }).output,
+          facts,
+        );
+      return facts;
+    };
+    const check = (answer: string) =>
+      verifyGrounding(answer, at70(), roster, "Has Harbor's pressure faded?");
+
+    it("rejects a baseline that is another window's count", () => {
+      const result = check(
+        "Harbor still had 3 shots in 60:00–70:00, but that was down from 4 in the earlier 50:00–60:00 spell.",
+      );
+      expect(result.passed).toBe(false);
+      expect(result.issues.join(" ")).toContain(
+        "the shot count the tools reported for 50:00–60:00",
+      );
+    });
+    it("rejects a count that belongs to a different window", () => {
+      expect(check("Harbor had 3 shots in 50:00–60:00.").passed).toBe(false);
+    });
+    it.each([
+      "Harbor still had 3 shots in 60:00–70:00, up from 2 in the earlier 50:00–60:00 spell.",
+      "Harbor had 6 recoveries in 60:00–70:00, after 4 in 50:00–60:00.",
+      "Harbor had 3 shots between 60:00 and 70:00.",
+    ])("accepts the window's own counts: %s", (answer) => {
+      expect(check(answer).issues).toEqual([]);
+    });
+    it("accepts either team's count for a window both were counted in", () => {
+      const facts = collectFacts(
+        analystToolset(match, CUTOFF, { maxTools: 5, eventKey: "ref" }).run(
+          "get_team_statistics",
+          {
+            matchId: match.id,
+            start: 3252,
+            end: CUTOFF,
+            team: null,
+            playerId: null,
+            eventId: null,
+          },
+        ).output,
+      );
+      for (const answer of [
+        "Riverside had 0 shots in 54:12–63:24.",
+        "Harbor had 4 shots in 54:12–63:24.",
+      ])
+        expect(verifyGrounding(answer, facts, roster).issues).toEqual([]);
+      expect(
+        verifyGrounding("Riverside had 2 shots in 54:12–63:24.", facts, roster)
+          .passed,
+      ).toBe(false);
+    });
   });
 
   it("labels tool calls in plain words", () => {

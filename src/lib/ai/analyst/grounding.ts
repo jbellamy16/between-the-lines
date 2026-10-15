@@ -15,6 +15,11 @@ export type GroundingFacts = {
   names: Set<string>;
   /** Counted things, e.g. shot -> {"0", "4"}: "4 shots" must match a shot count. */
   counts: Map<string, Set<string>>;
+  /**
+   * Counts per window a tool reported ("50:00–60:00" -> shot -> {"2"}), so a
+   * count written next to a window must match that window, not just any.
+   */
+  windows: Map<string, Map<string, Set<string>>>;
 };
 
 export type RosterName = { name: string };
@@ -61,6 +66,7 @@ export function emptyFacts(): GroundingFacts {
     clocks: new Set(),
     names: new Set(),
     counts: new Map(),
+    windows: new Map(),
   };
 }
 
@@ -146,9 +152,54 @@ function addClock(facts: GroundingFacts, clock: string) {
   }
 }
 
+const WINDOW_CLOCK = /^\d{1,3}(?:\+\d{1,2})?:\d{2}$/;
+const windowKey = (from: string, to: string) => `${from}–${to}`;
+
+/** Record an object's counts (and its byTeam counts) under one window. */
+function addWindowCounts(
+  facts: GroundingFacts,
+  key: string,
+  counts: unknown,
+): void {
+  if (!counts || typeof counts !== "object") return;
+  const entry = facts.windows.get(key) ?? new Map<string, Set<string>>();
+  facts.windows.set(key, entry);
+  for (const [k, v] of Object.entries(counts as Record<string, unknown>)) {
+    if (typeof v === "number" && COUNT_KEYS[k]) {
+      const set = entry.get(COUNT_KEYS[k]) ?? new Set<string>();
+      set.add(String(v));
+      entry.set(COUNT_KEYS[k], set);
+    } else if (k === "byTeam" && v && typeof v === "object")
+      for (const team of Object.values(v as Record<string, unknown>))
+        addWindowCounts(facts, key, team);
+  }
+}
+
 /** Collect every number, clock and string fragment from evidence sent to the model. */
 export function collectFacts(value: unknown, facts = emptyFacts()) {
   const walk = (v: unknown) => {
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      const o = v as Record<string, unknown>;
+      // A window's own counts ({from, to, shots, …}), or a tool summary's
+      // ({window: {from, to}, counts, byTeam}).
+      const span =
+        typeof o.from === "string" && typeof o.to === "string"
+          ? { from: o.from, to: o.to }
+          : (o.window as { from?: unknown; to?: unknown } | undefined);
+      if (
+        span &&
+        typeof span.from === "string" &&
+        typeof span.to === "string" &&
+        WINDOW_CLOCK.test(span.from) &&
+        WINDOW_CLOCK.test(span.to)
+      ) {
+        const key = windowKey(span.from, span.to);
+        if (o.window) {
+          addWindowCounts(facts, key, o.counts);
+          addWindowCounts(facts, key, { byTeam: o.byTeam });
+        } else addWindowCounts(facts, key, o);
+      }
+    }
     if (v === null || v === undefined) return;
     if (typeof v === "number") addNumber(facts, v);
     else if (typeof v === "string") addText(facts, v);
@@ -260,6 +311,62 @@ function wrongFirstNames(
     }
   }
   return issues;
+}
+
+const CLOCK_TEXT = "\\d{1,3}(?:\\+\\d{1,2})?:\\d{2}";
+const SPAN = `(?:between\\s+)?(${CLOCK_TEXT})\\s*(?:–|—|-|to|and)\\s*(${CLOCK_TEXT})`;
+const NOUN_TEXT =
+  "high ball wins?|ball wins?|pass attempts?|shots?|attempts?|efforts?|pass(?:es)?|goals?|actions?|recover(?:y|ies)|tackles?|interceptions?|corners?|fouls?";
+
+/**
+ * A count written next to a window the tools reported must be that window's
+ * count: "3 shots in 60:00–70:00", "down from 4 in the earlier 50:00–60:00
+ * spell". Windows the tools didn't report, and counts of things not counted
+ * in that window, are left to the other checks.
+ */
+function windowedCountIssues(answer: string, facts: GroundingFacts) {
+  const issues: string[] = [];
+  const words = Object.keys(NUMBER_WORDS).join("|");
+  const check = (
+    raw: string,
+    value: string,
+    kind: string,
+    a: string,
+    b: string,
+  ) => {
+    const known = facts.windows.get(windowKey(a, b))?.get(kind);
+    if (known && !known.has(value))
+      issues.push(
+        `"${raw.trim()}" doesn't match the ${kind} count the tools reported for ${a}–${b}.`,
+      );
+  };
+  for (const sentence of answer.split(/(?<=[.;!?])\s+/)) {
+    // "3 shots in 60:00–70:00", "4 recoveries from 54:12 to 63:24"
+    const direct = new RegExp(
+      `(?<![\\w.:])(\\d+|${words})\\s+(?:recorded\\s+|more\\s+|completed\\s+|successful\\s+)?(${NOUN_TEXT})\\b\\s+(?:(?:in|from|during|over|across)\\s+(?:the\\s+)?)?${SPAN}`,
+      "gi",
+    );
+    let last: string | undefined;
+    for (const m of sentence.matchAll(direct)) {
+      const kind = noun(m[2]);
+      if (kind) check(m[0], String(countValue(m[1])), kind, m[3], m[4]);
+    }
+    // "… 3 shots …, down from 4 in the earlier 50:00–60:00 spell": the
+    // baseline counts the thing last counted before it in the sentence.
+    const baseline = new RegExp(
+      `\\b(?:from|after|versus|vs\\.?|compared with)\\s+(\\d+|${words})(?:\\s+(${NOUN_TEXT}))?\\s+(?:in|during|over|across)\\s+(?:the\\s+)?(?:[a-z]+\\s+){0,2}${SPAN}`,
+      "gi",
+    );
+    for (const m of sentence.matchAll(baseline)) {
+      if (m[1].includes(":")) continue;
+      const before = sentence.slice(0, m.index);
+      for (const c of before.matchAll(COUNT_PHRASE()))
+        last = noun(c[2]) ?? last;
+      const kind = m[2] ? noun(m[2]) : last;
+      if (kind) check(m[0], String(countValue(m[1])), kind, m[3], m[4]);
+    }
+  }
+  return [...new Set(issues)];
 }
 
 /** Seconds on a match clock ("63:24", "45+2:10"); stoppage adds its minutes. */
@@ -383,6 +490,8 @@ export function verifyGrounding(
         `"${m[0].trim()}" does not match any ${kind} count in the retrieved evidence.`,
       );
   }
+
+  issues.push(...windowedCountIssues(answer, facts));
 
   // A time the viewer asked about that hasn't been played yet may only
   // appear in a decline: an answer about it is about the future.
