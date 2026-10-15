@@ -6,6 +6,8 @@ Built solo for Microsoft's 2026 **Inside the Game** hackathon with the Premier L
 
 **[Try the live app](https://between-the-lines-jb-f5539b65.azurewebsites.net/)** · Demo video: _link added at submission_ · [Submission summary](docs/SUBMISSION.md)
 
+![The match centre at 63:24: moments so far on the left, a Riverside passage replaying on the pitch, and the analyst's verified answer to "Is Riverside doing anything about it?" with its cited moments on the right](docs/hero-desktop.png)
+
 ## The problem
 
 You join a match at 63 minutes. The score says 1–0. It doesn't say that one team has taken four shots in nine minutes after none before, or whether that surge is already fading. Stats panels give you numbers without the story. Commentary gives you a story you can't check. Between the Lines does both: it tells you what changed and shows you exactly which moments prove it.
