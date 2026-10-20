@@ -123,15 +123,16 @@ az webapp deploy -g "$RG" -n "$APP" --src-path "$ZIP" --type zip \
 step "5/5 Verify"
 live=0
 for _ in $(seq 1 60); do
-  if curl -fsS "$ORIGIN/release.json" 2>/dev/null | grep -q "$COMMIT"; then live=1; break; fi
+  [[ "$(curl -fsS "$ORIGIN/release.json" 2>/dev/null)" == *"$COMMIT"* ]] && { live=1; break; }
   sleep 5
 done
 [ "$live" = 1 ] || fail "/release.json doesn't show $COMMIT; redeploy the previous ZIP in artifacts/ to roll back"
-curl -fsS "$ORIGIN/" | grep -q "Between the Lines" || fail "homepage didn't load"
+# Capture first: `curl | grep -q` fails under pipefail when grep stops early.
+[[ "$(curl -fsS "$ORIGIN/")" == *"Between the Lines"* ]] || fail "homepage didn't load"
 # The analyst needs a minute after a restart before its controls connect.
 ready=0
 for _ in $(seq 1 24); do
-  curl -fsS "$ORIGIN/api/ask" | grep -q '"enabled":true' && { ready=1; break; }
+  [[ "$(curl -fsS "$ORIGIN/api/ask" 2>/dev/null)" == *'"enabled":true'* ]] && { ready=1; break; }
   sleep 5
 done
 [ "$ready" = 1 ] || fail "the analyst didn't report enabled"
