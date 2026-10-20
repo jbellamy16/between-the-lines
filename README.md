@@ -58,7 +58,9 @@ flowchart LR
 
 One playback timestamp is the source of truth. Every view, tool and answer uses only events at or before it. The server rebuilds the match itself and never trusts statistics or evidence sent by the browser.
 
-**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app. GitHub Actions runs type checks, 980+ unit tests and a Playwright suite across desktop and two mobile viewports on every PR.
+**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 980+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
+
+**Evaluated:** the last five runs of the 18-question analyst eval against the Foundry deployment (12 match questions, 6 it should decline) each scored 18/18. Answers take about 4 seconds and cost about $0.006. [Evidence](docs/SUBMISSION.md#evidence)
 
 **Spend controls:** every model call reserves its worst-case cost against a shared dollar ledger before dispatch. Request caps apply per minute, hour and day, plus a per-client limit. If any limit is hit, the app falls back to the deterministic story. [Details](docs/ANALYST.md#spending-controls)
 
@@ -78,6 +80,8 @@ npm run typecheck && npm test && npm run build   # checks
 npx playwright install chromium && npm run test:e2e
 npm run eval:analyst                             # live agent eval (spends a few cents)
 ```
+
+Releases go to Azure App Service with `bash scripts/release.sh`, which builds the pushed `main` in a clean clone, tests it, packages it and verifies the live app ([deployment](docs/DEPLOYMENT.md)).
 
 ## Code map
 
