@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Hackathon submission brief (through Oct 27, 2026)
 
-Goal: win the Inside the Game hackathon (Grand Prize + Best Use of Microsoft Foundry). Optimize for what judges see: the live app and a video under 2 minutes.
+Goal: win the Inside the Game hackathon (Grand Prize + Best Enterprise Solution). Optimize for what judges see: the live app and a video under 2 minutes.
 
 - Every PR maps to one item in the submission roadmap. No item, no PR.
 - No new evaluation harnesses, receipts, ledgers, audit docs or dated `docs/` folders. History lives in git.
