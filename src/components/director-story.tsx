@@ -135,6 +135,8 @@ export function useDirectorStory({
     [replay, setReplay] = useState(false);
   const [proactive, setProactive] = useState(false);
   const [provider, setProvider] = useState("offline");
+  /** False until /api/insights answers, so nothing claims the analyst is off. */
+  const [modeKnown, setModeKnown] = useState(false);
   const [notice, setNotice] = useState("");
   const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState<{
@@ -219,7 +221,8 @@ export function useDirectorStory({
         setProvider(enabled ? d.mode : "offline");
         setProactive(enabled && d.proactive === true);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setModeKnown(true));
     return () => request.current?.abort();
   }, []);
   useEffect(() => {
@@ -350,6 +353,7 @@ export function useDirectorStory({
     evidenceOpen,
     setEvidenceOpen,
     provider,
+    modeKnown,
     investigate,
     cancelInvestigation: () => {
       request.current?.abort();
@@ -414,6 +418,7 @@ export function DirectorStory({
     evidenceOpen,
     setEvidenceOpen,
     provider,
+    modeKnown,
     investigate,
     candidates,
     selectCandidate,
@@ -479,6 +484,7 @@ export function DirectorStory({
           match={match}
           time={time}
           provider={provider}
+          pending={!modeKnown}
           onExplore={onExplore}
           onEvent={onEvent}
         />
@@ -577,6 +583,7 @@ export function DirectorStory({
           match={match}
           time={time}
           provider={provider}
+          pending={!modeKnown}
           story={story}
           autoAsk={momentAsk}
           onExplore={() => {

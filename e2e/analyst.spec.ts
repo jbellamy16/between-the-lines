@@ -101,6 +101,23 @@ test("offline builds explain that the live analyst is off", async ({
   await expect(panel(page).getByRole("textbox")).toHaveCount(0);
 });
 
+test("the panel says nothing about the analyst's mode until it is known", async ({
+  page,
+}) => {
+  let release = () => {};
+  const held = new Promise<void>((r) => (release = r));
+  await page.route("**/api/insights", async (r) => {
+    if (r.request().method() !== "GET") return r.continue();
+    await held;
+    await r.fulfill({ json: { mode: "offline", configured: "offline" } });
+  });
+  await ready(page);
+  await expect(panel(page)).toBeVisible();
+  await expect(panel(page)).not.toContainText("live analyst is off");
+  release();
+  await expect(panel(page)).toContainText("live analyst is off");
+});
+
 test("a question shows the agent's steps and a verified answer with replayable evidence", async ({
   page,
 }) => {

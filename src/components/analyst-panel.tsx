@@ -61,6 +61,7 @@ export function AnalystPanel({
   match,
   time,
   provider,
+  pending = false,
   story = null,
   onExplore,
   onEvent,
@@ -69,6 +70,8 @@ export function AnalystPanel({
   match: MatchData;
   time: number;
   provider: string;
+  /** The analyst's mode isn't known yet: say nothing about it. */
+  pending?: boolean;
   story?: BroadcastStory | null;
   onExplore: () => void;
   onEvent: (id: string) => void;
@@ -330,7 +333,7 @@ export function AnalystPanel({
             {busy ? "Working…" : "Ask"}
           </button>
         </form>
-      ) : (
+      ) : pending ? null : (
         <p className="analyst-offline">
           The live analyst is off in this build.
           {starters.length > 0 &&

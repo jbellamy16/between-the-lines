@@ -92,6 +92,7 @@ export function MatchApp({
     ids: string[];
     version: number;
   } | null>(null);
+  const [modeKnown, setModeKnown] = useState(false);
   const [provider, setProvider] = useState("offline"),
     [loading, setLoading] = useState(false),
     [notice, setNotice] = useState("");
@@ -273,7 +274,8 @@ export function MatchApp({
           ["foundry", "openai"].includes(d.mode) ? d.mode : "offline",
         ),
       )
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setModeKnown(true));
   }, []);
   useEffect(() => {
     if (!active) {
@@ -680,9 +682,11 @@ export function MatchApp({
                 ))}
               </div>
               <p className="limitations">
-                {provider !== "offline"
-                  ? `${providerLabel(provider)} is configured. Narration runs only when you request an explanation or AI recap.`
-                  : "Currently in offline demo mode. Narratives and recaps are deterministic, not AI-generated."}{" "}
+                {!modeKnown
+                  ? ""
+                  : provider !== "offline"
+                    ? `${providerLabel(provider)} is configured. Narration runs only when you request an explanation or AI recap.`
+                    : "Currently in offline demo mode. Narratives and recaps are deterministic, not AI-generated."}{" "}
                 Clubs and players are fictional. No broadcast footage, licensed
                 football data, or continuous player tracking is used.
               </p>
