@@ -138,29 +138,65 @@ export function analystToolset(
   ];
 
   // Players by recorded actions in the window, most first.
-  const rankPlayers = (events: NormalizedEvent[]) =>
+  const playerRows = (events: NormalizedEvent[]) =>
     [
       ...Map.groupBy(
         events.filter((e) => e.actorId && e.type !== "possession"),
         (e) => e.actorId!,
       ),
-    ]
-      .map(([id, own]) => {
-        const c = windowCounts(own);
-        return {
-          player: playerName(id),
-          team: match.teams[own[0].team].short,
-          actions: c.actions,
-          passes: c.passes,
-          shots: c.shots,
-          goals: c.goals,
-          recoveries: c.recoveries,
-          tackles: c.tackles,
-          interceptions: c.interceptions,
-        };
-      })
+    ].map(([id, own]) => {
+      const c = windowCounts(own);
+      return {
+        player: playerName(id),
+        team: match.teams[own[0].team].short,
+        actions: c.actions,
+        passes: c.passes,
+        shots: c.shots,
+        goals: c.goals,
+        recoveries: c.recoveries,
+        tackles: c.tackles,
+        interceptions: c.interceptions,
+      };
+    });
+  // Most involved = most recorded actions, top five.
+  const rankPlayers = (events: NormalizedEvent[]) =>
+    playerRows(events)
       .sort((a, b) => b.actions - a.actions)
       .slice(0, 5);
+  // "Who has the most recoveries?" can't be read off the top five by actions:
+  // the leader may be outside it. Give the leaders of each action type across
+  // every player in the window, ties included.
+  const leaderStats = [
+    "passes",
+    "shots",
+    "goals",
+    "recoveries",
+    "tackles",
+    "interceptions",
+  ] as const;
+  const statLeaders = (events: NormalizedEvent[]) => {
+    const rows = playerRows(events);
+    return Object.fromEntries(
+      leaderStats.flatMap((stat) => {
+        const most = Math.max(0, ...rows.map((r) => r[stat]));
+        return most > 0
+          ? [
+              [
+                stat,
+                {
+                  // Keyed by the stat itself so the grounding check ties the
+                  // number to what was counted.
+                  [stat]: most,
+                  players: rows
+                    .filter((r) => r[stat] === most)
+                    .map((r) => r.player),
+                },
+              ],
+            ]
+          : [];
+      }),
+    );
+  };
 
   function project(tool: ToolName, query: ToolQuery, output: Execution) {
     const pool =
@@ -232,8 +268,10 @@ export function analystToolset(
       summary.window = span;
       summary.counts = windowCounts(all);
       // "Who has been most involved?": no player named, so rank them.
-      if (tool === "get_player_involvement" && !query.playerId)
+      if (tool === "get_player_involvement" && !query.playerId) {
         summary.mostInvolved = rankPlayers(all);
+        summary.leaders = statLeaders(all);
+      }
       if (!query.team && !query.playerId)
         summary.byTeam = {
           [match.teams.harbor.short]: windowCounts(
@@ -411,7 +449,7 @@ export function analystToolset(
           ? {
               ...d,
               description:
-                "Investigate a named player's contributions; with playerId null, rank the most involved players by recorded actions.",
+                'Investigate a named player\'s contributions; with playerId null, rank the most involved players by recorded actions (top five) and list the leaders of each action type (passes, shots, goals, recoveries, tackles, interceptions) across every player, ties included. Answer "who has the most …" from leaders, not from the top five.',
             }
           : d,
     ),

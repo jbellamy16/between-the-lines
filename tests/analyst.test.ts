@@ -1018,6 +1018,47 @@ describe("analyst agent", () => {
     expect(named).not.toHaveProperty("mostInvolved");
   });
 
+  it("names the leaders of each action type, including players outside the top five", () => {
+    const tools = analystToolset(match, CUTOFF, {
+      maxTools: 5,
+      eventKey: "ref",
+    });
+    const { output } = tools.run("get_player_involvement", {
+      matchId: match.id,
+      start: 2700,
+      end: CUTOFF,
+      team: "harbor",
+      playerId: null,
+      eventId: null,
+    }) as unknown as {
+      output: {
+        mostInvolved: { player: string; recoveries: number }[];
+        leaders: Record<string, { players: string[] } & Record<string, number>>;
+      };
+    };
+    // Leon Costa ties for the most recoveries in 45:00–63:24 but is not one
+    // of the five most involved players.
+    expect(output.mostInvolved.map((p) => p.player)).not.toContain(
+      "Leon Costa",
+    );
+    expect(output.leaders.recoveries.recoveries).toBe(2);
+    expect(output.leaders.recoveries.players.toSorted()).toEqual([
+      "Finn Ash",
+      "Leon Costa",
+      "Theo March",
+    ]);
+    expect(output.leaders.shots.players).toEqual(["Theo March"]);
+    // A leader's count is tied to the stat it counts.
+    const facts = collectFacts(output);
+    expect(
+      verifyGrounding(
+        "Leon Costa, Theo March and Finn Ash share the most recoveries for Harbor, 2 each.",
+        facts,
+        roster,
+      ).passed,
+    ).toBe(true);
+  });
+
   it("names who received each pass in a traced build-up", () => {
     const tools = analystToolset(match, 4200, {
       maxTools: 5,
