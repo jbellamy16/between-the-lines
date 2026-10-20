@@ -1,20 +1,12 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { readFileSync } from "node:fs";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
-import { normalizeHistorical } from "../src/lib/sources/historical";
 import { matchContext } from "../src/lib/sources/context";
 import { buildBriefing } from "../src/lib/recap-briefing";
 import { matchInsights } from "../src/lib/sources/intelligence";
 
 const fixtures = [
   { source: "Synthetic", match: new SyntheticMatchSource().read("pressure") },
-  {
-    source: "Recorded",
-    match: normalizeHistorical(
-      JSON.parse(readFileSync("data/historical/2499719.json", "utf8")),
-    ),
-  },
 ] as const;
 for (const { source, match } of fixtures) {
   test(`${source}: intelligence and recap remain useful and spoiler-safe throughout the match`, async ({
@@ -28,15 +20,6 @@ for (const { source, match } of fixtures) {
     });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
-    const sourceButton = page.getByRole("button", {
-      name: source,
-      exact: true,
-    });
-    test.skip(
-      source === "Recorded" && !(await sourceButton.count()),
-      "Recorded matches are hidden.",
-    );
-    if (await sourceButton.count()) await sourceButton.click();
     const shell = page.locator(".app-shell").filter({ visible: true });
     const timeline = shell.getByRole("slider", { name: "Match timeline" });
     await expect(timeline).toBeVisible();

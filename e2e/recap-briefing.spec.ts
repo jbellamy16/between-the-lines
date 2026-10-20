@@ -180,26 +180,6 @@ test("review reuses one Director response across modes and reopen; late results 
   await expect(dialog.locator(".recap-timeline button")).toHaveCount(0);
 });
 
-test("recorded match uses the same briefing and truthful event navigation", async ({
-  page,
-}) => {
-  await page.goto("/");
-  const recorded = page.getByRole("button", { name: "Recorded", exact: true });
-  test.skip(!(await recorded.count()), "Recorded matches not enabled");
-  await recorded.click();
-  await page.getByRole("slider", { name: "Match timeline" }).fill("1800");
-  const dialog = await open(page);
-  await expect(dialog).toContainText("1–2");
-  await expect(dialog).not.toContainText("4–3");
-  expect(await dialog.locator('img[src^="/teams/"]').count()).toBe(0);
-  await dialog.getByRole("tab", { name: "Full recap" }).click();
-  await dialog.locator(".recap-timeline button").first().click();
-  await expect(dialog).not.toBeVisible();
-  await expect(
-    page.locator(".historical-shell .event-inspector"),
-  ).toContainText("Source ID:");
-});
-
 test("background playback and an open briefing never move the viewed checkpoint", async ({
   page,
 }) => {

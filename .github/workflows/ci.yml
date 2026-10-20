@@ -17,8 +17,6 @@ jobs:
     env:
       AI_ENABLED: "false"
       REDIS_TEST_URL: redis://127.0.0.1:6379
-      RECORDED_MATCHES_VISIBLE: "true"
-      FOUNDRY_STUDY_REDIS_TEST: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,7 +35,6 @@ jobs:
             artifacts/intelligence-evaluation.json
             artifacts/broadcast-story.json
             artifacts/ai-evaluation.json
-            artifacts/historical-evaluation.json
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

@@ -4,7 +4,6 @@ import { canLead, selectLeadCandidate } from "../src/lib/ai/director/editorial";
 import { packageStory } from "../src/lib/ai/director/story";
 import { directMatch } from "../src/lib/ai/director/runner";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
-import { loadHistorical } from "../src/lib/sources/repository";
 import { matchInsights } from "../src/lib/sources/intelligence";
 import { eventClock, recordedScore } from "../src/lib/sources/model";
 import { comparisonWindow, isHighBallWin } from "../src/lib/sources/metrics";
@@ -83,7 +82,7 @@ describe("first editorial milestone", () => {
   });
 
   it("uses actual period starts and requires two complete windows of at least five minutes", async () => {
-    const match = await loadHistorical("2499719");
+    const match = source.read("pressure");
     for (const elapsed of [0, 599, 600, 1104, 1800]) {
       const cutoff = match.secondHalfStart + elapsed;
       const window = comparisonWindow(cutoff, match.secondHalfStart);
@@ -110,47 +109,6 @@ describe("first editorial milestone", () => {
     }
   });
 
-  it("preserves D. Gray's minute precision without moving the conservative visibility boundary", async () => {
-    const match = await loadHistorical("2499719");
-    const gray = match.players.find((p) => p.name === "D. Gray")!;
-    const sub = match.events.find(
-      (e) => e.type === "substitution" && e.playerId === gray.id,
-    )!;
-    expect(eventClock(match, sub)).toBe("~88′");
-    expect(
-      observe(match, sub.time - 1, "fan", {}, { unranked: true }).some((c) =>
-        c.evidenceIds.includes(sub.id),
-      ),
-    ).toBe(false);
-    const candidate = observe(
-      match,
-      match.duration,
-      "fan",
-      {},
-      { unranked: true },
-    ).find(
-      (c) =>
-        c.category === "substitute-involvement" &&
-        c.evidenceIds.includes(sub.id),
-    )!;
-    expect(candidate.brief).toContain("~88′");
-    expect(candidate.detail).toContain("~88′");
-    expect(candidate.detail).not.toContain("89:00");
-    const story = packageStory(
-      candidate,
-      match,
-      match.duration,
-      "analyst",
-      "offline",
-      "detail",
-      claimEmphasis[candidate.category],
-    );
-    expect(story.explanation).toContain("~88′");
-    expect(story.hypothesis.supportingEvidence[0].description).toContain(
-      "~88′",
-    );
-  });
-
   it("allows a quiet spell to abstain while preserving secondary observations", async () => {
     vi.stubEnv("AI_ENABLED", "false");
     const match = source.read("quiet");
@@ -164,38 +122,8 @@ describe("first editorial milestone", () => {
     expect(result.metrics.requests).toBe(0);
   });
 
-  it("leads full time with Arsenal's 4–3 result even with a favorite substitute and seen goals", async () => {
-    vi.stubEnv("AI_ENABLED", "false");
-    const match = await loadHistorical("2499719");
-    const gray = match.players.find((p) => p.name === "D. Gray")!;
-    const preferences = {
-      team: "riverside" as const,
-      player: gray.id,
-      categories: ["rhythm" as const],
-      seenEvidenceIds: match.events.map((e) => e.id),
-    };
-    const result = await directMatch(match, match.duration, "fan", preferences);
-    const story = result.stories[0];
-    expect(story.category).toBe("full-time");
-    expect(story.headline).toContain("Arsenal 4–3 Leicester");
-    expect(story.explanation).toContain("Arsenal won 4–3");
-    expect(story.hypothesis.watchNext).toBeNull();
-    expect(story.hypothesis.verificationChecks.every((c) => c.passed)).toBe(
-      true,
-    );
-    expect(
-      recordedScore(
-        match.events.filter((e) => story.evidenceEventIds.includes(e.id)),
-      ),
-    ).toEqual({ harbor: 4, riverside: 3 });
-    const altered = { ...match, finalScore: { harbor: 99, riverside: 0 } };
-    expect(selectLeadCandidate(observe(altered, match.duration))?.brief).toBe(
-      selectLeadCandidate(observe(match, match.duration))?.brief,
-    );
-  });
-
   it("prioritizes the latest late goal and removes it on rewind", async () => {
-    const match = await loadHistorical("2499719");
+    const match = source.read("pressure");
     const goal = match.events.findLast((e) => e.scoringTeam)!;
     const after = selectLeadCandidate(
       observe(match, goal.time + 1, "fan", {

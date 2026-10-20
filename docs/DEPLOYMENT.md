@@ -10,7 +10,7 @@ The live app runs on an existing Azure App Service. Nothing in this repository c
 | Model       | Microsoft Foundry deployment `between-the-lines-gpt54-mini` (GPT-5.4 Mini, GlobalStandard, pay per token, 150k tokens per minute) |
 | Usage store | TLS Redis (Upstash) shared by every instance for request caps, the answer cache and the dollar ledger                             |
 
-App settings are listed in [the analyst guide](ANALYST.md#turn-it-on-in-azure). Both build and runtime set `HISTORICAL_MATCHES_ENABLED=false` and `RECORDED_MATCHES_VISIBLE=false`, so the public app shows synthetic data only.
+App settings are listed in [the analyst guide](ANALYST.md#turn-it-on-in-azure). The app ships synthetic data only.
 
 ## Release
 

@@ -302,51 +302,6 @@ test("invalid or unavailable browser storage keeps a usable synchronized prefere
   ).toHaveValue("analysis");
 });
 
-test("recorded approximate times, full-time score, and rewind stay consistent across styles", async ({
-  page,
-}) => {
-  await ready(page);
-  const recorded = page.getByRole("button", { name: "Recorded", exact: true });
-  test.skip(
-    !(await recorded.count()),
-    "Recorded matches are hidden in this build",
-  );
-  await recorded.click();
-  const shell = page.locator(".historical-shell");
-  const timeline = shell.getByRole("slider", { name: "Match timeline" });
-  await timeline.fill((await timeline.getAttribute("max"))!);
-  await openStoryDetails(page);
-  await story(page).getByText("More from this match", { exact: true }).click();
-  await story(page)
-    .getByRole("button", {
-      name: "D. Gray: involvement after coming on",
-      exact: true,
-    })
-    .click();
-  for (const style of ["analysis", "fan", "plain"]) {
-    await selector(page).selectOption(style);
-    await expect(story(page).locator(":scope > p").first()).toContainText(
-      "~88′",
-    );
-    await expect(story(page).locator(":scope > p").first()).not.toContainText(
-      "89:00",
-    );
-    await story(page)
-      .getByRole("button", { name: "Explore evidence", exact: true })
-      .click();
-    await expect(
-      story(page).locator(".story-event-list time").first(),
-    ).toHaveText("~88′");
-  }
-  await story(page).getByRole("button", { name: "Back to main story" }).click();
-  await expect(story(page).getByRole("heading", { level: 2 })).toHaveText(
-    "Full time: Arsenal 4–3 Leicester City",
-  );
-  await timeline.fill("0");
-  await expect(story(page)).toHaveCount(0);
-  await expect(shell.locator(".quiet-story")).toContainText("No new headline");
-});
-
 test("all levels and quiet-spell evidence fit accessible desktop, tablet and mobile layouts", async ({
   page,
 }, info) => {

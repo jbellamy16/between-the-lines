@@ -1,9 +1,0 @@
-{
-  "revision": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
-  "files": {
-    "data/competitions.json": "e6cd42f5d8956d6aa30fb917ce8d4c3b3df1879a93f02f8feba820930a6971fa",
-    "data/matches/43/3.json": "f89dbd4aedcaf9c9e4ec9d8e745d5d54596500ec357d7489c914a2f126805adf",
-    "data/events/8658.json": "a9aa72c042153fa351c3591ee11e7fba95b0c8841c4489da4aa6809de1edbdf5",
-    "data/lineups/8658.json": "84696fa0d36f14e6aa557d9dcdf11f4ac0f304e6e7a547bb160f740f85a71f53"
-  }
-}

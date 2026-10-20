@@ -1,8 +1,6 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { recordedContext, EMPTY_MATCH_CONTEXT } from "../src/lib/match-context";
 import { matchContext, matchSummary } from "../src/lib/sources/context";
-import { normalizeHistorical } from "../src/lib/sources/historical";
 import { matchEvidence, matchInsights } from "../src/lib/sources/intelligence";
 import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
 import { renderSelection } from "../src/lib/ai/narration";
@@ -14,11 +12,6 @@ const matches = [
   ...(["pressure", "substitution", "quiet"] as const).flatMap((id) =>
     (["demo", "balanced"] as const).map((profile) =>
       new SyntheticMatchSource().read(id, { profile }),
-    ),
-  ),
-  ...["2499719", "2499943", "2499841"].map((id) =>
-    normalizeHistorical(
-      JSON.parse(readFileSync(`data/historical/${id}.json`, "utf8")),
     ),
   ),
 ];

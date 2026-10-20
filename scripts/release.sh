@@ -47,16 +47,12 @@ git clone -q "$REPO" "$WORK/src"
 cd "$WORK/src"
 git checkout -q "$COMMIT"
 npx -y npm@11 ci --no-audit --no-fund
-# Tests run in their own environment: the submission flags below are for the
-# production build only (some tests expect the historical routes enabled).
-env -u HISTORICAL_MATCHES_ENABLED -u RECORDED_MATCHES_VISIBLE -u AI_REDIS_URL \
-  npm run typecheck
-env -u HISTORICAL_MATCHES_ENABLED -u RECORDED_MATCHES_VISIBLE -u AI_REDIS_URL \
-  npm test
+# Tests run in their own environment, without the shared usage store.
+env -u AI_REDIS_URL npm run typecheck
+env -u AI_REDIS_URL npm test
 
 step "2/5 Production build"
-NEXT_PUBLIC_SITE_URL="$ORIGIN" HISTORICAL_MATCHES_ENABLED=false \
-  RECORDED_MATCHES_VISIBLE=false npm run build
+NEXT_PUBLIC_SITE_URL="$ORIGIN" npm run build
 STANDALONE="$WORK/src/.next/standalone"
 [ -f "$STANDALONE/server.js" ] || fail "no standalone server.js"
 

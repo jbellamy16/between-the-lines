@@ -4,7 +4,6 @@ import { SyntheticMatchSource } from "../src/lib/sources/synthetic";
 import { observe } from "../src/lib/ai/director/observer";
 import { matchInsights } from "../src/lib/sources/intelligence";
 import { packageStory } from "../src/lib/ai/director/story";
-import { loadHistorical } from "../src/lib/sources/repository";
 import type { MatchData } from "../src/lib/sources/model";
 const rows: unknown[] = [];
 function evaluate(match: MatchData, time: number, mode: "fan" | "analyst") {
@@ -67,11 +66,6 @@ for (const scenario of ["pressure", "substitution", "quiet"] as const)
         for (const time of [0, 600, 1800, 2699, 2700, 3600, 4200, 5400])
           evaluate(match, time, mode);
       });
-it("permitted historical source follows the same evidence contract", async () => {
-  const match = await loadHistorical("2499719");
-  for (const mode of ["fan", "analyst"] as const)
-    for (const time of [0, 1800, 3600, 5400]) evaluate(match, time, mode);
-});
 it("an empty event stream abstains and cannot manufacture an observation", () => {
   const match = new SyntheticMatchSource().read("quiet");
   match.events = [];

@@ -11,7 +11,6 @@ import { observe } from "../src/lib/ai/director/observer";
 import { selectLeadCandidate } from "../src/lib/ai/director/editorial";
 import { packageStory } from "../src/lib/ai/director/story";
 import { createInvestigation } from "../src/lib/ai/director/tools";
-import { loadHistorical } from "../src/lib/sources/repository";
 import { matchInsights } from "../src/lib/sources/intelligence";
 import type { MatchData } from "../src/lib/sources/model";
 
@@ -154,36 +153,6 @@ describe("independent explanations of shared verified evidence", () => {
       )!.text,
     ).toContain("Expected goals estimates how likely shots are to score");
   });
-  it("keeps a verified dense recorded passing comparison without changing Director's evidence cap", async () => {
-    const m = await loadHistorical("2499719");
-    const insight = matchInsights(m, 1800).find(
-      (i) => i.category === "rhythm",
-    )!;
-    expect(insight.evidenceIds.length + insight.baselineIds.length).toBe(236);
-    expect(
-      observe(m, 1800, "analyst", {}, { unranked: true }).some(
-        (c) => c.statistics[0]?.label === "pass attempts",
-      ),
-    ).toBe(false);
-    for (const style of styles) {
-      const wording = presentInsight(insight, m, style);
-      expect(wording.explanation).toContain("153");
-      expect(wording.explanation).toContain("83");
-      expect(wording.qualifications[0].code).toBe("latest-rate-not-sustained");
-      expect(wording.qualifications[0].text).toContain("67");
-      expect(wording.qualifications[0].text).toContain("86");
-      expect(
-        presentInsight(
-          { ...insight, evidenceIds: insight.evidenceIds.slice(1) },
-          m,
-          style,
-        ).explanation,
-      ).toContain("needs a fresh evidence check");
-    }
-    expect(presentInsight(insight, m, "analysis").explanation).toContain(
-      "00:00–15:00",
-    );
-  });
   it("retains weakening and unknown counter-evidence in the primary wording", () => {
     const story = storyAt(match, 4200);
     story.hypothesis.contradictoryEvidence.push({
@@ -272,25 +241,6 @@ describe("independent explanations of shared verified evidence", () => {
         ).headline,
       ).toContain("Goal:");
     }
-  });
-  it("keeps approximate recorded substitution times in both styles, facts, evidence and cutoff", async () => {
-    const m = await loadHistorical("2499719");
-    const sub = observe(m, m.duration).find(
-      (c) =>
-        c.category === "substitute-involvement" &&
-        c.headline.includes("D. Gray"),
-    )!;
-    const story = packageStory(sub, m, m.duration, "analyst", "offline");
-    for (const style of styles) {
-      const wording = presentStory(story, m, style);
-      expect(wording.explanation).toContain("~88′");
-      expect(wording.explanation).not.toContain("89:00");
-      expect(wording.qualifications.map((q) => q.code)).toContain(
-        "minute-precision",
-      );
-    }
-    const event = m.events.find((e) => e.id === story.highlightedEventIds[0])!;
-    expect(observe(m, event.time - 1).some((c) => c.id === sub.id)).toBe(false);
   });
   it("renders a verified exploratory investigation in both styles without losing its selected sample", () => {
     const session = createInvestigation(match, 4200, "analyst");

@@ -216,65 +216,6 @@ test("investigation reports loading and failure while keeping the selected evide
   await expect(page.locator(".pitch-story-label")).toContainText(heading);
 });
 
-test("recorded full time leads with the result, while substitution evidence retains approximate minutes", async ({
-  page,
-}, info) => {
-  await page.goto("/");
-  await expect(page.locator(".app-shell")).toHaveAttribute(
-    "aria-busy",
-    "false",
-  );
-  test.skip(
-    !(await page
-      .getByRole("button", { name: "Recorded", exact: true })
-      .count()),
-    "Recorded matches are hidden in this build.",
-  );
-  await page.getByRole("button", { name: "Recorded", exact: true }).click();
-  const timeline = shell(page).getByRole("slider", { name: "Match timeline" });
-  await timeline.fill((await timeline.getAttribute("max")) as string);
-  const story = shell(page).locator(".director-story");
-  await expect(story.getByRole("heading", { level: 2 })).toContainText(
-    "Full time: Arsenal 4–3 Leicester",
-  );
-  await openStoryDetails(page);
-  await story.getByText("More from this match", { exact: true }).click();
-  await story
-    .getByRole("button", {
-      name: "D. Gray: involvement after coming on",
-      exact: true,
-    })
-    .click();
-  await expect(story.locator(":scope > p").first()).toContainText("~88′");
-  await expect(story.locator(":scope > p").first()).not.toContainText("89:00");
-  await story
-    .getByRole("button", { name: "Explore evidence", exact: true })
-    .click();
-  await expect(story.locator(".story-event-list time").first()).toHaveText(
-    "~88′",
-  );
-  await story
-    .getByRole("button", { name: "Replay story evidence", exact: true })
-    .click();
-  await expect(
-    shell(page)
-      .locator(".pitch-panel select[aria-label='Recorded event'] option")
-      .first(),
-  ).toContainText("~88′");
-  await story
-    .getByRole("button", { name: "Back to main story", exact: true })
-    .click();
-  await expect(story.getByRole("heading", { level: 2 })).toContainText(
-    "Full time: Arsenal 4–3 Leicester",
-  );
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: `artifacts/editorial-milestone/${info.project.name}-full-time.png`,
-  });
-  await timeline.fill("0");
-  await expect(shell(page).locator(".director-story")).toHaveCount(0);
-});
-
 test("a cold visitor gets one welcome line, and dismissing it sticks", async ({
   page,
 }) => {

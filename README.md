@@ -58,7 +58,7 @@ flowchart LR
 
 One playback timestamp is the source of truth. Every view, tool and answer uses only events at or before it. The server rebuilds the match itself and never trusts statistics or evidence sent by the browser.
 
-**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 790+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
+**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 730+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
 
 **Evaluated:** the last five runs of the 18-question analyst eval against the Foundry deployment (12 match questions, 6 it should decline) each scored 18/18. Answers take about 4 seconds and cost about $0.006. [Evidence](docs/SUBMISSION.md#evidence)
 
@@ -70,7 +70,7 @@ Node.js 22–26 (24 LTS recommended). No account or key is needed for the offlin
 
 ```sh
 npm ci
-AI_ENABLED=false HISTORICAL_MATCHES_ENABLED=false npm run dev
+AI_ENABLED=false npm run dev
 ```
 
 Open http://localhost:3000. To try the live analyst, add Foundry settings to `.env.local` as shown in [docs/ANALYST.md](docs/ANALYST.md#test-it-live).
@@ -99,8 +99,6 @@ Releases go to Azure App Service with `bash scripts/release.sh`, which builds th
 ## Synthetic data
 
 The hackathon requires synthetic, football-realistic data. A seed controls a reproducible stream of possessions between two fictional clubs, Harbor Athletic and Riverside FC. It includes role-aware passing, carries, shots with distance-based chance probabilities, recoveries, fouls, corners, goals and a substitution. Three scenarios cover rising pressure, post-substitution change and a quiet match. Scenario settings change probabilities, never insight text or detection rules. Coordinates are 0–100 with each team attacking left to right. Only recorded events are drawn; there is no invented tracking data.
-
-The repository also contains an optional historical-replay mode, built during development, that reads licensed real match events. It is switched off in the submitted app, which uses synthetic data only ([data rights](docs/DATA-RIGHTS.md)).
 
 ## Limits
 
