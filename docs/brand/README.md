@@ -93,7 +93,7 @@ Keep routes thin, field markings quieter, and the observed moment strongest. Avo
 
 ## Motion
 
-Retain the existing replay clock, event transitions, selection motion, cancellation, and reduced-motion behavior. Existing loading progress uses the green accent as a restrained tactical line. Empty-state brand marks stay static: animating them continually would imply observation activity without new evidence. An animated entrance was considered but omitted to avoid introducing a splash screen or delaying controls. If a future campaign needs logo motion, reveal pitch geometry, then the route, then the node, once in 400–700ms. With reduced motion, show the completed mark immediately. Never animate score values independently of their underlying state. See the retained [motion system](../motion/README.md).
+Retain the existing replay clock, event transitions, selection motion, cancellation, and reduced-motion behavior. Existing loading progress uses the green accent as a restrained tactical line. Empty-state brand marks stay static: animating them continually would imply observation activity without new evidence. An animated entrance was considered but omitted to avoid introducing a splash screen or delaying controls. If a future campaign needs logo motion, reveal pitch geometry, then the route, then the node, once in 400–700ms. With reduced motion, show the completed mark immediately. Never animate score values independently of their underlying state.
 
 ## Voice and messaging
 

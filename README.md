@@ -58,7 +58,7 @@ flowchart LR
 
 One playback timestamp is the source of truth. Every view, tool and answer uses only events at or before it. The server rebuilds the match itself and never trusts statistics or evidence sent by the browser.
 
-**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 980+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
+**Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 790+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
 
 **Evaluated:** the last five runs of the 18-question analyst eval against the Foundry deployment (12 match questions, 6 it should decline) each scored 18/18. Answers take about 4 seconds and cost about $0.006. [Evidence](docs/SUBMISSION.md#evidence)
 
@@ -111,7 +111,3 @@ The repository also contains an optional historical-replay mode, built during de
 - No accounts, cross-device preferences, audio or multilingual output.
 
 Club names, players and the Between the Lines identity are original to this project. There is no affiliation with real clubs or leagues and no league branding. Fonts and icon libraries keep their own licenses ([brand notes](docs/brand/README.md)).
-
-## Development record
-
-The detailed history of evaluations, releases and design decisions is in [docs/](docs/README.md).
