@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { entryGate, measure } from "../eval/investigator-feasibility/run";
 import {
   authorizationSchema,
@@ -152,7 +152,11 @@ describe("frozen feasibility preparation", () => {
     );
     const frozen = JSON.parse(original);
     const changed = Object.entries(frozen.sourceHashes)
-      .filter(([path, hash]) => digest(readFileSync(path, "utf8")) !== hash)
+      // A file removed since the freeze (the Cloudflare build script) is drift too.
+      .filter(
+        ([path, hash]) =>
+          !existsSync(path) || digest(readFileSync(path, "utf8")) !== hash,
+      )
       .map(([path]) => path);
     // The original live runner rejects this exact source drift before authorization,
     // preflight or Redis access. Do not refresh the historical freeze to make it pass.
@@ -189,6 +193,22 @@ describe("frozen feasibility preparation", () => {
         line.includes('"eval:investigator:prepare"')
           ? line.replace(/,$/, "")
           : line,
+      )
+      // The Cloudflare build path was removed after the freeze; put its
+      // scripts and dev dependencies back where they were.
+      .flatMap((line) =>
+        line.includes('"ai:check"')
+          ? [
+              line,
+              '    "cloudflare:build": "node scripts/build-cloudflare.mjs",',
+              '    "cloudflare:preview": "wrangler dev --ip 127.0.0.1 --port 3100",',
+              '    "cloudflare:deploy": "npm run cloudflare:build && wrangler deploy",',
+            ]
+          : line.includes('"@axe-core/playwright"')
+            ? [line, '    "@opennextjs/cloudflare": "^1.20.10",']
+            : line.includes('"vitest": ')
+              ? [`${line},`, '    "wrangler": "^4.149.0"']
+              : [line],
       )
       .join("\n");
     expect(digest(restoredPackage)).toBe(frozen.sourceHashes["package.json"]);
