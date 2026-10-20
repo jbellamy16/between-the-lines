@@ -11,7 +11,7 @@ Portal-ready text for the Inside the Game hackathon entry. Replace the bracketed
 
 ## Elevator pitch
 
-Between the Lines is a second-screen match companion that tells you what's changing in a football match and proves it. It surfaces the few developments that matter, plots the evidence on a live pitch, and lets you ask an AI analyst anything. The analyst is a Microsoft Foundry agent that investigates with evidence tools, and every number, time and name it writes is checked against the recorded events before you see it. The same tools are published as an MCP server, so a broadcaster's own agent can use them too.
+Between the Lines is a second-screen match companion that tells you what's changing in a football match and proves it. It surfaces the few developments that matter, plots the evidence on a live pitch, and lets you ask an AI analyst anything. The analyst is a Microsoft Foundry agent that investigates with evidence tools, and every number, time and name it writes is checked against the recorded events before you see it. Nothing is pre-recorded: the analyst answers whatever the viewer asks, live, at their point in the match. The same tools are published as an MCP server, so a broadcaster's own agent can use them too.
 
 ## The problem
 
@@ -71,4 +71,4 @@ Between the Lines is also an engine. Its evidence tools are a read-only MCP serv
 
 ## Honest limits
 
-The data is synthetic and simplified, and "xG" is the generator's shot probability, not a trained model. The grounding check verifies each fact against the evidence; it can't judge whether an answer is the most insightful one, which only viewers can tell us.
+The data is synthetic and simplified, and "xG" is the generator's shot probability, not a trained model. The grounding check verifies each fact against the evidence; it can't judge whether an answer is the most insightful one, which only viewers can tell us. Answers are in English only: the grounding check reads English wording, and another language would need its own check before we'd show it.

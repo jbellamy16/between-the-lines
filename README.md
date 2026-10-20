@@ -17,7 +17,7 @@ You join a match at 63 minutes. The score says 1–0. It doesn't say that one te
 - **Tells the story as it develops.** Deterministic detectors compare equal windows of play and surface the few changes that matter: a shot surge, a spell of ball wins high up the pitch, a substitute's involvement. Each comes as a headline, why it matters, supporting and challenging evidence, and what to watch next.
 - **Answers your questions with a Foundry agent.** Type anything: "Is Riverside doing anything about it?" An agent on Microsoft Foundry picks evidence tools, reads the results and answers in a sentence or two. You watch each step as it happens. A grounding check confirms every number, time and name before the answer appears. If the events can't answer your question, it says so. [How the analyst works](docs/ANALYST.md)
 - **Shows where it happened.** An interactive pitch plots the recorded actions behind every claim and replays the build-up to any shot.
-- **Speaks your language.** Choose Casual Viewer, Football Fan or Advanced Analysis. The same verified facts are rewritten for each level, and the agent's answers follow suit. Follow a team or player to reorder the stories.
+- **Pitched at your level.** Choose Casual Viewer, Football Fan or Advanced Analysis. The same verified facts are rewritten for each level, and the agent's answers follow suit. Follow a team or player to reorder the stories.
 - **Catches you up.** Quick or Full recaps for the moment you join, with no spoilers past your position in the match.
 
 ## Plug it into any agent
