@@ -19,7 +19,7 @@ async function connect(query = "", headers: Record<string, string> = {}) {
         const request = new Request(url, init);
         for (const [k, v] of Object.entries(headers)) request.headers.set(k, v);
         calls.push(request.method);
-        return request.method === "POST" ? POST(request) : GET();
+        return request.method === "POST" ? POST(request) : GET(request);
       },
     },
   );
@@ -211,6 +211,26 @@ describe("MCP endpoint", () => {
     expect(limited.headers.get("retry-after")).toBe("60");
     expect((await post("20.0.0.10:6000")).status).toBe(200);
     expect(GET().status).toBe(405);
+  });
+
+  it("explains itself to a browser and stays a bare 405 for MCP clients", async () => {
+    const get = (accept: string, query = "?t=77:00") =>
+      GET(new Request(`${ORIGIN}/api/mcp${query}`, { headers: { accept } }));
+    const client = get("text/event-stream");
+    expect(client.status).toBe(405);
+    expect(client.headers.get("allow")).toBe("POST");
+    expect(await client.text()).toBe("");
+    const page = get(
+      "text/html,application/xhtml+xml",
+      "?t=<script>x</script>",
+    );
+    expect(page.status).toBe(200);
+    expect(page.headers.get("content-type")).toContain("text/html");
+    const html = await page.text();
+    expect(html).toContain("MCP: Add Server");
+    expect(html).toContain("/api/mcp?t=77:00");
+    // Nothing from the request is echoed into the page.
+    expect(html).not.toContain("<script>x");
   });
 
   it("keys clients by the address the platform appended", () => {
