@@ -5,7 +5,7 @@ Portal-ready text for the Inside the Game hackathon entry. Replace the bracketed
 - **Project:** Between the Lines
 - **Tagline:** More than the score.
 - **Live app:** https://between-the-lines-jb-f5539b65.azurewebsites.net/ (free, no login)
-- **Repository:** https://github.com/jbellamy16/second-look
+- **Repository:** https://github.com/jbellamy16/between-the-lines
 - **Demo video:** [YouTube link]
 - **Categories:** Grand Prize; Best Enterprise Solution
 

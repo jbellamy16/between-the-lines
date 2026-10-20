@@ -48,6 +48,6 @@ Move the plan back to Free F1 after November 10, 2026, and lower or remove the A
 The Dockerfile packages the same standalone server for a container host:
 
 ```sh
-docker build -t second-look .
-docker run --rm -p 3000:3000 second-look
+docker build -t between-the-lines .
+docker run --rm -p 3000:3000 between-the-lines
 ```
