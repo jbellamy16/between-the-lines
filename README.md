@@ -32,13 +32,13 @@ In VS Code, add it as an HTTP server (**MCP: Add Server**), then ask Copilot in 
 
 ## How it fits the challenge
 
-| Challenge stage | In Between the Lines                                                                                      |
-| --------------- | --------------------------------------------------------------------------------------------------------- |
-| Ingest          | A seeded, football-realistic synthetic event feed (passes, carries, shots, xG, recoveries, substitutions) |
-| Interpret       | Cutoff-safe statistics and equal-window pattern detection with supporting event IDs                       |
-| Explain         | Story cards plus the Foundry analyst agent, with every claim grounded in recorded events                  |
-| Render          | Responsive match centre, SVG pitch with sequence replay, recaps, lineups and player maps                  |
-| Personalize     | Three explanation levels, favorite team and player, category filters                                      |
+| Challenge stage | In Between the Lines                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------ |
+| Ingest          | A seeded, football-realistic synthetic event feed (passes, carries, shots, xG, recoveries, substitutions)    |
+| Interpret       | Cutoff-safe statistics and equal-window pattern detection with supporting event IDs                          |
+| Explain         | Story cards plus the Foundry analyst agent, with every claim grounded in recorded events                     |
+| Render          | Responsive match centre, SVG pitch with sequence replay, recaps, lineups, player maps and pass-quality stats |
+| Personalize     | Three explanation levels, favorite team and player, category filters                                         |
 
 ## Architecture
 

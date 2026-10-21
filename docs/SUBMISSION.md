@@ -22,7 +22,7 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 1. **Ingest:** a seeded, football-realistic synthetic event feed of two fictional clubs.
 2. **Interpret:** cutoff-safe statistics and equal-window pattern detection, so a "surge" is always compared with the equal spell before it.
 3. **Explain:** story cards that lead with what changed, why it matters and the moments behind it, plus **Ask the Analyst**, a Foundry agent that answers free-text questions with grounded facts and replayable evidence.
-4. **Render:** a responsive match centre with an interactive SVG pitch, sequence replay, live moment cards, recaps, lineups and player maps.
+4. **Render:** a responsive match centre with an interactive SVG pitch, sequence replay, live moment cards, recaps, lineups, player maps and pass-quality stats (average pass length, progressive and long passes).
 5. **Personalize:** Casual Viewer, Football Fan or Advanced Analysis wording over the same verified facts, plus favorite team and player.
 
 ## Against the judging criteria

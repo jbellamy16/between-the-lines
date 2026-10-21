@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { MatchData } from "@/lib/sources/model";
 import { matchClock } from "@/lib/sources/model";
 import { matchStatistics } from "@/lib/sources/analytics";
-import { Metric } from "./motion";
+import { AnimatedDetails, Metric } from "./motion";
 export function MatchStatistics({
   match,
   time,
@@ -20,6 +20,9 @@ export function MatchStatistics({
     ["passes", "Passes attempted"],
     ["completed", "Passes completed"],
     ["accuracy", "Pass completion"],
+    ["avgPassLength", "Average pass length"],
+    ["progressivePasses", "Progressive passes"],
+    ["longPasses", "Long passes completed"],
     ["highRecoveries", "Attacking-third ball wins"],
     [
       "xg",
@@ -28,6 +31,8 @@ export function MatchStatistics({
         : "Expected goals",
     ],
   ] as const;
+  const suffix = (key: string) =>
+    key === "accuracy" ? "%" : key === "avgPassLength" ? " m" : "";
   return (
     <section
       className="panel section-panel section-enter match-statistics"
@@ -59,7 +64,7 @@ export function MatchStatistics({
                 ) : (
                   <>
                     <Metric value={a} />
-                    {key === "accuracy" ? "%" : ""}
+                    {suffix(key)}
                   </>
                 )}
               </strong>
@@ -70,12 +75,12 @@ export function MatchStatistics({
                 ) : (
                   <>
                     <Metric value={b} />
-                    {key === "accuracy" ? "%" : ""}
+                    {suffix(key)}
                   </>
                 )}
               </strong>
             </div>
-            {a !== null && b !== null && (
+            {a !== null && b !== null && key !== "avgPassLength" && (
               <div
                 className="stat-bars"
                 style={
@@ -101,6 +106,14 @@ export function MatchStatistics({
         Counts do not establish possession duration, pressing intensity or
         tracking.
       </p>
+      <AnimatedDetails className="director-disclosure quiet-evidence">
+        <summary>How the pass measures work</summary>
+        <p>
+          Lengths use a 105 × 68 m reference pitch, not tracked distance. A
+          progressive pass is a completed pass that moves the ball at least 10 m
+          toward goal; a long pass is a completed pass of 25 m or more.
+        </p>
+      </AnimatedDetails>
     </section>
   );
 }
