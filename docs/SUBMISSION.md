@@ -59,6 +59,18 @@ The controls a broadcaster or streaming platform would ask for are already in th
 
 Between the Lines is also an engine. Its evidence tools are a read-only MCP server, so a broadcaster's assistant, a production team's Copilot or a club data desk can work the match through the same tools the analyst uses: score and goals, equal-window comparisons, shot maps, build-up traces and counter-evidence. The connection fixes the match time, so nothing later can leak into an in-play segment, and out-of-range queries are refused with a reason the agent can act on. The server runs no model, so calls cost nothing.
 
+## Adoption path
+
+A broadcaster or streaming platform can adopt it in three steps, each usable on its own.
+
+1. **Connect an agent today.** Point any MCP client (a production team's Copilot, a club data desk's assistant) at `/api/mcp?t=<match time>`. It needs no model, no key and no setup, and costs nothing to run. The connection fixes the match time, so an in-play segment can't be spoiled.
+2. **Put your own feed behind it.** Everything reads one canonical event model (passes, shots, carries, recoveries, substitutions, with coordinates and periods), and every match is validated against it before any story, tool or answer is built. Supporting a new feed means writing one adapter that returns that model. The detectors, evidence tools, grounding check and UI don't change.
+3. **Run the analyst on your own Azure.** The analyst is a Microsoft Foundry deployment plus App Service settings: a dollar ceiling, request caps per minute, hour, day and client, and a shared usage store. Turning it off, or hitting any limit, falls back to the deterministic story. [Setup](ANALYST.md#turn-it-on-in-azure)
+
+At about $0.006 a question, and nothing for repeats of the same question at the same moment, the cost scales with what viewers ask rather than with audience size.
+
+Before real traffic the MCP endpoint needs authentication, which a public demo doesn't have; the per-client rate limit is its only protection today.
+
 ## How to test it
 
 1. Open the live app. It starts at 63:24 with Harbor leading 1–0.
