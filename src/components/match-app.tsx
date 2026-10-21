@@ -294,16 +294,39 @@ export function MatchApp({
   useEffect(() => {
     if (time >= DURATION || !visiblePage) setPlaying(false);
   }, [time, visiblePage]);
+  // Safari doesn't focus a button when it is clicked, so the dialog's native
+  // focus restoration has nothing to return to. Remember the clicked control.
+  const lastClicked = useRef<HTMLElement | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const remember = (event: Event) => {
+      const target = (event.target as Element | null)?.closest<HTMLElement>(
+        "button, a[href], [role=button]",
+      );
+      if (target) lastClicked.current = target;
+    };
+    document.addEventListener("click", remember, true);
+    return () => document.removeEventListener("click", remember, true);
+  }, []);
   useEffect(() => {
     if (modal) {
       setPlaying(false);
+      const focused = document.activeElement;
+      opener.current =
+        focused instanceof HTMLElement && focused !== document.body
+          ? focused
+          : lastClicked.current;
       dialogRef.current?.showModal();
       const overflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
         document.body.style.overflow = overflow;
       };
-    } else dialogRef.current?.close();
+    }
+    dialogRef.current?.close();
+    const returnTo = opener.current;
+    opener.current = null;
+    if (returnTo?.isConnected) returnTo.focus();
   }, [modal]);
   useEffect(() => {
     requestVersion.current++;
