@@ -46,6 +46,7 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 ## Evidence
 
 - **Accuracy.** The analyst is evaluated on 12 match questions and 6 it should decline (the manager's mood, the future, an unrelated player, a prompt-injection attempt). The last five runs against the Foundry deployment all scored 18/18, and every number, time and name in the final run was re-checked by hand against the recorded events.
+- **Independent check in Microsoft Foundry.** Foundry Evaluations scores the analyst's answers with Microsoft's Groundedness, Relevance and Coherence evaluators on a separate model deployment, and the runs are logged to the Foundry project. Groundedness has scored 4.2 to 4.8 out of 5. The judge also found defects the deterministic check cannot see, such as a player named in a passing move he was not part of, and each one was fixed in the agent's instructions. It still flags about one answer in twelve. [Details](ANALYST.md#evaluate-it-in-microsoft-foundry)
 - **Speed.** Across those 90 questions the median answer took about 4 seconds from question to checked answer, using one or two model requests. All but one finished within 7.5 seconds.
 - **Cost.** About $0.006 per question at retail rates. An identical question at the same match time is answered from cache for an hour at no cost.
 

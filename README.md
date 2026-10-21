@@ -60,7 +60,7 @@ One playback timestamp is the source of truth. Every view, tool and answer uses 
 
 **Microsoft and Azure:** Microsoft Foundry (GPT-5.4 Mini deployment, Responses API with function calling) runs the analyst agent. Azure App Service hosts the Next.js app and the MCP endpoint. GitHub Actions runs type checks, 700+ unit tests and a Playwright suite across desktop and two mobile viewports on every push.
 
-**Evaluated:** the last five runs of the 18-question analyst eval against the Foundry deployment (12 match questions, 6 it should decline) each scored 18/18. Answers take about 4 seconds and cost about $0.006. [Evidence](docs/SUBMISSION.md#evidence)
+**Evaluated:** the last five runs of the 18-question analyst eval against the Foundry deployment (12 match questions, 6 it should decline) each scored 18/18. Answers take about 4 seconds and cost about $0.006. [Evidence](docs/SUBMISSION.md#evidence) Microsoft Foundry Evaluations gives an independent second opinion: groundedness 4.2 to 4.8 out of 5, with about one answer in twelve flagged, and each defect it found was fixed. [How](docs/ANALYST.md#evaluate-it-in-microsoft-foundry)
 
 **Spend controls:** every model call reserves its worst-case cost against a shared dollar ledger before dispatch. Request caps apply per minute, hour and day, plus a per-client limit. If any limit is hit, the app falls back to the deterministic story. [Details](docs/ANALYST.md#spending-controls)
 

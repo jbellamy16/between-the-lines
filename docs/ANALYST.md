@@ -65,6 +65,25 @@ AI_SPEND_LEDGER=test AI_SPEND_CEILING_USD=15 npm run dev
 
 The eval prints each answer, its steps and its estimated cost, and saves everything to `artifacts/analyst-eval/`, including why any tool query was refused. A golden question passes when it gets a verified answer. An adversarial question passes when the agent declines or redirects without making something up. The score checks status, not accuracy, so the eval also lists answers to review by hand (a question mark or a self-correction); read the answers, not just the score.
 
+## Evaluate it in Microsoft Foundry
+
+Your own check can't judge how facts relate to each other, so the analyst is also scored by Microsoft Foundry's evaluators, which are a separate model's independent opinion. Foundry's Groundedness evaluator reads each answer against the tool results the agent actually saw; Relevance and Coherence judge the answer itself. The judge runs on a different deployment than the analyst, and the runs are logged to the Foundry project.
+
+```sh
+node --conditions=react-server --import tsx scripts/foundry-capture.ts captured.jsonl   # about $0.12
+python3.12 -m venv .venv && . .venv/bin/activate && pip install -r scripts/foundry-requirements.txt
+FOUNDRY_JUDGE_DEPLOYMENT=<another deployment> FOUNDRY_PROJECT_ENDPOINT=<project endpoint> \
+  python scripts/foundry-evaluate.py captured.jsonl
+```
+
+Across five judged runs of the 12 answered questions, groundedness scored between 4.2 and 4.8 out of 5, relevance about 4.2 to 4.7 and coherence 4.0. The judge is a model, so scores move between runs, and it is not ground truth. Each run still flags about one answer in twelve.
+
+What it found, and what changed:
+
+- A player was named in a passing move he took no part in, a relationship the deterministic check cannot see. The agent is now told to name a player only if that player is in the same sequence.
+- A count was described with the wrong time frame ("since the substitution" for a count of 57:30–70:00), and one answer added narration no event shows. Both are now ruled out in the instructions.
+- "What happens in the 80th minute?" ended without an answer about one time in four, because the retry message said only that a time was missing. The message now says how to fix it. The question has since declined cleanly in 40 of 40 runs, up from 18 of 24.
+
 ## Turn it on in Azure
 
 Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROVIDER=foundry` are already there.
