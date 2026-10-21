@@ -5088,7 +5088,6 @@ main {
   border-radius: 14px;
   display: grid;
   gap: 12px;
-  max-width: 880px;
 }
 .moments-page > * {
   margin: 0;
