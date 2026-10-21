@@ -432,7 +432,9 @@ export function verifyGrounding(
   for (const m of answer.matchAll(CLOCK)) {
     clocks++;
     if (!facts.clocks.has(m[0]) && !questionFacts.clocks.has(m[0]))
-      issues.push(`Time "${m[0]}" is not in the retrieved evidence.`);
+      issues.push(
+        `Time "${m[0]}" is not in the retrieved evidence. Write only times a tool returned. If the viewer asked about a minute that has not been played, say so in their words (for example "the 80th minute"), without a clock time.`,
+      );
   }
   const withoutClocks = answer.replace(CLOCK, " ");
   for (const m of withoutClocks.matchAll(NUMBER)) {
