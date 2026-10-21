@@ -93,6 +93,10 @@ globalThis.fetch = (async (input: any, init?: any) => {
 }) as typeof fetch;
 
 const provider = configuredProvider();
+if (provider === "offline")
+  throw new Error(
+    "No provider configured. Set the FOUNDRY_* settings in .env.local.",
+  );
 const rows: any[] = [];
 let cost = 0;
 for (const c of cases) {
