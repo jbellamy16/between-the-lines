@@ -1,12 +1,12 @@
 # Between the Lines: submission summary
 
-Portal-ready text for the Inside the Game hackathon entry. Replace the bracketed items before submitting.
+Portal-ready text for the Inside the Game hackathon entry.
 
 - **Project:** Between the Lines
 - **Tagline:** More than the score.
 - **Live app:** https://between-the-lines-jb-f5539b65.azurewebsites.net/ (free, no login)
 - **Repository:** https://github.com/jbellamy16/between-the-lines
-- **Demo video:** [YouTube link]
+- **Demo video:** https://www.youtube.com/watch?v=Es15jxE2PXU
 - **Categories:** Grand Prize; Best Enterprise Solution
 
 ## Elevator pitch
