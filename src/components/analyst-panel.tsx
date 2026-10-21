@@ -87,6 +87,7 @@ export function AnalystPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const request = useRef<AbortController | null>(null);
+  const autoAsked = useRef<string | null>(null);
   const responseRef = useRef<HTMLDivElement>(null);
   /**
    * A tapped question follows its answer: when it arrives, bring it into view
@@ -113,8 +114,15 @@ export function AnalystPanel({
     setAsked(null);
     setError("");
   };
-  // Never show an answer from a different match, or from after the viewer's position.
-  useEffect(reset, [match]);
+  // Never show an answer from a different match, or from after the viewer's
+  // position. Only a changed match resets: React's development remount runs
+  // this effect again with the same match, and must not wipe a fresh question.
+  const seenMatch = useRef(match);
+  useEffect(() => {
+    if (seenMatch.current === match) return;
+    seenMatch.current = match;
+    reset();
+  }, [match]);
   useEffect(() => {
     if (!asked) return;
     // A checked answer belongs to one story at one exact position.
@@ -127,6 +135,8 @@ export function AnalystPanel({
     () => () => {
       request.current?.abort();
       follow.current?.stop();
+      // A remount (React's development double-run) asks the moment again.
+      autoAsked.current = null;
     },
     [],
   );
@@ -143,7 +153,6 @@ export function AnalystPanel({
       { align: "nearest" },
     );
   }, [result]);
-  const autoAsked = useRef<string | null>(null);
   // Declared after the reset effects so a moment's question survives the jump.
   useEffect(() => {
     if (!autoAsk || autoAsked.current === autoAsk.id || !story) return;
