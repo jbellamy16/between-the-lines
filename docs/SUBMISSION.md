@@ -39,6 +39,7 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 
 - **Microsoft Foundry:** a GPT-5.4 Mini deployment runs the analyst agent through the Responses API with function calling and structured output. The agent picks tools, revises when the grounding check rejects its answer, and declines when the events can't answer.
 - **Azure App Service:** hosts the Next.js app and the MCP endpoint.
+- **Azure Application Insights:** request, error and timing telemetry for the app and the MCP endpoint, with a daily data cap. Question text is never recorded.
 - **MCP and GitHub Copilot:** the evidence tools are an MCP server that GitHub Copilot in agent mode can drive directly.
 - **GitHub:** public source and Actions CI.
 

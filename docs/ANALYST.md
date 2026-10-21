@@ -69,21 +69,22 @@ The eval prints each answer, its steps and its estimated cost, and saves everyth
 
 Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROVIDER=foundry` are already there.
 
-| Setting                   | Value                                                             |
-| ------------------------- | ----------------------------------------------------------------- |
-| `AI_ENABLED`              | `true`                                                            |
-| `AI_REDIS_URL`            | `rediss://…` (Upstash free tier is enough; TLS required)          |
-| `AI_SPEND_LEDGER`         | `production`                                                      |
-| `AI_SPEND_CEILING_USD`    | `15`                                                              |
-| `AI_MINUTE_LIMIT`         | `10`                                                              |
-| `AI_HOURLY_LIMIT`         | `300` (the code allows up to 1000)                                |
-| `AI_DAILY_LIMIT`          | `500`                                                             |
-| `AI_TOTAL_LIMIT`          | `5000`                                                            |
-| `AI_ASK_PER_CLIENT_LIMIT` | `30` questions per client per 10 minutes                          |
-| `AI_TOKEN_MINUTE_LIMIT`   | Match the deployment's tokens-per-minute limit (see below)        |
-| `AI_REQUEST_MINUTE_LIMIT` | Match the deployment's requests-per-minute limit                  |
-| `AI_PROACTIVE_ENABLED`    | `false`                                                           |
-| `AI_INVESTIGATOR_ENABLED` | `false`. If this is `true`, it forces every other AI path offline |
+| Setting                                 | Value                                                                         |
+| --------------------------------------- | ----------------------------------------------------------------------------- |
+| `AI_ENABLED`                            | `true`                                                                        |
+| `AI_REDIS_URL`                          | `rediss://…` (Upstash free tier is enough; TLS required)                      |
+| `AI_SPEND_LEDGER`                       | `production`                                                                  |
+| `AI_SPEND_CEILING_USD`                  | `15`                                                                          |
+| `AI_MINUTE_LIMIT`                       | `10`                                                                          |
+| `AI_HOURLY_LIMIT`                       | `300` (the code allows up to 1000)                                            |
+| `AI_DAILY_LIMIT`                        | `500`                                                                         |
+| `AI_TOTAL_LIMIT`                        | `5000`                                                                        |
+| `AI_ASK_PER_CLIENT_LIMIT`               | `30` questions per client per 10 minutes                                      |
+| `AI_TOKEN_MINUTE_LIMIT`                 | Match the deployment's tokens-per-minute limit (see below)                    |
+| `AI_REQUEST_MINUTE_LIMIT`               | Match the deployment's requests-per-minute limit                              |
+| `AI_PROACTIVE_ENABLED`                  | `false`                                                                       |
+| `AI_INVESTIGATOR_ENABLED`               | `false`. If this is `true`, it forces every other AI path offline             |
+| `APPLICATIONINSIGHTS_CONNECTION_STRING` | From the Application Insights resource. Leave it unset to turn telemetry off. |
 
 **Raise the deployment's rate limit.** At 30k tokens per minute the app can answer only about one question a minute in total, because each question uses roughly 15–30k estimated tokens. Pay-as-you-go deployments bill per token, not per unit of capacity, so a higher limit costs nothing by itself. In the Foundry portal, edit the deployment's tokens-per-minute limit to 150k (if your quota allows), then set `AI_TOKEN_MINUTE_LIMIT=150000` and `AI_REQUEST_MINUTE_LIMIT=150`. The code allows up to 300k and 300. The dollar ledger, not throughput, is what stops spending. Also set an Azure budget alert; it only sends email, but it's a useful second signal.
 
