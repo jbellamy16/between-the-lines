@@ -7,7 +7,7 @@ Portal-ready text for the Inside the Game hackathon entry.
 - **Live app:** https://between-the-lines-jb-f5539b65.azurewebsites.net/ (free, no login)
 - **Repository:** https://github.com/jbellamy16/between-the-lines
 - **Demo video:** https://www.youtube.com/watch?v=Es15jxE2PXU
-- **Categories:** Grand Prize; Best Enterprise Solution
+- **Categories:** Grand Prize; Best Use of Microsoft Foundry; Best Enterprise Solution
 
 ## Elevator pitch
 
@@ -37,7 +37,7 @@ Fans join matches late, follow on their phones, or want more than the scoreline.
 
 ## Microsoft and Azure technology
 
-- **Microsoft Foundry:** a GPT-5.4 Mini deployment runs the analyst agent through the Responses API with function calling and structured output. The agent picks tools, revises when the grounding check rejects its answer, and declines when the events can't answer.
+- **Microsoft Foundry:** a GPT-5.4 Mini deployment runs the analyst agent through the Responses API with function calling and structured output. Foundry is also how the agent is managed and judged, not only run: Foundry Evaluations scored its answers and drove fixes, and the AI Red Teaming Agent attacked it (see Evidence). The agent picks tools, revises when the grounding check rejects its answer, and declines when the events can't answer.
 - **Azure App Service:** hosts the Next.js app and the MCP endpoint.
 - **Azure Application Insights:** request, error and timing telemetry for the app and the MCP endpoint, with a daily data cap. Question text is never recorded.
 - **MCP and GitHub Copilot:** the evidence tools are an MCP server that GitHub Copilot in agent mode can drive directly.
