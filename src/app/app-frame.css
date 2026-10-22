@@ -306,3 +306,85 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+/* Surface and control hierarchy, without changing the player-style layout. */
+.app-shell.frame .main-navigation .nav-item {
+  background: transparent;
+  border-color: transparent;
+  color: var(--sl-muted);
+}
+.app-shell.frame .main-navigation .nav-item.active {
+  background: var(--sl-selected);
+  color: var(--sl-text);
+}
+.app-shell.frame .pitch-view-switch button {
+  background: color-mix(in srgb, var(--sl-surface) 45%, var(--sl-navy));
+  border-color: var(--sl-border);
+  color: var(--sl-muted);
+}
+.app-shell.frame .pitch-view-switch button.selected {
+  background: var(--sl-selected);
+  border-color: color-mix(in srgb, var(--sl-green) 45%, var(--sl-border));
+  color: var(--sl-text);
+}
+.app-shell.frame .director-story > .eyebrow {
+  color: var(--sl-success-text);
+}
+.app-shell.frame .director-story > h2 {
+  font-weight: 700;
+}
+.app-shell.frame .moment-rail time {
+  color: color-mix(in srgb, var(--sl-green) 80%, var(--sl-text));
+}
+.app-shell.frame .analyst-panel {
+  background: color-mix(in srgb, var(--sl-surface) 40%, var(--sl-navy));
+  border-color: color-mix(in srgb, var(--sl-green) 30%, var(--sl-border));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sl-green) 15%, transparent);
+}
+.app-shell.frame .analyst-heading h3 {
+  font-weight: 650;
+}
+.app-shell.frame .analyst-form input {
+  background: var(--sl-midnight);
+}
+.app-shell.frame .play-button {
+  border-color: transparent;
+  border-radius: 50%;
+  background: var(--btl-action);
+  color: var(--btl-action-ink);
+}
+
+@media (min-width: 1021px) {
+  .app-shell.frame :is(.sidebar, .main-story) {
+    box-shadow: inset 0 0 0 1px var(--sl-border);
+  }
+  .app-shell.frame .main-story > .director-story {
+    background-image: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--sl-green) 7%, transparent),
+      transparent 280px
+    );
+  }
+  .app-shell.frame .pitch-panel {
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--sl-text) 4%, transparent);
+  }
+  .app-shell.frame .match-header {
+    box-shadow: 0 -1px 0 var(--sl-border);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-shell.frame .main-navigation .nav-item:not(.active):hover {
+    background: var(--sl-hover);
+    color: var(--sl-text);
+  }
+  .app-shell.frame
+    .pitch-view-switch
+    button:not(.selected):hover:not(:disabled) {
+    background: var(--sl-surface);
+    color: var(--sl-text);
+  }
+  .app-shell.frame .play-button:hover {
+    background: var(--btl-action-hover);
+  }
+}
