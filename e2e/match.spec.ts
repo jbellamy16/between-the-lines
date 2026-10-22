@@ -125,6 +125,8 @@ test("explanation provenance, category preferences, and arbitrary seeking are tr
   await expect(
     page.getByRole("heading", { name: "Match context", exact: true }),
   ).toBeVisible();
+  // Keyboard actions cannot focus the timeline while the opening keeps it inert.
+  await expect(page.locator(".app-shell")).toHaveAttribute("aria-busy", "false");
   const timeline = page.getByRole("slider", { name: "Match timeline" });
   await timeline.focus();
   await timeline.press("End");
