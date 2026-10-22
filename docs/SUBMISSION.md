@@ -6,7 +6,7 @@ Portal-ready text for the Inside the Game hackathon entry.
 - **Tagline:** More than the score.
 - **Live app:** https://between-the-lines-jb-f5539b65.azurewebsites.net/ (free, no login)
 - **Repository:** https://github.com/jbellamy16/between-the-lines
-- **Demo video:** https://www.youtube.com/watch?v=Es15jxE2PXU
+- **Demo video:** https://youtu.be/_ADfpub00lc
 - **Categories:** Grand Prize; Best Use of Microsoft Foundry; Best Enterprise Solution
 
 ## Elevator pitch

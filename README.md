@@ -4,7 +4,7 @@
 
 Built solo for Microsoft's 2026 **Inside the Game** hackathon with the Premier League.
 
-**[Try the live app](https://between-the-lines-jb-f5539b65.azurewebsites.net/)** · [Demo video](https://www.youtube.com/watch?v=Es15jxE2PXU) · [Submission summary](docs/SUBMISSION.md)
+**[Try the live app](https://between-the-lines-jb-f5539b65.azurewebsites.net/)** · [Demo video](https://youtu.be/_ADfpub00lc) · [Submission summary](docs/SUBMISSION.md)
 
 ![The match centre at 63:24: moments so far on the left, a Riverside passage replaying on the pitch, and the analyst's verified answer to "Is Riverside doing anything about it?" with its cited moments on the right](docs/hero-desktop.png)
 
