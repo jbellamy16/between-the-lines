@@ -82,8 +82,8 @@ export function BrandImage({
           className={`${className} theme-${theme}-logo`}
           src={
             symbol
-              ? `/brand/btl-mark-${theme}.svg`
-              : `/brand/btl-horizontal-${theme}.svg`
+              ? `/brand/btl-mark-${theme}.min.svg`
+              : `/brand/btl-horizontal-${theme}.min.svg`
           }
           width={symbol ? 96 : 376}
           height={symbol ? 96 : 112}

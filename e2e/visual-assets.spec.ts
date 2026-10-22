@@ -78,7 +78,7 @@ test("Riverside keeps its identity when an event is selected", async ({
   await page.getByLabel("Focus player").selectOption("riverside-9");
   await expect(page.locator(".player-identity-line img")).toHaveAttribute(
     "src",
-    "/teams/riverside.png",
+    "/teams/riverside.webp",
   );
   await expect(
     page.getByRole("heading", { name: "Hugo Silva", exact: true }),

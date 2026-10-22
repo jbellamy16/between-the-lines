@@ -11,7 +11,7 @@ export function Crest({
   return (
     <img
       className={`crest ${team}${small ? " small" : ""}`}
-      src={`/teams/${team}.png`}
+      src={`/teams/${team}.webp`}
       width="64"
       height="64"
       alt=""

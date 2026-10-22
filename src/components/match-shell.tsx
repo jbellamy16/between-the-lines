@@ -1,5 +1,6 @@
 "use client";
-import type { ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
+import { AppOpening } from "./app-opening";
 import { BrandImage } from "./appearance";
 import {
   BarChart3,
@@ -56,75 +57,84 @@ export function MatchShell({
   /** Shown under the navigation in the desktop frame. */
   library?: ReactNode;
 }) {
+  const shell = useRef<HTMLDivElement>(null);
+  const [opening, setOpening] = useState(true);
+  const completeOpening = useCallback(() => setOpening(false), []);
   return (
-    <div
-      className={`app-shell data-first ${historical ? "historical-shell" : ""} ${frame ? "frame" : ""}`}
-      data-section={section}
-      inert={!ready}
-      aria-busy={!ready}
-    >
-      <aside className="sidebar" aria-label="Application navigation">
-        <a href="/" className="brand" aria-label="Between the Lines home">
-          <BrandImage className="brand-wordmark" />
-          <BrandImage className="brand-symbol" symbol />
-        </a>
-        <SelectionGroup
-          className="main-navigation"
-          label="Main navigation"
-          navigation
-          value={section}
-        >
-          {nav.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              aria-label={label}
-              aria-current={section === id ? "page" : undefined}
-              onClick={() => setSection(id)}
-              className={`nav-item ${section === id ? "active" : ""}`}
-            >
-              <Icon size={20} />
-              <span>{label}</span>
-            </button>
-          ))}
-        </SelectionGroup>
-        {library && <div className="sidebar-library">{library}</div>}
-        <div className="sidebar-bottom">
-          <button
-            className="nav-item"
-            aria-label="Settings"
-            onClick={onSettings}
-          >
-            <Settings2 size={20} />
-            Settings
-          </button>
-        </div>
-      </aside>
-      <div className="workspace">
-        <header className="topbar">
-          <a
-            className="mobile-brand"
-            href="/"
-            aria-label="Between the Lines home"
-          >
-            <BrandImage />
+    <>
+      <div
+        ref={shell}
+        className={`app-shell data-first ${historical ? "historical-shell" : ""} ${frame ? "frame" : ""}`}
+        data-section={section}
+        inert={!ready || opening}
+        aria-busy={!ready || opening}
+      >
+        <aside className="sidebar" aria-label="Application navigation">
+          <a href="/" className="brand" aria-label="Between the Lines home">
+            <BrandImage className="brand-wordmark" />
+            <BrandImage className="brand-symbol" symbol />
           </a>
-          <div className="breadcrumb">
-            {nav.find((n) => n.id === section)?.label}
-          </div>
-          <div className="topbar-right">
+          <SelectionGroup
+            className="main-navigation"
+            label="Main navigation"
+            navigation
+            value={section}
+          >
+            {nav.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                aria-label={label}
+                aria-current={section === id ? "page" : undefined}
+                onClick={() => setSection(id)}
+                className={`nav-item ${section === id ? "active" : ""}`}
+              >
+                <Icon size={20} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </SelectionGroup>
+          {library && <div className="sidebar-library">{library}</div>}
+          <div className="sidebar-bottom">
             <button
-              className="icon-button mobile-settings"
+              className="nav-item"
               aria-label="Settings"
               onClick={onSettings}
             >
               <Settings2 size={20} />
+              Settings
             </button>
           </div>
-        </header>
-        <main>{children}</main>
+        </aside>
+        <div className="workspace">
+          <header className="topbar">
+            <a
+              className="mobile-brand"
+              href="/"
+              aria-label="Between the Lines home"
+            >
+              <BrandImage />
+            </a>
+            <div className="breadcrumb">
+              {nav.find((n) => n.id === section)?.label}
+            </div>
+            <div className="topbar-right">
+              <button
+                className="icon-button mobile-settings"
+                aria-label="Settings"
+                onClick={onSettings}
+              >
+                <Settings2 size={20} />
+              </button>
+            </div>
+          </header>
+          <main>{children}</main>
+        </div>
+        {dialog}
       </div>
-      {dialog}
-    </div>
+      {opening && (
+        <AppOpening ready={ready} shell={shell} onComplete={completeOpening} />
+      )}
+    </>
   );
 }
 export type PitchView = "recent" | "pattern" | "passage";
