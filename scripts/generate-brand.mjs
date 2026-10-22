@@ -2,6 +2,7 @@
 import { readFile, writeFile, mkdir, copyFile, stat } from "node:fs/promises";
 import * as fontkit from "fontkit";
 import sharp from "sharp";
+import { renderSocialHero } from "./generate-social-images.mjs";
 const display = fontkit.openSync(
   "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2",
 );
@@ -334,13 +335,24 @@ for (const [name, w, h] of [
     h,
     "BTL editorial share composition; outlined lettering and illustrative tactical route",
   );
-  await raster(
-    name.includes("image") ? `public/${name}.png` : `public/brand/${name}.png`,
-    art,
-    w,
-    h,
-    "Social / presentation export",
-  );
+  if (name === "opengraph-image" || name === "twitter-image") {
+    // Retain the vector alternative; published link cards use the approved hero.
+    await save(
+      `public/${name}.png`,
+      await renderSocialHero(w, h),
+      w,
+      h,
+      "Social-sharing export; approved cinematic hero",
+    );
+  } else {
+    await raster(
+      `public/brand/${name}.png`,
+      art,
+      w,
+      h,
+      "Social / presentation export",
+    );
+  }
 }
 // Review each export at its intended scale, including actual-size browser icons.
 const innerSvg = (art) =>

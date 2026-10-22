@@ -61,7 +61,7 @@ export const brandMetadata: Metadata = {
         type: "image/png",
         width: 1200,
         height: 630,
-        alt: "Between the Lines — More than the score. See the pattern. Follow the play. An illustrated passing route highlights a moment on a football pitch.",
+        alt: "Between the Lines — More than the score. Football explained. Evidence included. A glowing football pitch shows a passing route and a verification symbol.",
       },
     ],
   },
@@ -72,7 +72,7 @@ export const brandMetadata: Metadata = {
     images: [
       {
         url: brandAsset("/twitter-image.png"),
-        alt: "Between the Lines. More than the score. Football insights that go deeper.",
+        alt: "Between the Lines — More than the score. Football explained. Evidence included. A glowing football pitch shows a passing route and a verification symbol.",
       },
     ],
   },

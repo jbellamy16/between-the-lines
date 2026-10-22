@@ -18,6 +18,7 @@
     "eval:ai": "vitest run tests/ai-evaluation.test.ts",
     "ai:check": "node scripts/check-ai-config.mjs",
     "brand:build": "node scripts/generate-brand.mjs && npm run logos:optimize",
+    "brand:social": "node scripts/generate-social-images.mjs",
     "logos:optimize": "node scripts/optimize-logos.mjs",
     "brand:review": "node scripts/review-brand.mjs",
     "eval:director": "vitest run tests/director.test.ts tests/director-evaluation.test.ts tests/hypothesis.test.ts tests/storylines.test.ts tests/intelligence-graph.test.ts",
