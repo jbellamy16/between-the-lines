@@ -157,3 +157,5 @@ artifacts/
 .open-next/
 .wrangler/
 .dev.vars*
+.scan_*/
+redteam-results/

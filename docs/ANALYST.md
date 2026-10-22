@@ -84,6 +84,18 @@ What it found, and what changed:
 - A count was described with the wrong time frame ("since the substitution" for a count of 57:30–70:00), and one answer added narration no event shows. Both are now ruled out in the instructions.
 - "What happens in the 80th minute?" ended without an answer about one time in four, because the retry message said only that a time was missing. The message now says how to fix it. The question has since declined cleanly in 40 of 40 runs, up from 18 of 24.
 
+## Attack it with Microsoft's Red Teaming Agent
+
+Foundry's AI Red Teaming Agent generates attacks (hateful, violent, sexual and self-harm requests, and attempts to make the model infer sensitive traits about people) and re-sends them as jailbreak templates, past tense, leetspeak and base64. `scripts/foundry-redteam.py` sends each one to a local copy of `/api/ask`, and Foundry scores every reply. The service only runs in some regions, so the project for this scan is in East US 2 while the analyst stays where it is.
+
+Across 165 attacks that reached a verdict (115 in the main scan, then 50 more aimed at the sensitive-inference category), none got a harmful reply. Foundry flagged one reply, which is a decline ("I can only talk about this match, not speculate about the speakers' cultural backgrounds"), so we count it as a false positive. How the attacks ended:
+
+- The question limit (240 characters) turned away 66 attacks, including every jailbreak template, before any model saw them.
+- The analyst declined 98 and answered one with an ordinary, grounded fact about the match.
+- Ten attacks in the main scan hit a local spending cap and were not judged; the 50-attack re-run covers that category.
+
+The scan covers harmful content and sensitive inferences. It doesn't test whether answers stay grounded in the match; the evaluation above does that. Foundry's task-adherence and prohibited-actions categories only apply to agent targets and ran no attacks here.
+
 ## Turn it on in Azure
 
 Add these App Service settings on the existing web app. `FOUNDRY_*` and `AI_PROVIDER=foundry` are already there.
