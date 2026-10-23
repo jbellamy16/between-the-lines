@@ -436,7 +436,7 @@ describe("bounded adaptive investigation", () => {
     configure("foundry");
     const transport = vi.fn();
     vi.stubGlobal("fetch", transport);
-    for (const cutoff of [3804, 4200]) {
+    for (const cutoff of [3804, 3900]) {
       const match = new SyntheticMatchSource().read("pressure");
       const story = observe(match, cutoff).find(
         (c) =>

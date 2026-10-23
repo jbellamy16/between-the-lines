@@ -232,10 +232,11 @@ describe("independent explanations of shared verified evidence", () => {
       selectLeadCandidate(observe(source.read("quiet"), 3804)),
     ).toBeUndefined();
     for (const style of styles) {
-      const lead = selectLeadCandidate(observe(match, 60))!;
+      const firstGoal = match.events.find((e) => e.scoringTeam)!.time;
+      const lead = selectLeadCandidate(observe(match, firstGoal))!;
       expect(
         presentStory(
-          packageStory(lead, match, 60, "analyst", "offline"),
+          packageStory(lead, match, firstGoal, "analyst", "offline"),
           match,
           style,
         ).headline,
@@ -268,24 +269,35 @@ describe("independent explanations of shared verified evidence", () => {
     }
   });
   it("keeps an exploratory player's identity at full time and labels an earlier sample", () => {
-    const session = createInvestigation(match, 5400, "analyst");
-    const result = session.execute("compare_time_windows", {
-      matchId: match.id,
-      start: 3900,
-      end: 4800,
-      team: "harbor",
-      playerId: "harbor-6",
-      eventId: null,
-    });
-    const claim = result.claims.find(
-      (c) => c.category === "window-comparison",
-    )!;
-    const story = packageStory(claim, match, 5400, "analyst", "offline");
+    // The Harbor player whose passing in the sampled spell produces a claim.
+    const found = match.players
+      .filter((p) => p.team === "harbor")
+      .map((p) => {
+        const claim = createInvestigation(match, 5400, "analyst")
+          .execute("compare_time_windows", {
+            matchId: match.id,
+            start: 3900,
+            end: 4800,
+            team: "harbor",
+            playerId: p.id,
+            eventId: null,
+          })
+          .claims.find((c) => c.category === "window-comparison");
+        return claim && { busiest: p, claim };
+      })
+      .find(Boolean)!;
+    const { busiest } = found;
+    const story = packageStory(found.claim, match, 5400, "analyst", "offline");
+    // An eased rate would replace the earlier-sample headline; test that label.
+    story.hypothesis.contradictoryEvidence =
+      story.hypothesis.contradictoryEvidence.filter(
+        (e) => e.code !== "latest-rate-not-sustained",
+      );
     expect(story.hypothesis.watchNext).toBeNull();
     for (const style of styles) {
       const text = presentStory(story, match, style);
-      expect(text.headline).toContain("Milo Serrano's earlier");
-      expect(text.explanation).toContain("Milo Serrano");
+      expect(text.headline).toContain(`${busiest.name}'s earlier`);
+      expect(text.explanation).toContain(busiest.name);
       expect(text.explanation).toContain("65:00–80:00");
     }
   });

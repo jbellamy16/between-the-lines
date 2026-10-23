@@ -15,10 +15,10 @@ const analyst = (page: Page) =>
     .filter({ visible: true })
     .first();
 
-async function playTo6040(page: Page) {
-  await slider(page).fill("3620");
+async function playTo6120(page: Page) {
+  await slider(page).fill("3660");
   await page.getByRole("button", { name: "Play match" }).click();
-  await expect(card(page)).toContainText("Moment · 60:40");
+  await expect(card(page)).toContainText("Moment · 61:20");
 }
 
 async function mockAnalyst(page: Page) {
@@ -73,7 +73,7 @@ test.describe("moments", () => {
     page,
   }) => {
     await ready(page);
-    await playTo6040(page);
+    await playTo6120(page);
     await expect(card(page)).toContainText(
       "Harbor are winning the ball near the opponent’s goal more often.",
     );
@@ -83,8 +83,8 @@ test.describe("moments", () => {
     await expect(card(page)).toHaveCount(0);
     await page.getByRole("button", { name: "Moments", exact: true }).click();
     const times = page.locator(".moment-timeline time");
-    await expect(times.first()).toHaveText("59:10");
-    await expect(times).not.toContainText(["60:40"]);
+    await expect(times.first()).toHaveText("59:40");
+    await expect(times).not.toContainText(["61:20"]);
   });
 
   test("tapping a moment pauses, jumps to it, replays its evidence and opens the analyst", async ({
@@ -92,11 +92,11 @@ test.describe("moments", () => {
   }) => {
     const asked = await mockAnalyst(page);
     await ready(page);
-    await playTo6040(page);
+    await playTo6120(page);
     await card(page)
       .getByRole("button", { name: /Replay and ask/ })
       .click();
-    await expect(slider(page)).toHaveValue("3640");
+    await expect(slider(page)).toHaveValue("3680");
     await expect(
       page.getByRole("button", { name: "Play match" }),
     ).toBeVisible();
@@ -113,10 +113,12 @@ test.describe("moments", () => {
     await expect(panel.getByLabel("Checked answer")).toContainText(
       "Checked from recorded events",
     );
-    await expect(panel.getByText(/The analyst adds · Figures, times and names checked/)).toBeVisible();
+    await expect(
+      panel.getByText(/The analyst adds · Figures, times and names checked/),
+    ).toBeVisible();
     expect(asked).toHaveLength(1);
     expect(asked[0]).toMatchObject({
-      time: 3640,
+      time: 3680,
       question: "Is the other team improving too?",
     });
   });
@@ -125,16 +127,16 @@ test.describe("moments", () => {
     page,
   }) => {
     await ready(page);
-    await slider(page).fill("4700");
+    await slider(page).fill("4800");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
-    await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
-    await expect(slider(page)).toHaveValue("4660");
+    await page.locator(".moment-timeline button", { hasText: "78:50" }).click();
+    await expect(slider(page)).toHaveValue("4730");
     const panel = analyst(page);
     await expect(panel.locator(".analyst-question")).toContainText(
       "How did this goal come about?",
     );
     await expect(panel.getByLabel("Checked answer")).toContainText(
-      "Theo March scored at 77:33.",
+      "Theo March scored at 78:48.",
     );
   });
 
@@ -142,21 +144,21 @@ test.describe("moments", () => {
     page,
   }) => {
     await ready(page);
-    await slider(page).fill("4700");
+    await slider(page).fill("4800");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
-    await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
+    await page.locator(".moment-timeline button", { hasText: "78:50" }).click();
     await expect(
       page
         .getByRole("heading", { name: "Passage replay" })
         .filter({ visible: true }),
     ).toBeVisible();
     const pitch = page.locator(".pitch-panel").filter({ visible: true });
-    // The passage ends on the 77:33 goal, not the 01:00 one.
+    // The passage ends on the 78:48 goal, not the 41:08 one.
     await expect(
       pitch.locator(".event-inspector select option").last(),
-    ).toContainText("77:33");
+    ).toContainText("78:48");
     await expect(pitch.locator(".event-inspector p")).toContainText(
-      "77:33 Theo March: Goal",
+      "78:48 Theo March: Goal",
       { timeout: 15000 },
     );
     await expect(pitch.getByText("REPLAY COMPLETE")).toBeVisible();
@@ -166,22 +168,22 @@ test.describe("moments", () => {
     page,
   }) => {
     await ready(page);
-    await slider(page).fill("4130");
+    await slider(page).fill("3800");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
     await page.locator(".moment-timeline button", { hasText: "61:20" }).click();
     const pitch = page.locator(".pitch-panel").filter({ visible: true });
     await expect(pitch.locator(".replay-caption")).toContainText(
-      "Event 1 of 3",
+      "Event 1 of 4",
     );
-    await expect(pitch.locator(".event-inspector p")).toContainText("55:42");
+    await expect(pitch.locator(".event-inspector p")).toContainText("54:55");
     // One action at a time, about 1.4 s each: done within a few seconds,
     // not after the minutes between the shots.
     await expect(pitch.locator(".replay-caption")).toContainText(
-      "Event 3 of 3",
-      { timeout: 6000 },
+      "Event 4 of 4",
+      { timeout: 8000 },
     );
     await expect(pitch.locator(".event-inspector p")).toContainText(
-      "61:19 Theo March",
+      "61:11 Theo March",
     );
     await expect(pitch.getByText("REPLAY COMPLETE")).toBeVisible();
     await expect(slider(page)).toHaveValue("3680");
@@ -191,13 +193,14 @@ test.describe("moments", () => {
     page,
   }) => {
     await ready(page);
-    await slider(page).fill("2400");
+    await page.getByLabel("Fixture").selectOption("substitution");
+    await slider(page).fill("5300");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
-    await page.locator(".moment-timeline button", { hasText: "36:20" }).click();
+    await page.locator(".moment-timeline button", { hasText: "86:50" }).click();
     const pitch = page.locator(".pitch-panel").filter({ visible: true });
     await expect(pitch.locator(".replay-note")).toHaveText(
-      "No more Harbor shots since 30:43.",
-      { timeout: 8000 },
+      "No more Harbor shots since 83:58.",
+      { timeout: 20000 },
     );
   });
 
@@ -211,10 +214,7 @@ test.describe("moments", () => {
       .click();
     await slider(page).fill("1900");
     await page.getByRole("button", { name: "Moments", exact: true }).click();
-    await expect(page.locator(".moment-timeline time")).toHaveText([
-      "31:00",
-      "01:00",
-    ]);
+    await expect(page.locator(".moment-timeline time")).toHaveText(["28:00"]);
   });
 });
 
@@ -222,14 +222,14 @@ test("the card slides in, and appears without motion when reduced", async ({
   page,
 }) => {
   await ready(page);
-  await playTo6040(page);
+  await playTo6120(page);
   expect(
     await card(page).evaluate((e) => getComputedStyle(e).animationName),
   ).toBe("moment-in");
   await page.getByRole("button", { name: "Pause match" }).click();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await slider(page).fill("3600");
-  await playTo6040(page);
+  await playTo6120(page);
   expect(
     await card(page).evaluate((e) => getComputedStyle(e).animationName),
   ).toBe("none");

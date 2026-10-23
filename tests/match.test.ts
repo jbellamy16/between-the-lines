@@ -5,6 +5,8 @@ import {
   DEMO_TIME,
   eventsAt,
   generateMatch,
+  GOAL_MOUTH,
+  shotModel,
   PLAYERS,
   SCENARIOS,
   Scenario,
@@ -121,24 +123,36 @@ for (const scenario of Object.keys(SCENARIOS) as Scenario[])
             ),
           ).toContain(event.playerId);
         if (event.type === "carry") {
-          expect(prior.type).toBe("pass");
-          expect(prior.success).toBe(true);
-          expect(event.position).toEqual(prior.end);
-          expect(event.playerId).toBe(prior.recipientId);
+          // A carry continues from a completed pass, or starts the possession.
+          if (prior.type === "pass") {
+            expect(prior.success).toBe(true);
+            expect(event.position).toEqual(prior.end);
+            expect(event.playerId).toBe(prior.recipientId);
+          } else expect(prior.possessionId).toBe(event.possessionId);
           expect(
             Math.hypot(
               event.end!.x - event.position.x,
               event.end!.y - event.position.y,
             ),
-          ).toBeLessThanOrEqual(9);
+          ).toBeLessThanOrEqual(26);
         }
         if (event.type === "shot") {
-          expect(prior.type).toBe("carry");
+          // One touch from a completed ball, or after the receiver's carry.
+          if (prior.type === "carry") {
+            expect(event.playerId).toBe(prior.playerId);
+          } else {
+            expect(prior.type).toBe("pass");
+            expect(prior.success).toBe(true);
+            expect(event.playerId).toBe(prior.recipientId);
+          }
           expect(event.position).toEqual(prior.end);
-          expect(event.playerId).toBe(prior.playerId);
+          expect(prior.possessionId).toBe(event.possessionId);
           expect(event.end!.x).toBe(100);
           expect(event.xg).toBeGreaterThanOrEqual(0.02);
-          expect(event.xg).toBeLessThanOrEqual(0.42);
+          expect(event.xg).toBeLessThanOrEqual(0.45);
+          const inGoal =
+            event.end!.y > GOAL_MOUTH.low && event.end!.y < GOAL_MOUTH.high;
+          expect(inGoal).toBe(event.outcome !== "wide");
           if (event.outcome === "goal") {
             expect(events[index + 1]?.type).toBe("goal");
             expect(events[index + 1]?.time).toBe(event.time);
@@ -191,4 +205,126 @@ it("recap does not list a scoring shot twice and has a full-time conclusion", ()
     ),
   ).toBe(false);
   expect(summary.watch).toContain("Full time");
+});
+
+describe("attacking routes and shot endpoints", () => {
+  const seeds = [3, 17, 42, 99, 2026];
+  const matches = (["pressure", "substitution", "quiet"] as Scenario[]).flatMap(
+    (scenario) => seeds.map((seed) => generateMatch(scenario, seed)),
+  );
+  const shots = matches.flat().filter((e) => e.type === "shot");
+
+  it("keeps each shot geometrically consistent with its outcome", () => {
+    expect(shots.length).toBeGreaterThan(100);
+    for (const shot of shots) {
+      const inGoal =
+        shot.end!.y > GOAL_MOUTH.low && shot.end!.y < GOAL_MOUTH.high;
+      expect(inGoal, `${shot.id} ${shot.outcome}`).toBe(
+        shot.outcome !== "wide",
+      );
+    }
+    // Endpoints vary rather than repeating one spot per outcome.
+    for (const outcome of ["saved", "wide", "goal"])
+      expect(
+        new Set(shots.filter((s) => s.outcome === outcome).map((s) => s.end!.y))
+          .size,
+      ).toBeGreaterThan(10);
+  });
+
+  it("derives outcome odds from one model: xG is below the on-target chance", () => {
+    for (const kind of ["open", "header", "cutback", "counter"] as const)
+      for (const x of [70, 85, 95])
+        for (const y of [20, 50, 80]) {
+          const { xg, onTarget } = shotModel({ x, y }, kind);
+          expect(onTarget).toBeGreaterThan(xg);
+        }
+    expect(shotModel({ x: 94, y: 50 }, "open").xg).toBeGreaterThan(
+      shotModel({ x: 72, y: 20 }, "open").xg,
+    );
+  });
+
+  it("leaves most attacks without a shot, including failed final balls", () => {
+    for (const events of matches) {
+      const byPossession = new Map<number, typeof events>();
+      for (const e of events)
+        byPossession.set(e.possessionId!, [
+          ...(byPossession.get(e.possessionId!) ?? []),
+          e,
+        ]);
+      const attacks = [...byPossession.values()].filter((p) =>
+        p.some((e) => e.type === "pass"),
+      );
+      const shotless = attacks.filter((p) => !p.some((e) => e.type === "shot"));
+      expect(shotless.length).toBeGreaterThan(attacks.length / 2);
+      expect(
+        attacks.some((p) => p.at(-1)?.type === "pass" && !p.at(-1)!.success),
+      ).toBe(true);
+    }
+  });
+
+  it("uses crosses, cutbacks and counters alongside patient build-up", () => {
+    const passes = matches.flat().filter((e) => e.type === "pass");
+    expect(
+      passes.some(
+        (p) => (p.position.y < 25 || p.position.y > 75) && p.end!.x > 85,
+      ),
+    ).toBe(true);
+    expect(
+      matches.some((events) =>
+        events.some(
+          (e, i) =>
+            e.type === "pass" &&
+            e.end!.x - e.position.x > 20 &&
+            events[i + 1]?.type === "carry" &&
+            events[i + 1].time - e.time <= 4,
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      matches.some((events) =>
+        events.some(
+          (e) =>
+            e.type === "shot" &&
+            events.filter(
+              (p) =>
+                p.possessionId === e.possessionId &&
+                p.type === "pass" &&
+                p.success,
+            ).length >= 5,
+        ),
+      ),
+    ).toBe(true);
+  });
+
+  it("gives shots to outfield attackers and keeps keepers out of them", () => {
+    const role = (id: string) => PLAYERS.find((p) => p.id === id)!.role;
+    const byRole = (r: string) => shots.filter((s) => role(s.playerId) === r);
+    expect(byRole("Goalkeeper")).toHaveLength(0);
+    expect(byRole("Defender").length).toBeLessThan(shots.length * 0.08);
+    expect(byRole("Forward").length).toBeGreaterThan(shots.length * 0.4);
+  });
+
+  it("opens with four independent Harbor shots against none before, at 63:24", () => {
+    const events = generateMatch("pressure");
+    const recent = events.filter(
+      (e) =>
+        e.type === "shot" &&
+        e.team === "harbor" &&
+        e.time > DEMO_TIME - 552 &&
+        e.time <= DEMO_TIME,
+    );
+    expect(recent).toHaveLength(4);
+    expect(new Set(recent.map((s) => s.possessionId)).size).toBe(4);
+    expect(
+      events.filter(
+        (e) =>
+          e.type === "shot" &&
+          e.team === "harbor" &&
+          e.time > DEMO_TIME - 1104 &&
+          e.time <= DEMO_TIME - 552,
+      ),
+    ).toHaveLength(0);
+    const score = statistics(eventsAt(events, DEMO_TIME));
+    expect([score.harbor.goals, score.riverside.goals]).toEqual([1, 0]);
+  });
 });

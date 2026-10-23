@@ -9,7 +9,7 @@ test("timeline events preview on hover and focus without seeking", async ({
     "false",
   );
   const goal = page.getByRole("button", {
-    name: "Replay the 01:00 goal",
+    name: "Replay the 41:08 goal",
     exact: true,
   });
   const clock = page.getByTestId("clock");
@@ -17,7 +17,7 @@ test("timeline events preview on hover and focus without seeking", async ({
   await goal.hover();
   const tooltip = page.getByRole("tooltip");
   await expect(tooltip).toContainText("Goal by Arlo Hayes");
-  await expect(tooltip).toContainText("Assist: Milo Serrano");
+  await expect(tooltip).toContainText("Assist: Leon Costa");
   await expect(tooltip).toContainText("Select to replay the build-up");
   await expect(clock).toHaveText(initial);
   const bounds = (await tooltip.boundingBox())!;
@@ -34,7 +34,7 @@ test("timeline events preview on hover and focus without seeking", async ({
   await expect(tooltip).toContainText("Nico Wells on for Arlo Hayes");
   await expect(clock).toHaveText(initial);
   await goal.click();
-  await expect(clock).toContainText("01:00");
+  await expect(clock).toContainText("41:08");
   await expect(tooltip).toHaveCount(0);
   // A goal marker replays the passage that led to the goal.
   await expect(
@@ -48,7 +48,7 @@ test("timeline events preview on hover and focus without seeking", async ({
       .filter({ visible: true })
       .locator("option")
       .last(),
-  ).toContainText("01:00");
+  ).toContainText("41:08");
 });
 
 test("goal markers minutes apart can each be tapped on a narrow timeline", async ({
@@ -62,7 +62,7 @@ test("goal markers minutes apart can each be tapped on a narrow timeline", async
     .getByRole("slider", { name: "Match timeline" })
     .filter({ visible: true })
     .fill("5400");
-  for (const clock of ["74:35", "77:33"]) {
+  for (const clock of ["76:16", "78:48"]) {
     const marker = page
       .getByRole("button", { name: `Replay the ${clock} goal` })
       .filter({ visible: true });
@@ -79,10 +79,10 @@ test("goal markers minutes apart can each be tapped on a narrow timeline", async
     ).toBe(true);
   }
   await page
-    .getByRole("button", { name: "Replay the 74:35 goal" })
+    .getByRole("button", { name: "Replay the 76:16 goal" })
     .filter({ visible: true })
     .click();
   await expect(
     page.getByTestId("clock").filter({ visible: true }),
-  ).toContainText("74:35");
+  ).toContainText("76:16");
 });

@@ -430,3 +430,6 @@ select:not(:disabled) {
   transform-origin: right;
   transform: scaleX(calc(1 - var(--share)));
 }
+.shot-path {
+  fill: none;
+}

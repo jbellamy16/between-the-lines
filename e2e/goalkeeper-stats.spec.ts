@@ -24,7 +24,7 @@ test("keeper metrics follow playback and switch back for outfield players", asyn
   await timeline.fill("59");
   await expect(stat("Goals conceded")).toHaveText("0");
   await expect(stat("Saves")).toHaveText("0");
-  await timeline.fill("60");
+  await timeline.fill("2468");
   await expect(stat("Goals conceded")).toHaveText("1");
   await page.getByLabel("Focus player").selectOption("harbor-13");
   await expect(stat("Saves")).toHaveText("0");

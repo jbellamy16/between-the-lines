@@ -191,7 +191,12 @@ describe("portable intelligence graph and story packaging", () => {
       (evidence) => evidence.code === "opponent-shot-response",
     )!;
     expect(counter).toBeDefined();
-    expect(counter.eventIds).toHaveLength(5);
+    // The five injected responses, plus any Riverside shot already in the window.
+    expect(counter.eventIds).toEqual(
+      expect.arrayContaining(
+        Array.from({ length: 5 }, (_, i) => `opponent-response-${i}`),
+      ),
+    );
     const hypothesisId = `hypothesis:${story.hypothesis.hypothesis.id}`;
     for (const eventId of counter.eventIds) {
       expect(candidate.evidenceIds).not.toContain(eventId);

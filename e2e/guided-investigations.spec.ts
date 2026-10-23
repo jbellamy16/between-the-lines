@@ -188,7 +188,9 @@ test("the checked answer shows before the agent answers, and the agent adds to i
   });
   agent.release();
   await expect(
-    panel(page).getByText("The analyst adds · Figures, times and names checked"),
+    panel(page).getByText(
+      "The analyst adds · Figures, times and names checked",
+    ),
   ).toBeVisible();
   await expect(panel(page)).toContainText("Agent answer 1");
   await expect(checked(page)).toBeVisible();
@@ -256,14 +258,16 @@ test("rewind and fixture changes invalidate an in-flight answer", async ({
   await expect(page.locator(".analyst-response")).toHaveCount(0);
   await page.getByRole("slider", { name: "Match timeline" }).fill("3804");
   await expect(page.locator(".analyst-response")).toHaveCount(0);
-  await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
+  await page.getByRole("slider", { name: "Match timeline" }).fill("3900");
   await panel(page)
     .getByRole("button", {
       name: "Are these chances actually better?",
       exact: true,
     })
     .click();
-  await expect(checked(page)).toContainText("xG per shot");
+  await expect(checked(page)).toContainText(
+    "average chance quality cannot be compared",
+  );
   await page.getByLabel("Fixture", { exact: true }).selectOption("quiet");
   await expect(page.locator(".analyst-response")).toHaveCount(0);
 });
@@ -371,7 +375,7 @@ test("the shot surge comparison is deterministic in both styles", async ({
     checked(page).getByRole("row", { name: "Distinct linked possessions" }),
   ).toBeVisible();
   await expect(checked(page)).toContainText("pressing, causation");
-  await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
+  await page.getByRole("slider", { name: "Match timeline" }).fill("3720");
   await expect(page.locator(".analyst-checked")).toHaveCount(0);
   await surge.click();
   await checked(page)
@@ -387,5 +391,5 @@ test("the shot surge comparison is deterministic in both styles", async ({
     .getByRole("button", { name: /^Replay .+ at \d/ })
     .first()
     .click();
-  await expect(page.getByTestId("clock")).toContainText("70:00");
+  await expect(page.getByTestId("clock")).toContainText("62:00");
 });

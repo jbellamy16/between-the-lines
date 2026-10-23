@@ -29,24 +29,30 @@ describe("goalkeeper statistics", () => {
   it("counts the goal once, not both the shot and scoring event", () => {
     const match = fixture();
     const keeper = match.players.find((p) => p.id === "riverside-1")!;
-    expect(goalkeeperStatistics(match, keeper, 59).goalsConceded).toBe(0);
-    expect(goalkeeperStatistics(match, keeper, 60)).toMatchObject({
+    const goalAt = match.events.find((e) => e.scoringTeam)!.time;
+    expect(goalkeeperStatistics(match, keeper, goalAt - 1).goalsConceded).toBe(
+      0,
+    );
+    const before = goalkeeperStatistics(match, keeper, goalAt - 1);
+    expect(goalkeeperStatistics(match, keeper, goalAt)).toMatchObject({
       goalsConceded: 1,
-      shotsOnTargetFaced: 1,
-      saves: 0,
+      shotsOnTargetFaced: before.shotsOnTargetFaced! + 1,
+      saves: before.saves,
     });
     const goal = match.events.find((e) => e.scoringTeam)!;
     goal.ownGoal = true;
-    expect(goalkeeperStatistics(match, keeper, 60).goalsConceded).toBe(1);
+    expect(goalkeeperStatistics(match, keeper, goalAt).goalsConceded).toBe(1);
     goal.period = "PS";
-    expect(goalkeeperStatistics(match, keeper, 60).goalsConceded).toBe(0);
+    expect(goalkeeperStatistics(match, keeper, goalAt).goalsConceded).toBe(0);
   });
 
   it("splits same-time shots across a keeper substitution and stops at a red card", () => {
     const match = fixture();
     const starter = match.players.find((p) => p.id === "riverside-1")!;
     const reserve = match.players.find((p) => p.id === "riverside-13")!;
-    const template = match.events.find((e) => e.type === "shot")!;
+    const template = match.events.find(
+      (e) => e.type === "shot" && e.team === "harbor",
+    )!;
     const make = (
       id: string,
       overrides: Partial<NormalizedEvent>,

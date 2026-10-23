@@ -67,11 +67,11 @@ async function mockAnalyst(page: Page, status: "answered" | "declined") {
       question: body.question,
       answer:
         status === "answered"
-          ? "Harbor took 4 shots between 54:12 and 63:24, after 0 in the spell before. Theo March had the best of them at 62:50."
+          ? "Harbor took 4 shots between 54:12 and 63:24, after 0 in the spell before. Leon Costa had the last of them at 63:11."
           : "Recorded events can't show how anyone feels. They can show where Harbor's shots came from.",
       citedEventIds:
         status === "answered"
-          ? ["pressure-202632-451", "pressure-202632-463"]
+          ? ["pressure-163530-459", "pressure-163530-471"]
           : [],
       steps,
       source: "foundry",
@@ -152,7 +152,7 @@ test("a question shows the agent's steps and a verified answer with replayable e
     time: 3804,
     question: "What changed in the last ten minutes?",
   });
-  await ask.getByRole("button", { name: "62:50 · shot" }).click();
+  await ask.getByRole("button", { name: "63:11 · shot" }).click();
   const results = await new AxeBuilder({ page })
     .include(".analyst-panel")
     .analyze();

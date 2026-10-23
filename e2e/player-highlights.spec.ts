@@ -44,7 +44,7 @@ test("lineups and player focus show goals and substitutions without revealing fu
   ).toBe(false);
 });
 
-test("scoreline and player views credit Milo only after Arlo scores", async ({
+test("scoreline and player views credit Leon only after Arlo scores", async ({
   page,
 }) => {
   await page.goto("/");
@@ -56,36 +56,27 @@ test("scoreline and player views credit Milo only after Arlo scores", async ({
   await timeline.fill("59");
   await expect(page.locator(".score-contributions")).toHaveCount(0);
   await page.getByRole("button", { name: "Player focus", exact: true }).click();
-  await page.getByLabel("Focus player").selectOption("harbor-6");
-  const completion = page
-    .locator(".player-metrics > div")
-    .filter({ hasText: "Pass completion" })
-    .locator("strong");
-  await timeline.fill("54");
-  await expect(completion).toHaveText("—");
-  await timeline.fill("55");
-  await expect(completion).toHaveText("100%");
-  await timeline.fill("54");
-  await expect(completion).toHaveText("—");
-  await timeline.fill("59");
+  await page.getByLabel("Focus player").selectOption("harbor-10");
   const assists = page
     .locator(".player-metrics > div")
     .filter({ hasText: "Assists" })
     .locator("strong");
+  // The pass is at 41:06; the assist is credited only when Arlo scores at 41:08.
+  await timeline.fill("2467");
   await expect(assists).toHaveText("0");
-  await timeline.fill("60");
+  await timeline.fill("2468");
   await expect(assists).toHaveText("1");
-  await expect(page.locator(".score-goals")).toContainText("Arlo Hayes (1′)");
+  await expect(page.locator(".score-goals")).toContainText("Arlo Hayes (42′)");
   await expect(page.locator(".score-assists")).toContainText(
-    "Milo Serrano (1′)",
+    "Leon Costa (42′)",
   );
   await expect(page.locator(".score-contributions")).not.toContainText("HT");
   await page.getByRole("button", { name: "Lineups", exact: true }).click();
-  const milo = page
+  const leon = page
     .locator(".player-row")
-    .filter({ has: page.locator("strong", { hasText: "Milo Serrano" }) });
-  await expect(milo.locator('[title^="Assist at"]')).toHaveCount(1);
-  await timeline.fill("55");
-  await expect(milo.locator('[title^="Assist at"]')).toHaveCount(0);
+    .filter({ has: page.locator("strong", { hasText: "Leon Costa" }) });
+  await expect(leon.locator('[title^="Assist at"]')).toHaveCount(1);
+  await timeline.fill("2466");
+  await expect(leon.locator('[title^="Assist at"]')).toHaveCount(0);
   await expect(page.locator(".score-contributions")).toHaveCount(0);
 });

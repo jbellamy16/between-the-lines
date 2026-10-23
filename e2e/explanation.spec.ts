@@ -51,7 +51,7 @@ test("style persists, Settings stays synchronized, and selected evidence/replay/
   await story(page).getByText("More from this match", { exact: true }).click();
   await story(page)
     .getByRole("button", {
-      name: "Harbor: more ball wins in the attacking third",
+      name: "Harbor: more shots",
       exact: true,
     })
     .click();
@@ -72,7 +72,7 @@ test("style persists, Settings stays synchronized, and selected evidence/replay/
   await selector(page).selectOption("plain");
   await expect(story(page)).toContainText("Selected observation");
   await expect(story(page).getByRole("heading", { level: 2 })).toContainText(
-    "winning the ball near the opponent’s goal",
+    "getting more shots away",
   );
   await expect(story(page).locator(".story-evidence-body")).toBeVisible();
   await expect(replay).toHaveValue(ids[1]);
@@ -147,7 +147,7 @@ test("all six level/length combinations retain qualifications, score, evidence a
         await evidence.locator(":scope > summary").click();
       await expect(dialog).toContainText("start excluded, end included");
       await expect(
-        dialog.getByRole("button", { name: /63:|62:|61:/ }).first(),
+        dialog.getByRole("button", { name: /6[0-9]:|7[0-9]:/ }).first(),
       ).toBeVisible();
       expect(
         await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth),

@@ -98,7 +98,7 @@ Releases go to Azure App Service with `bash scripts/release.sh`, which builds th
 
 ## Synthetic data
 
-The hackathon requires synthetic, football-realistic data. A seed controls a reproducible stream of possessions between two fictional clubs, Harbor Athletic and Riverside FC. It includes role-aware passing, carries, shots with distance-based chance probabilities, recoveries, fouls, corners, goals and a substitution. Three scenarios cover rising pressure, post-substitution change and a quiet match. Scenario settings change probabilities, never insight text or detection rules. Coordinates are 0–100 with each team attacking left to right. Only recorded events are drawn; there is no invented tracking data.
+The hackathon requires synthetic, football-realistic data. A seed controls a reproducible stream of possessions between two fictional clubs, Harbor Athletic and Riverside FC. Each possession is a recognisable attacking route (patient build-up, cross, cutback or counter) that can fail or end without a shot. It includes role-aware passing, carries, shots whose chance value depends on distance, angle and route and whose endpoint matches the outcome, recoveries, fouls, corners, goals and a substitution. Three scenarios cover rising pressure, post-substitution change and a quiet match. Scenario settings change probabilities, never insight text or detection rules. Coordinates are 0–100 with each team attacking left to right. Only recorded events are drawn; there is no invented tracking data.
 
 ## Limits
 

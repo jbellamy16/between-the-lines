@@ -766,6 +766,7 @@ export function MatchPitch({
   onSeek,
   storyTitle,
   storyReplay = false,
+  shotWindow,
 }: {
   match: MatchData;
   time: number;
@@ -781,11 +782,31 @@ export function MatchPitch({
   onSeek: (time: number) => void;
   storyTitle?: string;
   storyReplay?: boolean;
+  /** The team and equal windows of a shot-count story; enables the shot map. */
+  shotWindow?: { team: "harbor" | "riverside"; start: number; end: number };
 }) {
   const actions = events.filter(
     (e) => !["possession", "substitution"].includes(e.type),
   );
   const active = actions.find((e) => e.id === selected) ?? actions.at(-1);
+  // Only a shot-count story gets shot-map semantics; other patterns keep the
+  // generic action view.
+  const shotMap =
+    view === "pattern" &&
+    !replay &&
+    !!shotWindow &&
+    actions.length > 0 &&
+    actions.every((e) => e.type === "shot");
+  const shotsIn = (start: number, end: number) =>
+    match.events.filter(
+      (e) =>
+        e.type === "shot" &&
+        e.team === shotWindow?.team &&
+        e.time > start &&
+        e.time <= end,
+    ).length;
+  const width = shotWindow ? shotWindow.end - shotWindow.start : 0;
+  const outcome = (e: NormalizedEvent) => (e.outcome ? ` · ${e.outcome}` : "");
   return (
     <section className="panel pitch-panel">
       <div className="panel-header">
@@ -798,6 +819,15 @@ export function MatchPitch({
               ? "Where it happened"
               : "Recent actions"}
         </h2>
+        {view === "passage" && active && active.id === selected && (
+          <span className="selected-shot" data-testid="selected-shot">
+            Selected {active.type === "shot" ? "shot" : "action"}:{" "}
+            {eventClock(match, active)} ·{" "}
+            {match.players.find((p) => p.id === active.playerId)?.name ??
+              "Unidentified player"}
+            {active.type === "shot" ? outcome(active) : ` · ${active.type}`}
+          </span>
+        )}
         {view === "passage" && (
           <button className="text-button" onClick={onClear}>
             Clear selection
@@ -832,15 +862,64 @@ export function MatchPitch({
             sequence={view !== "pattern"}
             aggregate={view === "pattern" && actions.length > 24}
             includeAllActions
+            shotMap={shotMap}
             identities={identitiesFor(match)}
             formatTime={(t) => displayClock(match, t)}
           />
+          {shotMap && shotWindow && (
+            <div className="shot-map-key">
+              <p className="shot-map-summary">
+                <strong>
+                  {match.teams[shotWindow.team].short}:{" "}
+                  {shotsIn(shotWindow.start, shotWindow.end)}{" "}
+                  {shotsIn(shotWindow.start, shotWindow.end) === 1
+                    ? "shot"
+                    : "shots"}
+                </strong>{" "}
+                in {displayClock(match, shotWindow.start)}–
+                {displayClock(match, shotWindow.end)}, against{" "}
+                {shotsIn(shotWindow.start - width, shotWindow.start)} in the
+                equal {displayClock(match, shotWindow.start - width)}–
+                {displayClock(match, shotWindow.start)} before.
+              </p>
+              <p>
+                Each arrow runs from where a shot was taken to where it ended.
+                Numbers show shot order, not shirt numbers. Shots are separate
+                attempts, not one move.
+              </p>
+              <ul className="shot-map-legend" aria-label="Shot outcomes">
+                <li>
+                  <svg viewBox="0 0 36 12" aria-hidden="true">
+                    <path d="M2 6H26" />
+                    <circle cx="30" cy="6" r="4" fill="none" />
+                  </svg>
+                  Saved
+                </li>
+                <li>
+                  <svg viewBox="0 0 36 12" aria-hidden="true">
+                    <path d="M2 6H22" strokeDasharray="4 5" />
+                    <path d="M26 2l8 8m0-8l-8 8" />
+                  </svg>
+                  Wide
+                </li>
+                <li>
+                  <svg viewBox="0 0 36 12" aria-hidden="true">
+                    <path d="M2 6H24" strokeWidth="4" />
+                    <circle cx="30" cy="6" r="5" />
+                  </svg>
+                  Goal
+                </li>
+              </ul>
+            </div>
+          )}
           <div className="event-inspector action-picker">
             <div>
               <p>
-                {active
-                  ? `${eventClock(match, active)} · ${eventDescription(match, active)}`
-                  : "No actions in this window."}
+                {shotMap && !selected
+                  ? "Select a shot to replay its build-up."
+                  : active
+                    ? `${eventClock(match, active)} · ${eventDescription(match, active)}${outcome(active)}`
+                    : "No actions in this window."}
               </p>
             </div>
             {actions.length > 0 && (
@@ -852,6 +931,7 @@ export function MatchPitch({
                 {actions.map((e) => (
                   <option key={e.id} value={e.id}>
                     {eventClock(match, e)} · {eventDescription(match, e)}
+                    {outcome(e)}
                   </option>
                 ))}
               </select>

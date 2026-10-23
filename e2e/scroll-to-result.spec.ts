@@ -184,9 +184,9 @@ test("a moment tap lands on the pitch on a phone", async ({ page }, info) => {
   phoneOnly(info);
   await mockAnalyst(page);
   await ready(page);
-  await page.getByRole("slider", { name: "Match timeline" }).fill("4700");
+  await page.getByRole("slider", { name: "Match timeline" }).fill("4800");
   await page.getByRole("button", { name: "Moments", exact: true }).click();
-  await page.locator(".moment-timeline button", { hasText: "77:40" }).click();
+  await page.locator(".moment-timeline button", { hasText: "78:50" }).click();
   // A goal moment replays the goal's build-up.
   await expect(
     page

@@ -77,7 +77,9 @@ test("story evidence presents the comparison and keeps technical details seconda
   await expect(panel).toContainText("9m 12s window");
   await expect(panel.locator(".story-current strong")).toHaveText("4");
   await expect(panel.locator(".story-previous strong")).toHaveText("0");
-  await expect(panel.locator(".story-event-list li")).toHaveCount(4);
+  await expect(panel.locator(".story-event-list li")).toHaveCount(
+    story.evidenceEventIds.length,
+  );
   await expect(panel.locator(".story-technical-body")).not.toBeVisible();
   await expect(
     panel.getByText(story.evidenceEventIds[0], { exact: true }),
@@ -218,7 +220,7 @@ test("measured storylines emerge, weaken, resolve, and reconstruct after seeking
     .getByText("How the match story is changing", { exact: true })
     .click();
   const harbor = history.getByRole("region", {
-    name: "Harbor recoveries in the attacking third storyline",
+    name: "Harbor shots storyline",
   });
   await expect(harbor.locator(".storyline-state")).toHaveText("emerging");
   await expect(harbor.locator(".storyline-timeline li")).toHaveCount(1);

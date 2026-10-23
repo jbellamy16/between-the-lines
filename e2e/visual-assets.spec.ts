@@ -106,7 +106,7 @@ test("shared match views retain SVG icons instead of text glyphs", async ({
     shell.locator(".selected-observation h2 .sl-icon"),
   ).toBeVisible();
   for (const source of ["Synthetic"] as const) {
-    await shell.getByRole("slider", { name: "Match timeline" }).fill("600");
+    await shell.getByRole("slider", { name: "Match timeline" }).fill("2600");
     await expect(shell.locator(".pitch-topline .sl-icon")).toHaveCount(2);
     await expect(shell.locator(".pitch-topline")).not.toContainText(/[←→]/);
     const ticks = shell.locator(".timeline-events button");

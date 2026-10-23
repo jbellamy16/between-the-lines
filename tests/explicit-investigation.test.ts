@@ -175,6 +175,7 @@ it("explicit model-selected retrieval binds metadata deterministically and still
   vi.stubEnv("FOUNDRY_API_KEY", "test-only");
   vi.stubEnv("FOUNDRY_DEPLOYMENT", "between-the-lines-gpt-6-luna-1");
   vi.stubEnv("AI_USAGE_STORE", "memory");
+  vi.stubEnv("AI_TOKEN_MINUTE_LIMIT", "100000");
   let turn = 0,
     target = "";
   vi.stubGlobal(

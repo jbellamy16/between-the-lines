@@ -98,7 +98,7 @@ describe("evidence-controlled football briefing", () => {
   it("ranks goals above routine actions and avoids duplicated scoring-shot records", () => {
     const b = buildBriefing(match, 3804);
     expect(b.moments[0].event.scoringTeam).toBe("harbor");
-    expect(b.moments.filter((m) => m.event.time === 60)).toHaveLength(1);
+    expect(b.moments.filter((m) => m.event.time === 2468)).toHaveLength(1);
     expect(
       b.moments.some((m) => ["pass", "possession"].includes(m.event.type)),
     ).toBe(false);
@@ -111,19 +111,19 @@ describe("evidence-controlled football briefing", () => {
     expect(weakening.qualifications.join(" ")).toContain("eased");
     expect(weakening.watch?.headline).toContain("revive");
     expect(weakening.watch?.text).toContain("75:00");
-    expect(resolved.watch?.headline).not.toContain("Harbor");
-    expect(resolved.headline).toContain("level");
+    expect(resolved.watch?.headline ?? "").not.toContain("Harbor");
+    expect(resolved.headline).toContain("has eased");
   });
   it("limits returning-viewer developments while retaining an accurate whole-match score", () => {
-    const b = buildBriefing(match, 3804, { since: 1200 });
-    expect(b.since).toBe(1200);
+    const b = buildBriefing(match, 3804, { since: 2600 });
+    expect(b.since).toBe(2600);
     expect(b.score).toEqual({ harbor: 1, riverside: 0 });
     expect(b.narrative).not.toContain("Arlo Hayes's goal");
-    expect(b.narrative).toContain("since 20:00");
+    expect(b.narrative).toContain("since 43:20");
     expect(
-      b.moments.every((m) => m.event.time > 1200 && m.event.time <= 3804),
+      b.moments.every((m) => m.event.time > 2600 && m.event.time <= 3804),
     ).toBe(true);
-    expect(buildBriefing(match, 600, { since: 1200 }).since).toBeNull();
+    expect(buildBriefing(match, 600, { since: 2600 }).since).toBeNull();
   });
   it("handles kickoff, sparse evidence and invalid cutoffs without manufacturing drama", () => {
     const empty: MatchData = { ...match, events: [] };
@@ -192,12 +192,12 @@ it("explains away-team leads in the leading team's order and full-time outcomes 
   const first = away.events.find((e) => e.scoringTeam)!;
   first.scoringTeam = "riverside";
   first.ownGoal = true;
-  const b = buildBriefing(away, 60.5);
+  const b = buildBriefing(away, first.time + 0.5);
   expect(b.score).toEqual({ harbor: 0, riverside: 1 });
   expect(b.narrative).toContain("Riverside FC leading 1–0");
   expect(b.narrative).toContain("own goal");
   const full = buildBriefing(match, match.duration);
-  expect(full.narrative).toContain("Theo March's goal at 77:33");
+  expect(full.narrative).toContain("Arlo Hayes's goal at 41:08");
   expect(full.narrative).toContain("ahead for the last time");
   expect(full.metrics[0].label).toBe("Shots");
   expect(full.metrics[0].windows).toEqual([]);

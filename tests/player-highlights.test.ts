@@ -106,18 +106,20 @@ it("provides nine reserves per synthetic team without putting unused substitutes
   }
 });
 
-it("records Milo's direct assist on Arlo's goal and reveals it only at the goal", () => {
+it("records Leon's direct assist on Arlo's goal and reveals it only at the goal", () => {
   const match = fixture();
   const goal = match.events.find((event) => event.scoringTeam)!;
-  expect(goal.assistPlayerId).toBe("harbor-6");
+  expect(goal.assistPlayerId).toBe("harbor-10");
   const pass = match.events.find((event) => event.id === goal.assistEventId)!;
-  expect(pass.time).toBe(55);
-  expect(pass.playerId).toBe("harbor-6");
+  expect(pass.time).toBe(2466);
+  expect(pass.playerId).toBe("harbor-10");
   expect(pass.recipientId).toBe("harbor-11");
-  expect(playerHighlights(match, 59).get("harbor-6")?.assists).toBe(0);
-  expect(playerHighlights(match, 60).get("harbor-6")?.assists).toBe(1);
-  expect(playerHighlights(match, 60).get("harbor-11")?.assists).toBe(0);
-  expect(playerHighlights(match, 55).get("harbor-6")?.assistEvents).toEqual([]);
+  expect(playerHighlights(match, 2467).get("harbor-10")?.assists).toBe(0);
+  expect(playerHighlights(match, 2468).get("harbor-10")?.assists).toBe(1);
+  expect(playerHighlights(match, 2468).get("harbor-11")?.assists).toBe(0);
+  expect(playerHighlights(match, 2466).get("harbor-10")?.assistEvents).toEqual(
+    [],
+  );
 });
 
 it("groups repeated scorer and assister names with chronological minutes", () => {
@@ -137,19 +139,19 @@ it("groups repeated scorer and assister names with chronological minutes", () =>
   };
   for (const [id, name] of [
     ["harbor-11", "Arlo Hayes"],
-    ["harbor-6", "Milo Serrano"],
+    ["harbor-10", "Leon Costa"],
   ]) {
     expect(
       scorelineNames(
         match,
         [third, first, second].map((event) => ({ playerId: id, event })),
       ),
-    ).toEqual([{ id, label: `${name} (1′, 48′, 72′)` }]);
+    ).toEqual([{ id, label: `${name} (42′, 48′, 72′)` }]);
   }
   expect(
     scorelineNames(match, [
       { playerId: first.playerId, event: first },
       { playerId: first.playerId, event: { ...second, ownGoal: true } },
     ])[0].label,
-  ).toBe("Arlo Hayes (1′, 48′ OG)");
+  ).toBe("Arlo Hayes (42′, 48′ OG)");
 });

@@ -5,6 +5,8 @@ import { composeNarration, renderSelection } from "../src/lib/ai/narration";
 import { generateMatch, statistics, eventsAt } from "../src/lib/match";
 import { configure, mockProvider } from "./ai-helpers";
 const events = generateMatch("pressure");
+// The goal the server always supplies as context at the captured timestamp.
+const goalContext = `moment-${events.find((e) => e.type === "goal")!.id}`;
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
@@ -15,12 +17,16 @@ it.each(captured.rows)(
     const mode = row.mode as "fan" | "analyst";
     const packet = buildEvidence(events, captured.time, mode);
     configure();
-    vi.stubGlobal("fetch", mockProvider(packet, row.selection));
+    // The capture named its match's goal; point it at this match's goal.
+    const selection = {
+      ...row.selection,
+      factIds: row.selection.factIds.map((id) =>
+        id.startsWith("moment-") ? goalContext : id,
+      ),
+    };
+    vi.stubGlobal("fetch", mockProvider(packet, selection));
     const result = await composeNarration(packet, "openai");
-    expect(result.contextFactIds).toEqual([
-      "score",
-      "moment-pressure-202632-7",
-    ]);
+    expect(result.contextFactIds).toEqual(["score", goalContext]);
     expect(result.modelFactIds).toEqual([
       "harbor-pressure-63",
       "harbor-chances-63",
@@ -53,7 +59,7 @@ it("a model can abstain but cannot suppress score, goal or evidence limitations"
   const pressure = buildEvidence(events, captured.time, "fan");
   expect(renderSelection({ factIds: [] }, pressure).selectedFactIds).toEqual([
     "score",
-    "moment-pressure-202632-7",
+    goalContext,
   ]);
 });
 it("captured selections cannot leak later facts into an earlier timestamp", () => {

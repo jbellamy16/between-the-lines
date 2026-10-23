@@ -45,7 +45,7 @@ test("one story controls the initial pitch, secondary selection and replay; offl
     .evaluateAll((options) =>
       options.map((o) => (o as HTMLOptionElement).value),
     );
-  expect(ids).toEqual(expected.evidenceEventIds);
+  expect(ids).toEqual(expected.highlightedEventIds);
   expect(
     ids.every(
       (id) => match.events.find((event) => event.id === id)?.type === "shot",

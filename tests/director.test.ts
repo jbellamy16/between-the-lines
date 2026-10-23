@@ -14,7 +14,7 @@ import { POST } from "../src/app/api/director/route";
 import { configure } from "./ai-helpers";
 const source = new SyntheticMatchSource();
 const match = source.read("pressure"),
-  cutoff = 4200;
+  cutoff = 4500;
 const query: ToolQuery = {
   matchId: match.id,
   start: 3300,
@@ -190,7 +190,10 @@ describe("Match Director evidence boundaries", () => {
   it("keeps episode IDs stable while cutoff and evidence grow, and downranks seen evidence", () => {
     const current = observe(match, cutoff),
       next = observe(match, cutoff + 1);
-    expect(current.map((c) => c.id)).toEqual(next.map((c) => c.id));
+    // A new action may add a candidate; none already published may change id.
+    expect(next.map((c) => c.id)).toEqual(
+      expect.arrayContaining(current.map((c) => c.id)),
+    );
     const seen = observe(match, cutoff, "fan", {
       seenEvidenceIds: current[0].evidenceIds,
     });
@@ -522,9 +525,9 @@ it("unsuccessful ball-winning attempts never become recovery-to-shot claims", ()
 it("compares shot origins only with enough located shots in equal windows", () => {
   const m = structuredClone(match);
   for (const e of m.events)
-    if (e.type === "shot" && e.position && e.time > 3600)
-      e.position.x = e.time > 4500 ? 95 : 55;
-  const candidates = observe(m, 5400, "analyst");
+    if (e.type === "shot" && e.position && e.time > 3300)
+      e.position.x = e.time > 4200 ? 95 : 55;
+  const candidates = observe(m, 5100, "analyst");
   const location = candidates.find((c) => c.category === "shot-location");
   expect(location).toBeDefined();
   expect(location!.detail).toContain("not shot quality");

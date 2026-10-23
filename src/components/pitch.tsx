@@ -28,6 +28,7 @@ export function Pitch({
   identities,
   formatTime = clock,
   aggregate,
+  shotMap = false,
 }: {
   identities?: {
     teams: Record<"harbor" | "riverside", { short: string; color: string }>;
@@ -35,6 +36,8 @@ export function Pitch({
   };
   formatTime?: (time: number) => string;
   aggregate?: boolean;
+  /** Draw each shot from where it was taken to where it ended; shots are never joined. */
+  shotMap?: boolean;
   events: MatchEvent[];
   selected?: string;
   onSelect?: (event: MatchEvent) => void;
@@ -74,7 +77,8 @@ export function Pitch({
       includeAllActions ||
       !["possession", "substitution", "foul", "goal"].includes(e.type),
   );
-  const density = aggregate ?? (!playback && filtered.length > 24);
+  const density =
+    !shotMap && (aggregate ?? (!playback && filtered.length > 24));
   const cellSize = hitRadius > 45 ? 25 : 10;
   const groups = pitchGroups(filtered, density, cellSize);
   const expanded = groups.find((g) => g.id === openedGroup);
@@ -174,6 +178,45 @@ export function Pitch({
           <circle cx="145" cy="320" r="2" fill="var(--sl-pitch-line)" />
           <circle cx="855" cy="320" r="2" fill="var(--sl-pitch-line)" />
         </g>
+        {shotMap &&
+          filtered
+            .filter((e) => e.end)
+            .map((e) => {
+              const p = point(e),
+                q = point(e, true);
+              const goal = e.outcome === "goal";
+              return (
+                <g key={`shot-${e.id}`} aria-hidden="true" pointerEvents="none">
+                  <path
+                    className={`shot-path shot-${e.outcome ?? "unknown"} ${e.id === selected ? "active-path" : ""}`}
+                    d={`M${p.x} ${p.y}L${q.x} ${q.y}`}
+                    stroke={teams[e.team].color}
+                    strokeWidth={goal ? 5 : 3}
+                    strokeDasharray={e.outcome === "wide" ? "4 8" : undefined}
+                    strokeOpacity={goal ? 0.95 : e.id === selected ? 0.9 : 0.5}
+                    markerEnd={`url(#arrow-${id})`}
+                  />
+                  {e.outcome === "wide" ? (
+                    <path
+                      d={`M${q.x - 8} ${q.y - 8}l16 16m0 -16l-16 16`}
+                      stroke="var(--sl-pitch-line)"
+                      strokeWidth="3"
+                    />
+                  ) : (
+                    <circle
+                      cx={q.x}
+                      cy={q.y}
+                      r={goal ? 10 : 6}
+                      fill={goal ? teams[e.team].color : "none"}
+                      stroke={
+                        goal ? "var(--sl-pitch-line)" : teams[e.team].color
+                      }
+                      strokeWidth="3"
+                    />
+                  )}
+                </g>
+              );
+            })}
         {sequence &&
           filtered
             .filter((e) => !density || e.id === selected)
@@ -212,7 +255,7 @@ export function Pitch({
           const label =
             group.events.length > 1
               ? `${group.events.length} actions ${density ? "in this area" : "at this location"}. Choose an action`
-              : `${formatTime(e.time)} ${eventLabel(e.type)} by ${lookupPlayer(e.playerId).name}`;
+              : `${formatTime(e.time)} ${eventLabel(e.type)} by ${lookupPlayer(e.playerId).name}${shotMap && e.outcome ? `, ${e.outcome}` : ""}`;
           const choose = () => {
             if (group.events.length > 1) {
               const opening = openedGroup !== group.id;

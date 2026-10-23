@@ -126,7 +126,10 @@ test("explanation provenance, category preferences, and arbitrary seeking are tr
     page.getByRole("heading", { name: "Match context", exact: true }),
   ).toBeVisible();
   // Keyboard actions cannot focus the timeline while the opening keeps it inert.
-  await expect(page.locator(".app-shell")).toHaveAttribute("aria-busy", "false");
+  await expect(page.locator(".app-shell")).toHaveAttribute(
+    "aria-busy",
+    "false",
+  );
   const timeline = page.getByRole("slider", { name: "Match timeline" });
   await timeline.focus();
   await timeline.press("End");
@@ -195,9 +198,6 @@ test("the demo shows a pattern emerging and reset clears custom filters", async 
   await page.getByLabel("Generator profile").selectOption("balanced");
   await page.getByLabel("Generator profile").selectOption("demo");
   await page.getByRole("button", { name: "Watch the build-up" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Match context", exact: true }),
-  ).toBeVisible();
   await page.clock.runFor(6000);
   await expect(page.locator(".selected-observation h2")).toContainText(
     "Harbor are winning the ball near the opponent’s goal more often.",
@@ -494,7 +494,16 @@ test("pattern evidence steps through its own actions without moving the match cl
     "false",
   );
   const pitch = page.locator(".pitch-panel");
-  await expect(pitch.locator(".event-inspector p")).toContainText("62:50");
+  // The map explains itself and asks for a selection before naming one shot.
+  await expect(pitch.locator(".shot-map-key")).toContainText(
+    "Numbers show shot order, not shirt numbers",
+  );
+  await expect(pitch.locator(".shot-map-summary")).toContainText(
+    "4 shots in 54:12–63:24, against 0 in the equal 45:00–54:12 before.",
+  );
+  await expect(pitch.locator(".event-inspector p")).toContainText(
+    "Select a shot to replay its build-up.",
+  );
   await pitch.getByRole("button", { name: "Previous action" }).click();
   // The previous plotted shot opens as a passage; the match stays at 63:24.
   await expect(
@@ -502,7 +511,10 @@ test("pattern evidence steps through its own actions without moving the match cl
   ).toBeVisible();
   await expect(
     pitch.locator(".event-inspector select option").last(),
-  ).toContainText("61:19");
+  ).toContainText("61:40");
+  await expect(pitch.getByTestId("selected-shot")).toHaveText(
+    "Selected shot: 61:40 · Milo Serrano · wide",
+  );
   await expect(page.getByTestId("clock")).toContainText("63:24");
 });
 

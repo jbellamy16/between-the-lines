@@ -375,7 +375,7 @@ describe("analyst agent", () => {
       return reply([
         answer({
           status: "answered",
-          answer: "Theo March shot at 62:50.",
+          answer: "Leon Costa shot at 63:11.",
           citations: [shotRef],
         }),
       ]);
@@ -397,7 +397,7 @@ describe("analyst agent", () => {
       "tool",
       "verify",
     ]);
-    expect(steps[2].label).toBe("Traced the build-up to the 62:50 shot");
+    expect(steps[2].label).toBe("Traced the build-up to the 63:11 shot");
     const traced = JSON.parse(
       JSON.parse(fetch.mock.calls[2][1].body).input.at(-1).output,
     );
@@ -414,7 +414,7 @@ describe("analyst agent", () => {
         reply([
           toolCall(
             "get_recorded_sequence",
-            { start: 3252, end: 3804, team: "harbor", eventId: "62:50" },
+            { start: 3252, end: 3804, team: "harbor", eventId: "63:11" },
             "a",
           ),
           toolCall(
@@ -428,7 +428,7 @@ describe("analyst agent", () => {
         reply([
           answer({
             status: "answered",
-            answer: "Theo March shot at 62:50.",
+            answer: "Leon Costa shot at 63:11.",
             citations: ["e1"],
           }),
         ]),
@@ -438,7 +438,7 @@ describe("analyst agent", () => {
     await runAnalyst(
       match,
       CUTOFF,
-      "How did the 62:50 shot come about?",
+      "How did the 63:11 shot come about?",
       "fan",
       "foundry",
       {
@@ -446,7 +446,7 @@ describe("analyst agent", () => {
       },
     );
     expect(steps.map((s) => s.label)).toContain(
-      "Traced the build-up to the 62:50 shot",
+      "Traced the build-up to the 63:11 shot",
     );
     // 70:00 is after the 63:24 cutoff: nothing there yet, so still refused.
     const outputs = JSON.parse(fetch.mock.calls[1][1].body)
@@ -622,7 +622,7 @@ describe("analyst agent", () => {
       JSON.parse(fetch.mock.calls[0][1].body).input[0].content,
     );
     expect(first.context.now.goals).toEqual([
-      { clock: "01:00", team: "Harbor", scorer: "Arlo Hayes" },
+      { clock: "41:08", team: "Harbor", scorer: "Arlo Hayes" },
     ]);
   });
 
@@ -752,9 +752,14 @@ describe("analyst agent", () => {
       "at full time, over the whole match",
       5400,
       0,
-      ["01:00", "74:35", "77:33"],
+      ["41:08", "66:29", "76:16", "78:48"],
     ],
-    ["at 80:00, over the second half so far", 4800, 2700, ["74:35", "77:33"]],
+    [
+      "at 80:00, over the second half so far",
+      4800,
+      2700,
+      ["66:29", "76:16", "78:48"],
+    ],
   ])(
     "answers %s from one long window, with every goal citable",
     async (_, cutoff, start, goalClocks) => {
@@ -835,14 +840,14 @@ describe("analyst agent", () => {
         events: { clock: string; type: string; outcome?: string }[];
       };
     };
-    expect(output.counts).toMatchObject({ shots: 18, goals: 3 });
+    expect(output.counts).toMatchObject({ shots: 17, goals: 4 });
     expect(output.byTeam).toMatchObject({
-      Harbor: { shots: 15, goals: 2, passes: 0 },
-      Riverside: { shots: 3, goals: 1, passes: 0 },
+      Harbor: { shots: 12, goals: 3, passes: 0 },
+      Riverside: { shots: 5, goals: 1, passes: 0 },
     });
     expect(
       output.events.filter((e) => e.outcome === "goal").map((e) => e.clock),
-    ).toEqual(["01:00", "74:35", "77:33"]);
+    ).toEqual(["41:08", "66:29", "76:16", "78:48"]);
   });
 
   it("splits both comparison windows by team instead of presenting totals as team counts", () => {
@@ -860,15 +865,15 @@ describe("analyst agent", () => {
       previousWindow: {
         from: "10:00",
         to: "20:00",
-        passes: 35,
+        passes: 39,
         scope: "Both teams combined; use byTeam for each team's counts",
-        byTeam: { Harbor: { passes: 17 }, Riverside: { passes: 18 } },
+        byTeam: { Harbor: { passes: 16 }, Riverside: { passes: 23 } },
       },
       currentWindow: {
         from: "20:00",
         to: "30:00",
-        passes: 37,
-        byTeam: { Harbor: { passes: 24 }, Riverside: { passes: 13 } },
+        passes: 34,
+        byTeam: { Harbor: { passes: 13 }, Riverside: { passes: 21 } },
       },
     });
     const filtered = tools.run("compare_time_windows", {
@@ -876,8 +881,8 @@ describe("analyst agent", () => {
       team: "harbor",
     }).output;
     expect(filtered).toMatchObject({
-      previousWindow: { passes: 17 },
-      currentWindow: { passes: 24 },
+      previousWindow: { passes: 16 },
+      currentWindow: { passes: 13 },
     });
     expect(filtered).not.toHaveProperty("currentWindow.byTeam");
   });
@@ -976,10 +981,10 @@ describe("analyst agent", () => {
       playerId: null,
       eventId: null,
     }) as unknown as { output: { counts: { passCompletion: string } } };
-    expect(output.counts.passCompletion).toBe("90%");
+    expect(output.counts.passCompletion).toBe("76%");
     const facts = collectFacts(output);
     expect(
-      verifyGrounding("Harbor completed 90% of their passes.", facts, roster)
+      verifyGrounding("Harbor completed 76% of their passes.", facts, roster)
         .passed,
     ).toBe(true);
   });
@@ -1046,23 +1051,22 @@ describe("analyst agent", () => {
         leaders: Record<string, { players: string[] } & Record<string, number>>;
       };
     };
-    // Leon Costa ties for the most recoveries in 45:00–63:24 but is not one
+    // Nico Wells ties for the most interceptions in 45:00–63:24 but is not one
     // of the five most involved players.
     expect(output.mostInvolved.map((p) => p.player)).not.toContain(
-      "Leon Costa",
+      "Nico Wells",
     );
-    expect(output.leaders.recoveries.recoveries).toBe(2);
-    expect(output.leaders.recoveries.players.toSorted()).toEqual([
-      "Finn Ash",
-      "Leon Costa",
-      "Theo March",
+    expect(output.leaders.interceptions.interceptions).toBe(1);
+    expect(output.leaders.interceptions.players.toSorted()).toEqual([
+      "Ellis Reed",
+      "Nico Wells",
     ]);
     expect(output.leaders.shots.players).toEqual(["Theo March"]);
     // A leader's count is tied to the stat it counts.
     const facts = collectFacts(output);
     expect(
       verifyGrounding(
-        "Leon Costa, Theo March and Finn Ash share the most recoveries for Harbor, 2 each.",
+        "Ellis Reed and Nico Wells share the most interceptions for Harbor, 1 each.",
         facts,
         roster,
       ).passed,
@@ -1076,11 +1080,11 @@ describe("analyst agent", () => {
     });
     const { output } = tools.run("get_recorded_sequence", {
       matchId: match.id,
-      start: 3480,
-      end: 3600,
+      start: 3540,
+      end: 3660,
       team: "harbor",
       playerId: null,
-      eventId: "59:09",
+      eventId: "60:08",
     }) as unknown as {
       output: {
         events: { clock: string; player: string; type: string; to?: string }[];
@@ -1088,9 +1092,10 @@ describe("analyst agent", () => {
     };
     const passes = output.events.filter((e) => e.type === "pass");
     expect(passes.map((p) => `${p.clock} ${p.player} → ${p.to}`)).toEqual([
-      "58:49 Leon Costa → Milo Serrano",
-      "58:56 Milo Serrano → Theo March",
-      "59:04 Theo March → Milo Serrano",
+      "59:44 Kai Solberg → Milo Serrano",
+      "59:49 Milo Serrano → Kai Solberg",
+      "59:56 Kai Solberg → Leon Costa",
+      "60:03 Leon Costa → Theo March",
     ]);
   });
 
@@ -1115,7 +1120,7 @@ describe("analyst agent", () => {
   describe("counts written next to a window", () => {
     // The evidence behind an Oct 15 eval answer at 70:00: the story card plus
     // a Harbor comparison and shot-route comparison of 50:00–60:00 with
-    // 60:00–70:00 (2 then 3 shots; 4 then 6 recoveries).
+    // 60:00–70:00 (1 then 5 shots; 4 then 5 recoveries).
     const at70 = () => {
       const tools = analystToolset(match, 4200, {
         maxTools: 5,
@@ -1141,7 +1146,7 @@ describe("analyst agent", () => {
 
     it("rejects a baseline that is another window's count", () => {
       const result = check(
-        "Harbor still had 3 shots in 60:00–70:00, but that was down from 4 in the earlier 50:00–60:00 spell.",
+        "Harbor still had 5 shots in 60:00–70:00, but that was down from 4 in the earlier 50:00–60:00 spell.",
       );
       expect(result.passed).toBe(false);
       expect(result.issues.join(" ")).toContain(
@@ -1149,12 +1154,12 @@ describe("analyst agent", () => {
       );
     });
     it("rejects a count that belongs to a different window", () => {
-      expect(check("Harbor had 3 shots in 50:00–60:00.").passed).toBe(false);
+      expect(check("Harbor had 5 shots in 50:00–60:00.").passed).toBe(false);
     });
     it.each([
-      "Harbor still had 3 shots in 60:00–70:00, up from 2 in the earlier 50:00–60:00 spell.",
-      "Harbor had 6 recoveries in 60:00–70:00, after 4 in 50:00–60:00.",
-      "Harbor had 3 shots between 60:00 and 70:00.",
+      "Harbor still had 5 shots in 60:00–70:00, up from 1 in the earlier 50:00–60:00 spell.",
+      "Harbor had 5 recoveries in 60:00–70:00, after 4 in 50:00–60:00.",
+      "Harbor had 5 shots between 60:00 and 70:00.",
     ])("accepts the window's own counts: %s", (answer) => {
       expect(check(answer).issues).toEqual([]);
     });

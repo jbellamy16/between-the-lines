@@ -19,7 +19,7 @@ describe("match moments", () => {
 
   it("finds goals, full time and story changes in order", () => {
     expect(full.filter((m) => m.kind === "goal").map((m) => m.time)).toEqual([
-      60, 4480, 4660,
+      2470, 3990, 4580, 4730,
     ]);
     expect(full.at(-1)).toMatchObject({ kind: "full-time", time: 5400 });
     expect(full.map((m) => m.time)).toEqual(
@@ -32,36 +32,41 @@ describe("match moments", () => {
       pressure.events.find((e) => e.id === storyGoalId(m.story, pressure))
         ?.time;
     const goals = full.filter((m) => m.kind === "goal");
-    // A goal story highlights every goal so far; 77:33 is the third.
+    // A goal story highlights every goal so far; 78:48 is the fourth.
     expect(goals.map((m) => m.story.highlightedEventIds.length)).toEqual([
-      1, 2, 3,
+      1, 2, 3, 4,
     ]);
-    expect(goals.map(at)).toEqual([60, 4475, 4653]);
+    expect(goals.map(at)).toEqual([2468, 3989, 4576, 4728]);
     expect(storyGoalId(full.at(-1)!.story, pressure)).toBeUndefined();
   });
 
   it("says when an eased story's actions stopped, only when that is true", () => {
+    const substitution = source.read("substitution", { profile: "demo" });
+    const moments = momentsThrough(
+      substitution,
+      substitution.duration,
+      ANALYSIS_MODE,
+    );
     const note = (time: number) => {
-      const m = full.find((m) => m.time === time)!;
+      const m = moments.find((m) => m.time === time)!;
       return quietSince(
         m.story,
-        pressure,
-        pressure.events.filter((e) =>
+        substitution,
+        substitution.events.filter((e) =>
           m.story.highlightedEventIds.includes(e.id),
         ),
       );
     };
-    // 36:20: Harbor's increase in shots has eased; last shot 30:43.
-    expect(note(2180)).toBe("No more Harbor shots since 30:43.");
-    // 68:50 has eased too, but Harbor shot at 68:36: nothing to add.
-    expect(note(4130)).toBeNull();
-    // 73:20 is a live increase, quiet since 71:25 but not eased: no note.
-    expect(note(4400)).toBeNull();
-    expect(note(3680)).toBeNull();
+    // 86:50: Harbor's increase in shots has eased; last shot 83:58.
+    expect(note(5210)).toBe("No more Harbor shots since 83:58.");
+    // 66:00 has eased too, but Harbor shot at 65:57: nothing to add.
+    expect(note(3960)).toBeNull();
+    // 76:10 is a live increase: no note.
+    expect(note(4570)).toBeNull();
   });
 
   it("never holds a moment, or evidence, from after the position", () => {
-    for (const cutoff of [0, 1859, 1860, 3650, 4479, 4480, 5399]) {
+    for (const cutoff of [0, 1679, 1680, 3650, 4579, 4580, 5399]) {
       const moments = momentsThrough(pressure, cutoff, ANALYSIS_MODE);
       expect(moments).toEqual(full.filter((m) => m.time <= cutoff));
       for (const m of moments) {
@@ -105,9 +110,9 @@ describe("match moments", () => {
       );
       expect(repeat).toBeUndefined();
     }
-    // 60:40–64:00 alternates five times on the story card; two moments.
-    expect(full.filter((m) => m.time >= 3640 && m.time <= 3840)).toHaveLength(
-      2,
+    // 59:40–64:00 moves between ball wins and shots; three distinct moments.
+    expect(full.filter((m) => m.time >= 3560 && m.time <= 3840)).toHaveLength(
+      3,
     );
   });
 
@@ -123,16 +128,16 @@ describe("match moments", () => {
   });
 
   it("reports the moment playback just reached", () => {
-    expect(arrivedMoment(full, 3630, 3642)?.time).toBe(3640);
-    expect(arrivedMoment(full, 3640, 3650)).toBeNull();
-    expect(arrivedMoment(full, 3600, 3700)?.time).toBe(3680);
+    expect(arrivedMoment(full, 3670, 3682)?.time).toBe(3680);
+    expect(arrivedMoment(full, 3680, 3690)).toBeNull();
+    expect(arrivedMoment(full, 3600, 3690)?.time).toBe(3680);
   });
 
   it("follows the viewer's story preferences, like the story card", () => {
     const rhythm = momentsThrough(pressure, pressure.duration, ANALYSIS_MODE, {
       categories: ["rhythm"],
     });
-    expect(rhythm.filter((m) => m.kind === "goal")).toHaveLength(3);
+    expect(rhythm.filter((m) => m.kind === "goal")).toHaveLength(4);
     expect(rhythm.some((m) => m.story.category === "recovery-shot")).toBe(
       false,
     );

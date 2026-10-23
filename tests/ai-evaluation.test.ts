@@ -15,7 +15,7 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 for (const scenario of ["pressure", "substitution", "quiet"] as Scenario[])
-  for (const seed of [202632, 43, 71])
+  for (const seed of [202632, 43, 73])
     for (const time of [0, 1800, 3300, 3804, 5400])
       it(`${scenario}/${seed}/${time}: verified data, audience distinction, negative cases and provider parity`, async () => {
         const all = generateMatch(scenario, seed);

@@ -61,7 +61,11 @@ test("the story card leads with what changed and why, and keeps the full brief o
   ).toBeVisible();
   await expect(page.getByTestId("clock")).toContainText("63:24");
 
-  await page.getByRole("slider", { name: "Match timeline" }).fill("4200");
+  // The substitution fixture has a shot story that eased at 66:00.
+  await page
+    .getByLabel("Fixture", { exact: true })
+    .selectOption("substitution");
+  await page.getByRole("slider", { name: "Match timeline" }).fill("3960");
   const challenges = story.getByRole("region", {
     name: "Counter-evidence and limits",
   });
@@ -70,10 +74,10 @@ test("the story card leads with what changed and why, and keeps the full brief o
   await challenges
     .getByRole("button", { name: /Replay counter-evidence/ })
     .click();
-  await expect(page.getByTestId("clock")).toContainText("70:00");
+  await expect(page.getByTestId("clock")).toContainText("66:00");
   await expect(
     page.locator(".pitch-panel").getByLabel("Recorded event", { exact: true }),
-  ).toHaveValue("pressure-202632-506");
+  ).toHaveValue("substitution-2011-488");
 
   for (const theme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: theme });

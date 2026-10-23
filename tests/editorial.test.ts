@@ -87,9 +87,13 @@ describe("editorial evidence and presentation regressions", () => {
     ).toBe(false);
   });
   it("identifies each shot by its recorded player and time rather than an ambiguous reference", () => {
-    const sequence = observe(match, 3804).find(
-      (c) => c.category === "shot-sequence",
+    const isPassage = (c: { category: string }) =>
+      c.category === "shot-sequence";
+    // Any minute at which a passing passage that ended in a shot is in view.
+    const at = Array.from({ length: 90 }, (_, i) => (i + 1) * 60).find((t) =>
+      observe(match, t).some(isPassage),
     )!;
+    const sequence = observe(match, at).find(isPassage)!;
     const shot = match.events.find(
       (e) => e.id === sequence.evidenceIds.at(-1),
     )!;
@@ -100,10 +104,24 @@ describe("editorial evidence and presentation regressions", () => {
     expect(sequence.brief).not.toContain("this shot");
   });
   it("keeps the first verified passage and removes another telling the same kind of story", () => {
-    const candidates = observe(match, 3804);
-    const sequences = candidates
-      .filter((c) => c.category === "shot-sequence" && c.team === "harbor")
-      .slice(0, 2);
+    const passages = (team: "harbor" | "riverside", at: number) =>
+      observe(match, at).filter(
+        (c) => c.category === "shot-sequence" && c.team === team,
+      );
+    // The first minute at which a team had two separate passages end in shots.
+    const [team, at] = (["harbor", "riverside"] as const)
+      .map(
+        (team) =>
+          [
+            team,
+            Array.from({ length: 90 }, (_, i) => (i + 1) * 60).find(
+              (t) => passages(team, t).length >= 2,
+            ),
+          ] as const,
+      )
+      .find(([, t]) => t !== undefined)!;
+    const candidates = observe(match, at!);
+    const sequences = passages(team, at!).slice(0, 2);
     expect(sequences).toHaveLength(2);
     const plan = validateEditorialPlan(
       {

@@ -73,8 +73,9 @@ describe("MCP endpoint", () => {
       cutoffSeconds: cutoff,
     });
     expect(briefing.now.goals.map((g: { clock: string }) => g.clock)).toEqual([
-      "01:00",
-      "74:35",
+      "41:08",
+      "66:29",
+      "76:16",
     ]);
     const outputs: unknown[] = [briefing];
     const whole = { start: 0, end: cutoff };
@@ -108,13 +109,13 @@ describe("MCP endpoint", () => {
     const later = match.events.filter((e) => e.time > cutoff);
     expect(later.length).toBeGreaterThan(50);
     for (const e of later) expect(text).not.toContain(`"${e.id}"`);
-    expect(text).not.toContain("77:33");
+    expect(text).not.toContain("78:48");
     expect(text).not.toContain("Theo March scored");
     expect(
       parse(
         await client.callTool({ name: "get_match_context", arguments: whole }),
       ),
-    ).toMatchObject({ score: { Harbor: 1, Riverside: 1 }, clock: "77:00" });
+    ).toMatchObject({ score: { Harbor: 2, Riverside: 1 }, clock: "77:00" });
     // Deterministic tools only: no model was called.
     expect(fetchSpy).not.toHaveBeenCalled();
   });
@@ -173,7 +174,7 @@ describe("MCP endpoint", () => {
         }),
       );
     expect(await at("?t=4620")).toMatchObject({ clock: "77:00" });
-    expect(await at("")).toMatchObject({ score: { Harbor: 2, Riverside: 1 } });
+    expect(await at("")).toMatchObject({ score: { Harbor: 3, Riverside: 1 } });
     for (const t of ["abc", "9999", "91:00", "-5"]) {
       const response = await POST(
         new Request(`${ORIGIN}/api/mcp?t=${t}`, {

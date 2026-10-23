@@ -212,6 +212,27 @@ export function MatchApp({
                 director.story!.highlightedEventIds.includes(e.id),
               )
             : sequence;
+  // A shot-count story (the director's or a selected observation) maps its
+  // team's shots over the same equal windows it was measured on.
+  const shotWindow = (() => {
+    if (selectedKey && insight)
+      return insight.metric === "Shots"
+        ? { team: insight.team, start: insight.start, end: insight.end }
+        : undefined;
+    const story = director.story;
+    const window = story?.hypothesis.windows.find((w) => w.id === "current");
+    if (
+      !story ||
+      !window ||
+      story.category !== "activity-change" ||
+      story.statistics[0]?.label !== "shots"
+    )
+      return undefined;
+    const team = canonicalMatch.events.find((e) =>
+      story.highlightedEventIds.includes(e.id),
+    )?.team;
+    return team ? { team, start: window.start, end: window.end } : undefined;
+  })();
   const activePitchEvent =
     playing || pitchView === "recent" ? pitchEvents.at(-1) : event;
   const replayEvents = replay
@@ -808,6 +829,7 @@ export function MatchApp({
                   : director.wording?.headline
               }
               storyReplay={director.replay}
+              shotWindow={shotWindow}
               match={canonicalMatch}
               time={time}
               events={canonicalMatch.events.filter((e) =>

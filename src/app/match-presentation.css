@@ -1715,3 +1715,61 @@
   font-size: 0.75rem;
   font-weight: 400;
 }
+.shot-map-key {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 0 4px 8px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.shot-map-key p {
+  margin: 0;
+}
+.shot-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.shot-map-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.shot-map-legend svg {
+  width: 36px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.selected-shot {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.panel-header > .selected-shot {
+  color: inherit;
+  font-size: 0.875rem;
+}
+@media (max-width: 700px) {
+  .panel-header:has(.selected-shot) {
+    flex-wrap: wrap;
+  }
+  .panel-header > .selected-shot {
+    order: 3;
+    flex-basis: 100%;
+    padding-bottom: 8px;
+  }
+}
+@media (max-width: 700px) {
+  .data-first .pitch-panel > .panel-header:has(.selected-shot) {
+    height: auto;
+    min-height: 60px;
+    padding-bottom: 0;
+  }
+}

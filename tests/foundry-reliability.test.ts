@@ -409,7 +409,7 @@ it("returns accurate transient fallback, then recovers the same server context w
       }),
     );
   vi.stubGlobal("fetch", transport);
-  const failed = await directMatch(m, 4200, "fan");
+  const failed = await directMatch(m, 4500, "fan");
   expect(failed.source).toBe("offline");
   expect(failed.failure).toMatchObject({
     category: "rate_limit",
@@ -420,10 +420,10 @@ it("returns accurate transient fallback, then recovers the same server context w
   expect(failed.notice).toContain("rate-limited");
   expect(JSON.stringify(failed)).not.toContain("private");
   await vi.advanceTimersByTimeAsync(61000);
-  const result = await directMatch(m, 4200, "fan");
+  const result = await directMatch(m, 4500, "fan");
   expect(result.source).toBe("foundry");
   expect(result.metrics.requests).toBe(1);
-  expect((await directMatch(m, 4200, "fan")).metrics.cached).toBe(true);
+  expect((await directMatch(m, 4500, "fan")).metrics.cached).toBe(true);
   expect(transport).toHaveBeenCalledTimes(2);
   expect(api.requestLimits()).toEqual({ rpm: 10, tpm: 10000 });
 });
@@ -435,7 +435,7 @@ const clientResult = (source = "foundry", context = "model-1") =>
     source,
     cacheContext: context,
     stories: [],
-    provenance: { cutoff: 4200 },
+    provenance: { cutoff: 4500 },
   }) as unknown as DirectorResult;
 it("evicts client fallbacks and rejected requests while reusing success and separating model contexts", async () => {
   const m = clientMatch();
@@ -454,14 +454,14 @@ it("evicts client fallbacks and rejected requests while reusing success and sepa
           : Response.json(clientResult("foundry", context)),
   );
   vi.stubGlobal("fetch", transport);
-  expect((await requestDirector(m, 4200, "fan", {})).source).toBe("offline");
-  expect(cachedDirectorResult(m, 4200, "fan", {}, context)).toBeNull();
-  await expect(requestDirector(m, 4200, "fan", {})).rejects.toThrow();
-  expect((await requestDirector(m, 4200, "fan", {})).source).toBe("foundry");
-  await requestDirector(m, 4200, "fan", {});
+  expect((await requestDirector(m, 4500, "fan", {})).source).toBe("offline");
+  expect(cachedDirectorResult(m, 4500, "fan", {}, context)).toBeNull();
+  await expect(requestDirector(m, 4500, "fan", {})).rejects.toThrow();
+  expect((await requestDirector(m, 4500, "fan", {})).source).toBe("foundry");
+  await requestDirector(m, 4500, "fan", {});
   expect(attempt).toBe(3);
   context = "model-2";
-  await requestDirector(m, 4200, "fan", {});
+  await requestDirector(m, 4500, "fan", {});
   expect(attempt).toBe(4);
 });
 it("shares a browser request while one subscriber leaves, and retries after all subscribers cancel", async () => {
@@ -482,8 +482,8 @@ it("shares a browser request while one subscriber leaves, and retries after all 
   vi.stubGlobal("fetch", transport);
   const a = new AbortController(),
     b = new AbortController();
-  const first = requestDirector(m, 4200, "fan", {}, a.signal).catch((e) => e),
-    second = requestDirector(m, 4200, "fan", {}, b.signal);
+  const first = requestDirector(m, 4500, "fan", {}, a.signal).catch((e) => e),
+    second = requestDirector(m, 4500, "fan", {}, b.signal);
   await tick();
   a.abort();
   release();
@@ -493,14 +493,14 @@ it("shares a browser request while one subscriber leaves, and retries after all 
     transport.mock.calls.filter(([url]) => url === "/api/director"),
   ).toHaveLength(1);
   const next = new AbortController();
-  const cancelled = requestDirector(m, 4200, "analyst", {}, next.signal).catch(
+  const cancelled = requestDirector(m, 4500, "analyst", {}, next.signal).catch(
     (e) => e,
   );
   await tick();
   next.abort();
   await cancelled;
   await tick();
-  const retry = requestDirector(m, 4200, "analyst", {});
+  const retry = requestDirector(m, 4500, "analyst", {});
   await tick();
   release();
   expect((await retry).source).toBe("foundry");
@@ -536,7 +536,7 @@ it("the workflow counts retry attempts in its three-request ceiling and never tr
               tool: "get_match_context",
               matchId: match.id,
               start: 2700,
-              end: 4200,
+              end: 4500,
               team: null,
               playerId: null,
               eventId: null,
@@ -574,7 +574,7 @@ it("the workflow counts retry attempts in its three-request ceiling and never tr
     });
   });
   vi.stubGlobal("fetch", transport);
-  const result = await investigate(match, 4200, "fan", {}, "foundry");
+  const result = await investigate(match, 4500, "fan", {}, "foundry");
   expect(result.source).toBe("foundry");
   expect(result.metrics.requests).toBe(3);
   expect(result.provenance.usage?.complete).toBe(false);

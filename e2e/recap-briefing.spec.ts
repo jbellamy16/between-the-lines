@@ -66,7 +66,7 @@ test("quick/full, accurate windows, event exploration and evidence disclosure", 
   await first.click();
   await expect(dialog).not.toBeVisible();
   await expect(page.getByTestId("clock")).toContainText("63:24");
-  await expect(page.locator(".event-inspector")).toContainText("01:00");
+  await expect(page.locator(".event-inspector")).toContainText("41:08");
   expect(errors).toEqual([]);
 });
 
@@ -115,22 +115,22 @@ test("viewed checkpoint is scoped, returning recap is bounded, rewind restores k
     page.locator(".app-shell").filter({ visible: true }),
   ).toHaveAttribute("aria-busy", "false");
   const slider = page.getByRole("slider", { name: "Match timeline" });
-  await slider.fill("1200");
-  await expect(page.getByTestId("clock")).toContainText("20:00");
+  await slider.fill("2600");
+  await expect(page.getByTestId("clock")).toContainText("43:20");
   // This is an actual visible dwell, not a fabricated stored visit.
   await expect
     .poll(async () =>
       page.evaluate(() =>
         Object.keys(localStorage)
           .filter((k) => k.startsWith("btl-viewed-v1:"))
-          .some((k) => JSON.parse(localStorage.getItem(k)!).position === 1200),
+          .some((k) => JSON.parse(localStorage.getItem(k)!).position === 2600),
       ),
     )
     .toBe(true);
   await page.reload();
   const dialog = await open(page);
   await expect(dialog).toContainText("Welcome back. Here’s what you missed.");
-  await expect(dialog).toContainText("from 20:00 to 63:24");
+  await expect(dialog).toContainText("from 43:20 to 63:24");
   await expect(dialog.locator(".recap-timeline")).not.toContainText(
     "Arlo Hayes scores",
   );

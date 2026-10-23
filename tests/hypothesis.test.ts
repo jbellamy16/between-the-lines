@@ -237,8 +237,10 @@ describe("deterministic hypothesis assessments", () => {
 
   it("bounds watch windows to the current period and stops at full time", () => {
     const time = 2690;
-    const candidate = observe(fixture, time)[0];
-    const assessment = evaluateHypothesis(fixture, time, candidate);
+    // The lead observation at this minute may be a goal, with nothing to watch.
+    const assessment = observe(fixture, time)
+      .map((candidate) => evaluateHypothesis(fixture, time, candidate))
+      .find((item) => item.watchNext)!;
     expect(assessment.watchNext).not.toBeNull();
     expect(assessment.watchNext!.endsAt).toBe(fixture.periods[0].end);
     expect(assessment.watchNext!.period).toBe("1H");
@@ -315,8 +317,8 @@ describe("deterministic hypothesis assessments", () => {
   });
 
   it("keeps a player-selected shot increase scoped to that player when team volume is unchanged", () => {
-    const match = source.read("pressure", { seed: 17, profile: "balanced" });
-    const player = match.players.find((item) => item.name === "Hugo Silva")!;
+    const match = source.read("pressure", { seed: 172, profile: "balanced" });
+    const player = match.players.find((item) => item.name === "Kai Solberg")!;
     const session = createInvestigation(match, 1800, "analyst");
     const result = session.execute("compare_time_windows", {
       matchId: match.id,
@@ -342,9 +344,9 @@ describe("deterministic hypothesis assessments", () => {
     expect(teamShots(1200, 1800)).toBe(2);
     expect(candidate.statistics.map((item) => item.value)).toEqual([2, 0]);
     expect(assessment.verificationStatus).toBe("confirmed-observation");
-    expect(assessment.hypothesis.description).toContain("Hugo Silva");
-    expect(assessment.whyItMatters).toContain("Hugo Silva");
-    expect(assessment.watchNext?.description).toContain("Hugo Silva");
+    expect(assessment.hypothesis.description).toContain("Kai Solberg");
+    expect(assessment.whyItMatters).toContain("Kai Solberg");
+    expect(assessment.watchNext?.description).toContain("Kai Solberg");
     expect(assessment.watchNext?.playerId).toBe(player.id);
     expect(
       [
