@@ -188,7 +188,7 @@ test("the checked answer shows before the agent answers, and the agent adds to i
   });
   agent.release();
   await expect(
-    panel(page).getByText("The analyst adds · Verified · 1 lookup"),
+    panel(page).getByText("The analyst adds · Figures, times and names checked"),
   ).toBeVisible();
   await expect(panel(page)).toContainText("Agent answer 1");
   await expect(checked(page)).toBeVisible();

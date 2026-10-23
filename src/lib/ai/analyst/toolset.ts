@@ -298,8 +298,8 @@ export function analystToolset(
         shotsAfterHighRecovery: w.linkedShots,
         separatePossessionsWithShots: w.shotPossessions,
         largestShotGroup: w.largestPossession,
-        firstHalfOfWindow: w.early,
-        secondHalfOfWindow: w.late,
+        shotsInFirstHalfOfWindow: w.early,
+        shotsInSecondHalfOfWindow: w.late,
       });
       summary.previousWindow = {
         from: matchClock(match, 2 * query.start - query.end),

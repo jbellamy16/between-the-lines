@@ -309,6 +309,67 @@ export function AnalystPanel({
   const showAgentAnswer =
     result?.answer && (verified || (declined && !anchored));
 
+  const revised = steps.some(
+    (s) => s.kind === "revise" && s.reason !== "retry",
+  );
+  const last = steps.at(-1);
+  const trace = (
+    <ol className="analyst-trace" aria-label="What the analyst did">
+      {steps.map((step, i) => {
+        const working =
+          busy && i === steps.length - 1 && step.kind === "revise";
+        const label =
+          step.kind !== "revise"
+            ? step.label
+            : step.reason === "verification"
+              ? working
+                ? "Revising answer…"
+                : "Answer revised."
+              : step.label;
+        return (
+          <li
+            key={i}
+            className={`analyst-step analyst-step-${step.kind}${working ? " analyst-step-pending" : ""}`}
+          >
+            <span className="analyst-step-mark" aria-hidden="true">
+              {step.kind === "verify" && !step.passed ? (
+                <X size={16} />
+              ) : step.kind === "verify" ||
+                (step.kind === "revise" && !working) ? (
+                <Check size={16} />
+              ) : null}
+            </span>
+            <span>
+              {label}
+              {step.kind === "tool" && <small> · {step.events} events</small>}
+            </span>
+          </li>
+        );
+      })}
+      {busy && last?.kind !== "revise" && (
+        <li className="analyst-step analyst-step-pending">
+          <span className="analyst-step-mark" aria-hidden="true" />
+          <span>
+            {anchored && steps.length <= 1
+              ? "The analyst is looking for more…"
+              : steps.length <= 1
+                ? "Choosing which evidence to check…"
+                : "Checking the evidence…"}
+          </span>
+        </li>
+      )}
+    </ol>
+  );
+  const lookupText = `${lookups} ${lookups === 1 ? "lookup" : "lookups"}`;
+  const completion =
+    result?.status === "answered"
+      ? `${revised ? "Answer revised, then checked" : "Checked"}${lookups > 0 ? ` against ${lookupText}` : ""}`
+      : result?.status === "declined"
+        ? "Checked: the recorded events can't answer this"
+        : result
+          ? "No answer passed the checks"
+          : "Stopped before an answer";
+
   return (
     <section className="analyst-panel" aria-label="Ask the analyst">
       <div className="analyst-heading">
@@ -476,49 +537,13 @@ export function AnalystPanel({
               )}
             </div>
           )}
-          {(steps.length > 0 || busy) && (
-            <ol className="analyst-trace" aria-label="What the analyst did">
-              {steps.map((step, i) => (
-                <li
-                  key={i}
-                  className={`analyst-step analyst-step-${step.kind}`}
-                >
-                  <span className="analyst-step-mark" aria-hidden="true">
-                    {step.kind === "verify" && !step.passed ? (
-                      <X size={16} />
-                    ) : step.kind === "verify" ? (
-                      <Check size={16} />
-                    ) : null}
-                  </span>
-                  <span>
-                    {step.label}
-                    {step.kind === "tool" && (
-                      <small> · {step.events} events</small>
-                    )}
-                  </span>
-                </li>
-              ))}
-              {busy && (
-                <li className="analyst-step analyst-step-pending">
-                  <span className="analyst-step-mark" aria-hidden="true" />
-                  <span>
-                    {anchored && steps.length <= 1
-                      ? "The analyst is looking for more…"
-                      : steps.length <= 1
-                        ? "Choosing which evidence to check…"
-                        : "Checking the evidence…"}
-                  </span>
-                </li>
-              )}
-            </ol>
-          )}
           {result && showAgentAnswer && (
             <div
               className={`analyst-answer ${verified ? "is-verified" : "is-declined"}`}
             >
               <span className="analyst-badge">
                 {verified
-                  ? `${anchored ? "The analyst adds · " : ""}Verified · ${lookups} ${lookups === 1 ? "lookup" : "lookups"}${result.cached ? " · reused" : ""}`
+                  ? `${anchored ? "The analyst adds · " : ""}Figures, times and names checked${result.cached ? " · reused" : ""}`
                   : "The events can't tell us that"}
               </span>
               <p>{result.answer}</p>
@@ -548,6 +573,31 @@ export function AnalystPanel({
             <p className="notice" role="status">
               The analyst found nothing to add beyond the checked answer.
             </p>
+          )}
+          {(steps.length > 0 || busy) && (
+            <div
+              className={busy ? "analyst-activity" : "analyst-activity is-done"}
+            >
+              {!busy && (
+                <p className="analyst-status" role="status">
+                  <span className="analyst-step-mark" aria-hidden="true">
+                    {result?.status === "answered" ||
+                    result?.status === "declined" ? (
+                      <Check size={16} />
+                    ) : null}
+                  </span>
+                  {completion}
+                </p>
+              )}
+              {busy ? (
+                trace
+              ) : (
+                <AnimatedDetails className="director-disclosure analyst-activity-detail">
+                  <summary>How the analyst checked this</summary>
+                  {trace}
+                </AnimatedDetails>
+              )}
+            </div>
           )}
           {error && (
             <p className="notice" role="status">

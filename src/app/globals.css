@@ -4752,7 +4752,35 @@ main {
   font-weight: 600;
 }
 .analyst-step-revise {
+  color: var(--sl-muted);
+}
+.analyst-step-revise.analyst-step-pending {
   color: var(--sl-warning);
+}
+.analyst-step-revise:not(.analyst-step-pending) .analyst-step-mark {
+  background: transparent;
+  color: var(--sl-success-text);
+}
+/* Finished work: a one-line status, the detail behind a disclosure. */
+.analyst-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--sl-muted);
+}
+.analyst-status .analyst-step-mark {
+  background: transparent;
+  color: var(--sl-success-text);
+  margin-top: 0.05rem;
+}
+.analyst-activity-detail {
+  margin-top: 0.35rem;
+}
+.analyst-activity-detail .analyst-trace {
+  margin-top: 0.6rem;
 }
 .analyst-step-pending .analyst-step-mark {
   width: 12px;

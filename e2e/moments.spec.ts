@@ -35,7 +35,7 @@ async function mockAnalyst(page: Page) {
       kind: "verify",
       passed: true,
       issues: [],
-      label: "Verified 2 facts against the evidence",
+      label: "Checked 2 figures, times and names against the lookups",
     };
     const result = {
       version: "analyst-1.0.0",
@@ -113,7 +113,7 @@ test.describe("moments", () => {
     await expect(panel.getByLabel("Checked answer")).toContainText(
       "Checked from recorded events",
     );
-    await expect(panel.getByText(/The analyst adds · Verified/)).toBeVisible();
+    await expect(panel.getByText(/The analyst adds · Figures, times and names checked/)).toBeVisible();
     expect(asked).toHaveLength(1);
     expect(asked[0]).toMatchObject({
       time: 3640,

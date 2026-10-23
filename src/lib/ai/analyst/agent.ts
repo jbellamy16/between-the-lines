@@ -60,6 +60,8 @@ Answer rules:
 - Do not calculate new statistics such as sums, averages, differences or percentages unless a tool result shows them.
 - When you describe a passing move or build-up, name a player only if that player appears in that same sequence's events, as passer or recipient, inside the time range you give. Otherwise describe the move without naming players.
 - Give each count with the exact window a tool reported for it (for example "3 shots in 57:30–70:00"). Never describe a count with a different time frame, such as "since the substitution", unless a tool counted that window.
+- compare_shot_routes groups shots by possession (separatePossessionsWithShots, largestShotGroup). That says how the shots were created, not when. Write "4 shots from 4 separate possessions", never that they were spread out, bunched, clustered or in a burst or flurry. Describe timing only when a result shows shot times: the shotsInFirstHalfOfWindow and shotsInSecondHalfOfWindow counts, or event times from get_match_events.
+- Describe what the events show (counts, windows, times), not an explanation: a pattern in the events is not its cause.
 - Describe recorded events only. Do not add connecting narration that no event shows, such as that a team "recycled the ball" or "kept the pressure on".
 - No predictions. No claims about intent, tactics, instructions, fatigue, emotions or causes: recorded events show what happened, not why.
 - Speak about the match, not your process: never mention tools, observations, evidence, data or verification. Say "Harbor took 4 shots", not "the evidence shows Harbor took 4 shots".
@@ -288,7 +290,11 @@ export async function runAnalyst(
       ) {
         transientRetries++;
         usageComplete = false;
-        emit({ kind: "revise", label: "Model was slow to respond; retrying" });
+        emit({
+          kind: "revise",
+          reason: "retry",
+          label: "Model was slow to respond; retrying",
+        });
         response = await send();
       } else throw error;
     }
@@ -425,7 +431,7 @@ export async function runAnalyst(
         issues: [],
         label:
           plan.status === "answered"
-            ? `Verified ${checkedCount} ${checkedCount === 1 ? "fact" : "facts"} and ${plan.citations.length} cited ${plan.citations.length === 1 ? "event" : "events"} against the evidence`
+            ? `Checked ${checkedCount > 0 ? `${checkedCount} ${checkedCount === 1 ? "figure, time or name" : "figures, times and names"} and ` : ""}${plan.citations.length} cited ${plan.citations.length === 1 ? "event" : "events"} against the lookups`
             : "Checked: the recorded events can't answer this",
       });
       return finish(
@@ -445,7 +451,11 @@ export async function runAnalyst(
     });
     if (revisions >= 1 || turn >= ANALYST_LIMITS.requests - 1) break;
     revisions++;
-    emit({ kind: "revise", label: "Agent revising its answer" });
+    emit({
+      kind: "revise",
+      reason: "verification",
+      label: "Revising answer…",
+    });
     input.push(
       { role: "assistant", content: texts },
       {

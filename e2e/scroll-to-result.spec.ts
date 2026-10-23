@@ -76,7 +76,7 @@ async function mockAnalyst(page: Page) {
       kind: "verify",
       passed: true,
       issues: [],
-      label: "Verified 2 facts against the evidence",
+      label: "Checked 2 figures, times and names against the lookups",
     };
     const result = {
       version: "analyst-1.0.0",

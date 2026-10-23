@@ -451,7 +451,9 @@ export function presentQuestion(
             ? "Mixed evidence: several descriptions of this spell apply."
             : supported.length === 1
               ? supported[0].text
-              : "No single explanation is established by these events.";
+              : b.shots > a.shots
+                ? "The events show a rise in shots, but don't establish its cause."
+                : "No single explanation is established by these events.";
     const known = (n: number | null) => (n === null ? "unknown" : String(n));
     measurement = routes.suppressed
       ? "The complete route comparison exceeds the evidence limit and is unavailable."

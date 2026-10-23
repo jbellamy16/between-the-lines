@@ -29,9 +29,17 @@ const steps = [
   },
   {
     kind: "verify",
+    passed: false,
+    issues: ["Harbor took 7 shots is not in the lookups."],
+    label: "Verifier flagged 1 problem",
+  },
+  { kind: "revise", reason: "verification", label: "Revising answer…" },
+  {
+    kind: "verify",
     passed: true,
     issues: [],
-    label: "Verified 5 facts and 2 cited events against the evidence",
+    label:
+      "Checked 5 figures, times and names and 2 cited events against the lookups",
   },
 ];
 
@@ -126,11 +134,19 @@ test("a question shows the agent's steps and a verified answer with replayable e
   const ask = panel(page);
   await ask.getByRole("textbox").fill("What changed in the last ten minutes?");
   await ask.getByRole("button", { name: "Ask", exact: true }).click();
-  await expect(ask.getByText("Verified · 2 lookups")).toBeVisible();
-  await expect(ask).toContainText(
+  await expect(ask.getByText("Answer revised, then checked")).toBeVisible();
+  await expect(ask).toContainText("Harbor took 4 shots");
+  // Finished: one status line, no live progress, the detail behind a disclosure.
+  await expect(ask.getByText("Answer revised, then checked")).toBeVisible();
+  await expect(ask.locator(".analyst-step-pending")).toHaveCount(0);
+  const steps = ask.getByLabel("What the analyst did");
+  await expect(steps).toBeHidden();
+  await ask.getByText("How the analyst checked this").click();
+  await expect(steps).toContainText(
     "Compared Harbor 45:00–54:12 with 54:12–63:24",
   );
-  await expect(ask).toContainText("Harbor took 4 shots");
+  await expect(steps).toContainText("Answer revised.");
+  await expect(steps).not.toContainText("Revising answer");
   expect(asked[0]).toMatchObject({
     scenario: "pressure",
     time: 3804,
@@ -164,7 +180,7 @@ test("without a story, generic starter questions ask immediately", async ({
   await ask
     .getByRole("button", { name: "Is the other team doing anything about it?" })
     .click();
-  await expect(ask.getByText("Verified · 2 lookups")).toBeVisible();
+  await expect(ask.getByText("Answer revised, then checked")).toBeVisible();
   expect(asked.at(-1)).toMatchObject({
     question: "Is the other team doing anything about it?",
   });

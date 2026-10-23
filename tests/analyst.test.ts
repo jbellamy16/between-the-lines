@@ -493,6 +493,16 @@ describe("analyst agent", () => {
     expect(result.status).toBe("answered");
     expect(kinds).toEqual(["plan", "tool", "verify", "revise", "verify"]);
     expect(result.steps[2]).toMatchObject({ passed: false });
+    expect(result.steps[3]).toMatchObject({
+      kind: "revise",
+      reason: "verification",
+    });
+    const final = result.steps[4];
+    expect(final.label).toMatch(
+      /^Checked \d+ figures?, times? (and|or) names?/,
+    );
+    expect(final.label).toContain("1 cited event against the lookups");
+    expect(final.label).not.toMatch(/Verified|facts/);
   });
 
   it("sends an answer about a time not yet played back for a decline", async () => {
