@@ -1719,7 +1719,7 @@
   display: grid;
   gap: 6px;
   margin-top: 10px;
-  padding: 0 4px 8px;
+  padding: 0 20px 12px;
   font-size: 0.875rem;
   line-height: 1.4;
 }
@@ -1772,4 +1772,21 @@
     min-height: 60px;
     padding-bottom: 0;
   }
+}
+.action-line {
+  padding-left: 10px;
+  border-left: 4px solid var(--sl-muted);
+}
+.action-line.harbor {
+  border-left-color: var(--sl-harbor);
+}
+.action-line.riverside {
+  border-left-color: var(--sl-riverside);
+}
+.action-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  font-weight: 700;
 }

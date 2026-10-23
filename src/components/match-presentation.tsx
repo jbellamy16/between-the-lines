@@ -914,13 +914,23 @@ export function MatchPitch({
           )}
           <div className="event-inspector action-picker">
             <div>
-              <p>
-                {shotMap && !selected
-                  ? "Select a shot to replay its build-up."
-                  : active
-                    ? `${eventClock(match, active)} · ${eventDescription(match, active)}${outcome(active)}`
+              {active && !(shotMap && !selected) ? (
+                <p className={`action-line ${active.team}`}>
+                  <span className="action-team">
+                    <i className={`team-marker ${active.team}`} />
+                    {match.teams[active.team].short}
+                  </span>
+                  {eventClock(match, active)} ·{" "}
+                  {eventDescription(match, active)}
+                  {outcome(active)}
+                </p>
+              ) : (
+                <p>
+                  {shotMap && !selected
+                    ? "Select a shot to replay its build-up."
                     : "No actions in this window."}
-              </p>
+                </p>
+              )}
             </div>
             {actions.length > 0 && (
               <select
