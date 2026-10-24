@@ -66,7 +66,7 @@ const cases: Case[] = [
     "How is Riverside's passing compared with earlier?",
   ],
   ["quiet", at(63, 24), "Is anything happening in this game?"],
-  ["quiet", at(30, 0), "Which team has had more of the ball?"],
+  ["quiet", at(30, 0), "Which team has made more passes?"],
 ].map(([scenario, time, question]) => ({
   set: "golden" as const,
   scenario: scenario as Case["scenario"],
