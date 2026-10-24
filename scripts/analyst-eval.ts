@@ -58,7 +58,7 @@ const cases: Case[] = [
   ["pressure", at(63, 24), "What's the score and who scored?"],
   ["pressure", at(63, 24), "Where are Harbor's shots coming from?"],
   ["pressure", at(70, 0), "Has Harbor's pressure faded?"],
-  ["pressure", at(70, 0), "Walk me through the build-up to the 59:09 shot."],
+  ["pressure", at(70, 0), "Walk me through the build-up to the 60:08 shot."],
   ["substitution", at(70, 0), "What has changed since the substitution?"],
   [
     "substitution",
